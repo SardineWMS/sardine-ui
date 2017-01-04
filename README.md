@@ -1,4 +1,4 @@
-# Sardine
+﻿# Sardine
 沙丁鱼
 
 # Install
@@ -6,3 +6,6 @@
 * Step2 : npm install
 * Step3 : npm start
 * Step4 : localhost:8989
+
+
+test push:
