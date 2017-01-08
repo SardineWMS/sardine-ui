@@ -73,10 +73,10 @@ function DemoSearchGrid({
 }
 
 DemoSearchGrid.propTypes = {
+  dataSource: PropTypes.array,
+  loading: PropTypes.any,
+  pagination: PropTypes.any,
 	onPageChange: PropTypes.func,
-	dataSource: PropTypes.array,
-	loading: PropTypes.any,
-	pagination: PropTypes.any,
 	onCreate : PropTypes.func,
 	onViewItem : PropTypes.func,
 	onEditItem : PropTypes.func,

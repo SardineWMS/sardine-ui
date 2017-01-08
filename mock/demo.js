@@ -32,7 +32,9 @@ function pretendRequest(email, pass, cb) {
         token: Math.random().toString(36).substring(7)
       })
     } else {
-      cb({ authenticated: false })
+      cb({
+        authenticated: false
+      })
     }
   }, 0)
 };
@@ -50,7 +52,7 @@ module.exports = {
     let newData = tableListData.data.concat();
 
     if (page.field) {
-      const d = newData.filter(function (item) {
+      const d = newData.filter(function(item) {
         return item[page.field].indexOf(page.keyword) > -1;
       });
 
@@ -70,7 +72,7 @@ module.exports = {
     }
 
 
-    setTimeout(function () {
+    setTimeout(function() {
       res.json({
         success: true,
         data,
@@ -80,15 +82,15 @@ module.exports = {
   },
 
   'POST /api/register' (req, res) {
-   
-      console.log('注册……');
-      const newData = qs.parse(req.body);
 
-      console.dir(newData);
+    console.log('注册……');
+    const newData = qs.parse(req.body);
+
+    console.dir(newData);
   },
 
   'POST /api/users' (req, res) {
-    setTimeout(function () {
+    setTimeout(function() {
       const newData = qs.parse(req.body);
 
       newData.id = tableListData.data.length + 1;
@@ -107,10 +109,10 @@ module.exports = {
   },
 
   'DELETE /api/users' (req, res) {
-    setTimeout(function () {
+    setTimeout(function() {
       const deleteItem = qs.parse(req.body);
 
-      tableListData.data = tableListData.data.filter(function (item) {
+      tableListData.data = tableListData.data.filter(function(item) {
         if (item.id == deleteItem.id) {
           return false;
         }
@@ -129,10 +131,10 @@ module.exports = {
   },
 
   'PUT /api/users' (req, res) {
-    setTimeout(function () {
+    setTimeout(function() {
       const editItem = qs.parse(req.body);
 
-      tableListData.data = tableListData.data.map(function (item) {
+      tableListData.data = tableListData.data.map(function(item) {
         if (item.id == editItem.id) {
           return editItem;
         }

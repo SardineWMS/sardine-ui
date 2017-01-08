@@ -1,5 +1,9 @@
-import React, {PropTypes} from 'react';
-import { Link } from 'react-router';
+import React, {
+  PropTypes
+} from 'react';
+import {
+  Link
+} from 'react-router';
 import {
   Icon,
   message,
@@ -10,7 +14,9 @@ import {
   Input,
   Select
 } from 'antd'
-import {config} from '../utils'
+import {
+  config
+} from '../utils'
 import styles from './login.less'
 
 const FormItem = Form.Item
@@ -34,7 +40,7 @@ const login = ({
     })
   }
 
-  document.onkeyup = e => e.keyCode===13 &&  handleOk()
+  document.onkeyup = e => e.keyCode === 13 && handleOk()
 
   return (
     <div className={styles.form}>
@@ -75,9 +81,9 @@ const login = ({
 
 login.propTypes = {
   form: PropTypes.object,
-  loginButtonLoading:PropTypes.bool,
+  loginButtonLoading: PropTypes.bool,
   onOk: PropTypes.func,
-  onRegister : PropTypes.func
+  onRegister: PropTypes.func
 }
 
 export default Form.create()(login);

@@ -11,6 +11,7 @@ import Content from './routes/Content';
 import Login from './routes/Login';
 import Register from './routes/Register';
 import App from './routes/app';
+import Category from './routes/basicInfo/Category';
 import Demo from './routes/Demo';
 
 export default function({
@@ -24,13 +25,7 @@ export default function({
       <Route path="/home" component={Content} />
       <Route path="/login" component={Login} />
       <Route path="/register" component={Register} />
-{/*      <Route path="/demo" component={App}>
-        <IndexRoute component={Demo} />
-          <Route path="/users" component={Demo} />
-        	<Route path="/create" component={Create} />
-      		<Route path="/search" component={Search} />
-          <Route path="/view" component={View} />
-      	</Route>*/}
+      <Route path="/wms/basicInfo/category" component={Category} /> 
       </Route>	
     </Router>
   );

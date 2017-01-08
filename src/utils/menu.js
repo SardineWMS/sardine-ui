@@ -1,32 +1,31 @@
-module.exports = [
-  {
-    key: 'users',
-    name: 'Demo模块',
-    icon: 'user',
-  },
-  {
-    key: 'navigation',
-    name: '测试导航',
-    icon: 'setting',
-    child: [
-      {
-        key: 'navigation1',
-        name: '二级导航1',
-      },
-      {
-        key: 'navigation2',
-        name: '二级导航2',
-        child: [
-          {
-            key: 'navigation21',
-            name: '三级导航1',
-          },
-          {
-            key: 'navigation22',
-            name: '三级导航2',
-          },
-        ],
-      },
-    ],
-  },
-];
+module.exports = [{
+  key: 'users',
+  name: 'Demo模块',
+  icon: 'user'
+}, {
+  key: 'wms',
+  name: 'WMS',
+  child: [{
+    key: 'basicInfo',
+    name: '基本资料',
+    child: [{
+      key: 'customer',
+      name: '客户',
+    }, {
+      key: 'supplier',
+      name: '供应商',
+    }, {
+      key: 'category',
+      name: '商品类别',
+    }, {
+      key: 'article',
+      name: '商品',
+    }, {
+      key: 'container',
+      name: '容器',
+    }, {
+      key: 'bin',
+      name: '货位',
+    }],
+  }, ],
+}, ];

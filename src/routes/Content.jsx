@@ -5,7 +5,7 @@ import { scrollScreen } from 'rc-scroll-anim';
 import Content0 from './Content0';
 import Content1 from './Content1';
 
-import './less/antMotion_style.less';
+// import './less/antMotion_style.less';
 
 export default class Content extends React.Component {
   render() {
