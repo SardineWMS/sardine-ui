@@ -4,8 +4,8 @@ const qs = require('qs');
 const mockjs = require('mockjs');
 
 // 数据持久
-let tableListData = {};
-if (!global.tableListData) {
+let demoListData = {};
+if (!global.demoListData) {
   const data = mockjs.mock({
     'data|100': [{
       'id|+1': 1,
@@ -18,26 +18,11 @@ if (!global.tableListData) {
       current: 1
     }
   });
-  tableListData = data;
-  global.tableListData = tableListData;
+  demoListData = data;
+  global.demoListData = demoListData;
 } else {
-  tableListData = global.tableListData;
+  demoListData = global.demoListData;
 }
-
-function pretendRequest(email, pass, cb) {
-  setTimeout(() => {
-    if (email === 'joe@example.com' && pass === 'password1') {
-      cb({
-        authenticated: true,
-        token: Math.random().toString(36).substring(7)
-      })
-    } else {
-      cb({
-        authenticated: false
-      })
-    }
-  }, 0)
-};
 
 module.exports = {
 
@@ -49,7 +34,7 @@ module.exports = {
     let data;
     let newPage;
 
-    let newData = tableListData.data.concat();
+    let newData = demoListData.data.concat();
 
     if (page.field) {
       const d = newData.filter(function(item) {
@@ -63,11 +48,11 @@ module.exports = {
         total: d.length
       };
     } else {
-      data = tableListData.data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-      tableListData.page.current = currentPage * 1;
+      data = demoListData.data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+      demoListData.page.current = currentPage * 1;
       newPage = {
-        current: tableListData.page.current,
-        total: tableListData.page.total
+        current: demoListData.page.current,
+        total: demoListData.page.total
       };
     }
 
@@ -93,17 +78,17 @@ module.exports = {
     setTimeout(function() {
       const newData = qs.parse(req.body);
 
-      newData.id = tableListData.data.length + 1;
-      tableListData.data.unshift(newData);
+      newData.id = demoListData.data.length + 1;
+      demoListData.data.unshift(newData);
 
-      tableListData.page.total = tableListData.data.length;
-      tableListData.page.current = 1;
+      demoListData.page.total = demoListData.data.length;
+      demoListData.page.current = 1;
 
-      global.tableListData = tableListData;
+      global.demoListData = demoListData;
       res.json({
         success: true,
-        data: tableListData.data,
-        page: tableListData.page
+        data: demoListData.data,
+        page: demoListData.page
       });
     }, 500);
   },
@@ -112,20 +97,20 @@ module.exports = {
     setTimeout(function() {
       const deleteItem = qs.parse(req.body);
 
-      tableListData.data = tableListData.data.filter(function(item) {
+      demoListData.data = demoListData.data.filter(function(item) {
         if (item.id == deleteItem.id) {
           return false;
         }
         return true;
       });
 
-      tableListData.page.total = tableListData.data.length;
+      demoListData.page.total = demoListData.data.length;
 
-      global.tableListData = tableListData;
+      global.demoListData = demoListData;
       res.json({
         success: true,
-        data: tableListData.data,
-        page: tableListData.page
+        data: demoListData.data,
+        page: demoListData.page
       });
     }, 500);
   },
@@ -134,18 +119,18 @@ module.exports = {
     setTimeout(function() {
       const editItem = qs.parse(req.body);
 
-      tableListData.data = tableListData.data.map(function(item) {
+      demoListData.data = demoListData.data.map(function(item) {
         if (item.id == editItem.id) {
           return editItem;
         }
         return item;
       });
 
-      global.tableListData = tableListData;
+      global.demoListData = demoListData;
       res.json({
         success: true,
-        data: tableListData.data,
-        page: tableListData.page
+        data: demoListData.data,
+        page: demoListData.page
       });
     }, 500);
   }

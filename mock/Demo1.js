@@ -3,8 +3,8 @@
 const qs = require('qs');
 const mockjs = require('mockjs');
 
-let tableListData = {};
-if (!global.tableListData) {
+let demoListData = {};
+if (!global.demoListData) {
   const data = mockjs.mock({
     'data|100': [{
       'id|+1': 1,
@@ -17,10 +17,10 @@ if (!global.tableListData) {
       current: 1
     }
   });
-  tableListData = data;
-  global.tableListData = tableListData;
+  demoListData = data;
+  global.demoListData = demoListData;
 } else {
-  tableListData = global.tableListData;
+  demoListData = global.demoListData;
 }
 
 module.exports = {
@@ -34,10 +34,10 @@ module.exports = {
     let data;
     let newPage;
 
-    let newData = tableListData.data.concat();
+    let newData = demoListData.data.concat();
 
     if (page.field) {
-      const d = newData.filter(function (item) {
+      const d = newData.filter(function(item) {
         return item[page.field].indexOf(decodeURI(page.keyword)) > -1;
       })
 
@@ -48,14 +48,18 @@ module.exports = {
         total: d.length
       }
     } else {
-      data = tableListData.data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
-      tableListData.page.current = currentPage * 1;
+      data = demoListData.data.slice((currentPage - 1) * pageSize, currentPage * pageSize);
+      demoListData.page.current = currentPage * 1;
       newPage = {
-        current: tableListData.page.current,
-        total: tableListData.page.total
+        current: demoListData.page.current,
+        total: demoListData.page.total
       }
     }
-    res.json({success: true, data, page: newPage});
-  }, 
+    res.json({
+      success: true,
+      data,
+      page: newPage
+    });
+  },
 
 };

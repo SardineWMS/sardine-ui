@@ -1,60 +1,109 @@
-import {login, userInfo, logout,signIn} from '../services/app'
-import {parse} from 'qs'
+import {
+  login,
+  userInfo,
+  logout,
+  signIn
+} from '../services/app'
+import {
+  parse
+} from 'qs'
 import Cookie from 'js-cookie'
 
 export default {
-  namespace : 'app',
-  state : {
+  namespace: 'app',
+  state: {
     login: false,
     loading: false,
+    token: localStorage.getItem("token"),
     user: {
       name: localStorage.getItem("loginId")
     },
     loginButtonLoading: false,
-    signInButtonLoading : false,
-    registerLoading : false,
-    siderFold:localStorage.getItem("antdAdminSiderFold")==="true"?true:false,
-    darkTheme:localStorage.getItem("antdAdminDarkTheme")==="false"?false:true,
+    signInButtonLoading: false,
+    registerLoading: false,
+    siderFold: localStorage.getItem("antdAdminSiderFold") === "true" ? true : false,
+    darkTheme: localStorage.getItem("antdAdminDarkTheme") === "false" ? false : true,
   },
 
-  subscriptions : {
-    setup({dispatch}) {
-      dispatch({type: 'queryUser'})
-    }
-  },
+  /*  subscriptions: {
+      setup({
+        dispatch
+      }) {
+        dispatch({
+          type: 'queryUser'
+        })
+      }
+    },*/
 
-  effects : {
-    *login({payload}, {call, put}) {
-      yield put({type: 'showLoginButtonLoading'})
-      const { data } = yield call(login, payload);
+  effects: { * login({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'showLoginButtonLoading'
+      })
+      const {
+        data
+      } = yield call(login, payload);
+      if (data.token) {
+        localStorage.setItem("loginId", data.obj.code);
+        localStorage.setItem("token", data.token);
+        yield put({
+          type: 'loginSuccess',
+          payload: {
+            data
+          }
+        })
+      } else {
+        yield put({
+          type: 'loginFail',
+          payload: {
+            data
+          }
+        })
+      }
+    },
+
+    * register({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'showRegisterButtonLoading'
+      });
+      const {
+        data
+      } = yield call(signIn, parse(payload));
       if (data.success) {
-        localStorage.setItem("loginId",data.loginId);
-        yield put({type: 'loginSuccess', payload: {
+        yield put({
+          type: 'signInSuccess',
+          payload: {
             data
-          }})
+          }
+        });
       } else {
-        yield put({type: 'loginFail', payload: {
+        yield put({
+          type: 'signInFail',
+          payload: {
             data
-          }})
+          }
+        })
       }
     },
 
-    *register({payload},{call,put}){
-      yield put({type: 'showRegisterButtonLoading'});
-      const {data} = yield call(signIn,parse(payload));
-      if(data.success){
-        yield put({type : 'signInSuccess',payload:{
-          data
-        }});
-      } else {
-        yield put({type: 'signInFail',payload : {
-          data
-        }})
-      }
-    },
-
-    *queryUser({payload}, {call, put}) {
-      yield put({type: 'showLoading'})
+    * queryUser({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'showLoading'
+      })
       const data = yield call(userInfo, parse(payload))
       if (data.success) {
         yield put({
@@ -66,25 +115,45 @@ export default {
           }
         })
       } else {
-        yield put({type: 'hideLoading'})
-      }
-    },
-    *logout({payload}, {call, put}) {
-      const { data } = yield call(logout, parse(payload))
-      if(data.success){
-        delete localStorage.logId;
         yield put({
-          type: 'logoutSuccess'
+          type: 'hideLoading'
         })
       }
     },
-    *switchSider({payload}, {put}) {
+
+    * logout({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      const data = yield call(logout, {
+        token: localStorage.getItem("token"),
+      });
+      if (!data.token) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("loginId");
+        yield put({
+          type: 'logoutSuccess'
+        });
+      }
+    },
+
+    * switchSider({
+      payload
+    }, {
+      put
+    }) {
       console.log("switchSider");
       yield put({
         type: 'handleSwitchSider'
       })
     },
-    *changeTheme({payload}, {put}) {
+    * changeTheme({
+      payload
+    }, {
+      put
+    }) {
       console.log("changeTheme");
       yield put({
         type: 'handleChangeTheme'
@@ -92,7 +161,7 @@ export default {
     },
   },
 
-  reducers : {
+  reducers: {
     loginSuccess(state, action) {
       return {
         ...state,
@@ -101,7 +170,7 @@ export default {
         loginButtonLoading: false
       }
     },
-    logoutSuccess(state){
+    logoutSuccess(state) {
       return {
         ...state,
         login: false
@@ -114,12 +183,12 @@ export default {
         loginButtonLoading: false
       }
     },
-    signInSuccess(state,action){
-      return{
+    signInSuccess(state, action) {
+      return {
         ...state,
         ...action.payload,
-        registerLoading : true,
-        signInButtonLoading : false
+        registerLoading: true,
+        signInButtonLoading: false
       }
     },
     signInFail(state) {
@@ -136,13 +205,13 @@ export default {
       }
     },
 
-    registerBack(state){
+    registerBack(state) {
       return {
         ...state,
         registerLoading: false
       }
     },
-    
+
     showSignInButtonLoading(state) {
       return {
         ...state,
@@ -169,14 +238,14 @@ export default {
       }
     },
     handleSwitchSider(state) {
-      localStorage.setItem("antdAdminSiderFold",!state.darkTheme)
+      localStorage.setItem("antdAdminSiderFold", !state.darkTheme)
       return {
         ...state,
         siderFold: !state.siderFold
       }
     },
     handleChangeTheme(state) {
-      localStorage.setItem("antdAdminDarkTheme",!state.darkTheme)
+      localStorage.setItem("antdAdminDarkTheme", !state.darkTheme)
       return {
         ...state,
         darkTheme: !state.darkTheme

@@ -5,9 +5,7 @@ import {
   queryCategory,
   create,
   update
-} from '../../services/BasicInfo/Category'
-
-
+} from '../../services/BasicInfo/Category';
 
 export default {
   namespace: 'category',

@@ -1,5 +1,9 @@
-import React, {PropTypes} from 'react'
-import {connect} from 'dva'
+import React, {
+  PropTypes
+} from 'react'
+import {
+  connect
+} from 'dva'
 import Login from './Login';
 import Header from '../components/Layout/Header';
 import Footer from '../components/Layout/Footer';
@@ -7,10 +11,20 @@ import Sider from '../components/Layout/sider';
 import styles from '../components/Layout/main.less';
 import '../components/Layout/common.less';
 import Register from './Register';
-import {Spin,message} from 'antd'
-import {classnames} from '../utils'
+import {
+  Spin,
+  message
+} from 'antd'
+import {
+  classnames
+} from '../utils'
 
-function App({children, location, dispatch, app}) {
+function App({
+  children,
+  location,
+  dispatch,
+  app
+}) {
   const {
     login,
     loading,
@@ -18,28 +32,39 @@ function App({children, location, dispatch, app}) {
     signInButtonLoading,
     loginButtonLoading,
     user,
+    token,
     siderFold,
     darkTheme
   } = app;
-  
+
   const loginProps = {
     loading,
     loginButtonLoading,
     onOk(data) {
-      dispatch({type: 'app/login', payload: data})
+      dispatch({
+        type: 'app/login',
+        payload: data
+      })
     },
-    onRegister(){
-      dispatch({type: 'app/showRegister'})
+    onRegister() {
+      dispatch({
+        type: 'app/showRegister'
+      })
     }
   }
 
   const registerProps = {
     signInButtonLoading,
     onSignIn(data) {
-      dispatch({type : 'app/register', payload : data})
+      dispatch({
+        type: 'app/register',
+        payload: data
+      })
     },
-    onBack(){
-      dispatch({type : 'app/registerBack'})
+    onBack() {
+      dispatch({
+        type: 'app/registerBack'
+      })
     }
   }
 
@@ -47,10 +72,15 @@ function App({children, location, dispatch, app}) {
     user,
     siderFold,
     logout() {
-      dispatch({type: 'app/logout'})
+      dispatch({
+        type: 'app/logout',
+        payload: token
+      })
     },
     switchSider() {
-      dispatch({type: 'app/switchSider'})
+      dispatch({
+        type: 'app/switchSider'
+      })
     }
   }
 
@@ -58,8 +88,10 @@ function App({children, location, dispatch, app}) {
     siderFold,
     darkTheme,
     location,
-    changeTheme(){
-      dispatch({type: 'app/changeTheme'})
+    changeTheme() {
+      dispatch({
+        type: 'app/changeTheme'
+      })
     }
   }
 
@@ -103,8 +135,13 @@ App.propTypes = {
   loginButtonLoading: PropTypes.bool,
   login: PropTypes.bool,
   user: PropTypes.object,
-  siderFold:PropTypes.bool,
-  darkTheme:PropTypes.bool,
+  token: PropTypes.string,
+  siderFold: PropTypes.bool,
+  darkTheme: PropTypes.bool,
 }
 
-export default connect(({app}) => ({app}))(App)
+export default connect(({
+  app
+}) => ({
+  app
+}))(App)

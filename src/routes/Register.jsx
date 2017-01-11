@@ -59,41 +59,28 @@ const Register1 = ({
       <Form onSubmit={handleSign}>
         <FormItem
           {...formItemLayout}
-          label="用户名"
+          label="用户代码"
           hasFeedback
         >
-          {getFieldDecorator('userName', {
+          {getFieldDecorator('code', {
             rules: [{
-              required: true, message: 'Please input your E-mail!',
+              required: true, message: 'Please input your code!',
             }],
           })(
             <Input />
           )}
         </FormItem>
-        <FormItem {...formItemLayout} label="邮箱" hasFeedback>
-          {getFieldDecorator('email', {
-            rules: [{
-              type: 'email', message: 'The input is not valid E-mail!',
-            }, {
-              required: true, message: 'Please input your E-mail!',
-            }],
+        <FormItem {...formItemLayout} label="用户名称">
+          {getFieldDecorator('name', {
+            rules: [{ required: true, message: 'Please input your name!' }],
           })(
             <Input />
           )}
         </FormItem>
         <FormItem {...formItemLayout} label="密码" hasFeedback>
-          {getFieldDecorator('password', {
+          {getFieldDecorator('passwd', {
             rules: [{
               required: true, message: 'Please input your password!',
-            }],
-          })(
-            <Input type="password" />
-          )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="确认密码" hasFeedback>
-          {getFieldDecorator('confirm', {
-            rules: [{
-              required: true, message: 'Please confirm your password!',
             }],
           })(
             <Input type="password" />
@@ -102,6 +89,13 @@ const Register1 = ({
         <FormItem {...formItemLayout} label="手机号">
           {getFieldDecorator('phone', {
             rules: [{ required: true, message: 'Please input your phone number!' }],
+          })(
+            <Input />
+          )}
+        </FormItem>
+        <FormItem {...formItemLayout} label="公司名称">
+          {getFieldDecorator('companyName', {
+            rules: [{ required: true, message: 'Please input your companyName!' }],
           })(
             <Input />
           )}

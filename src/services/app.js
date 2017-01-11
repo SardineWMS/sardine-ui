@@ -1,30 +1,28 @@
 import request from '../utils/request';
-import qs from 'qs'
+import qs from 'qs';
+import fetch from 'dva/fetch';
 
 export async function login(params) {
-  return request('/api/login', {
-    method: 'post',
-    body: qs.stringify(params),
-  });
-  //return request(`/api/authen/login?${qs.stringify(params)}`);
+  return request(`/api/authen/login?${qs.stringify(params)}`);
 }
 
 export async function logout(params) {
-  return request('/api/logout', {
-    method: 'post',
-    body: qs.stringify(params),
-  })
+  return request(`api/authen/loginOut?${qs.stringify(params)}`);
 }
 
 export async function signIn(params) {
-  return request('/api/signIn', {
+  return request('/api/authen/register', {
     method: 'post',
-    body: qs.stringify(params),
-  })
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(params),
+  });
 }
 
 export async function userInfo(params) {
-  return request('/api/userInfo', {
+  return request('/api/user/getbycode', {
     method: 'get',
     body: qs.stringify(params),
   })

@@ -3,39 +3,31 @@ const Mock = require('mockjs')
 const Cookie = require("js-cookie")
 
 module.exports = {
-  'POST /api/login' (req, res) {
-    const userItem = qs.parse(req.body);
+  'GET /api/authen/login' (req, res) {
+    const userItem = qs.parse(req.query);
     const response = {
       success: false,
-      loginId: "",
+      obj: {
+        code: "",
+      },
       token: "",
       message: ""
     }
 
-    console.dir(qs.parse(req.body));
-    if (userItem.username === 'admin' && userItem.password === '123') {
+    if (userItem.loginid === 'admin' && userItem.password === '123') {
       const now = new Date()
       now.setDate(now.getDate() + 1);
       response.message = "登录成功";
       response.success = true;
-      response.loginId = userItem.username;
+      response.obj.code = userItem.loginid;
       response.token = Math.random().toString(36).substring(7);
-    } else if (userItem.username === 'admin') {
+    } else if (userItem.loginid === 'admin') {
       response.message = "密码不正确";
     } else {
       response.message = "用户不存在"
     }
 
     res.json(response);
-  },
-
-  'GET /api/userInfo' (req, res) {
-    const response = {
-      success: Cookie.get('user_session') && Cookie.get('user_session') > new Date().getTime() ? true : false,
-      username: Cookie.get('user_name') || '',
-      message: ""
-    }
-    res.json(response)
   },
 
   'POST /api/signIn' (req, res) {
@@ -53,7 +45,7 @@ module.exports = {
     }, 2000);
   },
 
-  'POST /api/logout' (req, res) {
+  'POST /api/authen/loginOut' (req, res) {
     res.json({
       success: true,
       message: "退出成功"

@@ -46,7 +46,7 @@ function CategorySearch({
 
   return (
     <div>
-      <Table size="small"
+      <Table
         bordered
         columns={columns}
         title={() => 
@@ -55,8 +55,6 @@ function CategorySearch({
         	</div>
         }
         dataSource={dataSource}
-        onChange={onPageChange}
-        pagination={pagination}
         rowKey={record => record.id}
       />
     </div>
