@@ -33,7 +33,7 @@ export default {
 			history
 		}) {
 			history.listen(location => {
-				if (location.pathname === '/demo') {
+				if (location.pathname === '/') {
 					dispatch({
 						type: 'query',
 						payload: location.query,
