@@ -16,9 +16,9 @@ function Demo({location,dispatch,demo}){
 		currentItem,
 		showCreate,
 		showView,
+		searchExpand,
 	} = demo;
 
-	const { field, keyword} = location.query;
 	const demoSearchGridProps = {
 		dataSource: list,
 		loading,
@@ -62,14 +62,22 @@ function Demo({location,dispatch,demo}){
 	}
 
 	const userSearchFormProps = {
-		field,
-		keyword,
+		searchExpand,
 		onSearch(fieldsValue) {
 			dispatch({
 				type: 'demo/query',
 				payload: fieldsValue,
 			})
     	},
+    	onToggle(expand) {
+			dispatch({
+				type: 'demo/toggle',
+				payload : {
+					searchExpand :!expand,
+				}	
+			})
+    	},
+
 	}
 
 	const createFormProps = {
@@ -136,6 +144,7 @@ Demo.propTypes = {
 	dispatch : PropTypes.func,
 	showCreate : PropTypes.bool,
 	showView : PropTypes.bool,
+	searchExpand : PropTypes.bool,
 }
 
 function mapStateToProps({demo}){

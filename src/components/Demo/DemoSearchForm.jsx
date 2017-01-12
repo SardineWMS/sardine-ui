@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Row, Col, Input, Button,Card ,Collapse } from 'antd';
+import { Form, Row, Col, Input, Button,Card ,Collapse,Icon } from 'antd';
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 
 const DemoSearchForm = ({
   onSearch,
-  field,
-  keyword,
+  onToggle,
+  searchExpand,
   form: {
     getFieldDecorator,
     validateFields,
@@ -43,7 +43,22 @@ const DemoSearchForm = ({
         )}
         </FormItem>
       </Col>);
+    children.push(<Col span={12} key='address1'>
+      <FormItem {...formItemLayout} label="地址 类似于">
+        {getFieldDecorator('addressField')(
+          <Input type="text" placeholder="地址 类似于"/>
+        )}
+        </FormItem>
+      </Col>);
+      children.push(<Col span={12} key='address2'>
+      <FormItem {...formItemLayout} label="地址 类似于">
+        {getFieldDecorator('addressField')(
+          <Input type="text" placeholder="地址 类似于"/>
+        )}
+        </FormItem>
+      </Col>);
 
+    const shownCount = searchExpand ? children.length : 2;
     return (
       <Card title="搜索条件">
       <Form
@@ -52,7 +67,7 @@ const DemoSearchForm = ({
         onSubmit={handleSearch}
       >
         <Row gutter={40}>
-          {children.slice(0, 6)}
+          {children.slice(0, shownCount)}
         </Row>
 
         <Row>
@@ -61,6 +76,9 @@ const DemoSearchForm = ({
             <Button style={{ marginLeft: 8 }} onClick={handleReset}>
               清除
             </Button>
+            <a style={{ marginLeft: 8, fontSize: 12 }} onClick={() => onToggle(searchExpand)}>
+              高级搜索 <Icon type={searchExpand ? 'up' : 'down'} />
+            </a>
           </Col>
         </Row>
       </Form>
@@ -71,8 +89,8 @@ const DemoSearchForm = ({
 DemoSearchForm.propTypes = {
   form: PropTypes.object.isRequired,
   onSearch: PropTypes.func,
-  field: PropTypes.string,
-  keyword: PropTypes.string,
+  onToggle: PropTypes.func,
+  searchExpand: PropTypes.bool,
 };
 
 export default Form.create()(DemoSearchForm);

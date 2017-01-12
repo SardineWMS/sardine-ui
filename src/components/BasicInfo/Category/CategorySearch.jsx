@@ -46,7 +46,7 @@ function CategorySearch({
 
   return (
     <div>
-      <Table
+      <Table size="small"
         bordered
         columns={columns}
         title={() => 

@@ -1,10 +1,11 @@
 module.exports = [{
-  key: 'users',
+  key: 'demo',
   name: 'Demo模块',
   icon: 'user'
 }, {
   key: 'wms',
   name: 'WMS',
+  icon: 'desktop',
   child: [{
     key: 'basicInfo',
     name: '基本资料',

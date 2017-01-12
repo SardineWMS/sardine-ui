@@ -31,6 +31,9 @@ const getMenus = function (menuArray,siderFold,parentPath) {
 function Sider({ siderFold,darkTheme,location,changeTheme }) {
   return (
     <div>
+      <div className={styles.logo}>
+        {siderFold?'SD':<span>{config.logoText}</span>}
+      </div>
       <Menu
         mode={siderFold?"vertical":"inline"}
         theme={darkTheme?"dark":"light"}
