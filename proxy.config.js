@@ -25,4 +25,5 @@ module.exports = {
 	}),
 	'/api/authen/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/authen',
 	'/api/category/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/category',
+	'/api/article/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/wms/basic/article',
 };

@@ -14,6 +14,7 @@ import App from './routes/app';
 import Category from './routes/basicInfo/Category';
 import Demo from './routes/Demo';
 import Customer from './routes/basicInfo/Customer';
+import Article from './routes/basicInfo/Article';
 
 export default function({
   history
@@ -28,6 +29,7 @@ export default function({
         <Route path="/register" component={Register} />
         <Route path="/wms/basicInfo/category" component={Category} />
         <Route path="/wms/basicInfo/customer" component={Customer} />
+        <Route path="/wms/basicInfo/article" component={Article} />
       </Route>
     </Router>
   );
