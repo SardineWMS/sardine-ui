@@ -15,14 +15,14 @@ import Category from './routes/basicInfo/Category';
 import Demo from './routes/Demo';
 import Customer from './routes/basicInfo/Customer';
 
-export default function ({
+export default function({
   history
 }) {
   return (
     <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={Demo} />
-        <Route path="/users" component={Demo} />
+        <Route path="/demo" component={Demo} />
         <Route path="/home" component={Content} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
