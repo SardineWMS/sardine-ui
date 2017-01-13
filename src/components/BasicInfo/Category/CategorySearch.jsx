@@ -7,7 +7,6 @@ function CategorySearch({
 	onCreateLower,
 	onEditItem,
 	onDeleteItem,
-  pagination,
   onPageChange,
 }) {
 
@@ -18,11 +17,11 @@ function CategorySearch({
 
 	const columns = [{
     	title: '代码',
-    	dataIndex: 'categoryCode',
+    	dataIndex: 'code',
     	key: 'categoryCode'
   	}, {
     	title: '名称',
-    	dataIndex: 'categoryName',
+    	dataIndex: 'name',
     	key: 'categoryName'
   	}, {
     	title: '备注',
@@ -36,7 +35,7 @@ function CategorySearch({
         <a onClick={() => onCreateLower(record)}> 新增下级 </a>
         <a onClick={() => onEditItem(record)}>编辑</a>
         &nbsp;
-        <Popconfirm title="确定要删除吗？" onConfirm={() => onDeleteItem(record.id)}>
+        <Popconfirm title="确定要删除吗？" onConfirm={() => onDeleteItem(record)}>
           <a>删除</a>
         </Popconfirm>
       </p>
@@ -55,7 +54,8 @@ function CategorySearch({
         	</div>
         }
         dataSource={dataSource}
-        rowKey={record => record.id}
+        onChange={onPageChange}
+        rowKey={record => record.uuid}
       />
     </div>
   )
@@ -66,9 +66,8 @@ CategorySearch.propTypes = {
 	onCreate : PropTypes.func,
 	onEditItem : PropTypes.func,
 	onDeleteItem : PropTypes.func,
-  onCreateLower : PropTypes.func,
-  pagination: PropTypes.any,
   onPageChange: PropTypes.func,
+  onCreateLower : PropTypes.func,
 }
 
 export default CategorySearch;

@@ -4,7 +4,8 @@ import {
 import {
   queryCategory,
   create,
-  update
+  update,
+  deleteCategory,
 } from '../../services/BasicInfo/Category';
 
 export default {
@@ -16,14 +17,6 @@ export default {
     currentItem: {},
     modalVisible: false,
     modalType: 'create',
-    pagination: {
-      showSizeChanger: true,
-      showQuickJumper: true,
-      showTotal: total => `共 ${total} 条`,
-      current: 1,
-      total: null,
-      size: 'default'
-    }
   },
 
   subscriptions: {
@@ -58,7 +51,7 @@ export default {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.data,
+            list: data.obj,
           },
         })
       }
@@ -75,24 +68,23 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const data = yield call(create, payload)
-      if (data && data.success) {
+      yield call(create, payload);
+      const {
+        data
+      } = yield call(queryCategory);
+      if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.data,
-            pagination: {
-              total: data.page.total,
-              current: data.page.current,
-            }
+            list: data.obj,
           },
         })
       }
     },
-    * update({
+
+    * createRoot({
       payload
     }, {
-      select,
       call,
       put
     }) {
@@ -102,22 +94,68 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const id = yield select(({
-        users
-      }) => users.currentItem.id)
-      const newUser = {...payload,
-        id
-      }
-      const data = yield call(update, newUser)
-      if (data && data.success) {
+      yield call(create, payload);
+      const {
+        data
+      } = yield call(queryCategory);
+      if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.data,
-            pagination: {
-              total: data.page.total,
-              current: data.page.current,
-            }
+            list: data.obj,
+          },
+        })
+      }
+    },
+
+    * update({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'hideModal'
+      })
+      yield put({
+        type: 'showLoading'
+      })
+      yield call(update, payload);
+      const {
+        data
+      } = yield call(queryCategory);
+      if (data) {
+        yield put({
+          type: 'querySuccess',
+          payload: {
+            list: data.obj,
+          },
+        })
+      }
+    },
+
+    * remove({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'showLoading'
+      });
+      yield call(deleteCategory, {
+        uuid: payload.uuid,
+        version: payload.version,
+      });
+
+      const {
+        data
+      } = yield call(queryCategory);
+      if (data) {
+        yield put({
+          type: 'querySuccess',
+          payload: {
+            list: data.obj,
           },
         })
       }

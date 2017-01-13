@@ -2,19 +2,21 @@ import config from './config'
 import menu from './menu'
 import request from './request'
 import classnames from 'classnames'
-import {color} from './theme'
+import {
+  color
+} from './theme'
 
-String.prototype.hyphenToHump = function () {
-  return this.replace(/-(\w)/g, function () {
-    return arguments[1].toUpperCase()
+String.prototype.hyphenToHump = function() {
+  return this.replace(/-(\w)/g, function() {
+    return arguments[1].toUpperCase();
   })
 }
 
-String.prototype.humpToHyphen = function () {
-  return this.replace(/([A-Z])/g, "-$1").toLowerCase()
+String.prototype.humpToHyphen = function() {
+  return this.replace(/([A-Z])/g, "-$1").toLowerCase();
 }
 
-Date.prototype.format = function (format) {
+Date.prototype.format = function(format) {
   var o = {
     "M+": this.getMonth() + 1,
     "d+": this.getDate(),
@@ -26,13 +28,11 @@ Date.prototype.format = function (format) {
     "S": this.getMilliseconds()
   }
   if (/(y+)/.test(format))
-    format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length))
+    format = format.replace(RegExp.$1, (this.getFullYear() + "").substr(4 - RegExp.$1.length));
   for (var k in o)
     if (new RegExp("(" + k + ")").test(format))
-      format = format.replace(RegExp.$1, RegExp.$1.length == 1
-        ? o[k]
-        : ("00" + o[k]).substr(("" + o[k]).length))
-  return format
+      format = format.replace(RegExp.$1, RegExp.$1.length == 1 ? o[k] : ("00" + o[k]).substr(("" + o[k]).length));
+  return format;
 }
 
 module.exports = {

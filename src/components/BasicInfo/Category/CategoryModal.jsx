@@ -31,7 +31,9 @@ const CategoryModal = ({
       }
       const data = {
         ...getFieldsValue(),
-        key: item.key,
+        upperCategory : upperCategory.uuid,
+        uuid : item.uuid,
+        version : item.version,
       }
       onOk(data)
     })
@@ -50,12 +52,12 @@ const CategoryModal = ({
       <Form horizontal>
         {showUpper ? 
         <FormItem label="上级类别：" hasFeedback {...formItemLayout}>
-          <span> {upperCategory} </span>
+          <span> [{upperCategory.code}]{upperCategory.name} </span>
         </FormItem> : ''
         }
         <FormItem label="类别代码：" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('categoryCode', {
-            initialValue: item.categoryCode,
+          {getFieldDecorator('code', {
+            initialValue: item.code,
             rules: [
               {
                 required: true,
@@ -65,8 +67,8 @@ const CategoryModal = ({
           })(<Input />)}
         </FormItem>
         <FormItem label="类别名称" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('categoryName', {
-            initialValue: item.categoryName,
+          {getFieldDecorator('name', {
+            initialValue: item.name,
             rules: [
               {
                 required: true,
@@ -76,8 +78,8 @@ const CategoryModal = ({
           })(<Input />)}
         </FormItem>
         <FormItem label="备注：" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('renark', {
-            initialValue: item.renark,
+          {getFieldDecorator('remark', {
+            initialValue: item.remark,
           })(<Input type="textarea" rows={4} />)}
         </FormItem>
       </Form>
@@ -89,7 +91,7 @@ CategoryModal.propTypes = {
   visible: PropTypes.any,
   form: PropTypes.object,
   item: PropTypes.object,
-  upperCategory : PropTypes.any,
+  upperCategory : PropTypes.object,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
   showUpper : PropTypes.bool,

@@ -12,8 +12,8 @@ function Category({ location, dispatch, category }) {
   const { field, keyword } = location.query
 
   const categoryModalProps = {
-    item: modalType === 'create' ? {} : currentItem,
-    upperCategory :  currentItem.categoryCode,
+    item: modalType === 'update' ? currentItem : {},
+    upperCategory :  currentItem,
     type: modalType,
     showUpper : modalType === 'create' ? true : false,
     visible: modalVisible,
@@ -32,14 +32,9 @@ function Category({ location, dispatch, category }) {
 
   const categorySearchProps = {
     dataSource: list,
-    pagination:pagination,
     onPageChange(page) {
       dispatch(routerRedux.push({
-        pathname: '/category',
-        query: {
-          page:page.current,
-          pageSize:page.pageSize
-        },
+        pathname: '/wms/basicInfo/category',
       }))
     },
     onCreate(){
@@ -61,10 +56,13 @@ function Category({ location, dispatch, category }) {
         },
       })
     },
-    onDeleteItem(id) {
+    onDeleteItem(item) {
       dispatch({
-        type: 'category/delete',
-        payload: id,
+        type: 'category/remove',
+        payload: {
+          uuid: item.uuid,
+          version: item.version,
+        },
       })
     },
     onEditItem(item) {
