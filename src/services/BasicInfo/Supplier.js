@@ -1,14 +1,13 @@
 import request from '../../utils/request';
 import qs from 'qs';
 
-export async function query(params){
-  console.log("query");
+/*export async function query(params){
 	return request(`/supplier/query?${qs.stringify(params)}`);
-}
-
-/*export async function query(params) {
- return request(`/basic/supplier/querybypage?`);
 }*/
+
+export async function query(params) {
+ return request(`/basic/supplier/querybypage?`);
+}
 
 export async function create(params) {
   return request('/basic/supplier/savenew', {
