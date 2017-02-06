@@ -9,6 +9,12 @@ const CustomerGrid = ({
     pagination,
     onPageChange,
     onViewItem,
+    onEdit,
+    onDelete,
+    onRecover,
+    onRemoveBatch,
+    onRecoverBatch,
+    customers = []
 }) => {
 
     const columns = [{
@@ -34,10 +40,13 @@ const CustomerGrid = ({
         key: 'operation',
         render: (text, record) => (
             <p>
-                <a onClick={() => { } }>编辑</a>
+                <a onClick={() => { onEdit(record) } }>编辑</a>
                 &nbsp;
-                <Popconfirm title="确定要删除吗？">
-                    <a>删除</a>
+                <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(record)} >
+                    <a disabled={record.state === "deleted"}>删除</a>
+                </Popconfirm>
+                <Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(record)}>
+                    <a disabled={record.state === "normal"}>恢复</a>
                 </Popconfirm>
             </p>
         )
@@ -47,17 +56,45 @@ const CustomerGrid = ({
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
             console.log('...测试行选择器onchange');
+
         },
         onSelect: (record, selected, selectedRows) => {
             console.log('...测试行选择器onselect');
+            if (customers.length === 0) {
+                customers = selectedRows;
+            } else {
+                selected = false;
+                selectedRows = null;
+            }
         },
         onSelectAll: (selected, selectedRows, changeRows) => {
             console.log('...测试行选择器onselectall');
+            console.log(customers.length);
+            if (customers.length === 0) {
+                console.log('customers 的长度');
+                customers = selectedRows;
+            } else {
+                selected = false;
+            }
         },
         getCheckboxProps: record => ({
-            disabled: record.name === 'Disabled User',    // Column configuration not to be checked
+            disabled: record.name === 'Disabled User',
         }),
     };
+
+    function handleRemoveBatch() {
+        onRemoveBatch(customers);
+        rowSelection.onChange(null, null);
+        console.log("是否有调用rowSelection中的方法")
+        rowSelection.onSelectAll(false, [], []);
+    }
+
+    function handleRecoverBatch() {
+        onRecoverBatch(customers);
+        rowSelection.onChange(null, null);
+        console.log("是否有调用rowSelection中的方法")
+        rowSelection.onSelectAll(false, [], []);
+    }
 
     return (
         <Card>
@@ -75,8 +112,8 @@ const CustomerGrid = ({
                     () =>
                         <div>
                             <Row type="flex">
-                                <Col><Button type="ghost" >批量删除</Button></Col>
-                                <Col><Button type="ghost">批量恢复</Button></Col>
+                                <Col><Button type="ghost" onClick={handleRemoveBatch}>批量删除</Button></Col>
+                                <Col><Button type="ghost" onClick={handleRecoverBatch}>批量恢复</Button></Col>
                                 <Col><Button onClick={() => onCreate()}>新建</Button></Col>
                             </Row>
                         </div>

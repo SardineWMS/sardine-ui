@@ -1,16 +1,31 @@
 import React, { PropTypes } from 'react';
 import { Card, Form, Row, Col, Input, Button } from 'antd';
 const FormItem = Form.Item;
-const CustomerView = ({item}) => {
-    console.dir(item);
+const CustomerView = ({item = {},
+    onBack,
+    onRemove,
+    onRecover,
+    showEdit,
+}) => {
     const code = item.code;
+    let removeRight = false;
+    let recoverRight = false;
+    if (item.state === "normal") {
+        removeRight = false;
+        recoverRight = true;
+    }
+    if (item.state === "deleted") {
+        removeRight = true;
+        recoverRight = false;
+    }
     return (
         <div>
             <Card title={"基本资料 / 客户" + code}>
                 <div>
-                    <Button>编辑</Button>
-                    <Button>删除</Button>
-                    <Button>恢复</Button>
+                    <Button onClick={()=>showEdit(item)}>编辑</Button>
+                    <Button disabled={removeRight} onClick={() => onRemove(item)}>删除</Button>
+                    <Button disabled={recoverRight} onClick={() => onRecover(item)}>恢复</Button>
+                    <Button onClick={() => onBack()}>返回></Button>
                 </div>
                 <Card title="基本信息">
                     <Row gutter={48}>
