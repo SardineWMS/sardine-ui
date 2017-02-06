@@ -15,6 +15,7 @@ import Category from './routes/basicInfo/Category';
 import Demo from './routes/Demo';
 import Customer from './routes/basicInfo/Customer';
 import Article from './routes/basicInfo/Article';
+import Supplier from './routes/basicInfo/Supplier';
 
 export default function({
   history
@@ -30,6 +31,7 @@ export default function({
         <Route path="/wms/basicInfo/category" component={Category} />
         <Route path="/wms/basicInfo/customer" component={Customer} />
         <Route path="/wms/basicInfo/article" component={Article} />
+        <Route path="/wms/basicInfo/supplier" component={Supplier} />
       </Route>
     </Router>
   );

@@ -13,6 +13,7 @@ app.model(require('./models/app'));
 app.model(require('./models/BasicInfo/Category'));
 app.model(require('./models/BasicInfo/Customer'));
 app.model(require('./models/BasicInfo/Article'));
+app.model(require('./models/BasicInfo/Supplier'));
 
 app.router(require('./router'));
 
