@@ -6,9 +6,11 @@ import CustomerGrid from '../../components/BasicInfo/Customer/CustomerGrid';
 import CustomerForm from '../../components/BasicInfo/Customer/CustomerForm';
 import CustomerAdd from '../../components/BasicInfo/Customer/CustomerAdd';
 import CustomerView from '../../components/BasicInfo/Customer/CustomerView';
+import CustomerEdit from '../../components/BasicInfo/Customer/CustomerEdit';
 function Customer({location, dispatch, customer}) {
     const {
         loading, list, showCreatePage, pagination, showViewPage, currentItem, current,
+        showEditPage, searchExpand,
     } = customer;
 
     const {field, keyword} = location.query
@@ -23,7 +25,8 @@ function Customer({location, dispatch, customer}) {
                 pathname: '/wms/basicInfo/customer',
                 query: {
                     page: page.current,
-                    pageSize: page.pageSize
+                    pageSize: page.pageSize,
+                    token: localStorage.getItem("token")
                 }
             }))
         },
@@ -47,24 +50,158 @@ function Customer({location, dispatch, customer}) {
                     currentItem: item,
                 }
             })
-        }
+        },
+        onEdit(item) {
+            dispatch({
+                type: 'customer/editSuccess',
+                payload: { currentItem: item, },
+            })
+        },
+        onDelete(customer) {
+            let token = localStorage.getItem("token");
+            dispatch({
+                type: 'customer/gridRemove',
+                payload: {
+                    uuid: customer.uuid,
+                    version: customer.version,
+                    token: token,
+                },
+            })
+        },
+        onRecover(customer) {
+            let token = localStorage.getItem("token");
+            dispatch({
+                type: 'customer/gridRecover',
+                payload: {
+                    uuid: customer.uuid,
+                    version: customer.version,
+                    token: token,
+                },
+            })
+        },
+        onRemoveBatch(customers) {
+            for (const customer of customers) {
+                let token = localStorage.getItem("token");
+                dispatch({
+                    type: 'customer/gridRemove',
+                    payload: {
+                        uuid: customer.uuid,
+                        version: customer.version,
+                        token: token,
+                    },
+                })
+            }
+        },
+        onRecoverBatch(customers) {
+            console.dir(customers);
+            for (const customer of customers) {
+                let token = localStorage.getItem("token");
+                dispatch({
+                    type: 'customer/gridRecover',
+                    payload: {
+                        uuid: customer.uuid,
+                        version: customer.version,
+                        token: token,
+                    },
+                })
+            }
+        },
     }
 
     const customerSearchProps = {
-
+        field,
+        keyword,
+        searchExpand,
+        onSearch(fieldsValue) {
+            dispatch({
+                type: 'customer/query',
+                payload: fieldsValue,
+            })
+        },
+        onToggle(expand) {
+            dispatch({
+                type: 'customer/toggle',
+                payload: {
+                    searchExpand: !expand,
+                }
+            })
+        }
     }
 
     const customerAddProps = {
+        item: currentItem,
         onCancel() {
             dispatch({
                 type: 'customer/cancelSuccess',
 
             })
         },
+        handleSave(data) {
+            let token = localStorage.getItem("token");
+            data.token = token;
+            dispatch({
+                type: 'customer/create',
+                payload: data,
+            })
+        }
     }
 
     const customerViewProps = {
         item: currentItem,
+        onBack(data) {
+            dispatch({
+                type: 'customer/backSuccess',
+            })
+        },
+        backAndRefreshPage() { },
+        onRemove(customer) {
+            let token = localStorage.getItem("token");
+            dispatch({
+                type: 'customer/remove',
+                payload: {
+                    uuid: customer.uuid,
+                    version: customer.version,
+                    token: token,
+                },
+            })
+        },
+        onRecover(customer) {
+            let token = localStorage.getItem("token");
+            dispatch({
+                type: 'customer/recover',
+                payload: {
+                    uuid: customer.uuid,
+                    version: customer.version,
+                    token: token,
+                },
+            })
+        },
+
+        showEdit(item) {
+            dispatch({
+                type: 'customer/editSuccess',
+                payload: item,
+            })
+        },
+
+    }
+
+    const customerEditProps = {
+        item: currentItem,
+        onCancel() {
+            dispatch({
+                type: 'customer/cancelShoWItemSuccess',
+
+            })
+        },
+        handleSave(data) {
+            let token = localStorage.getItem("token");
+            data.token = token;
+            dispatch({
+                type: 'customer/update',
+                payload: data,
+            })
+        }
     }
 
     function refreshWidget() {
@@ -75,17 +212,26 @@ function Customer({location, dispatch, customer}) {
             )
         } else {
             if (showViewPage) {
-                return (
-                    <div><CustomerView {...customerViewProps}></CustomerView></div>
-                )
+                if (showEditPage) {
+                    return (<div><CustomerEdit {...customerEditProps}></CustomerEdit></div>)
+                } else {
+                    return (
+                        <div><CustomerView {...customerViewProps}></CustomerView></div>
+                    )
+                }
             }
             else {
-                return (
-                    <div>
-                        <CustomerForm {...customerSearchProps} />
-                        <CustomerGrid {...customerListProps} />
-                    </div>
-                )
+                if (showEditPage) {
+                    return (<div><CustomerEdit {...customerEditProps}></CustomerEdit></div>)
+                }
+                else {
+                    return (
+                        <div>
+                            <CustomerForm {...customerSearchProps} />
+                            <CustomerGrid {...customerListProps} />
+                        </div>
+                    )
+                }
             }
         }
     }
