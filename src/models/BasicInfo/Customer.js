@@ -1,7 +1,7 @@
 import {
     parse
 } from 'qs';
-import { queryCustomer } from '../../services/BasicInfo/Customer';
+import { queryCustomer, create, get, remove, recover, update } from '../../services/BasicInfo/Customer';
 export default {
     namespace: 'customer',
 
@@ -21,6 +21,8 @@ export default {
         },
         showCreatePage: false,
         showViewPage: false,
+        showEditPage: false,
+        searchExpand: false,
     },
 
     subscriptions: {
@@ -46,15 +48,14 @@ export default {
         }) {
             yield put({ type: 'showLoading' });
             const {data} = yield call(queryCustomer, parse(payload));
-            console.dir(data);
             if (data) {
                 yield put({
                     type: 'querySuccess',
                     payload: {
-                        list: data.data,
+                        list: data.obj.records,
                         pagination: {
-                            total: data.page.total,
-                            current: data.page.current,
+                            total: data.obj.recordCount,
+                            current: data.obj.current,
                         }
                     }
                 },
@@ -62,23 +63,120 @@ export default {
             }
         },
 
-        // *create({
-        //     payload
-        // }, {
-        //     call, put
-        // }) {
-        //     yield put({
-        //         type: 'showLoading'
-        //     })
-        //     const data = yield call(create, parse(payload))
-        //     if (data && data.success) {
-        //         yield put({
-        //             type: 'createSuccess',
-        //             payload: {
-        //             }
-        //         })
-        //     }
-        // },
+        *create({
+            payload
+        }, {
+            call, put
+        }) {
+            yield put({
+                type: 'showLoading'
+            })
+            const {data} = yield call(create, parse(payload));
+            if (data) {
+                const uuid = data.obj;
+                const customer = yield call(get, {
+                    customerUuid: uuid,
+                });
+                yield put({
+                    type: 'onViewItem',
+                    payload: {
+                        currentItem: customer.data.obj,
+                    }
+                })
+            }
+        },
+
+        *remove({payload}, {call, put}) {
+            yield call(remove, {
+                uuid: payload.uuid,
+                version: payload.version,
+                token: payload.token,
+            })
+            const customer = yield call(get, {
+                customerUuid: payload.uuid,
+            });
+            yield put({
+                type: 'onViewItem',
+                payload: {
+                    currentItem: customer.data.obj,
+                }
+            })
+        },
+
+        *recover({payload}, {call, put}) {
+            yield call(recover, {
+                uuid: payload.uuid,
+                version: payload.version,
+                token: payload.token,
+            })
+            const customer = yield call(get, {
+                customerUuid: payload.uuid,
+            });
+            yield put({
+                type: 'onViewItem',
+                payload: {
+                    currentItem: customer.data.obj,
+                }
+            })
+        },
+
+        *update({payload}, {call, put}) {
+            yield call(update, payload)
+            const customer = yield call(get, {
+                customerUuid: payload.uuid,
+            });
+            yield put({
+                type: 'onViewItem',
+                payload: {
+                    currentItem: customer.data.obj,
+                }
+            })
+        },
+
+        *gridRemove({payload}, {call, put}) {
+            yield call(remove, {
+                uuid: payload.uuid,
+                version: payload.version,
+                token: payload.token,
+            })
+            const {data} = yield call(queryCustomer, parse(null));
+            if (data) {
+                yield put({
+                    type: 'querySuccess',
+                    payload: {
+                        list: data.obj.records,
+                        pagination: {
+                            total: data.obj.recordCount,
+                            current: data.obj.current,
+                        }
+                    }
+                },
+                )
+            }
+        },
+
+        *gridRecover({payload}, {call, put}) {
+            console.log("effects");
+            yield call(recover, {
+                uuid: payload.uuid,
+                version: payload.version,
+                token: payload.token,
+            })
+            const {data} = yield call(queryCustomer, parse(null));
+            if (data) {
+                yield put({
+                    type: 'querySuccess',
+                    payload: {
+                        list: data.obj.records,
+                        pagination: {
+                            total: data.obj.recordCount,
+                            current: data.obj.current,
+                        }
+                    }
+                },
+                )
+            }
+        },
     },
     reducers: {
         showLoading(state) {
@@ -95,15 +193,26 @@ export default {
             }
         },
         createSuccess(state, action) {
-            console.log("...createSuccess");
             return { ...state, showCreatePage: true, loading: false, }
         },
         cancelSuccess(state, action) {
             return { ...state, showCreatePage: false }
         },
         onViewItem(state, action) {
-            return { ...state, ...action.payload, showViewPage: true }
-        }
+            return { ...state, ...action.payload, showViewPage: true, showCreatePage: false, showEditPage: false }
+        },
+        backSuccess(state, action) {
+            return { ...state, showViewPage: false }
+        },
+        editSuccess(state, action) {
+            return { ...state, showEditPage: true, ...action.payload }
+        },
+        cancelShoWItemSuccess(state, action) {
+            return { ...state, showEditPage: false }
+        },
+        toggle(state, action) {
+            return { ...state, ...action.payload }
+        },
     },
 
 }
