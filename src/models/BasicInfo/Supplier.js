@@ -7,7 +7,6 @@ export default {
     list:[],
     loading:false,
     searchExpand: false,
-    token: localStorage.getItem("token"),
     currentItem:{},
     modalVisible: false,
     showCreate:false,

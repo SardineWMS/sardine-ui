@@ -136,6 +136,7 @@ function Supplier({location,dispatch,supplier}){
     item : currentItem,
       onOk(data) {
         console.log(data);
+        data.token=localStorage.getItem("token");
         if(data.uuid)
         {
           dispatch({

@@ -17,11 +17,15 @@ const SupplierCreate = ({
       if (errors) {
         return;
       }
-      if(item){
-        onOk(getFieldsValue());
-      }else{
+
+      const data = { ...getFieldsValue(), uuid: item.uuid,version:item.version };
+      onOk(data);
+
+   /*   if(item.uuid){
         onOk(item);
-      }
+      }else{
+        onOk(getFieldsValue());
+      }*/
     });
   }
 
