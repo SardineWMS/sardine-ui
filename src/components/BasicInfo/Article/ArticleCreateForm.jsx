@@ -19,7 +19,7 @@ const ArticleCreateForm = ({
       if (errors) {
         return;
       }
-      const data = { ...getFieldsValue(), key: article.key };
+      const data = { ...getFieldsValue(), uuid: article.uuid, version: article.version };
       onOk(data);
     });
   }

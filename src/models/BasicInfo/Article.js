@@ -4,11 +4,19 @@ import {
 import {
   queryArticles,
   create,
-  update,
-  get
-} from '../../services/BasicInfo/Article'
-
-
+  get,
+  getAndSaveSupplier,
+  addArticleSupplier,
+  deleteArticleSupplier,
+  setDefaultSupplier,
+  setDefaultQpcStr,
+  deleteArticleQpc,
+  saveArticleQpc,
+  addArticleQpc,
+  deleteArticleBarcode,
+  saveArticleBarcode,
+  addArticleBarcode
+} from '../../services/BasicInfo/Article';
 
 export default {
   namespace: 'article',
@@ -17,6 +25,7 @@ export default {
     list: [],
     loading: false,
     currentArticle: {},
+    currentSupplier: {},
     modalVisible: false,
     modalType: 'create',
     pagination: {
@@ -35,7 +44,7 @@ export default {
       history
     }) {
       history.listen(location => {
-        if (location.pathname === '/wms/basicInfo/category') {
+        if (location.pathname === '/wms/basicInfo/article') {
           dispatch({
             type: 'query',
             payload: location.query,
@@ -57,7 +66,6 @@ export default {
         data
       } = yield call(queryArticles, parse(payload))
       if (data) {
-        console.log(data);
         yield put({
           type: 'querySuccess',
           payload: {
@@ -81,7 +89,6 @@ export default {
         data
       } = yield call(get, parse(payload))
       if (data) {
-        console.log(data);
         yield put({
           type: 'showViewPage',
           payload: {
@@ -101,7 +108,6 @@ export default {
         data
       } = yield call(get, parse(payload))
       if (data) {
-        console.log(data);
         yield put({
           type: 'showEditPage',
           payload: {
@@ -124,7 +130,6 @@ export default {
       })
       const {data} = yield call(create, payload)
       if (data) {
-        console.log(data);
         yield put({
           type: 'showViewPage',
           payload: {
@@ -133,10 +138,9 @@ export default {
         })
       }
     },
-    *update({
+    *getAndSaveSupplier({
       payload
     }, {
-      select,
       call,
       put
     }) {
@@ -146,22 +150,231 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const id = yield select(({
-        users
-      }) => users.currentItem.id)
-      const newUser = {...payload,
-        id
-      }
-      const data = yield call(update, newUser)
-      if (data && data.success) {
+      const {data} = yield call(getAndSaveSupplier, payload)
+      if (data) {
         yield put({
-          type: 'querySuccess',
+          type: 'showViewPage',
           payload: {
-            list: data.data,
-            pagination: {
-              total: data.page.total,
-              current: data.page.current,
-            }
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+
+    *deleteArticleSupplier({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'hideModal'
+      })
+      yield put({
+        type: 'showLoading'
+      })
+      const {data} = yield call(deleteArticleSupplier, payload)
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+
+    *setDefaultSupplier({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'hideModal'
+      })
+      yield put({
+        type: 'showLoading'
+      })
+      const {data} = yield call(setDefaultSupplier, payload)
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+
+    *addArticleSupplier({ payload}, {
+      call,
+      put
+    }){
+      yield put({
+        type: 'showLoading'
+      })
+      const {
+        data
+      } = yield call(addArticleSupplier, parse(payload))
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+    *saveArticleQpc({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'hideModal'
+      })
+      yield put({
+        type: 'showLoading'
+      })
+      const {data} = yield call(saveArticleQpc, payload)
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+
+    *deleteArticleQpc({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'hideModal'
+      })
+      yield put({
+        type: 'showLoading'
+      })
+      const {data} = yield call(deleteArticleQpc, payload)
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+
+    *setDefaultQpcStr({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'hideModal'
+      })
+      yield put({
+        type: 'showLoading'
+      })
+      const {data} = yield call(setDefaultQpcStr, payload)
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+
+    *addArticleQpc({ payload}, {
+      call,
+      put
+    }){
+      yield put({
+        type: 'showLoading'
+      })
+      const {
+        data
+      } = yield call(addArticleQpc, parse(payload))
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+    *saveArticleBarcode({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'hideModal'
+      })
+      yield put({
+        type: 'showLoading'
+      })
+      const {data} = yield call(saveArticleBarcode, payload)
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+
+    *deleteArticleBarcode({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'hideModal'
+      })
+      yield put({
+        type: 'showLoading'
+      })
+      const {data} = yield call(deleteArticleBarcode, payload)
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
+          },
+        })
+      }
+    },
+
+    *addArticleBarcode({ payload}, {
+      call,
+      put
+    }){
+      yield put({
+        type: 'showLoading'
+      })
+      const {
+        data
+      } = yield call(addArticleBarcode, parse(payload))
+      if (data) {
+        yield put({
+          type: 'showViewPage',
+          payload: {
+            currentArticle: data.obj,
           },
         })
       }
@@ -178,6 +391,20 @@ export default {
       return {...state,
         ...action.payload,
         loading: false
+      }
+    },
+    querySuccess(state, action) {
+      return {...state,
+        ...action.payload,
+        loading: false
+      }
+    },
+    showSupplier(state, action) {
+      return {...state,
+        ...action.payload,
+        loading: false,
+        showCreate: false,
+        showView: true,
       }
     },
     showCreatePage(state) {

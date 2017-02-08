@@ -1,12 +1,12 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Button, Modal,Card} from 'antd';
 const FormItem = Form.Item;
-
 const ArticleViewForm = ({
   article,
   onEdit,
   onCreate,
   onBack,
+  onSaveSupplier,
   }) => {
 
   const formItemLayout = {
@@ -58,6 +58,7 @@ ArticleViewForm.propTypes = {
   onEdit: PropTypes.func,
   onCreate: PropTypes.func,
   onBack: PropTypes.func,
+  onSaveSupplier: PropTypes.func,
 };
 
 export default ArticleViewForm;
