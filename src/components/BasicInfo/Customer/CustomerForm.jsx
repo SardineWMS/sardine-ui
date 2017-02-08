@@ -51,7 +51,7 @@ const CustomerSearchForm = ({
                     */
                     <Select placeholder="请选择" showSearch={false} key="stateSelecter">
                         <Option value="normal" >正常</Option>
-                        <Option value="已删除">已删除</Option>
+                        <Option value="deleted">已删除</Option>
                     </Select>
                 )}
             </FormItem>
