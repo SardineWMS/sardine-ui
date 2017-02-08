@@ -17,10 +17,11 @@ function Customer({location, dispatch, customer}) {
 
 
     const customerListProps = {
-        current: current,
         dataSource: list,
         pagination: pagination,
         onPageChange(page) {
+            console.log("page");
+            console.dir(page);
             dispatch(routerRedux.push({
                 pathname: '/wms/basicInfo/customer',
                 query: {
