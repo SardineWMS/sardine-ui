@@ -6,7 +6,7 @@ const mockjs = require('mockjs');
 let tableListData = {};
 if (!global.tableListData) {
   const data = mockjs.mock({
-    'data|100': [{
+    'data|1000': [{
       'id|1-9999': 1,
       'categoryCode|11-999': 1,
       categoryName: '@name',
