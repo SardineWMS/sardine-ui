@@ -27,4 +27,5 @@ module.exports = {
 	'/api/category/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/category',
 	'/api/article/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/wms/basic/article',
 	'/basic/supplier/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/supplier',
+	'/basic/customer/(.*)':'http://127.0.0.1:8080/sardine-wms-web/basicinfo/customer',
 };
