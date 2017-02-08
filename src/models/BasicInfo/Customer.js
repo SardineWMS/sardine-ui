@@ -49,13 +49,15 @@ export default {
             yield put({ type: 'showLoading' });
             const {data} = yield call(queryCustomer, parse(payload));
             if (data) {
+                console.log("data");
+                console.dir(data);
                 yield put({
                     type: 'querySuccess',
                     payload: {
                         list: data.obj.records,
                         pagination: {
                             total: data.obj.recordCount,
-                            current: data.obj.current,
+                            current: data.obj.page,
                         }
                     }
                 },
