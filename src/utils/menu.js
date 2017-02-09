@@ -27,6 +27,9 @@ module.exports = [{
     }, {
       key: 'bin',
       name: '货位',
+    }, {
+      key: 'binType',
+      name: '货位类型'
     }],
-  }, ],
-}, ];
+  },],
+},];
