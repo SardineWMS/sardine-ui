@@ -23,9 +23,18 @@ module.exports = {
 			current: 1
 		}
 	}),
+
+	'/api/containertype/query': require('mockjs').mock({
+		success: true,
+		'data|20': [{
+			'uuid|+1': 1,
+			name: '@cname',
+			'code|11-99': 1
+		}],
+	}),
 	'/api/authen/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/authen',
 	'/api/category/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/category',
 	'/api/article/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/wms/basic/article',
 	'/basic/supplier/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/supplier',
-	'/basic/customer/(.*)':'http://127.0.0.1:8080/sardine-wms-web/basicinfo/customer',
+	'/api/container/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/container',
 };

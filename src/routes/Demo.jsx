@@ -10,7 +10,6 @@ function Demo({location,dispatch,demo}){
 	const{
 		loading,
 		list,
-		total,
 		current,
 		pagination,
 		currentItem,

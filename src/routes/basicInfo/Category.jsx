@@ -14,7 +14,6 @@ function Category({ location, dispatch, category }) {
   const categoryModalProps = {
     item: modalType === 'update' ? currentItem : {},
     upperCategory :  currentItem,
-    type: modalType,
     showUpper : modalType === 'create' ? true : false,
     visible: modalVisible,
     onOk(data) {

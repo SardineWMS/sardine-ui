@@ -16,12 +16,13 @@ import Demo from './routes/Demo';
 import Customer from './routes/basicInfo/Customer';
 import Article from './routes/basicInfo/Article';
 import Supplier from './routes/basicInfo/Supplier';
+import Container from './routes/basicInfo/Container';
 
 export default function({
   history
 }) {
   return (
-    <Router history={history}>
+  <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={Demo} />
         <Route path="/demo" component={Demo} />
@@ -30,6 +31,7 @@ export default function({
         <Route path="/register" component={Register} />
         <Route path="/wms/basicInfo/category" component={Category} />
         <Route path="/wms/basicInfo/customer" component={Customer} />
+        <Route path="/wms/basicInfo/container" component={Container} />
         <Route path="/wms/basicInfo/article" component={Article} />
         <Route path="/wms/basicInfo/supplier" component={Supplier} />
       </Route>
