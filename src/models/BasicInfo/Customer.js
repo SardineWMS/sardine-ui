@@ -9,8 +9,6 @@ export default {
         list: [],
         loading: false,
         currentItem: {},
-        modalVisible: false,
-        modalType: 'create',
         pagination: {
             showSizeChanger: true,
             showQuickJumper: true,

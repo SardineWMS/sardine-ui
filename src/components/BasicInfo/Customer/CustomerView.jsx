@@ -1,5 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Card, Form, Row, Col, Input, Button } from 'antd';
+import timeStamp2datetime from '../../../utils/DateUtils';
+import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
 const FormItem = Form.Item;
 const CustomerView = ({item = {},
     onBack,
@@ -22,7 +24,7 @@ const CustomerView = ({item = {},
         <div>
             <Card title={"基本资料 / 客户" + code}>
                 <div>
-                    <Button onClick={()=>showEdit(item)}>编辑</Button>
+                    <Button onClick={() => showEdit(item)}>编辑</Button>
                     <Button disabled={removeRight} onClick={() => onRemove(item)}>删除</Button>
                     <Button disabled={recoverRight} onClick={() => onRecover(item)}>恢复</Button>
                     <Button onClick={() => onBack()}>返回></Button>
@@ -33,13 +35,13 @@ const CustomerView = ({item = {},
                             <p>客户代码：{item.code}</p>
                             <p>客户名称：{item.name}</p>
                             <p>客户类型：{item.type}</p>
-                            <p>联系方式：{item.phoneNumber}</p>
+                            <p>联系方式：{item.phone}</p>
                             <p>地址：{item.address}</p>
                         </Col>
                         <Col span={12}>
                             <p>状态：{item.state}</p>
-                            <p>创建信息：</p>
-                            <p>修改信息：</p>
+                            <p>创建信息：{createInfo2String(item)}</p>
+                            <p>修改信息：{lastModifyInfo2String(item)}</p>
                         </Col>
                     </Row>
                 </Card>

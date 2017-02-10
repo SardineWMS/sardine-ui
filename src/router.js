@@ -17,12 +17,13 @@ import Customer from './routes/basicInfo/Customer';
 import Article from './routes/basicInfo/Article';
 import Supplier from './routes/basicInfo/Supplier';
 import Container from './routes/basicInfo/Container';
+import BinType from './routes/basicInfo/BinType';
 
-export default function({
+export default function ({
   history
 }) {
   return (
-  <Router history={history}>
+    <Router history={history}>
       <Route path="/" component={App}>
         <IndexRoute component={Demo} />
         <Route path="/demo" component={Demo} />
@@ -34,6 +35,7 @@ export default function({
         <Route path="/wms/basicInfo/container" component={Container} />
         <Route path="/wms/basicInfo/article" component={Article} />
         <Route path="/wms/basicInfo/supplier" component={Supplier} />
+        <Route path="/wms/basicInfo/binType" component={BinType} />
       </Route>
     </Router>
   );

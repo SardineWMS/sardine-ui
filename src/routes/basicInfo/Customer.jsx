@@ -19,15 +19,15 @@ function Customer({location, dispatch, customer}) {
     const customerListProps = {
         dataSource: list,
         pagination: pagination,
-        onPageChange(page) {
-            console.log("page");
-            console.dir(page);
+        onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
                 pathname: '/wms/basicInfo/customer',
                 query: {
                     page: page.current,
                     pageSize: page.pageSize,
-                    token: localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
+                    sort: sorter.field,
+                    sortDirection: sorter.order,
                 }
             }))
         },
@@ -45,6 +45,8 @@ function Customer({location, dispatch, customer}) {
             })
         },
         onViewItem(item) {
+            console.log("customer 对象");
+            console.dir(item);
             dispatch({
                 type: 'customer/onViewItem',
                 payload: {
@@ -94,7 +96,6 @@ function Customer({location, dispatch, customer}) {
             }
         },
         onRecoverBatch(customers) {
-            console.dir(customers);
             for (const customer of customers) {
                 let token = localStorage.getItem("token");
                 dispatch({
@@ -205,6 +206,8 @@ function Customer({location, dispatch, customer}) {
         }
     }
 
+    const CustomerGridGen = () => <CustomerGrid {...customerListProps} />
+
     function refreshWidget() {
         if (showCreatePage) {
             return (
@@ -229,7 +232,7 @@ function Customer({location, dispatch, customer}) {
                     return (
                         <div>
                             <CustomerForm {...customerSearchProps} />
-                            <CustomerGrid {...customerListProps} />
+                            <CustomerGridGen />
                         </div>
                     )
                 }

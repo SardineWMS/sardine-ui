@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card } from 'antd';
 
-const CustomerGrid = ({
+function CustomerGrid({
     loading,
     dataSource,
     onSearch,
@@ -15,20 +15,20 @@ const CustomerGrid = ({
     onRemoveBatch,
     onRecoverBatch,
     customers = []
-}) => {
+}) {
 
     const columns = [{
         title: '代码',
         dataIndex: 'code',
         key: 'code',
-        render: (text, record) => <a onClick={() => { onViewItem(record) } }>{text}</a>,
-        sorter: (a, b) => a.code - b.code,
+        render: (text, record) => <a onClick={() => { onViewItem(record) }}>{text}</a>,
+        sorter: true,
     },
     {
         title: '名称',
         dataIndex: 'name',
         key: 'name',
-        sorter: (a, b) => { },
+        sorter: true,
     },
     {
         title: '状态',
@@ -40,7 +40,7 @@ const CustomerGrid = ({
         key: 'operation',
         render: (text, record) => (
             <p>
-                <a onClick={() => { onEdit(record) } }>编辑</a>
+                <a onClick={() => { onEdit(record) }}>编辑</a>
                 &nbsp;
                 <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(record)} >
                     <a disabled={record.state === "deleted"}>删除</a>
@@ -97,30 +97,32 @@ const CustomerGrid = ({
     }
 
     return (
-        <Card>
-            <Table
-                size="small"
-                columns={columns}
-                dataSource={dataSource}
-                loading={loading}
-                rowKey={record => record.id}
-                onChange={onPageChange}
-                pagination={pagination}
-                bordered
-                rowSelection={rowSelection}
-                title={
-                    () =>
-                        <div>
-                            <Row type="flex">
-                                <Col><Button type="ghost" onClick={handleRemoveBatch}>批量删除</Button></Col>
-                                <Col><Button type="ghost" onClick={handleRecoverBatch}>批量恢复</Button></Col>
-                                <Col><Button onClick={() => onCreate()}>新建</Button></Col>
-                            </Row>
-                        </div>
+        <div>
+            <Card>
+                <Table
+                    size="small"
+                    columns={columns}
+                    dataSource={dataSource}
+                    loading={loading}
+                    rowKey={record => record.id}
+                    onChange={onPageChange}
+                    pagination={pagination}
+                    bordered
+                    rowSelection={rowSelection}
+                    title={
+                        () =>
+                            <div>
+                                <Row type="flex">
+                                    <Col><Button type="ghost" onClick={handleRemoveBatch}>批量删除</Button></Col>
+                                    <Col><Button type="ghost" onClick={handleRecoverBatch}>批量恢复</Button></Col>
+                                    <Col><Button onClick={() => onCreate()}>新建</Button></Col>
+                                </Row>
+                            </div>
 
-                }
+                    }
                 />
-        </Card>
+            </Card>
+        </div>
     );
 }
 
