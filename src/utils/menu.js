@@ -25,6 +25,9 @@ module.exports = [{
       key: 'container',
       name: '容器',
     }, {
+      key: 'containerType',
+      name: '容器类型',
+    },{
       key: 'bin',
       name: '货位',
     }, {
