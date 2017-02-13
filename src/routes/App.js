@@ -6,6 +6,7 @@ import {
 } from 'dva'
 import Login from './Login';
 import Header from '../components/Layout/Header';
+import Bread from '../components/Layout/bread';
 import Footer from '../components/Layout/Footer';
 import Sider from '../components/Layout/sider';
 import styles from '../components/Layout/main.less';
@@ -104,6 +105,7 @@ function App({
             </aside>
             <div className={styles.main}>
               <Header {...headerProps}/>
+              <Bread location={location}/>
               <div className={styles.container}>
                 <div className={styles.content}>
                   {children}

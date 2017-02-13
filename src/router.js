@@ -20,14 +20,14 @@ import Container from './routes/basicInfo/Container';
 import BinType from './routes/basicInfo/BinType';
 import ContainerType from './routes/basicInfo/ContainerType';
 
-export default function ({
+export default function({
   history
 }) {
   return (
     <Router history={history}>
       <Route path="/" component={App}>
-        <IndexRoute component={Demo} />
-        <Route path="/demo" component={Demo} />
+        <IndexRedirect to="/demo" />
+        <Route path="demo" component={ Demo }/>
         <Route path="/home" component={Content} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
