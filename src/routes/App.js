@@ -115,7 +115,7 @@ function App({
             </div>
           </div>
         : (registerLoading ? 
-            <div className={styles.spin}>
+            <div className={styles.reg}>
               <Register {...registerProps}/>
             </div>
             : 

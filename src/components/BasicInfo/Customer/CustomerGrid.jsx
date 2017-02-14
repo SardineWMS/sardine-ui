@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card } from 'antd';
+import style from './CustomerGrid.less';
 
 function CustomerGrid({
     loading,
@@ -83,28 +84,27 @@ function CustomerGrid({
     };
 
     function handleRemoveBatch() {
+        rowSelection.onSelectAll(false, [], []);
         onRemoveBatch(customers);
         rowSelection.onChange(null, null);
         console.log("是否有调用rowSelection中的方法")
-        rowSelection.onSelectAll(false, [], []);
     }
 
     function handleRecoverBatch() {
+        rowSelection.onSelectAll(false, [], []);
         onRecoverBatch(customers);
         rowSelection.onChange(null, null);
         console.log("是否有调用rowSelection中的方法")
-        rowSelection.onSelectAll(false, [], []);
     }
 
     return (
         <div>
-            <Card>
-                <Table
+                <Table className={style.table}
                     size="small"
                     columns={columns}
                     dataSource={dataSource}
                     loading={loading}
-                    rowKey={record => record.id}
+                    rowKey={record => record.uuid}
                     onChange={onPageChange}
                     pagination={pagination}
                     bordered
@@ -121,7 +121,6 @@ function CustomerGrid({
 
                     }
                 />
-            </Card>
         </div>
     );
 }

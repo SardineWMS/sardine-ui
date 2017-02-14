@@ -1,7 +1,7 @@
 import {
     parse
 } from 'qs';
-import { queryCustomer, create, get, remove, recover, update } from '../../services/BasicInfo/Customer';
+import { queryCustomer, create, get, remove, recover, updateCustomer } from '../../services/BasicInfo/Customer';
 export default {
     namespace: 'customer',
 
@@ -39,7 +39,7 @@ export default {
         }
     },
     effects: {
-        * query({
+        *query({
             payload
         }, {
             call, put
@@ -121,10 +121,12 @@ export default {
         },
 
         *update({payload}, {call, put}) {
-            yield call(update, payload)
+            yield call(updateCustomer, payload)
             const customer = yield call(get, {
                 customerUuid: payload.uuid,
             });
+            console.log("customer对象是。。。");
+            console.dir(customer);
             yield put({
                 type: 'onViewItem',
                 payload: {
@@ -189,26 +191,29 @@ export default {
             return {
                 ...state,
                 ...action.payload,
-                loading: false
+                loading: false, showViewPage: false, showEditPage: false, showCreatePage: false
             }
         },
         createSuccess(state, action) {
             return { ...state, showCreatePage: true, loading: false, }
         },
         cancelSuccess(state, action) {
-            return { ...state, showCreatePage: false }
+            return { ...state, showCreatePage: false, showViewPage: false, showEditPage: false, ...action.payload }
         },
         onViewItem(state, action) {
             return { ...state, ...action.payload, showViewPage: true, showCreatePage: false, showEditPage: false }
         },
         backSuccess(state, action) {
-            return { ...state, showViewPage: false }
+            return { ...state, showViewPage: false, ...action.payload }
         },
-        editSuccess(state, action) {
-            return { ...state, showEditPage: true, ...action.payload }
+        gridEditSuccess(state, action) {
+            return { ...state, showEditPage: true, showViewPage: false, ...action.payload }
+        },
+        itemEditSuccess(state, action) {
+            return { ...state, showEditPage: true, showViewPage: true, ...action.payload }
         },
         cancelShoWItemSuccess(state, action) {
-            return { ...state, showEditPage: false }
+            return { ...state, showEditPage: false, ...action.payload }
         },
         toggle(state, action) {
             return { ...state, ...action.payload }

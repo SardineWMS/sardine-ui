@@ -37,7 +37,7 @@ module.exports = {
 	'/api/article/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/wms/basic/article',
 	'/basic/supplier/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/supplier',
 	'/api/container/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/container',
-	'/api/customer/(.*)': 'http://192.168.1.126:8080/sardine-wms-web/basicinfo/customer',
-	'/api/binType/(.*)': 'http://192.168.1.126:8080/sardine-wms-web/basicinfo/bintype',
+	'/api/customer/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/customer',
+	'/api/binType/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/bintype',
 	'/basic/containertype/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/containertype'
 };

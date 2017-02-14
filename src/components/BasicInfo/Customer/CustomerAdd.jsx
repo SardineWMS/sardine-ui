@@ -1,11 +1,12 @@
 import React, { PropTypes } from 'react';
 import { Card, Button, Input, Form, Row, Col, Select } from 'antd';
+import styles from './CustomerAdd.less';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
 
 const CustomerAddForm = ({
-    item={},
+    item = {},
     onCancel,
     handleSave,
     form: {
@@ -20,22 +21,22 @@ const CustomerAddForm = ({
                 return;
             }
 
-            const data = { ...getFieldsValue(), key:item.key };
+            const data = { ...getFieldsValue(), key: item.key, uuid: item.uuid, state: item.state, companyUuid: item.companyUuid, version: item.version };
             handleSave(data);
         });
     }
 
     const formItemLayout = {
-        labelCol: { span: 5 },
-        wrapperCol: { span: 19 },
+        labelCol: { span: 6 },
+        wrapperCol: { span: 12 },
+
     };
 
-    // To generate mock Form.Item
     const children = [];
     children.push(
         <Col span={13} key={1}>
-            <FormItem {...formItemLayout} label={"客户代码"}>
-                {getFieldDecorator("code", { rules: [{ required: true }] })(
+            <FormItem {...formItemLayout} label={"客户代码"} className={styles.codeInput}>
+                {getFieldDecorator("code", { rules: [{ required: true }], initialValue: item.code })(
                     <Input placeholder="请输入" key="customerCodeInput" />
                 )}
             </FormItem>
@@ -44,7 +45,7 @@ const CustomerAddForm = ({
     children.push(
         <Col span={13} key={2}>
             <FormItem {...formItemLayout} label={"客户名称"}>
-                {getFieldDecorator("name", { rules: [{ required: true }] })(
+                {getFieldDecorator("name", { rules: [{ required: true }], initialValue: item.name })(
                     <Input placeholder="请输入" key="customerNameInput" />
                 )}
             </FormItem>
@@ -53,7 +54,7 @@ const CustomerAddForm = ({
     children.push(
         <Col span={13} key={3}>
             <FormItem {...formItemLayout} label={"客户类型"}>
-                {getFieldDecorator("type", { rules: [{ required: true }] })(
+                {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type })(
                     <Select placeholder="请选择" showSearch={false} size="default">
                         <Option value="store">百货</Option>
                         <Option value="shop">精品店</Option>
@@ -65,7 +66,7 @@ const CustomerAddForm = ({
     children.push(
         <Col span={13} key={4}>
             <FormItem {...formItemLayout} label={"联系方式"}>
-                {getFieldDecorator("phone")(
+                {getFieldDecorator("phone", { initialValue: item.phone })(
                     <Input placeholder="请输入" key="phoneNumber" />
                 )}
             </FormItem>
@@ -74,7 +75,7 @@ const CustomerAddForm = ({
     children.push(
         <Col span={13} key={5}>
             <FormItem {...formItemLayout} label={"地址"}>
-                {getFieldDecorator("address")(
+                {getFieldDecorator("address", { initialValue: item.address })(
                     <Input type="textarea" autosize={{ minRows: 4 }}></Input>
                     /**
                      * 在Input属性type设置为textare之后，在示例中通过属性rows指定文本域高度无效
@@ -85,20 +86,20 @@ const CustomerAddForm = ({
         </Col>
     );
     return (
-        <Form
-            className="ant-advanced-search-form"
-            >
-            <div>
+        <Card bordered={false} title="新建客户" bodyStyle={{ padding: 0 }}>
+            <div className={styles.button}>
+                <Button onClick={() => onCancel(item)}>取消</Button>
                 <Button type="primary" onClick={handleCreate}>保存</Button>
-                <Button onClick={() => onCancel()}>取消</Button>
             </div>
-            <Card title="基本信息">
-                <Row gutter={40} type="flex">
-                    {children}
-                </Row>
+            <Form>
+                <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
+                    <Row gutter={12} type="flex">
+                        {children}
+                    </Row>
 
-            </Card>
-        </Form>
+                </Card>
+            </Form>
+        </Card>
     );
 }
 

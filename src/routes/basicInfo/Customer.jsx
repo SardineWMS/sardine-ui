@@ -6,7 +6,6 @@ import CustomerGrid from '../../components/BasicInfo/Customer/CustomerGrid';
 import CustomerForm from '../../components/BasicInfo/Customer/CustomerForm';
 import CustomerAdd from '../../components/BasicInfo/Customer/CustomerAdd';
 import CustomerView from '../../components/BasicInfo/Customer/CustomerView';
-import CustomerEdit from '../../components/BasicInfo/Customer/CustomerEdit';
 function Customer({location, dispatch, customer}) {
     const {
         loading, list, showCreatePage, pagination, showViewPage, currentItem, current,
@@ -45,8 +44,6 @@ function Customer({location, dispatch, customer}) {
             })
         },
         onViewItem(item) {
-            console.log("customer 对象");
-            console.dir(item);
             dispatch({
                 type: 'customer/onViewItem',
                 payload: {
@@ -56,7 +53,7 @@ function Customer({location, dispatch, customer}) {
         },
         onEdit(item) {
             dispatch({
-                type: 'customer/editSuccess',
+                type: 'customer/gridEditSuccess',
                 payload: { currentItem: item, },
             })
         },
@@ -132,19 +129,41 @@ function Customer({location, dispatch, customer}) {
 
     const customerAddProps = {
         item: currentItem,
-        onCancel() {
-            dispatch({
-                type: 'customer/cancelSuccess',
-
-            })
+        onCancel(data) {
+            if (!data) {
+                dispatch({
+                    type: 'customer/cancelShoWItemSuccess',
+                })
+            } else {
+                if (showViewPage) {
+                    dispatch({
+                        type: 'customer/cancelShoWItemSuccess',
+                    })
+                } else {
+                    dispatch({
+                        type: 'customer/cancelSuccess',
+                        payload: {
+                            currentItem: {},
+                        }
+                    })
+                }
+            }
         },
+
         handleSave(data) {
             let token = localStorage.getItem("token");
             data.token = token;
-            dispatch({
-                type: 'customer/create',
-                payload: data,
-            })
+            if (data.uuid) {
+                dispatch({
+                    type: 'customer/update',
+                    payload: data,
+                })
+            } else {
+                dispatch({
+                    type: 'customer/create',
+                    payload: data,
+                })
+            }
         }
     }
 
@@ -153,6 +172,9 @@ function Customer({location, dispatch, customer}) {
         onBack(data) {
             dispatch({
                 type: 'customer/backSuccess',
+                payload: {
+                    currentItem: {},
+                }
             })
         },
         backAndRefreshPage() { },
@@ -181,43 +203,25 @@ function Customer({location, dispatch, customer}) {
 
         showEdit(item) {
             dispatch({
-                type: 'customer/editSuccess',
+                type: 'customer/itemEditSuccess',
                 payload: item,
             })
         },
 
     }
 
-    const customerEditProps = {
-        item: currentItem,
-        onCancel() {
-            dispatch({
-                type: 'customer/cancelShoWItemSuccess',
+    const CustomerGridGen = () => <CustomerGrid {...customerListProps} />;
+    const CustomerAddGen = () => <CustomerAdd {...customerAddProps} />;
 
-            })
-        },
-        handleSave(data) {
-            let token = localStorage.getItem("token");
-            data.token = token;
-            dispatch({
-                type: 'customer/update',
-                payload: data,
-            })
-        }
-    }
-
-    const CustomerGridGen = () => <CustomerGrid {...customerListProps} />
-
-    function refreshWidget() {
+    const RefreshWidget = () => {
         if (showCreatePage) {
             return (
-                <div><CustomerAdd {...customerAddProps} />
-                </div>
+                <CustomerAddGen />
             )
         } else {
             if (showViewPage) {
                 if (showEditPage) {
-                    return (<div><CustomerEdit {...customerEditProps}></CustomerEdit></div>)
+                    return (<CustomerAddGen />)
                 } else {
                     return (
                         <div><CustomerView {...customerViewProps}></CustomerView></div>
@@ -226,7 +230,7 @@ function Customer({location, dispatch, customer}) {
             }
             else {
                 if (showEditPage) {
-                    return (<div><CustomerEdit {...customerEditProps}></CustomerEdit></div>)
+                    return (<CustomerAddGen />)
                 }
                 else {
                     return (
@@ -241,7 +245,7 @@ function Customer({location, dispatch, customer}) {
     }
 
     return (
-        <div>{refreshWidget()}</div>
+        <div className="content-inner"><RefreshWidget /></div>
     )
 }
 
@@ -253,4 +257,4 @@ function mapStateToProps({customer}) {
     return { customer }
 }
 
-export default connect(mapStateToProps)(Customer)
+export default connect(mapStateToProps)(Customer);
