@@ -21,6 +21,10 @@ export default {
         showViewPage: false,
         showEditPage: false,
         searchExpand: false,
+        batchDeleteProcessModal: false,
+        deleteCustomerEntitys: [],
+        batchRecoverProcessModal: false,
+        recoverCustomerEntitys: [],
     },
 
     subscriptions: {
@@ -218,6 +222,18 @@ export default {
         toggle(state, action) {
             return { ...state, ...action.payload }
         },
+        batchDeleteCustomer(state, action) {
+            return { ...state, ...action.payload, batchDeleteProcessModal: true }
+        },
+        hideDeleteCustomerModal(state, action) {
+            return { ...state, batchDeleteProcessModal: false }
+        },
+        batchRecoverCustomer(state, action) {
+            return { ...state, ...action.payload, batchRecoverProcessModal: true }
+        },
+        hideRecoverCustomerModal(state, action) {
+            return { ...state, batchRecoverProcessModal: false }
+        }
     },
 
 }

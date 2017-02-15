@@ -6,10 +6,13 @@ import CustomerGrid from '../../components/BasicInfo/Customer/CustomerGrid';
 import CustomerForm from '../../components/BasicInfo/Customer/CustomerForm';
 import CustomerAdd from '../../components/BasicInfo/Customer/CustomerAdd';
 import CustomerView from '../../components/BasicInfo/Customer/CustomerView';
+import WMSProgress from '../../components/Widget/WMSProgress';
 function Customer({location, dispatch, customer}) {
     const {
         loading, list, showCreatePage, pagination, showViewPage, currentItem, current,
-        showEditPage, searchExpand,
+        showEditPage, searchExpand, batchDeleteProcessModal, deleteCustomerEntitys,
+        customerNext,
+        batchRecoverProcessModal, recoverCustomerEntitys,
     } = customer;
 
     const {field, keyword} = location.query
@@ -80,30 +83,20 @@ function Customer({location, dispatch, customer}) {
             })
         },
         onRemoveBatch(customers) {
-            for (const customer of customers) {
-                let token = localStorage.getItem("token");
-                dispatch({
-                    type: 'customer/gridRemove',
-                    payload: {
-                        uuid: customer.uuid,
-                        version: customer.version,
-                        token: token,
-                    },
-                })
-            }
+            dispatch({
+                type: 'customer/batchDeleteCustomer',
+                payload: {
+                    deleteCustomerEntitys: customers
+                }
+            })
         },
         onRecoverBatch(customers) {
-            for (const customer of customers) {
-                let token = localStorage.getItem("token");
-                dispatch({
-                    type: 'customer/gridRecover',
-                    payload: {
-                        uuid: customer.uuid,
-                        version: customer.version,
-                        token: token,
-                    },
-                })
-            }
+            dispatch({
+                type: 'customer/batchRecoverCustomer',
+                payload: {
+                    recoverCustomerEntitys: customers
+                }
+            })
         },
     }
 
@@ -210,10 +203,72 @@ function Customer({location, dispatch, customer}) {
 
     }
 
+    const batchProcessDeleteCustomerProps = {
+        showConfirmModal: batchDeleteProcessModal,
+        records: deleteCustomerEntitys ? deleteCustomerEntitys : [],
+        next: customerNext,
+        actionText: '删除',
+        entityCaption: '客户',
+        batchProcess(entity) {
+            dispatch({
+                type: 'customer/gridRemove',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version,
+                    token: localStorage.getItem("token"),
+                }
+            })
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'customer/hideDeleteCustomerModal',
+            })
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'customer/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            })
+        }
+    }
+
+    const batchProcessRecoverCustomerProps = {
+        showConfirmModal: batchRecoverProcessModal,
+        records: recoverCustomerEntitys ? recoverCustomerEntitys : [],
+        next: customerNext,
+        actionText: '恢复',
+        entityCaption: '客户',
+        batchProcess(entity) {
+            dispatch({
+                type: 'customer/gridRecover',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version,
+                    token: localStorage.getItem("token"),
+                }
+            })
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'customer/hideRecoverCustomerModal',
+            })
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'customer/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            })
+        }
+    }
+
     const CustomerGridGen = () => <CustomerGrid {...customerListProps} />;
     const CustomerAddGen = () => <CustomerAdd {...customerAddProps} />;
 
-    const RefreshWidget = () => {
+    function RefreshWidget() {
         if (showCreatePage) {
             return (
                 <CustomerAddGen />
@@ -237,6 +292,8 @@ function Customer({location, dispatch, customer}) {
                         <div>
                             <CustomerForm {...customerSearchProps} />
                             <CustomerGridGen />
+                            <WMSProgress {...batchProcessDeleteCustomerProps} />
+                            <WMSProgress {...batchProcessRecoverCustomerProps} />
                         </div>
                     )
                 }
@@ -245,7 +302,7 @@ function Customer({location, dispatch, customer}) {
     }
 
     return (
-        <div className="content-inner"><RefreshWidget /></div>
+        <div className="content-inner">{RefreshWidget()}</div>
     )
 }
 

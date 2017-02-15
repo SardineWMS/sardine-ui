@@ -86,7 +86,7 @@ const CustomerAddForm = ({
         </Col>
     );
     return (
-        <Card bordered={false} title="新建客户" bodyStyle={{ padding: 0 }}>
+        <div>
             <div className={styles.button}>
                 <Button onClick={() => onCancel(item)}>取消</Button>
                 <Button type="primary" onClick={handleCreate}>保存</Button>
@@ -99,7 +99,7 @@ const CustomerAddForm = ({
 
                 </Card>
             </Form>
-        </Card>
+        </div>
     );
 }
 

@@ -84,43 +84,37 @@ function CustomerGrid({
     };
 
     function handleRemoveBatch() {
-        rowSelection.onSelectAll(false, [], []);
         onRemoveBatch(customers);
-        rowSelection.onChange(null, null);
-        console.log("是否有调用rowSelection中的方法")
     }
 
     function handleRecoverBatch() {
-        rowSelection.onSelectAll(false, [], []);
         onRecoverBatch(customers);
-        rowSelection.onChange(null, null);
-        console.log("是否有调用rowSelection中的方法")
     }
 
     return (
         <div>
-                <Table className={style.table}
-                    size="small"
-                    columns={columns}
-                    dataSource={dataSource}
-                    loading={loading}
-                    rowKey={record => record.uuid}
-                    onChange={onPageChange}
-                    pagination={pagination}
-                    bordered
-                    rowSelection={rowSelection}
-                    title={
-                        () =>
-                            <div>
-                                <Row type="flex">
-                                    <Col><Button type="ghost" onClick={handleRemoveBatch}>批量删除</Button></Col>
-                                    <Col><Button type="ghost" onClick={handleRecoverBatch}>批量恢复</Button></Col>
-                                    <Col><Button onClick={() => onCreate()}>新建</Button></Col>
-                                </Row>
-                            </div>
+            <Table className={style.table}
+                size="small"
+                columns={columns}
+                dataSource={dataSource}
+                loading={loading}
+                rowKey={record => record.uuid}
+                onChange={onPageChange}
+                pagination={pagination}
+                bordered
+                rowSelection={rowSelection}
+                title={
+                    () =>
+                        <div>
+                            <Row type="flex">
+                                <Col><Button type="ghost" onClick={handleRemoveBatch}>批量删除</Button></Col>
+                                <Col><Button type="ghost" onClick={handleRecoverBatch}>批量恢复</Button></Col>
+                                <Col><Button onClick={() => onCreate()}>新建</Button></Col>
+                            </Row>
+                        </div>
 
-                    }
-                />
+                }
+            />
         </div>
     );
 }
