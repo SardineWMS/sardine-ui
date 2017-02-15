@@ -30,7 +30,7 @@ function Article({location,dispatch,article}){
 			dispatch({
 				type: 'article/query',
 				payload: {
-				   page:page.current,
+				     page:page.current,
 			       pageSize:page.pageSize,
 			       token: localStorage.getItem("token")
 				},
