@@ -17,6 +17,7 @@ app.model(require('./models/BasicInfo/Supplier'));
 app.model(require('./models/BasicInfo/Container'));
 app.model(require('./models/BasicInfo/BinType'));
 app.model(require('./models/BasicInfo/ContainerType'));
+app.model(require('./models/BasicInfo/Bin'));
 
 
 app.router(require('./router'));

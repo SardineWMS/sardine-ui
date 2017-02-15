@@ -19,6 +19,7 @@ import Supplier from './routes/basicInfo/Supplier';
 import Container from './routes/basicInfo/Container';
 import BinType from './routes/basicInfo/BinType';
 import ContainerType from './routes/basicInfo/ContainerType';
+import Bin from './routes/basicInfo/Bin';
 
 export default function({
   history
@@ -38,6 +39,7 @@ export default function({
         <Route path="/wms/basicInfo/supplier" component={Supplier} />
         <Route path="/wms/basicInfo/binType" component={BinType} />
 	    <Route path="/wms/basicInfo/containerType" component={ContainerType} />
+      <Route path="/wms/basicInfo/bin" component={Bin} />
       </Route>
     </Router>
   );
