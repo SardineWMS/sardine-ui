@@ -5,8 +5,8 @@ class WMSProgress extends React.Component {
  constructor(props) {
     super(props);
     this.state = {
-       showProgressModal:false,
-       showConfirmModal:false,
+      showProgressModal:false,
+      showConfirmModal:false,
        percent:0,
        records:[],
        processing:false,

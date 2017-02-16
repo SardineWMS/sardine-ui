@@ -34,8 +34,8 @@ const ContainerSearch = ({
   }
 
   const formItemLayout = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 19 },
+        labelCol: { span: 8 },
+        wrapperCol: { span: 12 },
   };
 
   const children = [];
@@ -104,9 +104,9 @@ const ContainerSearch = ({
 
   return (
     <div>
-      <Card title="搜索条件">
-      <Form
-        horizontal
+       <Collapse defaultActiveKey={["1"]}>
+            <Panel header="搜索" key="1">
+      <Form horizontal
         className="ant-advanced-search-form"
         onSubmit={handleSearch}
       >
@@ -126,7 +126,8 @@ const ContainerSearch = ({
           </Col>
         </Row>
       </Form>
-      </Card>
+      </Panel>
+      </Collapse>
 
       <Table size="small"
         bordered

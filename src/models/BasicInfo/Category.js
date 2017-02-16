@@ -28,7 +28,9 @@ export default {
         if (location.pathname === '/wms/basicInfo/category') {
           dispatch({
             type: 'query',
-            payload: location.query,
+            payload: {
+              token: localStorage.getItem("token")
+            }
           })
         }
       })
@@ -71,7 +73,9 @@ export default {
       yield call(create, payload);
       const {
         data
-      } = yield call(queryCategory);
+      } = yield call(queryCategory, payload: {
+        token: payload.token
+      });
       if (data) {
         yield put({
           type: 'querySuccess',
@@ -97,7 +101,9 @@ export default {
       yield call(create, payload);
       const {
         data
-      } = yield call(queryCategory);
+      } = yield call(queryCategory, payload: {
+        token: payload.token
+      });
       if (data) {
         yield put({
           type: 'querySuccess',
@@ -123,7 +129,9 @@ export default {
       yield call(update, payload);
       const {
         data
-      } = yield call(queryCategory);
+      } = yield call(queryCategory, payload: {
+        token: payload.token
+      });
       if (data) {
         yield put({
           type: 'querySuccess',
@@ -146,11 +154,14 @@ export default {
       yield call(deleteCategory, {
         uuid: payload.uuid,
         version: payload.version,
+        token: payload.token,
       });
 
       const {
         data
-      } = yield call(queryCategory);
+      } = yield call(queryCategory, payload: {
+        token: payload.token
+      });
       if (data) {
         yield put({
           type: 'querySuccess',

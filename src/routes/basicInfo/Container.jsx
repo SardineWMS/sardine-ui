@@ -12,6 +12,7 @@ function Container({ location, dispatch, container }) {
     pagination,
     searchExpand,
     containerTypes,
+    containerTypeUuid,
     batchProcessModal,
     next,
     entitys, 
@@ -25,10 +26,15 @@ function Container({ location, dispatch, container }) {
     visible: modalVisible,
     containerTypes : containerTypes,
     onOk(data) {
+      let array =new Array();  
+      for(let i=0;i<data.count;i++) { 
+         array[i]= i; 
+      }
       dispatch({
         type : 'container/confirmSaveNew',
         payload :{
-          entitys : data
+          entitys : array,
+          containerTypeUuid : data.containerType,
         }
       })
     },
@@ -57,6 +63,7 @@ function Container({ location, dispatch, container }) {
         type: 'container/queryContainerType',
         payload: {
           modalType: 'create',
+          token : localStorage.getItem("token")
         },
       })
     },
@@ -83,6 +90,10 @@ function Container({ location, dispatch, container }) {
     batchProcess(){
       dispatch({
         type: 'container/createContainer',
+        payload : {
+          containerTypeUuid : containerTypeUuid,
+          token : localStorage.getItem("token")
+        } 
       })
     },
     refreshGrid(){

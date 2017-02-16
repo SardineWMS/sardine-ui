@@ -96,13 +96,15 @@ export default {
       })
       const {
         data
-      } = yield call(queryContainerTypes, payload);
+      } = yield call(queryContainerTypes, payload: {
+        token: payload.token
+      });
 
       if (data) {
         yield put({
           type: 'showModal',
           payload: {
-            containerTypes: data.data,
+            containerTypes: data.obj,
           }
         });
       }
@@ -150,7 +152,8 @@ export default {
     },
     hideModal(state) {
       return {...state,
-        modalVisible: false
+        modalVisible: false,
+        batchProcessModal: false,
       }
     },
     hideBatchProcessModal(state) {

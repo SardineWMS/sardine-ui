@@ -31,13 +31,7 @@ const ContainerModal = ({
         const data = {
          ...getFieldsValue(),
         }
-
-        let array =new Array();  
-        for(let i=0;i<data.count;i++) { 
-          array[i]= i; 
-        } 
-
-        onOk(array);
+        onOk(data);
       });
   }
 
@@ -50,11 +44,14 @@ const ContainerModal = ({
   }
 
   const options = [];
+  if(containerTypes){
+
   for (let i = 0; i < containerTypes.length; i++) {
     let option = containerTypes[i];
     options.push(
-      <Option key={i.toString(36) + i}>{option.name}</Option>
+      <Option key={option.uuid}>{option.name}</Option>
     );
+  }
   }
 
   return (

@@ -9,14 +9,13 @@ function Category({ location, dispatch, category }) {
     loading, list, total, current, currentItem, modalVisible, modalType,modalShowUpper, pagination,
     } = category;
 
-  const { field, keyword } = location.query
-
   const categoryModalProps = {
     item: modalType === 'update' ? currentItem : {},
     upperCategory :  currentItem,
     showUpper : modalType === 'create' ? true : false,
     visible: modalVisible,
     onOk(data) {
+      data.token = localStorage.getItem("token");
       dispatch({
         type: `category/${modalType}`,
         payload: data,
@@ -47,6 +46,7 @@ function Category({ location, dispatch, category }) {
       })
     },
     onCreateLower(item){
+      item.token = localStorage.getItem("token");
       dispatch({
         type: 'category/showModal',
         payload: {
@@ -56,15 +56,18 @@ function Category({ location, dispatch, category }) {
       })
     },
     onDeleteItem(item) {
+      let token = localStorage.getItem("token");
       dispatch({
         type: 'category/remove',
         payload: {
           uuid: item.uuid,
           version: item.version,
+          token : token,
         },
       })
     },
     onEditItem(item) {
+      item.token = localStorage.getItem("token");
       dispatch({
         type: 'category/showModal',
         payload: {

@@ -6,17 +6,12 @@ export async function query(params) {
 }
 
 
-export async function queryContainerTypes() {
-  return request('/api/containertype/query');
+export async function queryContainerTypes(params) {
+  return request(`/basic/containertype/querycontainerTypesUcns?${qs.stringify(params)}`);
 }
 
 export async function create(params) {
-  return request('/api/container/savenew', {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify(params),
+  return request(`/api/container/savenew?${qs.stringify(params)}`, {
+    method: 'put',
   });
 }
