@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Row, Col, Input, Button,Card ,Collapse,Select } from 'antd';
+import { Form, Row, Col, Input, Button, Card, Collapse, Select } from 'antd';
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 const Option = Select.Option;
@@ -12,8 +12,8 @@ const ArticleSearchForm = ({
     getFieldDecorator,
     validateFields,
     getFieldsValue,
-    },
-  }) => {
+  },
+}) => {
   function handleSearch(e) {
     e.preventDefault();
     onSearch(getFieldsValue());
@@ -24,60 +24,62 @@ const ArticleSearchForm = ({
   }
 
   const formItemLayout = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 19 },
+    labelCol: { span: 8 },
+    wrapperCol: { span: 12 },
   };
 
   const children = [];
   children.push(<Col span={12} key='code'>
-      <FormItem {...formItemLayout} label="代码 类似于">
-        {getFieldDecorator('code')(
-          <Input type="text" placeholder="代码 类似于"/>
-          )}
-      </FormItem>
-      </Col>);
+    <FormItem {...formItemLayout} label="代码 类似于">
+      {getFieldDecorator('code')(
+        <Input type="text" placeholder="代码 类似于" />
+      )}
+    </FormItem>
+  </Col>);
   children.push(<Col span={12} key='name'>
-      <FormItem {...formItemLayout} label="名称 类似于">
-        {getFieldDecorator('name')(
-          <Input type="text" placeholder="名称 类似于"/>
-        )}
-        </FormItem>
-      </Col>);
-    children.push(<Col span={12} key='state'>
-      <FormItem {...formItemLayout} label="状态 类似于">
-        {getFieldDecorator('state')(
-              <Select >
-                  <Option value="normal" initialValue>正常</Option>
-             </Select>
-        )}
-        </FormItem>
-      </Col>);
+    <FormItem {...formItemLayout} label="名称 类似于">
+      {getFieldDecorator('name')(
+        <Input type="text" placeholder="名称 类似于" />
+      )}
+    </FormItem>
+  </Col>);
+  children.push(<Col span={12} key='state'>
+    <FormItem {...formItemLayout} label="状态 类似于">
+      {getFieldDecorator('state')(
+        <Select >
+          <Option value="normal" initialValue>正常</Option>
+        </Select>
+      )}
+    </FormItem>
+  </Col>);
 
-    return (
-      <Card title="搜索条件">
-      <Form
-        horizontal
-        className="ant-advanced-search-form"
-        onSubmit={handleSearch}
-      >
-        <Row gutter={40}>
-          {children.slice(0, 2)}
-        </Row>
-        <Row gutter={40}>
-          {children.slice(2, 6)}
-        </Row>
+  return (
+    <Collapse defaultActiveKey={"articleSearchForm"}>
+      <Panel header="搜索条件" key="articleSearchForm">
+        <Form
+          horizontal
+          className="ant-advanced-search-form"
+          onSubmit={handleSearch}
+        >
+          <Row gutter={40}>
+            {children.slice(0, 2)}
+          </Row>
+          <Row gutter={40}>
+            {children.slice(2, 6)}
+          </Row>
 
-        <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type="primary" htmlType="submit" icon="search">搜索</Button>
-            <Button style={{ marginLeft: 8 }} onClick={handleReset}>
-              清除
+          <Row>
+            <Col span={24} style={{ textAlign: 'right' }}>
+              <Button type="primary" htmlType="submit" icon="search">搜索</Button>
+              <Button style={{ marginLeft: 8 }} onClick={handleReset}>
+                清除
             </Button>
-          </Col>
-        </Row>
-      </Form>
-    </Card>
-    );
+            </Col>
+          </Row>
+        </Form>
+      </Panel>
+    </Collapse>
+  );
 };
 
 ArticleSearchForm.propTypes = {

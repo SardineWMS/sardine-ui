@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Card, Button, Input, Form, Row, Col, Select } from 'antd';
-import styles from './CustomerAdd.less';
+import styles from '../../Layout/common.less';
 const FormItem = Form.Item;
 const Option = Select.Option;
 
@@ -35,7 +35,7 @@ const CustomerAddForm = ({
     const children = [];
     children.push(
         <Col span={13} key={1}>
-            <FormItem {...formItemLayout} label={"客户代码"} className={styles.codeInput}>
+            <FormItem {...formItemLayout} label={"客户代码"} className={styles.topInput}>
                 {getFieldDecorator("code", { rules: [{ required: true }], initialValue: item.code })(
                     <Input placeholder="请输入" key="customerCodeInput" />
                 )}
@@ -44,7 +44,7 @@ const CustomerAddForm = ({
     );
     children.push(
         <Col span={13} key={2}>
-            <FormItem {...formItemLayout} label={"客户名称"}>
+            <FormItem {...formItemLayout} label={"客户名称"} className={styles.normalInput}>
                 {getFieldDecorator("name", { rules: [{ required: true }], initialValue: item.name })(
                     <Input placeholder="请输入" key="customerNameInput" />
                 )}
@@ -53,9 +53,9 @@ const CustomerAddForm = ({
     );
     children.push(
         <Col span={13} key={3}>
-            <FormItem {...formItemLayout} label={"客户类型"}>
+            <FormItem {...formItemLayout} label={"客户类型"} className={styles.normalInput}>
                 {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type })(
-                    <Select placeholder="请选择" showSearch={false} size="default">
+                    <Select placeholder="请选择" showSearch={false} size="large">
                         <Option value="store">百货</Option>
                         <Option value="shop">精品店</Option>
                     </Select>
@@ -65,7 +65,7 @@ const CustomerAddForm = ({
     );
     children.push(
         <Col span={13} key={4}>
-            <FormItem {...formItemLayout} label={"联系方式"}>
+            <FormItem {...formItemLayout} label={"联系方式"} className={styles.normalInput}>
                 {getFieldDecorator("phone", { initialValue: item.phone })(
                     <Input placeholder="请输入" key="phoneNumber" />
                 )}
@@ -74,7 +74,7 @@ const CustomerAddForm = ({
     );
     children.push(
         <Col span={13} key={5}>
-            <FormItem {...formItemLayout} label={"地址"}>
+            <FormItem {...formItemLayout} label={"地址"} className={styles.bottomInput}>
                 {getFieldDecorator("address", { initialValue: item.address })(
                     <Input type="textarea" autosize={{ minRows: 4 }}></Input>
                     /**

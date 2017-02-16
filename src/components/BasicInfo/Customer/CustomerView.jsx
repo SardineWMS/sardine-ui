@@ -2,7 +2,7 @@ import React, { PropTypes } from 'react';
 import { Card, Form, Row, Col, Input, Button, Collapse, Popconfirm } from 'antd';
 import timeStamp2datetime from '../../../utils/DateUtils';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
-import styles from './CustomerView.less';
+import styles from '../../Layout/common.less';
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 const CustomerView = ({item = {},
