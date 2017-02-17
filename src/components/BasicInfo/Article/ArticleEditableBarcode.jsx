@@ -1,33 +1,34 @@
 import { Table, Input, Popconfirm, Button } from 'antd';
 import styles from '../../Widget/EditTable.less';
 import React, { Component, PropTypes } from 'react';
+import commonStyles from '../../Layout/common.less';
 
 const RowEditableCell = require('../../Widget/RowEditCell');
 const ArticleEditableBarcode = ({
-      dataSource,
-      articleUuid,
-      count,
-      onSaveBarcode,
-      onAdd,
-      onDelete,
-      onEdit,
-      onCancel
+  dataSource,
+  articleUuid,
+  count,
+  onSaveBarcode,
+  onAdd,
+  onDelete,
+  onEdit,
+  onCancel
 }) => {
   const columns = [{
-      title: '条码',
-      dataIndex: 'barcode',
-      render: (text, record, index) => renderColumns(dataSource, index, "barcode", text),
-    }, {
-      title: '规格',
-      dataIndex: 'qpcStr',
-      render: (text, record, index) => renderColumns(dataSource, index, "qpcStr", text),
-    }, {
-      title: '操作',
-      dataIndex: 'operation', 
-      render: (text, record, index) => {
-        return (<div className={styles.editable_row_operations}>
-          {
-            record.editable ?
+    title: '条码',
+    dataIndex: 'barcode',
+    render: (text, record, index) => renderColumns(dataSource, index, "barcode", text),
+  }, {
+    title: '规格',
+    dataIndex: 'qpcStr',
+    render: (text, record, index) => renderColumns(dataSource, index, "qpcStr", text),
+  }, {
+    title: '操作',
+    dataIndex: 'operation',
+    render: (text, record, index) => {
+      return (<div className={styles.editable_row_operations}>
+        {
+          record.editable ?
             <span>
               <a onClick={() => onSaveBarcode(dataSource, articleUuid, index)}>保存</a>
               <Popconfirm title="确定要取消编辑吗？" onConfirm={() => onCancel(index)}>
@@ -41,10 +42,10 @@ const ArticleEditableBarcode = ({
                 <a>删除</a>
               </Popconfirm>
             </span>
-          }
-        </div>);
-      },
-    }];
+        }
+      </div>);
+    },
+  }];
 
   function renderColumns(dataSource, index, key, text) {
     if (typeof dataSource[index]["editable"] === 'undefined' || !dataSource[index]["editable"]) {
@@ -63,10 +64,13 @@ const ArticleEditableBarcode = ({
     dataSource[index]["new" + key] = value;
   }
 
-  return (<div>
-      <Button className={styles.editable_add_btn} type="ghost" onClick={() => onAdd(articleUuid)}>增加</Button>
-      <Table bordered dataSource={dataSource} columns={columns} />
-  </div>);
+  return (
+    <div>
+      <div className={commonStyles.button}>
+        <Button type="ghost" onClick={() => onAdd(articleUuid)}>增加</Button>
+      </div>
+      <Table bordered dataSource={dataSource} columns={columns} size="small" />
+    </div>);
 }
 
 ArticleEditableBarcode.propTypes = {

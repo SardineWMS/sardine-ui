@@ -1,63 +1,64 @@
 import { Table, Input, Popconfirm, Button } from 'antd';
 import styles from '../../Widget/EditTable.less';
 import React, { Component, PropTypes } from 'react';
+import commonStyles from '../../Layout/common.less';
 
 const RowEditableCell = require('../../Widget/RowEditCell');
 const ArticleEditableQpcStr = ({
-      dataSource,
-      articleUuid,
-      count,
-      onSaveQpcStr,
-      onAdd,
-      onDelete,
-      onEdit,
-      onCancel,
-      onSetDefaultQpcStr
+  dataSource,
+  articleUuid,
+  count,
+  onSaveQpcStr,
+  onAdd,
+  onDelete,
+  onEdit,
+  onCancel,
+  onSetDefaultQpcStr
 }) => {
   const columns = [{
-      title: '规格',
-      dataIndex: 'qpcStr',
-      width: '12%',
-      render: (text, record, index) => renderColumns(dataSource, index, "qpcStr", text),
-    }, {
-      title: '单位',
-      dataIndex: 'munit',
-      width: '12%',
-      render: (text, record, index) => renderColumns(dataSource, index, "munit", text),
-    }, {
-      title: '长（cm）',
-      dataIndex: 'length',
-      width: '12%',
-      render: (text, record, index) => renderColumns(dataSource, index, "length", text),
-    }, {
-      title: '宽（cm）',
-      dataIndex: 'width',
-      width: '12%',
-      render: (text, record, index) => renderColumns(dataSource, index, "width", text),
-    }, {
-      title: '高（cm）',
-      dataIndex: 'height',
-      width: '12%',
-      render: (text, record, index) => renderColumns(dataSource, index, "height", text),
-    }, {
-      title: '重量（g）',
-      dataIndex: 'weight',
-      width: '12%',
-      render: (text, record, index) => renderColumns(dataSource, index, "weight", text),
-    }, {
-      title: '默认',
-      dataIndex: 'default_',
-      width: '10%',
-      render: text => (text ? "是" : "否"),
-    }, {
-      title: '操作',
-      dataIndex: 'operation', 
-      render: (text, record, index) => {
-        return (<div className={styles.editable_row_operations}>
-          {
-            record.editable ?
+    title: '规格',
+    dataIndex: 'qpcStr',
+    width: '12%',
+    render: (text, record, index) => renderColumns(dataSource, index, "qpcStr", text),
+  }, {
+    title: '单位',
+    dataIndex: 'munit',
+    width: '12%',
+    render: (text, record, index) => renderColumns(dataSource, index, "munit", text),
+  }, {
+    title: '长（cm）',
+    dataIndex: 'length',
+    width: '12%',
+    render: (text, record, index) => renderColumns(dataSource, index, "length", text),
+  }, {
+    title: '宽（cm）',
+    dataIndex: 'width',
+    width: '12%',
+    render: (text, record, index) => renderColumns(dataSource, index, "width", text),
+  }, {
+    title: '高（cm）',
+    dataIndex: 'height',
+    width: '12%',
+    render: (text, record, index) => renderColumns(dataSource, index, "height", text),
+  }, {
+    title: '重量（g）',
+    dataIndex: 'weight',
+    width: '12%',
+    render: (text, record, index) => renderColumns(dataSource, index, "weight", text),
+  }, {
+    title: '默认',
+    dataIndex: 'default_',
+    width: '10%',
+    render: text => (text ? "是" : "否"),
+  }, {
+    title: '操作',
+    dataIndex: 'operation',
+    render: (text, record, index) => {
+      return (<div className={styles.editable_row_operations}>
+        {
+          record.editable ?
             <span>
-              <a onClick={() => onSaveQpcStr(dataSource,articleUuid, index)}>保存</a>
+              <a onClick={() => onSaveQpcStr(dataSource, articleUuid, index)}>保存</a>
               <Popconfirm title="确定要取消编辑吗？" onConfirm={() => onCancel(index)}>
                 <a>取消</a>
               </Popconfirm>
@@ -72,10 +73,10 @@ const ArticleEditableQpcStr = ({
                 <a>删除</a>
               </Popconfirm>
             </span>
-          }
-        </div>);
-      },
-    }];
+        }
+      </div>);
+    },
+  }];
 
   function renderColumns(dataSource, index, key, text) {
     if (typeof dataSource[index]["editable"] === 'undefined' || !dataSource[index]["editable"]) {
@@ -94,9 +95,12 @@ const ArticleEditableQpcStr = ({
     dataSource[index]["new" + key] = value;
   }
 
-  return (<div>
-      <Button className={styles.editable_add_btn} type="ghost" onClick={() => onAdd(articleUuid)}>增加</Button>
-      <Table bordered dataSource={dataSource} columns={columns} />
+  return (
+  <div>
+  <div className={commonStyles.button}>
+    <Button type="ghost" onClick={() => onAdd(articleUuid)}>增加</Button>
+    </div>
+    <Table bordered dataSource={dataSource} columns={columns} size="small" />
   </div>);
 }
 

@@ -2,7 +2,7 @@ import request from '../../utils/request';
 import qs from 'qs';
 
 export async function queryArticles(params) {
-  return request(`/api/article/querybypage?token=localStorage.getItem("token")&${qs.stringify(params)}`);
+  return request(`/api/article/querybypage?${qs.stringify(params)}`);
 }
 
 export async function get(params) {
