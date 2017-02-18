@@ -1,126 +1,80 @@
 import request from '../../utils/request';
 import qs from 'qs';
+import { query, createBase, addTokenToUl, updateBaseNullBody } from '../../utils/BaseService.js';
 
 export async function queryArticles(params) {
-  return request(`/api/article/querybypage?${qs.stringify(params)}`);
+  const url = "/api/article/querybypage";
+  return request(query(url, params));
 }
 
 export async function get(params) {
-  return request(`/api/article/get?${qs.stringify(params)}`);
+  const url = "/api/article/get";
+
+  return request(query(url, params));
 }
 
 export async function getByCode(params) {
-  return request(`/api/article/getByCode?${qs.stringify(params)}`);
+  const url = "/api/article/getByCode";
+  return request(query(url, params));
 }
 
 export async function create(params) {
   params.category = null;
-  return request(`/api/article/insert`, {
-    method: 'post',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(params),
-  })
+  const url = '/api/article/insert';
+  return request(addTokenToUl(url), createBase(params))
 }
 
 export async function getAndSaveSupplier(params) {
-  return request(`/api/article/getAndSaveSupplier?${qs.stringify(params)}`, {
-    method: 'put',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: null,
-  })
+  const url = '/api/article/getAndSaveSupplier';
+  return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function deleteArticleSupplier(params) {
-  return request(`/api/article/deleteArticleSupplier?${qs.stringify(params)}`, {
-    method: 'put',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: null,
-  })
+  const url = '/api/article/deleteArticleSupplier';
+  return request(query(url, params), updateBaseNullBody(null))
 }
 
 export async function setDefaultSupplier(params) {
-  return request(`/api/article/setDefaultSupplier?${qs.stringify(params)}`, {
-    method: 'put',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: null,
-  })
+  const url = '/api/article/setDefaultSupplier';
+  return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function addArticleSupplier(params) {
-  return request(`/api/article/addArticleSupplier?${qs.stringify(params)}`);
+  const url = '/api/article/addArticleSupplier';
+  return request(query(url, params));
 }
 
 export async function saveArticleQpc(params) {
-  return request(`/api/article/saveArticleQpc?${qs.stringify(params)}`, {
-    method: 'put',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: null,
-  })
+  const url = '/api/article/saveArticleQpc';
+  return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function deleteArticleQpc(params) {
-  return request(`/api/article/deleteArticleQpc?${qs.stringify(params)}`, {
-    method: 'put',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: null,
-  })
+  const url = '/api/article/deleteArticleQpc';
+  return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function setDefaultQpcStr(params) {
-  return request(`/api/article/setDefaultQpcStr?${qs.stringify(params)}`, {
-    method: 'put',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: null,
-  })
+  const url = '/api/article/setDefaultQpcStr';
+  return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function addArticleQpc(params) {
-  return request(`/api/article/addArticleQpc?${qs.stringify(params)}`);
+  const url = '/api/article/addArticleQpc';
+  return request(query(url, params));
 }
 
 export async function saveArticleBarcode(params) {
-  return request(`/api/article/saveArticleBarcode?${qs.stringify(params)}`, {
-    method: 'put',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: null,
-  })
+  const url = '/api/article/saveArticleBarcode';
+  return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function deleteArticleBarcode(params) {
-  return request(`/api/article/deleteArticleBarcode?${qs.stringify(params)}`, {
-    method: 'put',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-    body: null,
-  })
+  const url = '/api/article/deleteArticleBarcode';
+  return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function addArticleBarcode(params) {
-  return request(`/api/article/addArticleBarcode?${qs.stringify(params)}`);
+  const url = '/api/article/addArticleBarcode';
+  return request(query(url, params));
 }
