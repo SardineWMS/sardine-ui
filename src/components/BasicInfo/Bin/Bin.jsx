@@ -1,5 +1,6 @@
 import React,{PropTypes} from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon} from 'antd';
+import styles from '../../Layout/common.less';
 
 function BinSearch({
 	dataSource,
@@ -120,7 +121,8 @@ function BinSearch({
 
   return (
     <div>
-      <Table size="small"
+      <Table  className={styles.table}
+        size="small"
         bordered
         columns={columns}
         title={() => 
