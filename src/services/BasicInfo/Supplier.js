@@ -1,44 +1,37 @@
 import request from '../../utils/request';
 import qs from 'qs';
+import { query, createBase, addTokenToUrl, updateBaseNullBody,updateBase ,deleteBase} from '../../utils/BaseService.js';
 
-/*export async function query(params){
-	return request(`/supplier/query?${qs.stringify(params)}`);
-}*/
-
-export async function query(params) {
- return request(`/basic/supplier/querybypage?`);
+export async function querybypage(params) {
+  if(params==null)
+    params={token:''};
+  const url="/basic/supplier/querybypage";
+  return request(query(url,params));
 }
 
 export async function create(params) {
-  return request('/basic/supplier/savenew', {
-    method: 'post',
-    headers:{
-    	'Accept':'application/json',
-    	'Content-Type':'application/json'
-    },
-    body: JSON.stringify(params),
-  });
+  const url="/basic/supplier/savenew";
+  return request(addTokenToUrl(url),createBase(params));
 }
 
 export async function get(params) {
- return request(`/basic/supplier/get?${qs.stringify(params)}`);
+  const url="/basic/supplier/get";
+  return request(query(url,params));
 }
 
 export async function edit(params) {
-  return request('/basic/supplier/savemodify', {
-    method: 'put',
-    headers:{
-    	'Accept':'application/json',
-    	'Content-Type':'application/json'
-    },
-    body: JSON.stringify(params),
-  });
+  const url="/basic/supplier/savemodify";
+  return request(addTokenToUrl(url),updateBase(params));
 }
 
 export async function remove(params) {
-  return request(`/basic/supplier/remove?${qs.stringify(params)}`, {
-    method: 'delete',
-  });
+  const url=`/basic/supplier/remove?${qs.stringify(params)}`;
+  return request(url,deleteBase(params));
+}
+
+export async function recover(params) {
+  const url=`/basic/supplier/recover?${qs.stringify(params)}`;
+  return request(url,updateBaseNullBody(params));
 }
 
 

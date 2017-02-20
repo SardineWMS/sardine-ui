@@ -6,7 +6,7 @@ const RadioButton = Radio.Button;
 
 const formItemLayout = {
   labelCol: {
-    span: 6,
+    span: 5,
   },
   wrapperCol: {
     span: 14,
@@ -67,7 +67,7 @@ const ContainerTypeModal = ({
         </FormItem>
         : 
         <FormItem label="代码" hasFeedback {...formItemLayout}>
-          {getFieldDecorator('code')(<span>{item.code}</span>)}
+          <span>{item.code}</span>
         </FormItem>
       }
 
@@ -79,6 +79,7 @@ const ContainerTypeModal = ({
         <FormItem label="名称" hasFeedback {...formItemLayout} >
           {getFieldDecorator('name', {
             initialValue: item.name,
+            text:item.name,
             rules: [
               {
                 required: true,
@@ -99,6 +100,7 @@ const ContainerTypeModal = ({
           <FormItem>
           {getFieldDecorator('barCodePrefix', {
             initialValue: item.barCodePrefix,
+            text:item.barCodePrefix,
             rules: [
               {
                 required: true,
@@ -113,6 +115,7 @@ const ContainerTypeModal = ({
            <FormItem>
             {getFieldDecorator('barCodeLength', {
             initialValue: item.barCodeLength,
+            text:item.barCodeLength,
             rules: [
               {
                 required: true,
@@ -190,11 +193,11 @@ const ContainerTypeModal = ({
       }
 
       {modalType=== 'view' ?
-        <FormItem label="自重/称重" hasFeedback {...formItemLayout}>
+        <FormItem label="自重/承重" hasFeedback {...formItemLayout}>
           <span>{item.weight}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{item.bearingWeight}</span>
         </FormItem>
         :
-        <FormItem label="自重/称重" hasFeedback {...formItemLayout}>
+        <FormItem label="自重/承重" hasFeedback {...formItemLayout}>
           <Col span="6">
             <FormItem>
             {getFieldDecorator('weight', {
@@ -232,7 +235,7 @@ const ContainerTypeModal = ({
         <FormItem label="随车" hasFeedback {...formItemLayout}>
           {getFieldDecorator('ship', {
             valuePropName: 'checked',
-            initialValue: true,
+            initialValue: item.ship,
           })(<Checkbox/>)}
         </FormItem>
       }

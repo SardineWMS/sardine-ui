@@ -6,8 +6,6 @@ const Option = Select.Option;
 
 const SupplierSearchForm = ({
   onSearch,
-  onToggle,
-  searchExpand,
   field,
   keyword,
   form: {
@@ -27,10 +25,6 @@ const SupplierSearchForm = ({
     resetFields();
   }
 
-  function handleSelectState(value){
-     console.log('选择状态',{value});
-  }
-
   const formItemLayout = {
     labelCol: { span: 5 },
     wrapperCol: { span: 19 },
@@ -40,7 +34,7 @@ const SupplierSearchForm = ({
   children.push(
     <Col span={12} key='code'>
       <FormItem {...formItemLayout} label="代码 类似于">
-        {getFieldDecorator('codeField')(
+        {getFieldDecorator('code')(
           <Input type="text" placeholder="请输入"/>
           )}
       </FormItem>
@@ -49,14 +43,14 @@ const SupplierSearchForm = ({
   children.push(
     <Col span={12} key='state'>
       <FormItem {...formItemLayout} label="状态 类似于">
-        {getFieldDecorator('stateField',{
+        {getFieldDecorator('state',{
           initialValue:"all"
         })(
           <Select showSearch={false} size="default" 
-          style={{ width: 400 }}  onChange={handleSelectState}>
+          style={{ width: 400 }} >
             <Option value="all">全部</Option>
-            <Option value="online">启用</Option>
-            <Option value="offline">停用</Option>
+            <Option value="normal">正常</Option>
+            <Option value="deleted">已删除</Option>
           </Select>
           )}
       </FormItem>
@@ -64,13 +58,12 @@ const SupplierSearchForm = ({
 
   children.push(<Col span={12} key='name'>
       <FormItem  {...formItemLayout} label="名称 类似于">
-        {getFieldDecorator('nameField')(
+        {getFieldDecorator('name')(
           <Input type="text" placeholder="请输入"/>
         )}
         </FormItem>
       </Col>);
 
-    const shownCount = searchExpand ? children.length : 2;
     return (
       <Card title="搜索条件">
       <Form
@@ -79,7 +72,7 @@ const SupplierSearchForm = ({
         onSubmit={handleSearch}
       >
         <Row gutter={40}>
-          {children.slice(0, shownCount)}
+          {children.slice(0, children.length)}
         </Row>
 
         <Row>
@@ -88,9 +81,6 @@ const SupplierSearchForm = ({
             <Button style={{ marginLeft: 8 }} onClick={handleReset}>
               清除
             </Button>
-            <a style={{ marginLeft: 8, fontSize: 12 }} onClick={() => onToggle(searchExpand)}>
-              展开搜索 <Icon type={searchExpand ? 'up' : 'down'} />
-            </a>
           </Col>
         </Row>
       </Form>

@@ -18,73 +18,87 @@ const SupplierCreate = ({
         return;
       }
 
-      const data = { ...getFieldsValue(), uuid: item.uuid,version:item.version };
+      const data = { ...getFieldsValue(), uuid: item.uuid,version:item.version,state:item.state };
       onOk(data);
 
-   /*   if(item.uuid){
-        onOk(item);
-      }else{
-        onOk(getFieldsValue());
-      }*/
     });
   }
 
     const formItemLayout = {
-      labelCol: { span: 5 },
-      wrapperCol: { span: 19 },
+      labelCol: { span: 6 },
+      wrapperCol: { span: 12 },
     };
 
-    return (
-     <div>
-     <div className="ant-table-title">
-     <Button onClick={handleOk}> 保存</Button>
-     <Button style={{ marginLeft: 8 }} onClick={() => onCancel()}> 取消</Button>
-     </div>
-     <Card title="基本信息">
-      <Row gutter={16}>
-       <Col span={12}>
-        <Form horizontal>
-        <FormItem {...formItemLayout} label="代码 :" hasFeedback>
+    const children = [];
+    children.push(
+        <Col span={13} key={1}>
+          <FormItem {...formItemLayout} label="代码 :" hasFeedback>
             {getFieldDecorator('code', {
             initialValue: item.code,
             rules: [
               { required: true, message: '代码未填写' },
-            ],
-          })(
+             ],
+            })(
               <Input type="text"/>
-            )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="姓名 :" hasFeedback>
+             )}
+          </FormItem>
+        </Col>
+    );
+
+    children.push(
+        <Col span={13} key={2}>
+           <FormItem {...formItemLayout} label="姓名 :" hasFeedback>
             {getFieldDecorator('name', {
             initialValue: item.name,
             rules: [
               { required: true, message: '名称未填写' },
             ],
-          })(
+           })(
               <Input type="text"/>
             )}
+          </FormItem>
+        </Col>
+    );
+
+    children.push(
+        <Col span={13} key={3}>
+          <FormItem {...formItemLayout} label="联系方式：" hasFeedback>
+           {getFieldDecorator('phone',{
+              initialValue: item.phone,
+             rules: [
+                { required: true, message: '名称未填写' }            ],
+            })(
+              <Input type="text"/>
+               )}
         </FormItem>
-        <FormItem {...formItemLayout} label="联系方式：" hasFeedback>
-         {getFieldDecorator('phone',{
-            initialValue: item.phone,
-           rules: [
-              { required: true, message: '名称未填写' }            ],
-          })(
-            <Input type="text"/>
-             )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="地址：" hasFeedback>
+        </Col>
+    );
+
+    children.push(
+        <Col span={13} key={4}>
+          <FormItem {...formItemLayout} label="地址：" hasFeedback>
             {getFieldDecorator('address' ,{
             initialValue: item.address,
-        })(
-            <Input type="textarea" autosize={{ minRows: 4 }}></Input>
-        )}
-        </FormItem>
+            })(
+                <Input type="textarea" autosize={{ minRows: 4 }}></Input>
+            )}
+          </FormItem>
+        </Col>
+    );
 
-      </Form>
-      </Col>
-   </Row>
-    </Card>
+    return (
+     <div>
+     <div className="ant-table-title">
+      <Button style={{ marginLeft: 8 }} onClick={() => onCancel()}> 取消</Button>
+      <Button type="primary" onClick={handleOk}> 保存</Button>
+     </div>
+     <Form>
+        <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
+          <Row gutter={12} type="flex">
+            {children}
+          </Row>
+        </Card>
+    </Form>
     </div>
     );
 };

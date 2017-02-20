@@ -1,4 +1,4 @@
-import { query,create,get,edit,remove} from '../../services/BasicInfo/ContainerType';
+import { querybypage,create,get,edit,remove} from '../../services/BasicInfo/ContainerType';
 import { parse } from 'qs';
 
 export default {
@@ -52,7 +52,7 @@ export default {
     },
     *query({payload},{call,put}){
       yield put({type: 'showLoading'});
-      const {data} = yield call(query,parse(payload));
+      const {data} = yield call(querybypage,parse(payload));
       if(data){
         yield put({
           type: 'hideModal'
@@ -94,7 +94,7 @@ export default {
       yield put({type: 'showLoading'});
       const {data} = yield call(edit,parse(payload));
       if(data){
-        const result = yield call(query);
+        const result = yield call(querybypage);
           if(result){
             yield put({
               type:'querySuccess',
@@ -114,11 +114,11 @@ export default {
       yield put({type: 'showLoading'});
       const {data} = yield call(remove,{
         uuid:payload.uuid,
-        token:payload.token,
+        token:localStorage.getItem("token"),
         version:payload.version
       });
       if(data){
-        const result = yield call(query);
+        const result = yield call(querybypage);
           if(result){
             yield put({
               type:'querySuccess',

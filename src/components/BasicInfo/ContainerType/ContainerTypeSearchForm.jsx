@@ -1,6 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import {Menu, Form, Row, Col, Input, Button,Card ,Icon} from 'antd';
+import {Menu, Form, Row, Col, Input, Button,Card ,Icon,Collapse } from 'antd';
 const FormItem = Form.Item;
+const Panel = Collapse.Panel;
 
 const ContainerTypeSearchForm = ({
   onSearch,
@@ -27,44 +28,45 @@ const ContainerTypeSearchForm = ({
 
   const children = [];
   children.push(
-    <Col span={12} key='code'>
+    <Col span={12} key='1'>
       <FormItem {...formItemLayout} label="代码 类似于">
-        {getFieldDecorator('codeField')(
+        {getFieldDecorator('code')(
           <Input type="text" placeholder="请输入"/>
           )}
       </FormItem>
       </Col>);
 
-  children.push(<Col span={12} key='name'>
+  children.push(
+    <Col span={12} key='2'>
       <FormItem  {...formItemLayout} label="名称 类似于">
-        {getFieldDecorator('nameField')(
+        {getFieldDecorator('name')(
           <Input type="text" placeholder="请输入"/>
         )}
         </FormItem>
       </Col>);
 
     return (
-      <Card title="搜索条件">
-      <Form
-        horizontal
-        className="ant-advanced-search-form"
-        onSubmit={handleSearch}
-      >
-        <Row gutter={40}>
-          {children.slice(0, 2)}
-        </Row>
-
-        <Row>
-          <Col span={22} style={{ textAlign: 'right' }}>
-            <Button type="primary" htmlType="submit">搜索</Button>
-            <Button style={{ marginLeft: 8 }} onClick={handleReset}>
-              清除
-            </Button>
-          </Col>
-        </Row>
+      <Collapse defaultActiveKey={["1"]}>
+        <Panel header="搜索" key="1">
+          <Form
+            className="ant-advanced-search-form"
+            onSubmit={handleSearch}
+          >
+          <Row gutter={40}>
+            {children.slice(0, children.length)}
+          </Row>
+          <Row>
+            <Col span={22} style={{ textAlign: 'right' }}>
+              <Button type="primary" htmlType="submit">搜索</Button>
+              <Button style={{ marginLeft: 8 }} onClick={handleReset}>
+                清除
+              </Button>
+            </Col>
+          </Row>
       </Form>
-    </Card>
-    );
+     </Panel>
+    </Collapse>  
+  );
 };
 
 ContainerTypeSearchForm.propTypes = {

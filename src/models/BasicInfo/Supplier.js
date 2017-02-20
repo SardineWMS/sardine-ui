@@ -1,4 +1,4 @@
-import { query,create,get,edit,remove} from '../../services/BasicInfo/Supplier';
+import { querybypage,create,get,edit,remove,recover} from '../../services/BasicInfo/Supplier';
 import { parse } from 'qs';
 
 export default {
@@ -8,9 +8,13 @@ export default {
     loading:false,
     searchExpand: false,
     currentItem:{},
-    modalVisible: false,
     showCreate:false,
     showEdit:false,
+    showView: false,
+    batchRemoveProcessModal: false,
+    removeSupplierEntitys: [],
+    batchRecoverProcessModal: false,
+    recoverSupplierEntitys: [],
     pagination:{
         showSizeChanger: true,
         showQuickJumper: true,
@@ -37,7 +41,7 @@ export default {
   effects:{
     *query({payload},{call,put}){
       yield put({type: 'showLoading'});
-      const {data} = yield call(query,parse(payload));
+      const {data} = yield call(querybypage,parse(payload));
       if(data){
         yield put({
           type:'querySuccess',
@@ -91,11 +95,80 @@ export default {
       yield put({type: 'showLoading'});
       const {data} = yield call(remove,{
         uuid:payload.uuid,
+        token:localStorage.getItem("token"),
+        version:payload.version
+      });
+      if(data){
+        const newSupplier = yield call(get,{
+          supplierUuid : payload.uuid
+        });
+        if(newSupplier.data){
+         console.log(newSupplier);
+        yield put({
+          type:'showViewPage',
+          payload:{
+            currentItem:newSupplier.data.obj,
+          }
+        })
+      }
+      }
+    },
+    *recover({payload},{call,put}){
+      yield put({type: 'showLoading'});
+      const {data} = yield call(recover,{
+        uuid:payload.uuid,
+        token:localStorage.getItem("token"),
+        version:payload.version
+      });     
+     if(data){
+        const newSupplier = yield call(get,{
+          supplierUuid : payload.uuid
+        });
+        if(newSupplier.data){
+         console.log(newSupplier);
+        yield put({
+          type:'showViewPage',
+          payload:{
+            currentItem:newSupplier.data.obj,
+          }
+        })
+      }
+      }
+    },
+  *recoverBatch({payload},{call,put}){
+      yield put({type: 'hideModal'});
+      yield put({type: 'showLoading'});
+      const {data} = yield call(recover,{
+        uuid:payload.uuid,
         token:payload.token,
         version:payload.version
       });
       if(data){
-        const result = yield call(query);
+        const result = yield call(querybypage);
+          if(result){
+            yield put({
+              type:'querySuccess',
+              payload:{
+                list:result.data.obj.records,
+                pagination:{
+                  total:result.data.obj.recordCount,
+                  current:result.data.obj.page,
+                }
+              }
+            })
+          }
+      }
+    },
+  *removeBatch({payload},{call,put}){
+      yield put({type: 'hideModal'});
+      yield put({type: 'showLoading'});
+      const {data} = yield call(remove,{
+        uuid:payload.uuid,
+        token:payload.token,
+        version:payload.version
+      });
+      if(data){
+        const result = yield call(querybypage);
           if(result){
             yield put({
               type:'querySuccess',
@@ -127,13 +200,15 @@ export default {
         ...action.payload,
         showCreate: false,
         showView: true,
+        loading:false
       }
     },
 
     showCreatePage(state) {
       return {...state,
         showCreate: true,
-        showView: false
+        showView: false,
+        loading:false
       };
     },
 
@@ -142,6 +217,7 @@ export default {
         ...action.payload,
         showCreate: true,
         showView: false,
+        loading:false
       }
     },
 
@@ -149,12 +225,7 @@ export default {
       return {...state,
         showCreate: false,
         showView: false,
-      }
-    },
-
-    toggle(state, action) {
-      return {...state,
-        ...action.payload,
+        loading:false
       }
     },
 
@@ -163,6 +234,19 @@ export default {
         modalVisible: false
       }
     },
+
+    batchRemoveSupplier(state, action) {
+            return { ...state, ...action.payload, batchRemoveProcessModal: true }
+    },
+    hideRemoveSupplierModal(state, action) {
+            return { ...state, batchRemoveProcessModal: false }
+    },
+    batchRecoverSupplier(state, action) {
+            return { ...state, ...action.payload, batchRecoverProcessModal: true }
+    },
+    hideRecoverSupplierModal(state, action) {
+            return { ...state, batchRecoverProcessModal: false }
+    }  
 
   },
 

@@ -56,10 +56,13 @@ function ContainerType({location,dispatch,containerType}){
       }))
     },
 
-    onCreate(){
-        dispatch({
-        type: `containerType/get`,
-        payload: data,
+   onCreate(){
+      dispatch({
+        type: 'containerType/showModal',
+        payload: {
+          modalType: 'create',
+          item:{}
+        },
       })
     },
 
@@ -73,10 +76,10 @@ function ContainerType({location,dispatch,containerType}){
     })
   },
 
-    onDeleteItem(id) {
+    onDeleteItem(item) {
       dispatch({
         type: 'containerType/remove',
-        payload: id,
+        payload: item,
       });
     },
 
@@ -89,18 +92,6 @@ function ContainerType({location,dispatch,containerType}){
         }
     })
   },
-
-    // onEditItem(item) {
-    //     console.log(item),
-    //     dispatch({
-    //     type: 'containerType/showModal',
-    //     payload : {
-    //       currentItem : item,
-    //       modalType:'edit'
-    //     }
-    //   })
-    // },
-
   }
 
   const containerTypeSearchFormProps={
