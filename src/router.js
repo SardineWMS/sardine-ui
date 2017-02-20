@@ -27,7 +27,7 @@ export default function ({
   return (
     <Router history={history}>
       <Route path="/" component={App}>
-        <IndexRedirect to="/login" />
+        <IndexRedirect to="/home" />
         <Route path="user" component={User} />
         <Route path="/home" component={Content} />
         <Route path="/login" component={Login} />

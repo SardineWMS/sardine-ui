@@ -10,10 +10,10 @@ import Content1 from './Content1';
 export default class Content extends React.Component {
   render() {
     return (
-    <div>
-      <Content0 id="Content0" key="Content0"/>
-      <Content1 id="Content1" key="Content1"/>
-    </div>
+      <div>
+        {/*<Content0 id="Content0" key="Content0"/>*/}
+        <Content0 id="Content1" key="Content1" />
+      </div>
     );
   }
 }

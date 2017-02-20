@@ -27,7 +27,7 @@ module.exports = [{
     }, {
       key: 'containerType',
       name: '容器类型',
-    },{
+    }, {
       key: 'bin',
       name: '货位',
     }, {
@@ -35,4 +35,8 @@ module.exports = [{
       name: '货位类型'
     }],
   },],
-},];
+}, {
+  key: 'home',
+  name: '介绍',
+  icon: 'home'
+}];
