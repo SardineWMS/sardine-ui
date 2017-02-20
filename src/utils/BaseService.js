@@ -17,7 +17,7 @@ export function createBase(params) {
     return req;
 }
 
-export function addTokenToUl(url) {
+export function addTokenToUrl(url) {
     return url + `?token=` + token;
 }
 
