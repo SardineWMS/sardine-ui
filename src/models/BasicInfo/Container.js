@@ -2,7 +2,7 @@ import {
   parse
 } from 'qs';
 import {
-  query,
+  queryContainers,
   create,
   queryContainerTypes,
 } from '../../services/BasicInfo/Container';
@@ -58,7 +58,7 @@ export default {
       })
       const {
         data
-      } = yield call(query, parse(payload));
+      } = yield call(queryContainers, parse(payload));
 
       if (data) {
         yield put({

@@ -1,17 +1,19 @@
 import request from '../../utils/request';
 import qs from 'qs';
+import {
+  query,
+  createBase,
+  addTokenToUrl
+} from '../../utils/BaseService.js';
 
-export async function query(params) {
-  return request(`/api/container/querybypage?${qs.stringify(params)}`);
+export async function queryContainers(params) {
+  return request(query('basic/container/querybypage', params));
 }
 
-
 export async function queryContainerTypes(params) {
-  return request(`/basic/containertype/querycontainerTypesUcns?${qs.stringify(params)}`);
+  return request(query('/basic/containertype/querycontainerTypesUcns', params));
 }
 
 export async function create(params) {
-  return request(`/api/container/savenew?${qs.stringify(params)}`, {
-    method: 'put',
-  });
+  return request(addTokenToUrl('/basic/container/savenew'), createBase(params));
 }
