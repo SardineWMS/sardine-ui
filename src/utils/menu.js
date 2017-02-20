@@ -1,6 +1,6 @@
 module.exports = [{
-  key: 'demo',
-  name: 'Demo模块',
+  key: 'user',
+  name: 'user模块',
   icon: 'user'
 }, {
   key: 'wms',

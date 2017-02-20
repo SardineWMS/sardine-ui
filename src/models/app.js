@@ -35,7 +35,8 @@ export default {
       }
     },*/
 
-  effects: { * login({
+  effects: {
+    * login({
       payload
     }, {
       call,
@@ -50,6 +51,7 @@ export default {
       if (data.token) {
         localStorage.setItem("loginId", data.obj.code);
         localStorage.setItem("token", data.token);
+        localStorage.setItem("admin", data.obj.administrator);
         yield put({
           type: 'loginSuccess',
           payload: {

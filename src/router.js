@@ -12,7 +12,7 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import App from './routes/app';
 import Category from './routes/basicInfo/Category';
-import Demo from './routes/Demo';
+import User from './routes/User';
 import Customer from './routes/basicInfo/Customer';
 import Article from './routes/basicInfo/Article';
 import Supplier from './routes/basicInfo/Supplier';
@@ -21,14 +21,14 @@ import BinType from './routes/basicInfo/BinType';
 import ContainerType from './routes/basicInfo/ContainerType';
 import Bin from './routes/basicInfo/Bin';
 
-export default function({
+export default function ({
   history
 }) {
   return (
     <Router history={history}>
       <Route path="/" component={App}>
-        <IndexRedirect to="/demo" />
-        <Route path="demo" component={ Demo }/>
+        <IndexRedirect to="/login" />
+        <Route path="user" component={User} />
         <Route path="/home" component={Content} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
@@ -38,8 +38,8 @@ export default function({
         <Route path="/wms/basicInfo/article" component={Article} />
         <Route path="/wms/basicInfo/supplier" component={Supplier} />
         <Route path="/wms/basicInfo/binType" component={BinType} />
-	    <Route path="/wms/basicInfo/containerType" component={ContainerType} />
-      <Route path="/wms/basicInfo/bin" component={Bin} />
+        <Route path="/wms/basicInfo/containerType" component={ContainerType} />
+        <Route path="/wms/basicInfo/bin" component={Bin} />
       </Route>
     </Router>
   );

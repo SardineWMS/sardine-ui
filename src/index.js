@@ -8,7 +8,7 @@ const app = dva({
 	history: hashHistory,
 });
 
-app.model(require('./models/Demo'));
+app.model(require('./models/User'));
 app.model(require('./models/app'));
 app.model(require('./models/BasicInfo/Category'));
 app.model(require('./models/BasicInfo/Customer'));
