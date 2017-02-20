@@ -6,6 +6,11 @@ export function query(url, params) {
     return url + `?${qs.stringify(params)}`;
 }
 
+export function addTokenToParamsAndStringify(params) {
+   params.token = token;
+   return qs.stringify(params);
+}
+
 export function createBase(params) {
     var req = new Object();
     req.method = 'post';

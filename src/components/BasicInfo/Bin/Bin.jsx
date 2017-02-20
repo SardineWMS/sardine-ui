@@ -102,7 +102,7 @@ function BinSearch({
     selectBins = selectedRows;
   },
   onSelectAll: (selected, selectedRows, changeRows) => {
-
+    selectBins = selectedRows;
   },
   getCheckboxProps: record => ({
 
@@ -131,7 +131,7 @@ function BinSearch({
                  <Button type="ghost" style={{ marginLeft: 8 }}>
                    新增 <Icon type="down" />
                  </Button>
-            </Dropdown> &nbsp;&nbsp;&nbsp;
+            </Dropdown>
             <Button onClick={handleDeleteBin}>删除</Button>
         	</div>
         }

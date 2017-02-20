@@ -31,7 +31,7 @@ function Bin({ location, dispatch, bin }) {
           code: data.code,
           name: data.name,
           note: data.remark,
-          token: localStorage.getItem("token")}
+        }
       })
     },
     onCancel() {
@@ -52,7 +52,7 @@ function Bin({ location, dispatch, bin }) {
           name: data.name,
           note: data.remark,
           wrhUuid: data.wrh,
-          token: localStorage.getItem("token")}
+        }
       })
     },
     onCancel() {
@@ -126,7 +126,6 @@ function Bin({ location, dispatch, bin }) {
         type: 'bin/createPath',
         payload: {
           zoneUuid: entity,
-          token: localStorage.getItem("token")
         }
       })
     },
@@ -138,9 +137,6 @@ function Bin({ location, dispatch, bin }) {
     refreshGrid(){
       dispatch({
         type: 'bin/queryBin',
-        payload: {
-          token: localStorage.getItem("token")
-        }
       })
     },
   }
@@ -156,7 +152,6 @@ function Bin({ location, dispatch, bin }) {
         type: 'bin/createShelf',
         payload: {
           pathCode: entity,
-          token: localStorage.getItem("token")
         }
       })
     },
@@ -168,9 +163,6 @@ function Bin({ location, dispatch, bin }) {
     refreshGrid(){
       dispatch({
         type: 'bin/queryBin',
-        payload: {
-          token: localStorage.getItem("token")
-        }
       })
     },
   }
@@ -188,7 +180,6 @@ function Bin({ location, dispatch, bin }) {
           binTypeUuid: entity.binTypeUuid,
           binUsage: entity.usage,
           code: entity.code,
-          token: localStorage.getItem("token")
         }
       })
     },
@@ -200,9 +191,6 @@ function Bin({ location, dispatch, bin }) {
     refreshGrid(){
       dispatch({
         type: 'bin/queryBin',
-        payload: {
-          token: localStorage.getItem("token")
-        }
       })
     },
   }
@@ -219,7 +207,6 @@ function Bin({ location, dispatch, bin }) {
         payload: {
           uuid: entity.uuid,
           version: entity.version,
-          token: localStorage.getItem("token")
         }
       })
     },
@@ -231,9 +218,6 @@ function Bin({ location, dispatch, bin }) {
     refreshGrid(){
       dispatch({
         type: 'bin/queryBin',
-        payload: {
-          token: localStorage.getItem("token")
-        }
       })
     },
   }
@@ -245,8 +229,10 @@ function Bin({ location, dispatch, bin }) {
     onSearch(fieldsValue) {
       dispatch({
         type: 'bin/queryBin',
-        payload: {fieldsValue,
-          token: localStorage.getItem("token")
+        payload: {
+          code: fieldsValue.code,
+          usage: fieldsValue.usage,
+          state: fieldsValue.state,
         }
       })
       },
@@ -268,7 +254,6 @@ function Bin({ location, dispatch, bin }) {
       dispatch({
         type: 'bin/queryBin',
         payload: {
-          token: localStorage.getItem("token"),
           wrhUuid: wrhUuid,
           zoneUuid: zoneUuid,
           pathUuid: pathUuid,
@@ -293,9 +278,6 @@ function Bin({ location, dispatch, bin }) {
     onCreateZone(){
       dispatch({
         type: 'bin/queryWrhsAndShowZoneModal',
-        payload: {
-          token: localStorage.getItem("token")
-        }
       })
     },
     onCreateShelf(){
@@ -306,17 +288,11 @@ function Bin({ location, dispatch, bin }) {
     onCreatePath(){
       dispatch({
         type: 'bin/queryZonesAndShowPathModal',
-        payload: {
-          token: localStorage.getItem("token")
-        }
       })
     },
     onCreateBin(){
       dispatch({
         type: 'bin/queryBinTypesAndShowBinModal',
-        payload: {
-          token: localStorage.getItem("token")
-        }
       })
     },
     onDeleteBin(data) {

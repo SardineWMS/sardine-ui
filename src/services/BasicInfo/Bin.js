@@ -1,24 +1,29 @@
 import request from '../../utils/request';
 import qs from 'qs';
+import { query, addTokenToParamsAndStringify} from '../../utils/BaseService.js';
 
 export async function queryBin(params) {
-  return request(`/api/bin/query?${qs.stringify(params)}`);
+  const url = "/basic/bin/query";
+  return request(query(url, params));
 }
 
 export async function queryWrhs(params) {
-  return request(`/api/bin/queryWrhs?${qs.stringify(params)}`);
+  const url = "/basic/bin/queryWrhs";
+  return request(query(url, params));
 }
 
 export async function queryZones(params) {
-  return request(`/api/bin/queryZones?${qs.stringify(params)}`);
+  const url = "/basic/bin/queryZones";
+  return request(query(url, params));
 } 
 
 export async function queryBinTypes(params) {
-  return request(`/api/bin/queryBinTypes?${qs.stringify(params)}`);
+  const url = "/basic/bin/queryBinTypes";
+  return request(query(url, params));
 }
 
 export async function createWrh(params) {
-  return request(`/api/bin/insertWrh?${qs.stringify(params)}`, {
+  return request(`/basic/bin/insertWrh?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -29,7 +34,7 @@ export async function createWrh(params) {
 }
 
 export async function createZone(params) {
-  return request(`/api/bin/insertZone?${qs.stringify(params)}`, {
+  return request(`/basic/bin/insertZone?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -40,7 +45,7 @@ export async function createZone(params) {
 }
 
 export async function createPath(params) {
-  return request(`/api/bin/insertPath?${qs.stringify(params)}`, {
+  return request(`/basic/bin/insertPath?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -51,7 +56,7 @@ export async function createPath(params) {
 }
 
 export async function createShelf(params) {
-  return request(`/api/bin/insertShelf?${qs.stringify(params)}`, {
+  return request(`/basic/bin/insertShelf?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -62,7 +67,7 @@ export async function createShelf(params) {
 }
 
 export async function createBin(params) {
-  return request(`/api/bin/insertBin?${qs.stringify(params)}`, {
+  return request(`/basic/bin/insertBin?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -73,7 +78,7 @@ export async function createBin(params) {
 }
 
 export async function deleteBin(params) {
-  return request(`/api/bin/delete?${qs.stringify(params)}`, {
+  return request(`/basic/bin/delete?${addTokenToParamsAndStringify(params)}`, {
         method: 'put',
     headers: {
       'Accept': 'application/json',

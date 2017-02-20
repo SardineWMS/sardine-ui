@@ -119,7 +119,7 @@ class BinTree extends React.Component {
     });
     return (
       <div>
-        <Search style={{ width: 200 }} placeholder="Search" onChange={this.onChange} />
+        <Search style={{ width: 200 }} placeholder="搜索..." onChange={this.onChange} />
         <Tree
           onExpand={this.onExpand}
           expandedKeys={expandedKeys}

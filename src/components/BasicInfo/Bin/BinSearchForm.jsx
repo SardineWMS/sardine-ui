@@ -1,5 +1,5 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Row, Col, Input, Button,Card ,Collapse,Select } from 'antd';
+import { Form, Row, Col, Input, Button,Card ,Collapse,Select} from 'antd';
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 const Option = Select.Option;
@@ -40,7 +40,7 @@ const BinSearchForm = ({
       <FormItem {...formItemLayout} label="状态 等于">
         {getFieldDecorator('state')(
               <Select >
-                  <Option value="normal" initialValue>正常</Option>
+                  <Option value="free" initialValue>空闲</Option>
              </Select>
         )}
         </FormItem>
@@ -50,14 +50,15 @@ const BinSearchForm = ({
       <FormItem {...formItemLayout} label="用途 等于">
         {getFieldDecorator('state')(
               <Select >
-                  <Option value="normal" initialValue>正常</Option>
+                  <Option value="StorageBin" initialValue>存储位</Option>
              </Select>
         )}
         </FormItem>
       </Col>);
 
     return (
-      <Card title="搜索条件">
+   <Collapse defaultActiveKey={["1"]}>
+    <Panel header="搜索" key="1">
       <Form
         horizontal
         className="ant-advanced-search-form"
@@ -79,7 +80,8 @@ const BinSearchForm = ({
           </Col>
         </Row>
       </Form>
-    </Card>
+    </Panel>
+  </Collapse>
     );
 };
 
