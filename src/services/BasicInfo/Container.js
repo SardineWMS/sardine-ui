@@ -2,7 +2,7 @@ import request from '../../utils/request';
 import qs from 'qs';
 import {
   query,
-  createBase,
+  updateBase,
   addTokenToUrl
 } from '../../utils/BaseService.js';
 
@@ -15,5 +15,5 @@ export async function queryContainerTypes(params) {
 }
 
 export async function create(params) {
-  return request(addTokenToUrl('/basic/container/savenew'), createBase(params));
+  return request(addTokenToUrl('/basic/container/savenew'), updateBase(params));
 }
