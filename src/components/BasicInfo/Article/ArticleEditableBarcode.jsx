@@ -69,7 +69,7 @@ const ArticleEditableBarcode = ({
       <div className={commonStyles.button}>
         <Button type="ghost" onClick={() => onAdd(articleUuid)}>增加</Button>
       </div>
-      <Table bordered dataSource={dataSource} columns={columns} size="small" />
+      <Table bordered dataSource={dataSource} columns={columns} size="small" pagination = {false} />
     </div>);
 }
 
