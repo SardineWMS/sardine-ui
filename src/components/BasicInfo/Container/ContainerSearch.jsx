@@ -78,7 +78,8 @@ const ContainerSearch = ({
   	}, {
     	title: '状态',
     	dataIndex: 'state',
-    	key: 'state'
+    	key: 'state',
+      render: text => (text == "STACONTAINERIDLE" ? '空闲' : text),
   	}, {
     	title: '当前位置',
     	dataIndex: 'position',

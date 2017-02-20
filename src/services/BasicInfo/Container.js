@@ -2,12 +2,12 @@ import request from '../../utils/request';
 import qs from 'qs';
 import {
   query,
-  updateBase,
+  updateBaseNullBody,
   addTokenToUrl
 } from '../../utils/BaseService.js';
 
 export async function queryContainers(params) {
-  return request(query('basic/container/querybypage', params));
+  return request(query('/basic/container/querybypage', params));
 }
 
 export async function queryContainerTypes(params) {
@@ -15,5 +15,5 @@ export async function queryContainerTypes(params) {
 }
 
 export async function create(params) {
-  return request(addTokenToUrl('/basic/container/savenew'), updateBase(params));
+  return request(query('/basic/container/savenew', params), updateBaseNullBody(params));
 }
