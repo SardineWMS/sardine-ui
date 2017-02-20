@@ -46,9 +46,9 @@ const BinSearchForm = ({
         </FormItem>
       </Col>);
 
-        children.push(<Col span={12} key='state'>
+        children.push(<Col span={12} key='usage'>
       <FormItem {...formItemLayout} label="用途 等于">
-        {getFieldDecorator('state')(
+        {getFieldDecorator('usage')(
               <Select >
                   <Option value="StorageBin" initialValue>存储位</Option>
              </Select>

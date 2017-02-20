@@ -67,7 +67,8 @@ function BinSearch({
 	const columns = [{
     	title: '代码',
     	dataIndex: 'code',
-    	key: 'code'
+    	key: 'code',
+      sorter: true,
   	}, {
     	title: '货位状态',
     	dataIndex: 'state',

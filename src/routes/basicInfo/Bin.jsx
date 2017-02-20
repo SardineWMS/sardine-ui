@@ -265,10 +265,14 @@ function Bin({ location, dispatch, bin }) {
 
   const binSearchProps = {
     dataSource: list,
-    onPageChange(page) {
-      dispatch(routerRedux.push({
-        pathname: '/wms/basicInfo/bin',
-      }))
+    onPageChange(page, filters, sorter) {
+      dispatch({
+        type: 'bin/queryBin',
+        payload: {
+          sort: sorter.columnKey,
+          order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+        }
+      })
     },
     onCreateWrh(){
       dispatch({
