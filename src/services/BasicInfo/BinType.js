@@ -1,38 +1,23 @@
 import request from '../../utils/request';
 import qs from 'qs';
+import { query, addTokenToUrl, createBase, updateBase, deleteBase } from '../../utils/BaseService';
 
 export async function queryBinType(params) {
-    console.log("调用后台");
-    console.dir(params);
-    return request(`/api/binType/query?${qs.stringify(params)}`);
+    const url = "/basic/binType/query";
+    return request(query(url, params));
 }
 
 export async function create(params) {
-    return request(`/api/binType/insert`, {
-        method: 'post',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(params),
-    })
+    const url = "/basic/binType/insert";
+    return request(addTokenToUrl(url), createBase(params));
 }
 
 export async function update(params) {
-    console.log("update service");
-    return request('/api/binType/update', {
-        method: 'put',
-        headers: {
-            'Accept': 'application/json',
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(params),
-    });
+    const url = "/basic/binType/update";
+    return request(addTokenToUrl(url), updateBase(params));
 }
 
 export async function deleteBinType(params) {
-    console.log("调用service");
-    return request(`/api/binType/remove?${qs.stringify(params)}`, {
-        method: 'delete',
-    })
+    const url = "/basic/binType/remove";
+    return request(query(url, params), deleteBase(params));
 }

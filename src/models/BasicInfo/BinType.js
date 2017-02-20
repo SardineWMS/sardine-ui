@@ -72,7 +72,7 @@ export default {
                 type: 'showLoading'
             })
             yield call(create, payload);
-            const {data} = yield call(queryBinType);
+            const {data} = yield call(queryBinType, parse(null));
             if (data) {
                 console.dir(data);
                 yield put({
@@ -102,7 +102,7 @@ export default {
             yield call(update, payload);
             const {
                 data
-            } = yield call(queryBinType);
+            } = yield call(queryBinType, parse(null));
             console.log("data是否存在");
             console.dir(data);
             if (data) {
@@ -129,11 +129,10 @@ export default {
             yield call(deleteBinType, {
                 uuid: payload.uuid,
                 version: payload.version,
-                token: payload.token,
             });
             const {
                 data
-            } = yield call(queryBinType);
+            } = yield call(queryBinType, parse(null));
             if (data) {
                 console.dir(data);
                 yield put({
