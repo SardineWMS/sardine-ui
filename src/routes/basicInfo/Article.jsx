@@ -26,13 +26,14 @@ function Article({location, dispatch, article}) {
 		dataSource: list,
 		loading,
 		pagination: pagination,
-		onPageChange(page) {
+		onPageChange(page, filters, sorter) {
 			dispatch({
 				type: 'article/query',
 				payload: {
 					page: page.current,
 					pageSize: page.pageSize,
-					token: localStorage.getItem("token")
+					sort: sorter.columnKey,
+                    order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
 				},
 			})
 		},

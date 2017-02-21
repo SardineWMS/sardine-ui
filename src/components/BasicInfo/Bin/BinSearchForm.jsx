@@ -12,6 +12,7 @@ const BinSearchForm = ({
     getFieldDecorator,
     validateFields,
     getFieldsValue,
+    resetFields,
     },
   }) => {
   function handleSearch(e) {
@@ -21,6 +22,7 @@ const BinSearchForm = ({
 
   function handleReset(e) {
     e.preventDefault();
+    resetFields();
   }
 
   const formItemLayout = {

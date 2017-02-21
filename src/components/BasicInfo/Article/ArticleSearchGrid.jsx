@@ -20,10 +20,12 @@ function ArticleSearch({
     	dataIndex: 'code',
     	key: 'code',
       render: (text, record) => <a onClick={() => onView(record)}>{text}</a>,
+      sorter: true,
   	}, {
     	title: '名称',
     	dataIndex: 'name',
-    	key: 'name'
+    	key: 'name',
+      sorter: true,
   	}, {
       title: '规格',
       dataIndex: 'spec',

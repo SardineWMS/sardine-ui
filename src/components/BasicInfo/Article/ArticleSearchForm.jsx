@@ -12,6 +12,7 @@ const ArticleSearchForm = ({
     getFieldDecorator,
     validateFields,
     getFieldsValue,
+    resetFields,
   },
 }) => {
   function handleSearch(e) {
@@ -21,6 +22,7 @@ const ArticleSearchForm = ({
 
   function handleReset(e) {
     e.preventDefault();
+    resetFields();
   }
 
   const formItemLayout = {
