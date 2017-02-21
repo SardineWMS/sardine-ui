@@ -48,6 +48,7 @@ function CategorySearch({
       <Table size="small"
         bordered
         columns={columns}
+        pagination = {false}
         title={() => 
         	<div>
             <Button onClick={handleCreate}>新建根目录</Button>
