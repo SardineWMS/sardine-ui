@@ -49,13 +49,9 @@ export default {
         const {
           data
         } = yield call(login, payload);
-        console.log("data>>>");
-        console.dir(data);
-        if (data.status !== 200) {
+        if (data.status != 200) {
           const message = data.obj;
-          console.log(message);
           const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
-          console.log(simpleMessage);
           if (message.indexOf("errorMsg") === -1) {
             alert(data.message + "：" + message);
             return;

@@ -90,7 +90,7 @@ export default {
 				if (data.status !== 200) {
 					const message = data.obj;
 					const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
-					alert(`新建用户出错：` + simpleMessage);
+					alert(data.message + "：" + simpleMessage);
 					return;
 				}
 				if (data) {
