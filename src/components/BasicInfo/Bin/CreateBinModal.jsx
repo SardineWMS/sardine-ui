@@ -17,6 +17,7 @@ const CreateBinModal = ({
   onOk,
   onCancel,
   binTypes,
+  treeData,
   form: {
     getFieldDecorator,
     validateFields,
@@ -31,11 +32,27 @@ const CreateBinModal = ({
       const data = {
         ...getFieldsValue()
       }
+      var shelfArray = new Array();
+      for(let i=0;i<treeData.length;i++){
+        let wrh = treeData[i];
+        for(let j=0;j<wrh.children.length;j++){
+          let zone = wrh.children[j];
+          for(let k=0;k<zone.children.length;k++){
+            let path = zone.children[k];
+            for(let q=0;q<path.children.length;q++){
+              let shelf = path.children[q];
+              if(shelf.key <= data.endShelf && shelf.key >= data.startShelf){
+                shelfArray.push(shelf.key);
+              }
+            }
+          }
+        }
+      }
       let binArray = new Array();
       let shelfCount = data.endShelf - data.startShelf + 1;
       let columnCount = data.endColumn - data.startColumn + 1;
       let levelCount = data.endLevel - data.startLevel + 1;
-      for(let i=0;i<shelfCount;i++){
+      for(let i=0;i<shelfArray.length;i++){
         let currentShelfForInt = parseInt(data.startShelf) + i;
         let currentShelfForString = "" + currentShelfForInt;
         let leftCount = 6 - currentShelfForString.length;
@@ -45,7 +62,7 @@ const CreateBinModal = ({
         for(let j=0;j<columnCount;j++){
           for(let k=0;k<levelCount;k++){
             binArray[i*columnCount*levelCount + j*levelCount + k] = new Object();
-            binArray[i*columnCount*levelCount + j*levelCount + k].code = currentShelfForString + (j+1) + (k+1);
+            binArray[i*columnCount*levelCount + j*levelCount + k].code = shelfArray[i] + (j+1) + (k+1);
             binArray[i*columnCount*levelCount + j*levelCount + k].binTypeUuid = data.binType;
             binArray[i*columnCount*levelCount + j*levelCount + k].usage = data.usage;
           }
@@ -200,6 +217,7 @@ CreateBinModal.propTypes = {
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
   binTypes: PropTypes.array,
+  treeData: PropTypes.array,
 }
 
 export default Form.create()(CreateBinModal);

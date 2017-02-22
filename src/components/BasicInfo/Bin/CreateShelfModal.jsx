@@ -15,6 +15,7 @@ const CreateShelfModal = ({
   visible,
   onOk,
   onCancel,
+  treeData,
   form: {
     getFieldDecorator,
     validateFields,
@@ -30,17 +31,23 @@ const CreateShelfModal = ({
         ...getFieldsValue(),
       }
       var shelfArray = new Array();
-      var countPath = data.endPath - data.startPath + 1;
-
-      for(let i=0;i<countPath;i++) { 
-          for(let j=0;j<data.count;j++){
-            let currentPathForInt = i + parseInt(data.startPath);
-            let currentPathForString = "" + currentPathForInt;
-            let zeroCount = 4 - currentPathForString.length;
-            for(let k=0;k<zeroCount;k++){
-              currentPathForString = "0" + currentPathForString;
+      var pathArray = new Array();
+      for(let i=0;i<treeData.length;i++){
+        let wrh = treeData[i];
+        for(let j=0;j<wrh.children.length;j++){
+          let zone = wrh.children[j];
+          for(let k=0;k<zone.children.length;k++){
+            let path = zone.children[k];
+            if(path.key <= data.endPath && path.key >= data.startPath){
+              pathArray.push(path.key);
             }
-            shelfArray[i*data.count + j] = currentPathForString;
+          }
+        }
+      }
+
+      for(let i=0;i<pathArray.length;i++) { 
+          for(let j=0;j<data.count;j++){
+            shelfArray[i*data.count + j] = pathArray[i];
           }
       } 
       onOk(shelfArray)
@@ -106,6 +113,7 @@ CreateShelfModal.propTypes = {
   form: PropTypes.object,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
+  treeData: PropTypes.array,
 }
 
 export default Form.create()(CreateShelfModal);

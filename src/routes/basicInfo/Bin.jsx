@@ -82,6 +82,7 @@ function Bin({ location, dispatch, bin }) {
 
   const CreateShelfModalProps = {
     visible: shelfModalVisible,
+    treeData: treeData,
     onOk(data) {
       dispatch({
         type : 'bin/batchSaveShelf',
@@ -100,6 +101,7 @@ function Bin({ location, dispatch, bin }) {
   const CreateBinModalProps = {
     visible: binModalVisible,
     binTypes: binTypes,
+    treeData: treeData,
     onOk(data) {
       dispatch({
         type : 'bin/batchSaveBin',
