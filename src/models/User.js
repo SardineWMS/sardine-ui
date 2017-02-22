@@ -1,5 +1,5 @@
 import {
-	queryUser,
+	queryUser, createUser, get, update, remove, onlineUser, offlineUser
 } from '../services/user';
 
 import {
@@ -24,7 +24,13 @@ export default {
 			current: 1,
 			total: null,
 			size: 'default'
-		}
+		},
+		batchDeleteProcessModal: false,
+		batchOnlineProcessModal: false,
+		batchOfflineProcessModal: false,
+		deleteUserEntitys: [],
+		onlineUserEntitys: [],
+		offlineUserEntitys: [],
 	},
 
 	subscriptions: {
@@ -57,18 +63,137 @@ export default {
 				data
 			} = yield call(queryUser, parse(payload));
 			if (data) {
+				let userList = data.obj.records;
+				for (var user of userList) {
+					user.userState = (user.userState === 'online' ? '已启用' : '已停用');
+					user.administrator = (user.administrator === true ? '是' : '否');
+				}
 				yield put({
 					type: 'querySuccess',
 					payload: {
-						list: data.data,
+						list: userList,
 						pagination: {
-							total: data.page.total,
-							current: data.page.current,
+							total: data.obj.recordCount,
+							current: data.obj.page,
 						}
 					},
 				})
 			}
 		},
+
+		*create({payload}, {call, put}) {
+			yield put({
+				type: 'showLoading'
+			})
+			const {data} = yield call(createUser, parse(payload));
+			if (data) {
+				console.log("。。。。");
+				console.dir(data);
+				yield put({
+					type: 'get',
+					payload: {
+						uuid: data.obj
+					},
+				})
+			}
+			yield put({
+				type: 'query',
+				payload: {},
+			})
+		},
+
+		*update({payload}, {call, put}) {
+			yield call(update, payload);
+			yield put({
+				type: 'get',
+				payload: payload,
+			})
+			yield put({
+				type: 'query',
+				payload: {},
+			})
+		},
+
+		*delete({payload}, {call, put}) {
+			yield call(remove, {
+				uuid: payload.uuid,
+				version: payload.version
+			});
+			yield put({
+				type: 'query',
+				payload: {},
+			})
+		},
+
+		*gridOnline({payload}, {call, put}) {
+			yield call(onlineUser, {
+				uuid: payload.uuid,
+				version: payload.version,
+			});
+			yield put({
+				type: 'query',
+				payload: {},
+			})
+		},
+
+		*gridOffline({payload}, {call, put}) {
+			yield call(offlineUser, {
+				uuid: payload.uuid,
+				version: payload.version,
+			});
+			yield put({
+				type: 'query',
+				payload: {},
+			})
+		},
+
+		*online({payload}, {call, put}) {
+			yield call(onlineUser, {
+				uuid: payload.uuid,
+				version: payload.version,
+			});
+			yield put({
+				type: 'get',
+				payload: payload,
+			})
+			yield put({
+				type: 'query',
+				payload: {},
+			})
+		},
+
+		*get({payload}, {call, put}) {
+			console.log("payload");
+			console.dir(payload);
+			const user = yield call(get, {
+				userUuid: payload.uuid,
+			});
+			if (user) {
+				user.data.obj.userState = (user.data.obj.userState === 'online' ? '已启用' : '已停用');
+				user.data.obj.administrator = (user.data.obj.administrator === true ? '是' : '否');
+				yield put({
+					type: 'showViewPage',
+					payload: {
+						currentItem: user.data.obj,
+					}
+				})
+			}
+		},
+
+		*offline({payload}, {call, put}) {
+			yield call(offlineUser, {
+				uuid: payload.uuid,
+				version: payload.version,
+			});
+			yield put({
+				type: 'get',
+				payload: payload,
+			})
+			yield put({
+				type: 'query',
+				payload: {},
+			})
+		}
 	},
 
 	reducers: {
@@ -120,12 +245,39 @@ export default {
 			}
 		},
 
-		backSearch(state) {
+		backSearch(state, action) {
 			return {
 				...state,
+				...action.payload,
 				showCreate: false,
 				showView: false,
+				loading: false,
 			}
 		},
+
+		batchDeleteUser(state, action) {
+			return { ...state, ...action.payload, batchDeleteProcessModal: true }
+		},
+
+		hideDeleteUserModal(state, action) {
+			return { ...state, batchDeleteProcessModal: false }
+		},
+
+		batchOnlineUser(state, action) {
+			return { ...state, ...action.payload, batchOnlineProcessModal: true }
+		},
+
+		hideOnlineUserModal(state, action) {
+			return { ...state, batchOnlineProcessModal: false }
+		},
+
+
+		batchOfflineUser(state, action) {
+			return { ...state, ...action.payload, batchOfflineProcessModal: true }
+		},
+
+		hideOfflineUserModal(state, action) {
+			return { ...state, batchOfflineProcessModal: false }
+		}
 	},
 }
