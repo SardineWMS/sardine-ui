@@ -48,7 +48,7 @@ const ArticleSearchForm = ({
   children.push(<Col span={12} key='state'>
     <FormItem {...formItemLayout} label="状态 类似于">
       {getFieldDecorator('state')(
-        <Select >
+        <Select size="default">
           <Option value="normal" initialValue>正常</Option>
         </Select>
       )}
