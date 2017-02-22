@@ -323,7 +323,7 @@ function Bin({ location, dispatch, bin }) {
   return (
     <div className="content-inner">
            <Layout style={{ padding: '0 0', background: '#fff' }}>
-              <Sider width={150} style={{ background: '#fff', padding: '0 5px' }}>
+              <Sider width={210} style={{ background: '#fff', padding: '0 5px' }}>
                  <BinTree {...binTreeProps} /> 
               </Sider>
               <Content style={{ padding: '0 0 0 5px', minHeight: 280 }}>
