@@ -49,6 +49,7 @@ export default {
         data
       } = yield call(login, payload);
       if (data.token) {
+        console.dir(data);
         localStorage.setItem("loginId", data.obj.code);
         localStorage.setItem("token", data.token);
         localStorage.setItem("admin", data.obj.administrator);
