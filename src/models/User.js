@@ -3,7 +3,7 @@ import {
 } from '../services/user';
 
 import {
-	parse
+	parse, stringify
 } from 'qs';
 
 export default {
@@ -85,16 +85,25 @@ export default {
 			yield put({
 				type: 'showLoading'
 			})
-			const {data} = yield call(createUser, parse(payload));
-			if (data) {
-				console.log("。。。。");
-				console.dir(data);
-				yield put({
-					type: 'get',
-					payload: {
-						uuid: data.obj
-					},
-				})
+			try {
+				const {data} = yield call(createUser, parse(payload));
+				if (data.status !== 200) {
+					const message = data.obj;
+					const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
+					alert(`新建用户出错：` + simpleMessage);
+					return;
+				}
+				if (data) {
+					yield put({
+						type: 'get',
+						payload: {
+							uuid: data.obj
+						},
+					})
+				}
+			} catch (error) {
+				alert(`新建用户出错：` + error.message);
+				return;
 			}
 			yield put({
 				type: 'query',

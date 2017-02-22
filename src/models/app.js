@@ -45,27 +45,48 @@ export default {
       yield put({
         type: 'showLoginButtonLoading'
       })
-      const {
-        data
-      } = yield call(login, payload);
-      if (data.token) {
+      try {
+        const {
+          data
+        } = yield call(login, payload);
+        console.log("data>>>");
         console.dir(data);
-        localStorage.setItem("loginId", data.obj.code);
-        localStorage.setItem("token", data.token);
-        localStorage.setItem("admin", data.obj.administrator);
-        yield put({
-          type: 'loginSuccess',
-          payload: {
-            data
+        if (data.status !== 200) {
+          const message = data.obj;
+          console.log(message);
+          const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
+          console.log(simpleMessage);
+          if (message.indexOf("errorMsg") === -1) {
+            alert(data.message + "：" + message);
+            return;
           }
-        })
-      } else {
-        yield put({
-          type: 'loginFail',
-          payload: {
-            data
+          else {
+            alert(data.message + "：" + simpleMessage);
+            return;
           }
-        })
+        }
+        if (data.token) {
+          console.dir(data);
+          localStorage.setItem("loginId", data.obj.code);
+          localStorage.setItem("token", data.token);
+          localStorage.setItem("admin", data.obj.administrator);
+          yield put({
+            type: 'loginSuccess',
+            payload: {
+              data
+            }
+          })
+        } else {
+          yield put({
+            type: 'loginFail',
+            payload: {
+              data
+            }
+          })
+        }
+      } catch (error) {
+        console.log("登录...");
+        alert("登录失败" + error.message);
       }
     },
 
