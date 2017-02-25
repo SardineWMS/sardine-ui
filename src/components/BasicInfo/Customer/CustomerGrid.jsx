@@ -44,10 +44,10 @@ function CustomerGrid({
                 <a onClick={() => { onEdit(record) }}>编辑</a>
                 &nbsp;
                 <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(record)} >
-                    <a disabled={record.state === "deleted"}>删除</a>
+                    <a disabled={record.state === "已删除"}>删除</a>
                 </Popconfirm>
                 <Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(record)}>
-                    <a disabled={record.state === "normal"}>恢复</a>
+                    <a disabled={record.state === "正常"}>恢复</a>
                 </Popconfirm>
             </p>
         )

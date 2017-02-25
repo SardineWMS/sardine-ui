@@ -50,13 +50,48 @@ export default {
         }) {
             yield put({ type: 'showLoading' });
             const {data} = yield call(queryCustomer, parse(payload));
+
             if (data) {
-                console.log("data");
-                console.dir(data);
+                let customerList = data.obj.records;
+                for (var customer of customerList) {
+                    customer.state = (customer.state === 'normal' ? '正常' : '已删除');
+                }
                 yield put({
                     type: 'querySuccess',
                     payload: {
-                        list: data.obj.records,
+                        list: customerList,
+                        pagination: {
+                            total: data.obj.recordCount,
+                            current: data.obj.page,
+                        }
+                    }
+                },
+                )
+            }
+        },
+
+        *refreshGrid({
+            payload
+        }, {
+            call, put
+        }) {
+            yield put({ type: 'showLoading' });
+            const {data} = yield call(queryCustomer, parse(payload));
+            if (data.status != 200) {
+                const message = data.obj;
+                const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
+                alert(data.message + "：" + simpleMessage);
+                return;
+            }
+            if (data) {
+                let customerList = data.obj.records;
+                for (var customer of customerList) {
+                    customer.state = (customer.state === 'normal' ? '正常' : '已删除');
+                }
+                yield put({
+                    type: 'refreshGridData',
+                    payload: {
+                        list: customerList,
                         pagination: {
                             total: data.obj.recordCount,
                             current: data.obj.page,
@@ -76,18 +111,15 @@ export default {
                 type: 'showLoading'
             })
             const {data} = yield call(create, parse(payload));
-            if (data) {
-                const uuid = data.obj;
-                const customer = yield call(get, {
-                    customerUuid: uuid,
-                });
-                yield put({
-                    type: 'onViewItem',
-                    payload: {
-                        currentItem: customer.data.obj,
-                    }
-                })
-            }
+            yield put({
+                type: 'get',
+                payload: {
+                    uuid: data.obj
+                }
+            })
+            yield put({
+                type: 'refreshGrid',
+            })
         },
 
         *remove({payload}, {call, put}) {
@@ -96,14 +128,12 @@ export default {
                 version: payload.version,
                 token: payload.token,
             })
-            const customer = yield call(get, {
-                customerUuid: payload.uuid,
-            });
             yield put({
-                type: 'onViewItem',
-                payload: {
-                    currentItem: customer.data.obj,
-                }
+                type: 'get',
+                payload: payload,
+            })
+            yield put({
+                type: 'refreshGrid',
             })
         },
 
@@ -113,29 +143,23 @@ export default {
                 version: payload.version,
                 token: payload.token,
             })
-            const customer = yield call(get, {
-                customerUuid: payload.uuid,
-            });
             yield put({
-                type: 'onViewItem',
-                payload: {
-                    currentItem: customer.data.obj,
-                }
+                type: 'get',
+                payload: payload,
+            })
+            yield put({
+                type: 'refreshGrid',
             })
         },
 
         *update({payload}, {call, put}) {
             yield call(updateCustomer, payload)
-            const customer = yield call(get, {
-                customerUuid: payload.uuid,
-            });
-            console.log("customer对象是。。。");
-            console.dir(customer);
             yield put({
-                type: 'onViewItem',
-                payload: {
-                    currentItem: customer.data.obj,
-                }
+                type: 'get',
+                payload: payload,
+            })
+            yield put({
+                type: 'refreshGrid',
             })
         },
 
@@ -145,42 +169,36 @@ export default {
                 version: payload.version,
                 token: payload.token,
             })
-            const {data} = yield call(queryCustomer, parse(null));
-            if (data) {
-                yield put({
-                    type: 'querySuccess',
-                    payload: {
-                        list: data.obj.records,
-                        pagination: {
-                            total: data.obj.recordCount,
-                            current: data.obj.current,
-                        }
-                    }
-                },
-                )
-            }
+            yield put({
+                type: 'query',
+                payload: {},
+            })
         },
 
         *gridRecover({payload}, {call, put}) {
-            console.log("effects");
             yield call(recover, {
                 uuid: payload.uuid,
                 version: payload.version,
                 token: payload.token,
             })
-            const {data} = yield call(queryCustomer, parse(null));
-            if (data) {
+            yield put({
+                type: 'query',
+                payload: {},
+            })
+        },
+
+        *get({payload}, {call, put}) {
+            const customer = yield call(get, {
+                customerUuid: payload.uuid,
+            });
+            if (customer) {
+                customer.data.obj.state = (customer.data.obj.state === 'normal' ? '正常' : '已删除');
                 yield put({
-                    type: 'querySuccess',
+                    type: 'onViewItem',
                     payload: {
-                        list: data.obj.records,
-                        pagination: {
-                            total: data.obj.recordCount,
-                            current: data.obj.current,
-                        }
+                        currentItem: customer.data.obj,
                     }
-                },
-                )
+                })
             }
         },
     },
@@ -233,6 +251,9 @@ export default {
         },
         hideRecoverCustomerModal(state, action) {
             return { ...state, batchRecoverProcessModal: false }
+        },
+        refreshGridData(state, action) {
+            return { ...state, ...action.payload }
         }
     },
 

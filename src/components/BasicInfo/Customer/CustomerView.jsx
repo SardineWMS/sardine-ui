@@ -18,11 +18,11 @@ const CustomerView = ({item = {},
     const code = item.code;
     let removeRight = false;
     let recoverRight = false;
-    if (item.state === "normal") {
+    if (item.state === "正常") {
         removeRight = false;
         recoverRight = true;
     }
-    if (item.state === "deleted") {
+    if (item.state === "已删除") {
         removeRight = true;
         recoverRight = false;
     }
