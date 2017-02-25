@@ -45,44 +45,26 @@ export default {
       yield put({
         type: 'showLoginButtonLoading'
       })
-      try {
-        const {
-          data
-        } = yield call(login, payload);
-        if (data.status != 200) {
-          const message = data.obj;
-          const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
-          if (message.indexOf("errorMsg") === -1) {
-            alert(data.message + "：" + message);
-            return;
+      const
+        {data}
+          = yield call(login, payload);
+      if (data.token) {
+        localStorage.setItem("loginId", data.obj.code);
+        localStorage.setItem("token", data.token);
+        localStorage.setItem("admin", data.obj.administrator);
+        yield put({
+          type: 'loginSuccess',
+          payload: {
+            data
           }
-          else {
-            alert(data.message + "：" + simpleMessage);
-            return;
+        })
+      } else {
+        yield put({
+          type: 'loginFail',
+          payload: {
+            data
           }
-        }
-        if (data.token) {
-          console.dir(data);
-          localStorage.setItem("loginId", data.obj.code);
-          localStorage.setItem("token", data.token);
-          localStorage.setItem("admin", data.obj.administrator);
-          yield put({
-            type: 'loginSuccess',
-            payload: {
-              data
-            }
-          })
-        } else {
-          yield put({
-            type: 'loginFail',
-            payload: {
-              data
-            }
-          })
-        }
-      } catch (error) {
-        console.log("登录...");
-        alert("登录失败" + error.message);
+        })
       }
     },
 
@@ -164,7 +146,6 @@ export default {
     }, {
       put
     }) {
-      console.log("switchSider");
       yield put({
         type: 'handleSwitchSider'
       })
@@ -174,7 +155,6 @@ export default {
     }, {
       put
     }) {
-      console.log("changeTheme");
       yield put({
         type: 'handleChangeTheme'
       })
@@ -269,6 +249,12 @@ export default {
       return {
         ...state,
         darkTheme: !state.darkTheme
+      }
+    },
+    hideLoginButtonLoading(state) {
+      return {
+        ...state,
+        loginButtonLoading: false
       }
     },
   }

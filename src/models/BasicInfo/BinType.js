@@ -72,20 +72,10 @@ export default {
                 type: 'showLoading'
             })
             yield call(create, payload);
-            const {data} = yield call(queryBinType, parse(null));
-            if (data) {
-                console.dir(data);
-                yield put({
-                    type: 'querySuccess',
-                    payload: {
-                        list: data.obj.records,
-                        pagination: {
-                            total: data.obj.recordCount,
-                            current: data.obj.page,
-                        }
-                    }
-                })
-            }
+            yield put({
+                type: 'query',
+                payload: {},
+            })
         },
 
         *update({payload}, {
@@ -100,24 +90,10 @@ export default {
             })
             yield put({ type: 'showLoading' })
             yield call(update, payload);
-            const {
-                data
-            } = yield call(queryBinType, parse(null));
-            console.log("data是否存在");
-            console.dir(data);
-            if (data) {
-                console.dir(data);
-                yield put({
-                    type: 'querySuccess',
-                    payload: {
-                        list: data.obj.records,
-                        pagination: {
-                            total: data.obj.recordCount,
-                            current: data.obj.page,
-                        }
-                    }
-                })
-            }
+            yield put({
+                type: 'query',
+                payload: {}
+            })
         },
 
         *remove({payload}, {
@@ -130,22 +106,10 @@ export default {
                 uuid: payload.uuid,
                 version: payload.version,
             });
-            const {
-                data
-            } = yield call(queryBinType, parse(null));
-            if (data) {
-                console.dir(data);
-                yield put({
-                    type: 'querySuccess',
-                    payload: {
-                        list: data.obj.records,
-                        pagination: {
-                            total: data.obj.recordCount,
-                            current: data.obj.page,
-                        }
-                    }
-                })
-            }
+            yield put({
+                type: 'query',
+                payload: {}
+            })
         }
     },
 

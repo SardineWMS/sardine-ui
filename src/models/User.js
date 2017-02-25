@@ -85,25 +85,20 @@ export default {
 			yield put({
 				type: 'showLoading'
 			})
-			try {
-				const {data} = yield call(createUser, parse(payload));
-				if (data.status !== 200) {
-					const message = data.obj;
-					const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
-					alert(data.message + "：" + simpleMessage);
-					return;
-				}
-				if (data) {
-					yield put({
-						type: 'get',
-						payload: {
-							uuid: data.obj
-						},
-					})
-				}
-			} catch (error) {
-				alert(`新建用户出错：` + error.message);
+			const {data} = yield call(createUser, parse(payload));
+			if (data.status != 200) {
+				const message = data.obj;
+				const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
+				alert(data.message + "：" + simpleMessage);
 				return;
+			}
+			if (data) {
+				yield put({
+					type: 'get',
+					payload: {
+						uuid: data.obj
+					},
+				})
 			}
 			yield put({
 				type: 'query',
@@ -172,8 +167,6 @@ export default {
 		},
 
 		*get({payload}, {call, put}) {
-			console.log("payload");
-			console.dir(payload);
 			const user = yield call(get, {
 				userUuid: payload.uuid,
 			});

@@ -1,4 +1,5 @@
 import fetch from 'dva/fetch';
+import showErrorMessage from './showErrorMessage';
 
 function parseJSON(response) {
   return response.json();
@@ -18,10 +19,14 @@ export default function request(url, options) {
   return fetch(url, options)
     .then(checkStatus)
     .then(parseJSON)
-    .then((data) => ({
-      data
-    }))
-    .catch((err) => ({
-      err
-    }));
+    .then((data) => {
+      if (data.status != 200) {
+        const err = new Error(showErrorMessage(data), data.status);
+        throw err;
+      } else {
+        return { data };
+      }
+    }).catch((err) => {
+      throw err;
+    });
 }
