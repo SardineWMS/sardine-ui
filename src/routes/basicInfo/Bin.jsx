@@ -14,8 +14,7 @@ import BinSearchForm from '../../components/BasicInfo/Bin/BinSearchForm';
 import WMSProgress from '../../components/Widget/WMSProgress';
 
 function Bin({ location, dispatch, bin }) {
-  const {
-      loading, list, wrhModalVisible,zoneModalVisible,shelfModalVisible,pathModalVisible,binModalVisible, treeData,
+  const { list, wrhModalVisible,zoneModalVisible,shelfModalVisible,pathModalVisible,binModalVisible, treeData,
       wrhs, zones, batchCreatePathProcessModal, batchCreateShelfProcessModal, batchCreateBinProcessModal, pathNext, 
       shelfNext, binNext, pathEntitys, shelfEntitys, binEntitys, binTypes, deleteBinEntitys, batchDeleteBinProcessModal
     } = bin;

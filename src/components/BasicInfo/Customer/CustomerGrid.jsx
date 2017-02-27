@@ -15,7 +15,6 @@ function CustomerGrid({
     onRemoveBatch,
     onRecoverBatch,
     customers = [],
-    loading
 }) {
 
     const columns = [{
@@ -93,7 +92,6 @@ function CustomerGrid({
 
     return (
         <div>
-            <Spin spinning={loading}>
                 <Table className={style.table}
                     size="small"
                     columns={columns}
@@ -115,7 +113,6 @@ function CustomerGrid({
 
                     }
                 />
-            </Spin>
         </div>
     );
 }

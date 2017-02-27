@@ -1,8 +1,7 @@
 import React, { Component, PropTypes } from 'react';
-import { Table, message, Popconfirm, Button, Row, Col, Card } from 'antd';
+import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 
 const BinTypeGrid = ({
-    loading,
     dataSource,
     pagination,
     onCreate,
@@ -55,23 +54,22 @@ const BinTypeGrid = ({
     }];
 
     return (
-        <Card>
-            <Table
-                size="small"
-                columns={columns}
-                dataSource={dataSource}
-                loading={loading}
-                rowKey={record => record.id}
-                pagination={pagination}
-                bordered
-                onChange={onPageChange}
-                title={() => <div>
-                    <Row type="flex">
-                        <Col><Button onClick={handleCreate}>新建</Button></Col>
-                    </Row>
-                </div>}
-            ></Table>
-        </Card>
+            <Card>
+                <Table
+                    size="small"
+                    columns={columns}
+                    dataSource={dataSource}
+                    rowKey={record => record.id}
+                    pagination={pagination}
+                    bordered
+                    onChange={onPageChange}
+                    title={() => <div>
+                        <Row type="flex">
+                            <Col><Button onClick={handleCreate}>新建</Button></Col>
+                        </Row>
+                    </div>}
+                ></Table>
+            </Card>
     );
 }
 export default BinTypeGrid;

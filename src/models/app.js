@@ -13,7 +13,6 @@ export default {
   namespace: 'app',
   state: {
     login: false,
-    loading: false,
     token: localStorage.getItem("token"),
     user: {
       name: localStorage.getItem("loginId")
@@ -42,12 +41,15 @@ export default {
       call,
       put
     }) {
-      yield put({
-        type: 'showLoginButtonLoading'
-      })
+      // yield put({
+      //   type: 'showLoginButtonLoading'
+      // })
       const
         {data}
           = yield call(login, payload);
+      // yield put({
+      //   type: 'hideLoginButtonLoading',
+      // })
       if (data.token) {
         localStorage.setItem("loginId", data.obj.code);
         localStorage.setItem("token", data.token);
@@ -167,7 +169,6 @@ export default {
         ...state,
         ...action.payload,
         login: true,
-        loginButtonLoading: false
       }
     },
     logoutSuccess(state) {

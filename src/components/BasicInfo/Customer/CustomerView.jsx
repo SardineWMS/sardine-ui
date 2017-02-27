@@ -10,7 +10,6 @@ const CustomerView = ({item = {},
     onRemove,
     onRecover,
     showEdit,
-    loading
 }) => {
 
     const formItemLayout = {
@@ -39,7 +38,6 @@ const CustomerView = ({item = {},
                 </Popconfirm>
                 <Button onClick={() => onBack()}>返回</Button>
             </div>
-            <Spin spinning={loading}>
                 <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
                     <Row gutter={36}>
                         <Col span={12}>
@@ -79,7 +77,6 @@ const CustomerView = ({item = {},
                 <Card bordered={false} title="说明">
                     <Input type="textarea" autosize={{ minRows: 4 }} disabled={true}></Input>
                 </Card>
-            </Spin>
         </div >
     )
 };

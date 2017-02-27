@@ -11,7 +11,6 @@ import ArticleEditableBarcode from '../../components/BasicInfo/Article/ArticleEd
 
 function Article({location, dispatch, article}) {
 	const {
-		loading,
 		list,
 		total,
 		current,
@@ -24,7 +23,6 @@ function Article({location, dispatch, article}) {
 	const { field, keyword} = location.query;
 	const articleSearchGridProps = {
 		dataSource: list,
-		loading,
 		pagination: pagination,
 		onPageChange(page, filters, sorter) {
 			dispatch({

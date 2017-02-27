@@ -7,7 +7,7 @@ import BinTypeGrid from '../../components/BasicInfo/BinType/BinTypeGrid';
 import BinTypeModal from '../../components/BasicInfo/BinType/BinTypeModal';
 
 function BinType({location, dispatch, binType}) {
-    const {loading, list, pagination, total, current, currentItem, modalVisible, modalType, } = binType;
+    const {list, pagination, total, current, currentItem, modalVisible, modalType, } = binType;
 
     const {field, keyword} = location.query;
     const binTypeModalProps = {
