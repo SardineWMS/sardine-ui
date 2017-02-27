@@ -2,7 +2,6 @@ import React,{PropTypes} from 'react';
 import {Table,Popconfirm,Pagination,Button,Modal} from 'antd';
 
 function ContainerTypeSerachGrid({
-	loading,
 	dataSource,
 	pagination,
 	onPageChange,
@@ -88,7 +87,6 @@ function ContainerTypeSerachGrid({
                     </div>
 				}
 				dataSource={dataSource}
-				loading={loading}
 				onChange={onPageChange}
 				pagination={pagination}
 				rowKey={record => record.uuid}
@@ -100,7 +98,6 @@ function ContainerTypeSerachGrid({
 ContainerTypeSerachGrid.propTypes={
 onPageChange: PropTypes.func,
 	dataSource: PropTypes.array,
-	loading: PropTypes.any,
 	pagination: PropTypes.any,
 	onCreate : PropTypes.func,
 	onViewItem : PropTypes.func,

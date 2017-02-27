@@ -10,6 +10,7 @@ import Bread from '../components/Layout/bread';
 import Footer from '../components/Layout/Footer';
 import Sider from '../components/Layout/sider';
 import styles from '../components/Layout/main.less';
+import '../components/Layout/common.less';
 import Register from './Register';
 import {
   Spin,
@@ -23,11 +24,11 @@ function App({
   children,
   location,
   dispatch,
-  app
+  app,
+  loading
 }) {
   const {
     login,
-    loading,
     registerLoading,
     signInButtonLoading,
     loginButtonLoading,
@@ -97,33 +98,37 @@ function App({
 
   return (
     <div>
-     {login  ?
-        <div className={classnames(styles.layout,{[styles.fold]:siderFold})}>
-            <aside  className={classnames(styles.sider,{[styles.light]:!darkTheme})}>
-              <Sider {...siderProps}/>
-            </aside>
-            <div className={styles.main}>
-              <Header {...headerProps}/>
-              <Bread location={location}/>
-              <div className={styles.container}>
-                <div className={styles.content}>
+      {login ?
+        <div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
+          <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
+            <Sider {...siderProps} />
+          </aside>
+          <div className={styles.main}>
+            <Header {...headerProps} />
+            <Bread location={location} />
+            <div className={styles.container}>
+              <div className={styles.content}>
+                <Spin spinning={loading}>
                   {children}
-                </div>
+                </Spin>
               </div>
-              <Footer />
             </div>
+            <Footer />
           </div>
-        : (registerLoading ? 
-            <div className={styles.reg}>
-              <Register {...registerProps}/>
-            </div>
-            : 
-            <div className={styles.spin}><Spin tip="加载用户信息..." spinning={loading} size="large">
-              <Login {...loginProps}/></Spin>
-            </div>  
+        </div>
+        : (registerLoading ?
+          <div className={styles.reg}>
+            <Spin spinning={loading}>
+              <Register {...registerProps} />
+            </Spin>
+          </div>
+          :
+          <div className={styles.spin}><Spin tip="加载用户信息..." spinning={loading} size="large">
+            <Login {...loginProps} /></Spin>
+          </div>
         )}
 
- </div>
+    </div>
   )
 }
 
@@ -141,8 +146,11 @@ App.propTypes = {
   darkTheme: PropTypes.bool,
 }
 
-export default connect(({
-  app
-}) => ({
-  app
-}))(App)
+function mapStateToProps({loading, app}) {
+  return {
+    loading: loading.global,
+    app,
+  };
+}
+
+export default connect(mapStateToProps)(App)

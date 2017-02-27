@@ -14,7 +14,6 @@ const CustomerAddForm = ({
         validateFields,
         getFieldsValue
     },
-    loading
 }) => {
     function handleCreate() {
         validateFields((errors) => {
@@ -88,20 +87,18 @@ const CustomerAddForm = ({
     );
     return (
         <div>
-            <Spin spinning={loading}>
-                <div className={styles.button}>
-                    <Button onClick={() => onCancel(item)}>取消</Button>
-                    <Button type="primary" onClick={handleCreate}>保存</Button>
-                </div>
-                <Form>
-                    <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
-                        <Row gutter={12} type="flex">
-                            {children}
-                        </Row>
+            <div className={styles.button}>
+                <Button onClick={() => onCancel(item)}>取消</Button>
+                <Button type="primary" onClick={handleCreate}>保存</Button>
+            </div>
+            <Form>
+                <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
+                    <Row gutter={12} type="flex">
+                        {children}
+                    </Row>
 
-                    </Card>
-                </Form>
-            </Spin>
+                </Card>
+            </Form>
         </div>
     );
 }

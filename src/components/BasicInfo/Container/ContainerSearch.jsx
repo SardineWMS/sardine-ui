@@ -6,7 +6,6 @@ const Panel = Collapse.Panel;
 const ContainerSearch = ({
 	dataSource,
 	onCreate,
-  loading,
   onPageChange,
   pagination,
   onSearch,
@@ -131,7 +130,6 @@ const ContainerSearch = ({
       </Panel>
       </Collapse>
 
-      <Spin spinning={loading}>
         <Table size="small"
           bordered
           columns={columns}
@@ -145,7 +143,6 @@ const ContainerSearch = ({
           pagination={pagination}
           rowKey={record => record.barcode}
       />
-      </Spin>
     </div>
   )
 }

@@ -23,6 +23,7 @@ const FormItem = Form.Item
 
 const login = ({
   loginButtonLoading,
+  loading,
   onOk,
   onRegister,
   form: {
@@ -56,7 +57,7 @@ const login = ({
                 message: '请填写用户名'
               }
             ]
-          })(<Input size="large" placeholder="用户名"/>)}
+          })(<Input size="large" placeholder="用户名" />)}
         </FormItem>
         <FormItem hasFeedback>
           {getFieldDecorator('password', {
@@ -66,11 +67,11 @@ const login = ({
                 message: '请填写密码'
               }
             ]
-          })(<Input size="large" type="password" placeholder="密码"/>)}
+          })(<Input size="large" type="password" placeholder="密码" />)}
         </FormItem>
         <Row>
           <Link onClick={onRegister}>注册</Link>
-          <Button type="primary" size="large" onClick={handleOk} loading={loginButtonLoading}>
+          <Button type="primary" size="large" onClick={handleOk} loading={loading}>
             登录
           </Button>
         </Row>

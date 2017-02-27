@@ -8,7 +8,10 @@ import createLoading from 'dva-loading';
 
 const app = dva({
 	history: hashHistory,
-	onError(e) {
+	onError(e, dispatch) {
+		// dispatch({
+		// 	type: 'app/hideLoginButtonLoading',
+		// })
 		message.error(e.message, 3);//延时3s关闭
 	},
 });

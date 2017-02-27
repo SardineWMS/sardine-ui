@@ -4,7 +4,7 @@ import { connect } from 'dva'
 import CategorySearch from '../../components/BasicInfo/Category/CategorySearch';
 import CategoryModal from '../../components/BasicInfo/Category/CategoryModal';
 
-function Category({loading, location, dispatch, category }) {
+function Category({ location, dispatch, category }) {
   const {
     list, total, current, currentItem, modalVisible, modalType,modalShowUpper, pagination,
     } = category;
@@ -30,7 +30,6 @@ function Category({loading, location, dispatch, category }) {
 
   const categorySearchProps = {
     dataSource: list,
-    loading,
     onPageChange(page) {
       dispatch(routerRedux.push({
         pathname: '/wms/basicInfo/category',
@@ -96,9 +95,8 @@ Category.propTypes = {
   dispatch: PropTypes.func,
 }
 
-function mapStateToProps({loading, category}) {
+function mapStateToProps({category}) {
     return {
-      loading: loading.global,
       category,
     };
 }

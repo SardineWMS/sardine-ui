@@ -1,10 +1,9 @@
 import React,{PropTypes} from 'react';
-import { Table, Popconfirm, Button,Spin } from 'antd';
+import { Table, Popconfirm, Button } from 'antd';
 
 function CategorySearch({
 	dataSource,
 	onCreate,
-  loading,
 	onCreateLower,
 	onEditItem,
 	onDeleteItem,
@@ -45,7 +44,6 @@ function CategorySearch({
   ]
 
   return (
-    <Spin spinning={loading}>
       <Table size="small"
         bordered
         columns={columns}
@@ -59,7 +57,6 @@ function CategorySearch({
         onChange={onPageChange}
         rowKey={record => record.uuid}
       />
-    </Spin>
   )
 }
 

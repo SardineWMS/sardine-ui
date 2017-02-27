@@ -7,7 +7,7 @@ import CustomerForm from '../../components/BasicInfo/Customer/CustomerForm';
 import CustomerAdd from '../../components/BasicInfo/Customer/CustomerAdd';
 import CustomerView from '../../components/BasicInfo/Customer/CustomerView';
 import WMSProgress from '../../components/Widget/WMSProgress';
-function Customer({loading, location, dispatch, customer}) {
+function Customer({location, dispatch, customer}) {
     const {
         list, showCreatePage, pagination, showViewPage, currentItem, current,
         showEditPage, searchExpand, batchDeleteProcessModal, deleteCustomerEntitys,
@@ -20,7 +20,6 @@ function Customer({loading, location, dispatch, customer}) {
 
     const customerListProps = {
         dataSource: list,
-        loading: loading,
         pagination: pagination,
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
@@ -123,7 +122,6 @@ function Customer({loading, location, dispatch, customer}) {
 
     const customerAddProps = {
         item: currentItem,
-        loading: loading,
         onCancel(data) {
             if (!data) {
                 dispatch({
@@ -164,7 +162,6 @@ function Customer({loading, location, dispatch, customer}) {
 
     const customerViewProps = {
         item: currentItem,
-        loading: loading,
         onBack(data) {
             dispatch({
                 type: 'customer/backSuccess',
@@ -313,9 +310,8 @@ Customer.propTypes = {
     customer: PropTypes.object,
 }
 
-function mapStateToProps({loading, customer}) {
+function mapStateToProps({customer}) {
     return {
-        loading: loading.global,
         customer,
     };
 }

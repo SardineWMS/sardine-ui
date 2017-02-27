@@ -1,4 +1,4 @@
-import React ,{PropTypes} from 'react';
+import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
 import SupplierSearchForm from '../../components/BasicInfo/Supplier/SupplierSearchForm';
@@ -7,9 +7,8 @@ import SupplierView from '../../components/BasicInfo/Supplier/SupplierView';
 import SupplierCreate from '../../components/BasicInfo/Supplier/SupplierCreate';
 import WMSProgress from '../../components/Widget/WMSProgress';
 
-function Supplier({location,dispatch,supplier}){
- const{
-    loading,
+function Supplier({dispatch, supplier, location}) {
+  const {
     list,
     total,
     current,
@@ -19,60 +18,59 @@ function Supplier({location,dispatch,supplier}){
     showView,
     batchRecoverProcessModal,
     recoverSupplierEntitys,
-    batchRemoveProcessModal, 
+    batchRemoveProcessModal,
     removeSupplierEntitys,
     supplierNext
-  }= supplier
+  } = supplier
 
-  const token=localStorage.getItem("token");
-  const {field,keyword}=location.query;
+  const token = localStorage.getItem("token");
+  const {field, keyword} = location.query;
 
-  const supplierSearchGridProps={
-    dataSource:list,
-    loading,
-    pagination:pagination,
-    onPageChange(page){
+  const supplierSearchGridProps = {
+    dataSource: list,
+    pagination: pagination,
+    onPageChange(page) {
       dispatch(routerRedux.push({
-        pathname:'/wms/basicInfo/supplier',
-        query:{
-          page:page.current,
-          pageSize:page.pageSize
+        pathname: '/wms/basicInfo/supplier',
+        query: {
+          page: page.current,
+          pageSize: page.pageSize
         },
       }))
     },
 
-    onCreate(){
+    onCreate() {
       dispatch({
-        type:'supplier/showCreatePage',
-        payload : {
-          currentItem : null
+        type: 'supplier/showCreatePage',
+        payload: {
+          currentItem: null
         }
       })
     },
 
     onRemoveBatch(suppliers) {
-            dispatch({
-                type: 'supplier/batchRemoveSupplier',
-                payload: {
-                    removeSupplierEntitys: suppliers
-                }
-            })
-       },
+      dispatch({
+        type: 'supplier/batchRemoveSupplier',
+        payload: {
+          removeSupplierEntitys: suppliers
+        }
+      })
+    },
 
     onRecoverBatch(suppliers) {
-            dispatch({
-                type: 'supplier/batchRecoverSupplier',
-                payload: {
-                    recoverSupplierEntitys: suppliers
-                }
-            })
-     },
-
-    onViewItem(item){
       dispatch({
-        type:'supplier/showViewPage',
-        payload:{
-          currentItem:item
+        type: 'supplier/batchRecoverSupplier',
+        payload: {
+          recoverSupplierEntitys: suppliers
+        }
+      })
+    },
+
+    onViewItem(item) {
+      dispatch({
+        type: 'supplier/showViewPage',
+        payload: {
+          currentItem: item
         }
       })
     },
@@ -81,18 +79,18 @@ function Supplier({location,dispatch,supplier}){
       dispatch({
         type: 'supplier/remove',
         payload: {
-                  uuid: supplier.uuid,
-                  version: supplier.version,
-                  token: token,
-                },
+          uuid: supplier.uuid,
+          version: supplier.version,
+          token: token,
+        },
       });
     },
 
     onEditItem(item) {
-        dispatch({
+      dispatch({
         type: 'supplier/showEditPage',
-        payload : {
-          currentItem : item
+        payload: {
+          currentItem: item
         }
       })
     },
@@ -101,23 +99,23 @@ function Supplier({location,dispatch,supplier}){
       dispatch({
         type: 'supplier/recover',
         payload: {
-                  uuid: supplier.uuid,
-                  version: supplier.version,
-                  token: token,
-                },
+          uuid: supplier.uuid,
+          version: supplier.version,
+          token: token,
+        },
       });
     },
 
   }
 
-  const supplierSearchFormProps={
+  const supplierSearchFormProps = {
     field,
     keyword,
     token,
-    onSearch(fieldsValue){
+    onSearch(fieldsValue) {
       dispatch({
-        type:'supplier/query',  //根据这个路径 找modes的effects中对应的方法
-        payload:fieldsValue
+        type: 'supplier/query',  //根据这个路径 找modes的effects中对应的方法
+        payload: fieldsValue
       })
     },
   }
@@ -125,24 +123,24 @@ function Supplier({location,dispatch,supplier}){
   const viewFormProps = {
     item: currentItem,
     onRecover(item) {
-     dispatch({
+      dispatch({
         type: 'supplier/recover',
         payload: item,
       });
-      },
+    },
     onEdit(item) {
-        dispatch({
+      dispatch({
         type: 'supplier/showEditPage',
-        payload : {
-          currentItem : item
+        payload: {
+          currentItem: item
         }
       })
-      },
+    },
     onBack() {
-        dispatch({
-          type: 'supplier/backSearch',
-        });
-      },
+      dispatch({
+        type: 'supplier/backSearch',
+      });
+    },
     onRemove(item) {
       dispatch({
         type: 'supplier/remove',
@@ -152,127 +150,126 @@ function Supplier({location,dispatch,supplier}){
   }
 
   const createFormProps = {
-    item : currentItem,
-      onOk(data) {
-        data.token=localStorage.getItem("token");
-        if(data.uuid)
-        {
-          dispatch({
-            type: 'supplier/edit',
-          payload: data,
-          });
-        }else{
-          dispatch({
-            type: 'supplier/create',
-          payload: data,
-          });
-        }
-      },
-      onCancel() {
+    item: currentItem,
+    onOk(data) {
+      data.token = localStorage.getItem("token");
+      if (data.uuid) {
         dispatch({
-          type: 'supplier/backSearch',
+          type: 'supplier/edit',
+          payload: data,
         });
-      },
-    }
+      } else {
+        dispatch({
+          type: 'supplier/create',
+          payload: data,
+        });
+      }
+    },
+    onCancel() {
+      dispatch({
+        type: 'supplier/backSearch',
+      });
+    },
+  }
 
   const batchProcessRemoveSupplierProps = {
-        showConfirmModal: batchRemoveProcessModal,
-        records: removeSupplierEntitys ? removeSupplierEntitys : [],
-        next: supplierNext,
-        actionText: '删除',
-        entityCaption: '供应商',
-        batchProcess(entity) {
-            dispatch({
-                type: 'supplier/removeBatch',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token"),
-                }
-            })
-        },
-        hideConfirmModal() {
-            dispatch({
-                type: 'supplier/hideRemoveSupplierModal',
-            })
-        },
-        refreshGrid() {
-            dispatch({
-                type: 'supplier/query',
-                payload: {
-                    token: localStorage.getItem("token")
-                }
-            })
+    showConfirmModal: batchRemoveProcessModal,
+    records: removeSupplierEntitys ? removeSupplierEntitys : [],
+    next: supplierNext,
+    actionText: '删除',
+    entityCaption: '供应商',
+    batchProcess(entity) {
+      dispatch({
+        type: 'supplier/removeBatch',
+        payload: {
+          uuid: entity.uuid,
+          version: entity.version,
+          token: localStorage.getItem("token"),
         }
-    }
-
-   const batchProcessRecoverSupplierProps = {
-        showConfirmModal: batchRecoverProcessModal,
-        records: recoverSupplierEntitys ? recoverSupplierEntitys : [],
-        next: supplierNext,
-        actionText: '恢复',
-        entityCaption: '供应商',
-        batchProcess(entity) {
-            dispatch({
-                type: 'supplier/recoverBatch',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token"),
-                }
-            })
-        },
-        hideConfirmModal() {
-            dispatch({
-                type: 'supplier/hideRecoverSupplierModal',
-            })
-        },
-        refreshGrid() {
-            dispatch({
-                type: 'supplier/query',
-                payload: {
-                    token: localStorage.getItem("token")
-                }
-            })
+      })
+    },
+    hideConfirmModal() {
+      dispatch({
+        type: 'supplier/hideRemoveSupplierModal',
+      })
+    },
+    refreshGrid() {
+      dispatch({
+        type: 'supplier/query',
+        payload: {
+          token: localStorage.getItem("token")
         }
+      })
     }
+  }
+
+  const batchProcessRecoverSupplierProps = {
+    showConfirmModal: batchRecoverProcessModal,
+    records: recoverSupplierEntitys ? recoverSupplierEntitys : [],
+    next: supplierNext,
+    actionText: '恢复',
+    entityCaption: '供应商',
+    batchProcess(entity) {
+      dispatch({
+        type: 'supplier/recoverBatch',
+        payload: {
+          uuid: entity.uuid,
+          version: entity.version,
+          token: localStorage.getItem("token"),
+        }
+      })
+    },
+    hideConfirmModal() {
+      dispatch({
+        type: 'supplier/hideRecoverSupplierModal',
+      })
+    },
+    refreshGrid() {
+      dispatch({
+        type: 'supplier/query',
+        payload: {
+          token: localStorage.getItem("token")
+        }
+      })
+    }
+  }
 
 
-  function refreshWidget(){
-    if(showCreate)
-        return (<SupplierCreate {...createFormProps} />);
-    if(showView)
-        return (<SupplierView {...viewFormProps} />);
-    else{
-    return (
-      <div>
-        <SupplierSearchForm {...supplierSearchFormProps} /> 
-        <SupplierSearchGrid {...supplierSearchGridProps} />
-        <WMSProgress {...batchProcessRemoveSupplierProps} />
-        <WMSProgress {...batchProcessRecoverSupplierProps} />
-      </div>
+  function refreshWidget() {
+    if (showCreate)
+      return (<SupplierCreate {...createFormProps} />);
+    if (showView)
+      return (<SupplierView {...viewFormProps} />);
+    else {
+      return (
+        <div>
+          <SupplierSearchForm {...supplierSearchFormProps} />
+          <SupplierSearchGrid {...supplierSearchGridProps} />
+          <WMSProgress {...batchProcessRemoveSupplierProps} />
+          <WMSProgress {...batchProcessRecoverSupplierProps} />
+        </div>
       );
     }
   }
 
-    return (
-      <div className="content-inner">
-      { refreshWidget() } 
-      </div>
+  return (
+    <div className="content-inner">
+      {refreshWidget()}
+    </div>
   )
 
 }
 
-Supplier.propTypes={
-  supplier:PropTypes.object,
-  location : PropTypes.object,
-  dispatch : PropTypes.func,
-  showCreate : PropTypes.bool,
-  showView : PropTypes.bool,
+Supplier.propTypes = {
+  supplier: PropTypes.object,
+  location: PropTypes.object,
+  dispatch: PropTypes.func,
+  showCreate: PropTypes.bool,
+  showView: PropTypes.bool,
 }
 
-function mapStateToProps({supplier}){
-  return {supplier};
+function mapStateToProps({supplier}) {
+  return { supplier };
 }
 export default connect(mapStateToProps)(Supplier);
 

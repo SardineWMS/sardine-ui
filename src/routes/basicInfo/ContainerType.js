@@ -8,7 +8,6 @@ import ContainerTypeModal from '../../components/BasicInfo/ContainerType/Contain
 
 function ContainerType({location,dispatch,containerType}){
  const{
-    loading,
     list,
     total,
     current,
@@ -42,7 +41,6 @@ function ContainerType({location,dispatch,containerType}){
 
   const containerTypeSearchGridProps={
     dataSource:list,
-    loading,
     pagination:pagination,
     item: currentItem,
 
