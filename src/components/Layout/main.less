@@ -1,131 +1,10 @@
-@import "../vars.less";
-
+@import "../skin.less";
+@import "./common.less";
 
 .layout {
   position: relative;
   height: 100vh;
-  min-width: 1200px;
-
-  &.fold{
-    .sider{
-      width: 42px;
-      .logo{
-        img{
-          width: 28px;
-          margin: 6px 7px;
-        }
-      }
-
-      :global{
-        .ant-menu-root{
-          width: 100%;
-          &>.ant-menu-item {
-            padding: 0;
-            text-align: center;
-            .anticon{
-              font-size: 14px;
-              margin-right: 0;
-            }
-          }
-          &>.ant-menu-submenu{
-            &>.ant-menu-submenu-title{
-              padding: 0;
-              text-align: center;
-              .anticon{
-                font-size: 14px;
-                margin-right: 0;
-              }
-              &::after{
-                display: none;
-              }
-            }
-          }
-        }
-      }
-    }
-    .main{
-      margin-left: 42px;
-    }
-  }
-
-  .sider {
-    width: 224px;
-    background: @heading-color;
-    position: absolute;
-    overflow: visible;
-    padding-bottom: 24px;
-    height: 100vh;
-    transition: @transition-ease-out;
-    box-shadow: @shadow-1;
-
-    &.light{
-      background: #fff;
-      .switchtheme{
-        background: #fff;
-        border-top: solid 1px #f8f8f8;
-      }
-    }
-
-    .logo {
-      text-align: center;
-      height: 40px;
-      line-height: 40px;
-      cursor: pointer;
-      margin: 28px 0;
-      transition: @transition-ease-out;
-      overflow: hidden;
-
-      img {
-        width: 40px;
-        margin-right: 8px;
-        transition: @transition-ease-out;
-      }
-
-      span {
-        vertical-align: text-bottom;
-        font-size: 16px;
-        text-transform: uppercase;
-        display: inline-block;
-      }
-
-      .anticon{
-        transition: @transition-ease-out;
-      }
-    }
-    .switchtheme{
-      width: 100%;
-      position: absolute;
-      bottom: 0;
-      height: 48px;
-      background-color: @dark-half;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 0 16px 0 24px;
-      overflow: hidden;
-
-      span{
-        white-space: nowrap;
-        overflow: hidden;
-      }
-      :global{
-        .anticon{
-          min-width: 14px;
-          margin-right: 8px;
-          font-size: 14px;
-        }
-      }
-    }
-    :global{
-      .ant-menu{
-        transition: @transition-ease-out;
-        .ant-menu-item, .ant-menu-submenu-title{
-          overflow: hidden;
-          white-space: normal;
-        }
-      }
-    }
-  }
+  min-width: 800px;
 
   .header {
     :global .ant-menu-horizontal {
@@ -191,46 +70,126 @@
     box-shadow: @shadow-2;
     width: 100%;
   }
+
+  &.fold{
+    .sider{
+      width: 42px;
+      .logo{
+        img{
+          width: 28px;
+          margin: 6px 7px;
+        }
+      }
+
+      :global{
+        .ant-menu-root{
+          width: 100%;
+          &>.ant-menu-item {
+            padding: 0;
+            text-align: center;
+            .anticon{
+              font-size: 14px;
+              margin-right: 0;
+            }
+          }
+          &>.ant-menu-submenu{
+            &>.ant-menu-submenu-title{
+              padding: 0;
+              text-align: center;
+              .anticon{
+                font-size: 14px;
+                margin-right: 0;
+              }
+              &::after{
+                display: none;
+              }
+            }
+          }
+        }
+      }
+    }
+    .main{
+      margin-left: 42px;
+    }
+  }
+
+  .sider {
+    width: 224px;
+    background: #fff;
+    position: absolute;
+    overflow: auto;
+    padding-top: 24px;
+    padding-bottom: 24px;
+    height: 100vh;
+    transition: @transition-ease-out;
+    box-shadow: @shadow-1;
+
+    &.light{
+      background: #fff;
+      .switchtheme{
+        background: #fff;
+        border-top: solid 1px #f8f8f8;
+      }
+    }
+
+    .logo {
+      text-align: center;
+      height: 40px;
+      line-height: 40px;
+      cursor: pointer;
+      margin: 28px 0;
+      transition: @transition-ease-out;
+      overflow: hidden;
+
+      img {
+        width: 40px;
+        margin-right: 8px;
+        transition: @transition-ease-out;
+      }
+
+      span {
+        vertical-align: text-bottom;
+        font-size: 16px;
+        text-transform: uppercase;
+        display: inline-block;
+      }
+
+      .anticon{
+        transition: @transition-ease-out;
+      }
+    }
+    .switchtheme{
+      width: 100%;
+      position: relative;
+      bottom: 0;
+      height: 48px;
+      background-color: @dark-half;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0 16px 0 24px;
+      overflow: auto;
+      :global{
+        .anticon{
+          min-width: 14px;
+          margin-right: 8px;
+          font-size: 14px;
+        }
+      }
+    }
+    :global{
+      .ant-menu{
+        transition: @transition-ease-out;
+        .ant-menu-item, .ant-menu-submenu-title{
+          overflow: hidden;
+          white-space: normal;
+        }
+      }
+    }
+  }
 }
 
-:global .ant-menu-dark {
-  .ant-menu-submenu-title:hover,
-  .ant-menu-submenu:hover {
-    color: @primary-color;
-  }
-
-  .ant-menu-submenu-selected {
-    color: @primary-color;
-
-    &:not(.ant-menu-submenu-open) {
-      background-color: @dark-half;
-    }
-  }
-
-  .ant-menu-item {
-    &:hover > a {
-      color: @primary-color;
-    }
-  }
-
-  &.ant-menu-inline {
-    .ant-menu-item-selected {
-      background-color: @dark-half;
-    }
-  }
-
-  .ant-menu-item-selected {
-    color: @primary-color;
-    background-color: @dark-half;
-    & > a {
-      color: @primary-color;
-    }
-    &:hover{
-     background-color: @dark-half;
-    }
-  }
-}
-
+/* 登录页面样式 */
 .spin {
   :global .ant-spin-container {
     height: 100vh;
@@ -238,13 +197,13 @@
   background-image: url('../../assets/sardine2.jpg');
   background-repeat: no-repeat;
   background-size: 100% 100%;
-
 }
 
+
+/* 注册页面样式 */
 .reg {
   :global .ant-spin-container {
     height: 100vh;
   };
-  
 }
 

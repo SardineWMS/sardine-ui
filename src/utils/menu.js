@@ -34,7 +34,7 @@ module.exports = [{
       key: 'binType',
       name: '货位类型'
     }],
-  },],
+  }, ],
 }, {
   key: 'home',
   name: '介绍',

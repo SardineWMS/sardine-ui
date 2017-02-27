@@ -1,11 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Row, Col, Input, Button,Card ,Collapse,Icon,Table } from 'antd';
+import { Form, Row, Col, Input, Button,Card ,Collapse,Icon,Table ,Spin} from 'antd';
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 
 const ContainerSearch = ({
 	dataSource,
 	onCreate,
+  loading,
   onPageChange,
   pagination,
   onSearch,
@@ -130,19 +131,21 @@ const ContainerSearch = ({
       </Panel>
       </Collapse>
 
-      <Table size="small"
-        bordered
-        columns={columns}
-        title={() => 
-        	<div>
-            <Button onClick={handleCreate}>新建</Button>
-        	</div>
-        }
-        dataSource={dataSource}
-        onChange={onPageChange}
-        pagination={pagination}
-        rowKey={record => record.barcode}
+      <Spin spinning={loading}>
+        <Table size="small"
+          bordered
+          columns={columns}
+          title={() => 
+        	 <div>
+              <Button onClick={handleCreate}>新建</Button>
+        	 </div>
+          }
+          dataSource={dataSource}
+          onChange={onPageChange}
+          pagination={pagination}
+          rowKey={record => record.barcode}
       />
+      </Spin>
     </div>
   )
 }

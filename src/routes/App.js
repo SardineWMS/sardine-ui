@@ -10,7 +10,6 @@ import Bread from '../components/Layout/bread';
 import Footer from '../components/Layout/Footer';
 import Sider from '../components/Layout/sider';
 import styles from '../components/Layout/main.less';
-import '../components/Layout/common.less';
 import Register from './Register';
 import {
   Spin,

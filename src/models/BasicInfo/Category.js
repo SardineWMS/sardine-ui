@@ -13,7 +13,6 @@ export default {
 
   state: {
     list: [],
-    loading: false,
     currentItem: {},
     modalVisible: false,
     modalType: 'create',
@@ -43,9 +42,6 @@ export default {
       call,
       put
     }) {
-      yield put({
-        type: 'showLoading'
-      })
       const {
         data
       } = yield call(queryCategory, parse(payload))
@@ -66,9 +62,6 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      })
-      yield put({
-        type: 'showLoading'
       })
       yield call(create, payload);
       const {
@@ -95,9 +88,6 @@ export default {
       yield put({
         type: 'hideModal'
       })
-      yield put({
-        type: 'showLoading'
-      })
       yield call(create, payload);
       const {
         data
@@ -123,9 +113,6 @@ export default {
       yield put({
         type: 'hideModal'
       })
-      yield put({
-        type: 'showLoading'
-      })
       yield call(update, payload);
       const {
         data
@@ -148,9 +135,6 @@ export default {
       call,
       put
     }) {
-      yield put({
-        type: 'showLoading'
-      });
       yield call(deleteCategory, {
         uuid: payload.uuid,
         version: payload.version,
@@ -174,15 +158,9 @@ export default {
   },
 
   reducers: {
-    showLoading(state) {
-      return {...state,
-        loading: true
-      }
-    },
     querySuccess(state, action) {
       return {...state,
-        ...action.payload,
-        loading: false
+        ...action.payload
       }
     },
     showModal(state, action) {

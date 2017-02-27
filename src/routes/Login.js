@@ -69,7 +69,7 @@ const login = ({
           })(<Input size="large" type="password" placeholder="密码"/>)}
         </FormItem>
         <Row>
-         <Link onClick={onRegister}>注册</Link>
+          <Link onClick={onRegister}>注册</Link>
           <Button type="primary" size="large" onClick={handleOk} loading={loginButtonLoading}>
             登录
           </Button>

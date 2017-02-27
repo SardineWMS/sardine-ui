@@ -14,7 +14,6 @@ export default {
     list: [],
     entitys: [],
     containerTypes: [],
-    loading: false,
     searchExpand: false,
     modalVisible: false,
     modalType: 'create',
@@ -113,11 +112,6 @@ export default {
   },
 
   reducers: {
-    showLoading(state) {
-      return {...state,
-        loading: true
-      }
-    },
     showBatchProcess(state) {
       return {...state,
         batchProcess: true
@@ -132,8 +126,7 @@ export default {
     },
     querySuccess(state, action) {
       return {...state,
-        ...action.payload,
-        loading: false
+        ...action.payload
       }
     },
     showModal(state, action) {

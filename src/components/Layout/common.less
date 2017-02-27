@@ -1,3 +1,5 @@
+@import "../skin.less";
+
 body {
   height: 100%;
   overflow-y: hidden;
@@ -46,6 +48,45 @@ body {
 :global .ant-breadcrumb-link {
   .anticon + span {
     margin-left: 4px;
+  }
+}
+
+/* 全局antd样式 */
+:global .ant-menu-dark {
+  .ant-menu-submenu-title:hover,
+  .ant-menu-submenu:hover {
+    color: @primary-color;
+  }
+
+  .ant-menu-submenu-selected {
+    color: @primary-color;
+
+    &:not(.ant-menu-submenu-open) {
+      background-color: @dark-half;
+    }
+  }
+
+  .ant-menu-item {
+    &:hover > a {
+      color: @primary-color;
+    }
+  }
+
+  &.ant-menu-inline {
+    .ant-menu-item-selected {
+      background-color: @dark-half;
+    }
+  }
+
+  .ant-menu-item-selected {
+    color: @primary-color;
+    background-color: @dark-half;
+    & > a {
+      color: @primary-color;
+    }
+    &:hover{
+     background-color: @dark-half;
+    }
   }
 }
 
@@ -115,5 +156,3 @@ body {
 .formItem{
     margin-bottom: 0px;
 }
-
-@import "../skin.less";

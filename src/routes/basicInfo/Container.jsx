@@ -5,9 +5,8 @@ import ContainerSearch from '../../components/BasicInfo/Container/ContainerSearc
 import ContainerModal from '../../components/BasicInfo/Container/ContainerModal';
 import WMSProgress from '../../components/BasicInfo/Container/WMSProgress';
 
-function Container({ location, dispatch, container }) {
+function Container({loading, location, dispatch, container }) {
   const {
-    loading,
     list, 
     pagination,
     searchExpand,
@@ -48,6 +47,7 @@ function Container({ location, dispatch, container }) {
   const containerSearchProps = {
     dataSource: list,
     pagination:pagination,
+    loading,
     searchExpand,
     onPageChange(page) {
       dispatch(routerRedux.push({
@@ -121,8 +121,11 @@ Container.propTypes = {
   dispatch: PropTypes.func,
 }
 
-function mapStateToProps({ container }) {
-  return { container }
+function mapStateToProps({loading, container}) {
+    return {
+        loading: loading.global,
+        container,
+    };
 }
 
 export default connect(mapStateToProps)(Container)

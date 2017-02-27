@@ -6,8 +6,6 @@ import {
   IndexRoute
 } from 'dva/router';
 import NotFound from './routes/NotFound';
-import Home from './routes/Home';
-import Content from './routes/Content';
 import Login from './routes/Login';
 import Register from './routes/Register';
 import App from './routes/app';
@@ -21,7 +19,7 @@ import BinType from './routes/basicInfo/BinType';
 import ContainerType from './routes/basicInfo/ContainerType';
 import Bin from './routes/basicInfo/Bin';
 
-export default function ({
+export default function({
   history
 }) {
   return (
@@ -29,7 +27,7 @@ export default function ({
       <Route path="/" component={App}>
         <IndexRedirect to="/home" />
         <Route path="user" component={User} />
-        <Route path="/home" component={Content} />
+        <Route path="/home" component={NotFound} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/wms/basicInfo/category" component={Category} />
