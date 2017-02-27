@@ -7,7 +7,6 @@ export default {
 
     state: {
         list: [],
-        loading: false,
         currentItem: {},
         pagination: {
             showSizeChanger: true,
@@ -48,7 +47,6 @@ export default {
         }, {
             call, put
         }) {
-            yield put({ type: 'showLoading' });
             const {data} = yield call(queryCustomer, parse(payload));
 
             if (data) {
@@ -75,14 +73,7 @@ export default {
         }, {
             call, put
         }) {
-            yield put({ type: 'showLoading' });
             const {data} = yield call(queryCustomer, parse(payload));
-            if (data.status != 200) {
-                const message = data.obj;
-                const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
-                alert(data.message + "：" + simpleMessage);
-                return;
-            }
             if (data) {
                 let customerList = data.obj.records;
                 for (var customer of customerList) {
@@ -107,9 +98,6 @@ export default {
         }, {
             call, put
         }) {
-            yield put({
-                type: 'showLoading'
-            })
             const {data} = yield call(create, parse(payload));
             yield put({
                 type: 'get',
@@ -153,7 +141,10 @@ export default {
         },
 
         *update({payload}, {call, put}) {
-            yield call(updateCustomer, payload)
+            const customer = payload;
+
+            customer.state = (customer.state === '正常' ? 'narmal' : 'deleted');
+            yield call(updateCustomer, payload);
             yield put({
                 type: 'get',
                 payload: payload,
@@ -203,21 +194,14 @@ export default {
         },
     },
     reducers: {
-        showLoading(state) {
-            return {
-                ...state,
-                loading: true
-            }
-        },
         querySuccess(state, action) {
             return {
                 ...state,
-                ...action.payload,
-                loading: false, showViewPage: false, showEditPage: false, showCreatePage: false
+                ...action.payload, showViewPage: false, showEditPage: false, showCreatePage: false
             }
         },
         createSuccess(state, action) {
-            return { ...state, showCreatePage: true, loading: false, }
+            return { ...state, showCreatePage: true, }
         },
         cancelSuccess(state, action) {
             return { ...state, showCreatePage: false, showViewPage: false, showEditPage: false, ...action.payload }

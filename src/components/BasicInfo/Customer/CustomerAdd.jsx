@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Card, Button, Input, Form, Row, Col, Select } from 'antd';
+import { Card, Button, Input, Form, Row, Col, Select, Spin } from 'antd';
 import styles from '../../Layout/common.less';
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -13,7 +13,8 @@ const CustomerAddForm = ({
         getFieldDecorator,
         validateFields,
         getFieldsValue
-    }
+    },
+    loading
 }) => {
     function handleCreate() {
         validateFields((errors) => {
@@ -87,18 +88,20 @@ const CustomerAddForm = ({
     );
     return (
         <div>
-            <div className={styles.button}>
-                <Button onClick={() => onCancel(item)}>取消</Button>
-                <Button type="primary" onClick={handleCreate}>保存</Button>
-            </div>
-            <Form>
-                <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
-                    <Row gutter={12} type="flex">
-                        {children}
-                    </Row>
+            <Spin spinning={loading}>
+                <div className={styles.button}>
+                    <Button onClick={() => onCancel(item)}>取消</Button>
+                    <Button type="primary" onClick={handleCreate}>保存</Button>
+                </div>
+                <Form>
+                    <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
+                        <Row gutter={12} type="flex">
+                            {children}
+                        </Row>
 
-                </Card>
-            </Form>
+                    </Card>
+                </Form>
+            </Spin>
         </div>
     );
 }

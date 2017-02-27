@@ -9,25 +9,8 @@ import createLoading from 'dva-loading';
 const app = dva({
 	history: hashHistory,
 	onError(e) {
-		message.error(e.message, 3);//延时关闭3s
+		message.error(e.message, 3);//延时3s关闭
 	},
-	initialState: {
-		loading: {
-			global: true,
-			models: {
-				customer: true,
-				article: true,
-				bin: true,
-				binType: true,
-				category: true,
-				container: true,
-				containerType: true,
-				customer: true,
-				supplier: true,
-				user: true,
-			}
-		}
-	}
 });
 app.use(createLoading());
 

@@ -7,9 +7,9 @@ import CustomerForm from '../../components/BasicInfo/Customer/CustomerForm';
 import CustomerAdd from '../../components/BasicInfo/Customer/CustomerAdd';
 import CustomerView from '../../components/BasicInfo/Customer/CustomerView';
 import WMSProgress from '../../components/Widget/WMSProgress';
-function Customer({location, dispatch, customer}) {
+function Customer({loading, location, dispatch, customer}) {
     const {
-        loading, list, showCreatePage, pagination, showViewPage, currentItem, current,
+        list, showCreatePage, pagination, showViewPage, currentItem, current,
         showEditPage, searchExpand, batchDeleteProcessModal, deleteCustomerEntitys,
         customerNext,
         batchRecoverProcessModal, recoverCustomerEntitys,
@@ -20,6 +20,7 @@ function Customer({location, dispatch, customer}) {
 
     const customerListProps = {
         dataSource: list,
+        loading: loading,
         pagination: pagination,
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
@@ -122,6 +123,7 @@ function Customer({location, dispatch, customer}) {
 
     const customerAddProps = {
         item: currentItem,
+        loading: loading,
         onCancel(data) {
             if (!data) {
                 dispatch({
@@ -162,6 +164,7 @@ function Customer({location, dispatch, customer}) {
 
     const customerViewProps = {
         item: currentItem,
+        loading: loading,
         onBack(data) {
             dispatch({
                 type: 'customer/backSuccess',
@@ -310,8 +313,11 @@ Customer.propTypes = {
     customer: PropTypes.object,
 }
 
-function mapStateToProps({customer}) {
-    return { customer }
+function mapStateToProps({loading, customer}) {
+    return {
+        loading: loading.global,
+        customer,
+    };
 }
 
 export default connect(mapStateToProps)(Customer);

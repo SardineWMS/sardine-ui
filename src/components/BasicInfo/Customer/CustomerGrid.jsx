@@ -1,9 +1,8 @@
 import React, { Component, PropTypes } from 'react';
-import { Table, message, Popconfirm, Button, Row, Col, Card } from 'antd';
+import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 import style from './CustomerGrid.less';
 
 function CustomerGrid({
-    loading,
     dataSource,
     onSearch,
     onCreate,
@@ -15,7 +14,8 @@ function CustomerGrid({
     onRecover,
     onRemoveBatch,
     onRecoverBatch,
-    customers = []
+    customers = [],
+    loading
 }) {
 
     const columns = [{
@@ -93,28 +93,29 @@ function CustomerGrid({
 
     return (
         <div>
-            <Table className={style.table}
-                size="small"
-                columns={columns}
-                dataSource={dataSource}
-                loading={loading}
-                rowKey={record => record.uuid}
-                onChange={onPageChange}
-                pagination={pagination}
-                bordered
-                rowSelection={rowSelection}
-                title={
-                    () =>
-                        <div>
-                            <Row type="flex">
-                                <Col><Button type="ghost" onClick={handleRemoveBatch}>批量删除</Button></Col>
-                                <Col><Button type="ghost" onClick={handleRecoverBatch}>批量恢复</Button></Col>
-                                <Col><Button onClick={() => onCreate()}>新建</Button></Col>
-                            </Row>
-                        </div>
+            <Spin spinning={loading}>
+                <Table className={style.table}
+                    size="small"
+                    columns={columns}
+                    dataSource={dataSource}
+                    rowKey={record => record.uuid}
+                    onChange={onPageChange}
+                    pagination={pagination}
+                    bordered
+                    rowSelection={rowSelection}
+                    title={
+                        () =>
+                            <div>
+                                <Row type="flex">
+                                    <Col><Button type="ghost" onClick={handleRemoveBatch}>批量删除</Button></Col>
+                                    <Col><Button type="ghost" onClick={handleRecoverBatch}>批量恢复</Button></Col>
+                                    <Col><Button onClick={() => onCreate()}>新建</Button></Col>
+                                </Row>
+                            </div>
 
-                }
-            />
+                    }
+                />
+            </Spin>
         </div>
     );
 }

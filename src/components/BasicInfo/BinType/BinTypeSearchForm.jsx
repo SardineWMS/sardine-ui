@@ -24,8 +24,8 @@ const BinTypeSearchForm = ({
         resetFields();
     }
     const formItemLayout = {
-        labelCol: { span: 5 },
-        wrapperCol: { span: 19 },
+        labelCol: { span: 8 },
+        wrapperCol: { span: 12 },
     };
     const children = [];
     children.push(<Col span={12} key={1}>

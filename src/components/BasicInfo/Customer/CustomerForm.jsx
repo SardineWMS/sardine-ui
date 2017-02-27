@@ -49,7 +49,7 @@ const CustomerSearchForm = ({
                     /*在给select标签赋初始值时，因为此时被getFieldDecorator修饰，不能使用defaultValue。
                     而应该使用getFieldDecorator里的initalValue
                     */
-                    <Select placeholder="请选择" showSearch={false} key="stateSelecter">
+                    <Select placeholder="请选择" showSearch={false} key="stateSelecter" size="default">
                         <Option value="normal" >正常</Option>
                         <Option value="deleted">已删除</Option>
                     </Select>
