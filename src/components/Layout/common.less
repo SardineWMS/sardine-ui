@@ -38,6 +38,7 @@ body {
 
 :global .ant-breadcrumb {
   & > span {
+    font-size: @font-size-base;
     &:last-child {
       color: #999;
       font-weight: normal;
@@ -52,14 +53,19 @@ body {
 }
 
 /* 全局antd样式 */
-:global .ant-menu-dark {
+:global .ant-menu {
   .ant-menu-submenu-title:hover,
   .ant-menu-submenu:hover {
-    color: @primary-color;
+    color: @basic-color;
+  }
+
+  .ant-menu-submenu {
+    font-size: @font-size-base;
   }
 
   .ant-menu-submenu-selected {
-    color: @primary-color;
+    color: #000;
+    font-size: @font-size-base;
 
     &:not(.ant-menu-submenu-open) {
       background-color: @dark-half;
@@ -68,19 +74,24 @@ body {
 
   .ant-menu-item {
     &:hover > a {
-      color: @primary-color;
+      color: #1fbaba;
     }
+    font-size: @font-size-base;
   }
 
   &.ant-menu-inline {
     .ant-menu-item-selected {
-      background-color: @dark-half;
+      background-color: @basic-color;
+    }
+    .ant-menu-submenu-title {
+      font-size: @font-size-base;
     }
   }
 
   .ant-menu-item-selected {
     color: @primary-color;
-    background-color: @dark-half;
+    font-size: @font-size-base;
+    background-color: @basic-color;
     & > a {
       color: @primary-color;
     }
