@@ -1,5 +1,6 @@
 import { querybypage,create,get,edit,remove,recover} from '../../services/BasicInfo/Supplier';
 import { parse } from 'qs';
+import {queryEntityLogs} from '../../services/Log/EntityLog';
 
 export default {
   namespace: 'supplier',
@@ -11,6 +12,8 @@ export default {
     showCreate:false,
     showEdit:false,
     showView: false,
+    showLog: false,
+    logList:[],
     batchRemoveProcessModal: false,
     removeSupplierEntitys: [],
     batchRecoverProcessModal: false,
@@ -39,6 +42,22 @@ export default {
   },
 
   effects:{
+    *get({payload},{call,put}){
+      yield put({type: 'hideModal'});
+      const {data} = yield call(get,{
+        uuid:payload.uuid,
+        token:payload.token
+      });
+      if(data){
+        yield put({
+          type: 'showViewPage',
+          payload:{
+            currentItem:data.obj,
+          },
+       }
+        );
+      }
+    },
     *query({payload},{call,put}){
       yield put({type: 'showLoading'});
       const {data} = yield call(querybypage,parse(payload));
@@ -184,6 +203,23 @@ export default {
       }
     },
 
+    *queryLog({payload},{call,put}){
+      const {data} = yield call(queryEntityLogs,parse(payload));
+      if(data){
+            yield put({
+                    type: 'showLogPage',
+                    payload: {
+                       logList: data.obj.records,
+                       pagination:{
+                        total:data.obj.recordCount,
+                        current:data.obj.page,
+                      }
+                    }
+                },
+                )
+      }
+    },
+
   },
 
   reducers:{
@@ -192,7 +228,7 @@ export default {
     },
 
     querySuccess(state,action){
-      return {...state,...action.payload,loading:false,showView:false,showCreate:false}
+      return {...state,...action.payload,loading:false,showView:false,showCreate:false,showLog:false}
     },
 
     showViewPage(state, action) {
@@ -221,10 +257,21 @@ export default {
       }
     },
 
+    showLogPage(state, action) {
+      return {...state,
+        ...action.payload,
+        showLog: true,
+        showView: false,
+        showCreate: false,
+        loading:false
+      }
+    },
+
     backSearch(state) {
       return {...state,
         showCreate: false,
         showView: false,
+        showLog: false,
         loading:false
       }
     },

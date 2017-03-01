@@ -34,4 +34,5 @@ module.exports = {
 	'/basic/containertype/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/containertype',
 	'/basic/bin/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/bin',
 	'/api/user/(.*)':'http://127.0.0.1:8080/sardine-wms-web/ia/user',
+	'/Log/entitylog/(.*)':'http://127.0.0.1:8080/sardine-wms-web/log/entitylog',
 };

@@ -6,6 +6,7 @@ import SupplierSearchGrid from '../../components/BasicInfo/Supplier/SupplierSear
 import SupplierView from '../../components/BasicInfo/Supplier/SupplierView';
 import SupplierCreate from '../../components/BasicInfo/Supplier/SupplierCreate';
 import WMSProgress from '../../components/Widget/WMSProgress';
+import EntityLogGrid from '../../components/Log/EntityLogGrid';
 
 function Supplier({dispatch, supplier, location}) {
   const {
@@ -16,15 +17,19 @@ function Supplier({dispatch, supplier, location}) {
     currentItem,
     showCreate,
     showView,
+    showLog,
+    logList,
     batchRecoverProcessModal,
     recoverSupplierEntitys,
     batchRemoveProcessModal,
     removeSupplierEntitys,
     supplierNext
-  } = supplier
+  } = supplier;
 
   const token = localStorage.getItem("token");
   const {field, keyword} = location.query;
+
+
 
   const supplierSearchGridProps = {
     dataSource: list,
@@ -147,6 +152,14 @@ function Supplier({dispatch, supplier, location}) {
         payload: item,
       });
     },
+    onViewLog(item) {
+      dispatch({
+        type: 'supplier/showLogPage',
+        payload: {
+          uuid: item.uuid
+        }
+      })
+    },
   }
 
   const createFormProps = {
@@ -234,12 +247,33 @@ function Supplier({dispatch, supplier, location}) {
     }
   }
 
+   const logGridProps = {
+      dataSource:logList,
+      pagination: pagination,
+      onPageChange(page) {
+      dispatch({
+        type: 'supplier/queryLog',
+        payload:{  
+          entityUuid:currentItem.uuid
+        }
+      })
+      },
+
+     onBack(){
+      dispatch({
+        type: 'supplier/showViewPage',
+      })
+    }
+  }
+
 
   function refreshWidget() {
     if (showCreate)
       return (<SupplierCreate {...createFormProps} />);
     if (showView)
       return (<SupplierView {...viewFormProps} />);
+    if(showLog)
+      return (<EntityLogGrid {...logGridProps} />);
     else {
       return (
         <div>

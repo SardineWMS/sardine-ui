@@ -11,6 +11,7 @@ const SupplierView = ({
   onRemove,
   onRecover,
   onBack,
+  onViewLog
   }) => {
 
   const formItemLayout = {
@@ -58,6 +59,9 @@ return (
                             </FormItem>
                             <FormItem {...formItemLayout} label="最后修改信息：" hasFeedback>
                                 <span>{lastModifyInfo2String(item)}</span>
+                            </FormItem>
+                            <FormItem {...formItemLayout}  hasFeedback>
+                                <Button onClick={() => onViewLog(item)}>详情</Button>
                             </FormItem>
                           </Form>
                         </Col>
