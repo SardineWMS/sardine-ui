@@ -39,13 +39,13 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       // yield put({
       //   type: 'showLoginButtonLoading'
       // })
       const
-        {data}
+        { data }
           = yield call(login, payload);
       // yield put({
       //   type: 'hideLoginButtonLoading',
@@ -74,15 +74,15 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
-      yield put({
-        type: 'showRegisterButtonLoading'
-      });
       const {
         data
       } = yield call(signIn, parse(payload));
-      if (data.success) {
+      console.log("data 数据");
+      console.dir(data);
+      if (data.status === "200") {
+        console.log("判断正确");
         yield put({
           type: 'signInSuccess',
           payload: {
@@ -103,7 +103,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'showLoading'
@@ -129,7 +129,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       const data = yield call(logout, {
         token: localStorage.getItem("token"),
@@ -188,7 +188,7 @@ export default {
       return {
         ...state,
         ...action.payload,
-        registerLoading: true,
+        registerLoading: false,
         signInButtonLoading: false
       }
     },
