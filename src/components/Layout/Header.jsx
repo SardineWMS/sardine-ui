@@ -9,10 +9,9 @@ function Header({  user, logout, switchSider, siderFold }) {
   let handleClickMenu = e => e.key === 'logout' && logout()
   return (
     <div className={styles.header}>
-      <div className={styles.siderbutton} onClick={switchSider}>
-        <Icon type={siderFold?"menu-unfold":"menu-fold"} />
-      </div>
       <Menu className="header-menu" mode="horizontal" onClick={handleClickMenu}>
+        <SubMenu title="基本资料">
+        </SubMenu>
         <SubMenu style={{ float: 'right' }}
           title={<span><Icon type="user" />{user.name}</span>}
         >

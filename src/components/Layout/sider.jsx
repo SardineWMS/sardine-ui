@@ -11,14 +11,15 @@ const getMenus = function (menuArray,siderFold,parentPath) {
   return menuArray.map(item => {
     if (!!item.child) {
       return (
-        <Menu.SubMenu key={item.key} title={<span>{item.icon ? <Icon type={item.icon} /> : ''}{siderFold&&topMenus.indexOf(item.key)>=0 ? '' : item.name}</span>}>
+        <Menu.SubMenu key={item.key} title={<span style={{fontSize: 16}}>{item.icon ? <Icon type={item.icon} /> : ''}{siderFold&&topMenus.indexOf(item.key)>=0 ? '' : item.name}</span>}
+          >
           {getMenus(item.child,siderFold,parentPath + item.key + '/')}
         </Menu.SubMenu>
       )
     } else {
       return (
         <Menu.Item key={item.key}>
-          <Link to={parentPath + item.key}>
+          <Link to={parentPath + item.key} style={{fontSize: 16}}>
             {item.icon ? <Icon type={item.icon} /> : ''}
             {siderFold&&topMenus.indexOf(item.key)>=0 ? '' : item.name}
           </Link>
@@ -32,20 +33,16 @@ function Sider({ siderFold,darkTheme,location,changeTheme }) {
   return (
     <div>
       <div className={styles.logo}>
-        {siderFold?'SD':<span>{config.logoText}</span>}
+        <img width="200px" src="http://172.17.1.53:8888/logo/sd-wmslogo1.png"/>
       </div>
       <Menu
-        mode={siderFold?"vertical":"inline"}
+        mode={siderFold?"vertical":"vertical"}
         theme={darkTheme?"dark":"light"}
         defaultSelectedKeys={[location.pathname.split('/')[location.pathname.split('/').length - 1]||'dashboard']}>
         {getMenus(menu,siderFold)}
       </Menu>
-      {!siderFold?<div className={styles.switchtheme}>
-        <span><Icon type="bulb" />切换主题</span>
-        <Switch onChange={changeTheme} defaultChecked={darkTheme} checkedChildren="黑" unCheckedChildren="白" />
-      </div>:''}
     </div>
   )
-}
+}   
 
 export default Sider

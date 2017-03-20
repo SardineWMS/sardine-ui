@@ -10,7 +10,7 @@ const getPathSet = function (menuArray, parentPath) {
     pathSet[(parentPath + item.key).replace(/\//g, '-').hyphenToHump()] = {
       path: parentPath + item.key,
       name: item.name,
-      icon: item.icon || '',
+      // icon: item.icon || '',
       clickable:item.clickable==undefined?true:false
     }
     if (!!item.child) {
@@ -33,11 +33,11 @@ function Bread({ location }) {
   })
   const breads = pathNames.map((item, key) => {
     return (
-      <Breadcrumb.Item key={key} {...((pathNames.length - 1 == key)||!pathSet[item].clickable)? '' : { href: '#' + pathSet[item].path }}>
+      <Breadcrumb.Item key={key}>
         {pathSet[item].icon
           ? <Icon type={pathSet[item].icon} />
           : ''}
-        <span>{pathSet[item].name}</span>
+        <span className={styles.breadFont}>{pathSet[item].name}</span>
       </Breadcrumb.Item>
     )
   })
@@ -45,8 +45,8 @@ function Bread({ location }) {
   return (
     <div className={styles.bread}>
       <Breadcrumb>
-        <Breadcrumb.Item href="#/"><Icon type="home" />
-          <span>主页</span>
+        <Breadcrumb.Item><Icon type="home" />
+          <span className={styles.breadFont}>主页</span>
         </Breadcrumb.Item>
         {breads}
       </Breadcrumb>

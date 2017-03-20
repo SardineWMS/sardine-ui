@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Select, Collapse } from 'antd';
-
+import styles from '../../Layout/common.less';
 const FormItem = Form.Item;
 const Option = Select.Option;
 const Panel = Collapse.Panel;
@@ -35,7 +35,7 @@ const CustomerSearchForm = ({
     const children = [];
     children.push(
         <Col span={12} key={1}>
-            <FormItem {...formItemLayout} label={"代码 类似于"}>
+            <FormItem {...formItemLayout} label={"代码 类似于"} className={styles.formItem}>
                 {getFieldDecorator("code")(
                     <Input placeholder="请输入" key="codeInput" />
                 )}
@@ -44,7 +44,7 @@ const CustomerSearchForm = ({
     );
     children.push(
         <Col span={12} key={2}>
-            <FormItem {...formItemLayout} label={"状态 等于"}>
+            <FormItem {...formItemLayout} label={"状态 等于"} className={styles.formItem}>
                 {getFieldDecorator("state", { initialValue: "normal" })(
                     /*在给select标签赋初始值时，因为此时被getFieldDecorator修饰，不能使用defaultValue。
                     而应该使用getFieldDecorator里的initalValue
@@ -59,7 +59,7 @@ const CustomerSearchForm = ({
     );
     children.push(
         <Col span={12} key={3}>
-            <FormItem {...formItemLayout} label={"名称 类似于"}>
+            <FormItem {...formItemLayout} label={"名称 类似于"} className={styles.formItem}>
                 {getFieldDecorator("name")(
                     <Input placeholder="请输入" key="nameInput"></Input>
                 )}
@@ -69,10 +69,10 @@ const CustomerSearchForm = ({
     );
     const shownCount = searchExpand ? children.length : 3;
     return (
-        <Collapse defaultActiveKey={["1"]}>
+        <Collapse defaultActiveKey={["1"]} >
             <Panel header="搜索" key="1">
                 <Form
-                    className="ant-advanced-search-form"
+   
                     onSubmit={handleSearch}
                 >
                     <Row gutter={40}>

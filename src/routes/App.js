@@ -9,9 +9,11 @@ import Header from '../components/Layout/Header';
 import Bread from '../components/Layout/bread';
 import Footer from '../components/Layout/Footer';
 import Sider from '../components/Layout/sider';
+import Nav from '../components/Layout/Nav';
 import styles from '../components/Layout/main.less';
 import '../components/Layout/common.less';
 import Register from './Register';
+import '../components/Layout/antMotion_style.less';
 import {
   Spin,
   message
@@ -100,21 +102,21 @@ function App({
     <div>
       {login ?
         <div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
-          <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
-            <Sider {...siderProps} />
-          </aside>
-          <div className={styles.main}>
-            <Header {...headerProps} />
-            <Bread location={location} />
-            <div className={styles.container}>
-              <div className={styles.content}>
-                <Spin spinning={loading}>
+        <Nav id="nav_1_0" key="nav_1_0" />
+        <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
+          <Sider {...siderProps} />
+        </aside>
+        <div className={styles.main}>  
+          <Bread location={location} />
+          <div className={styles.container}>
+            <div className={styles.content}>
+              <Spin spinning={loading}>
                   {children}
-                </Spin>
-              </div>
+              </Spin>
             </div>
-            <Footer />
           </div>
+        </div>
+        <Footer />  
         </div>
         : (registerLoading ?
           <div className={styles.reg}>

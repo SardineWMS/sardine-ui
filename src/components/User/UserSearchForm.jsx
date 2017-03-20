@@ -27,14 +27,14 @@ const DemoSearchForm = ({
 
   const formItemLayout = {
     labelCol: { span: 8 },
-    wrapperCol: { span: 12 },
+    wrapperCol: { span: 15 },
   };
 
   const children = [];
   children.push(<Col span={12} key='code'>
-    <FormItem {...formItemLayout} label="代码 类似于">
+    <FormItem {...formItemLayout} label="代码 类似于" style={{'font-family':'Verdana'}}>
       {getFieldDecorator("code")(
-        <Input key="codeInput" placeholder="代码 类似于" />
+        <Input key="codeInput" placeholder="代码 类似于" style={{border:'1px solid #B5B5B5', 'font-family':'Verdana'}}  />
       )}
     </FormItem>
   </Col>);
@@ -49,7 +49,7 @@ const DemoSearchForm = ({
   children.push(<Col span={12} key='state'>
     <FormItem {...formItemLayout} label="状态 等于">
       {getFieldDecorator('userState')(
-        <Select placeholder="请选择" showSearch={false} key="stateSelecter">
+        <Select size="default" placeholder="请选择" showSearch={false} key="stateSelecter">
           <Option value="online">已启用</Option>
           <Option value="offline">已停用</Option>
         </Select>
@@ -59,13 +59,13 @@ const DemoSearchForm = ({
 
   const shownCount = searchExpand ? children.length : 3;
   return (
-    <Card title="搜索条件">
+    <Card title="搜索条件" style={{border:'1px solid #71C671'}}>
       <Form
         horizontal
         className="ant-advanced-search-form"
         onSubmit={handleSearch}
       >
-        <Row gutter={40}>
+        <Row gutter={2}>
           {children.slice(0, shownCount)}
         </Row>
 

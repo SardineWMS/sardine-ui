@@ -110,6 +110,7 @@ function UserSearchGrid({
   return (
     <div>
       <Table size="small"
+        style={{border:'1px solid #71C671', margin: '3px 0 0 1px'}}
         bordered
         rowSelection={rowSelection}
         columns={columns}

@@ -26,18 +26,18 @@ export default function({
     <Router history={history}>
       <Route path="/" component={App}>
         <IndexRedirect to="/home" />
-        <Route path="user" component={User} />
+        <Route path="/ia/user" component={User} />
         <Route path="/home" component={NotFound} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
-        <Route path="/wms/basicInfo/category" component={Category} />
-        <Route path="/wms/basicInfo/customer" component={Customer} />
-        <Route path="/wms/basicInfo/container" component={Container} />
-        <Route path="/wms/basicInfo/article" component={Article} />
-        <Route path="/wms/basicInfo/supplier" component={Supplier} />
-        <Route path="/wms/basicInfo/binType" component={BinType} />
-        <Route path="/wms/basicInfo/containerType" component={ContainerType} />
-        <Route path="/wms/basicInfo/bin" component={Bin} />
+        <Route path="/basicInfo/category" component={Category} />
+        <Route path="/basicInfo/customer" component={Customer} />
+        <Route path="/basicInfo/container" component={Container} />
+        <Route path="/basicInfo/article" component={Article} />
+        <Route path="/basicInfo/supplier" component={Supplier} />
+        <Route path="/basicInfo/binType" component={BinType} />
+        <Route path="/basicInfo/containerType" component={ContainerType} />
+        <Route path="/basicInfo/bin" component={Bin} />
       </Route>
     </Router>
   );
