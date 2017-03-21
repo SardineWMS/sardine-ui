@@ -19,6 +19,7 @@ import BinType from './routes/basicInfo/BinType';
 import ContainerType from './routes/basicInfo/ContainerType';
 import Bin from './routes/basicInfo/Bin';
 
+
 export default function({
   history
 }) {

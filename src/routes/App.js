@@ -14,6 +14,8 @@ import styles from '../components/Layout/main.less';
 import '../components/Layout/common.less';
 import Register from './Register';
 import '../components/Layout/antMotion_style.less';
+import UpdatePasswd from '../components/UpdatePasswd';
+
 import {
   Spin,
   message
@@ -34,10 +36,11 @@ function App({
     registerLoading,
     signInButtonLoading,
     loginButtonLoading,
+    modifyLoading,
     user,
     token,
     siderFold,
-    darkTheme
+    darkTheme,
   } = app;
 
   const loginProps = {
@@ -98,11 +101,44 @@ function App({
     }
   }
 
-  return (
+  const navProps = {
+    id:'nav_1_0',
+    key:'nav_1_0',
+    user,
+    siderFold,
+    modifyPasswd() {
+      dispatch({
+        type: 'app/showModify'
+      })
+    },
+    logout() {
+      dispatch({
+        type: 'app/logout'
+      })
+    },
+  }
+
+  const updatePasswdProps={
+    visible:modifyLoading,
+    onOk(data){
+      dispatch({
+        type: 'app/updatePasswd',
+        payload: data
+      })
+    },
+    onCancel(){
+      dispatch({
+        type: 'app/hideModify'
+      })
+    }
+  }
+
+return (
     <div>
       {login ?
         <div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
-        <Nav id="nav_1_0" key="nav_1_0" />
+        <Nav {...navProps} />
+        <UpdatePasswd {...updatePasswdProps}/>
         <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
           <Sider {...siderProps} />
         </aside>
@@ -129,9 +165,7 @@ function App({
             <Login {...loginProps} /></Spin>
           </div>
         )}
-
-    </div>
-  )
+    </div>)
 }
 
 App.propTypes = {

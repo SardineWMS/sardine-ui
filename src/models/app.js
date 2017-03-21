@@ -2,7 +2,8 @@ import {
   login,
   userInfo,
   logout,
-  signIn
+  signIn,
+  updatePasswd
 } from '../services/app'
 import {
   parse
@@ -20,6 +21,7 @@ export default {
     loginButtonLoading: false,
     signInButtonLoading: false,
     registerLoading: false,
+    modifyLoading:false,
     siderFold: localStorage.getItem("antdAdminSiderFold") === "true" ? true : false,
     darkTheme: localStorage.getItem("antdAdminDarkTheme") === "false" ? false : true,
   },
@@ -161,6 +163,30 @@ export default {
         type: 'handleChangeTheme'
       })
     },
+
+    * updatePasswd({
+      payload
+    }, {
+      call,
+        put
+    }) {
+      const data = yield call(updatePasswd, {
+        oldPasswd: payload.oldPasswd,
+        newPasswd: payload.newPasswd,
+        token:payload.token
+      });
+      if (data) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("loginId");
+        yield put({
+          type: 'hideModify'
+        });
+        yield put({
+          type: 'logoutSuccess'
+        });
+      }
+    },
+
   },
 
   reducers: {
@@ -203,6 +229,20 @@ export default {
       return {
         ...state,
         registerLoading: true
+      }
+    },
+
+     showModify(state) {
+      return {
+        ...state,
+        modifyLoading: true
+      }
+    },
+
+    hideModify(state) {
+      return {
+        ...state,
+        modifyLoading: false
       }
     },
 

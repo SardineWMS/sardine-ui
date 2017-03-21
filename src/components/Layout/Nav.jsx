@@ -32,6 +32,19 @@ const topMenus = menu.map( item => item.key);
 }
 
 class Header extends React.Component {
+ constructor(props){
+    super(props);
+    this.handleClick=this.handleClick.bind(this);
+ }
+
+ handleClick(e){
+    if(e.key==='modify'){
+        this.props.modifyPasswd();
+    }else if(e.key==='exit')
+    {
+        this.props.logout();
+    }
+ }
 
   render() {
     const props = { ...this.props };
@@ -46,11 +59,12 @@ class Header extends React.Component {
       </span>
       <span>zs</span>
     </div>);
+
     navChildren.push(
       (<SubMenu className="user" title={userTitle} key="userInfo" style={{fontSize: 18}}>
         <Item key="a" style={{fontSize: 14}}>用户中心</Item>
-        <Item key="b" style={{fontSize: 14}}>修改密码</Item>
-        <Item key="c" style={{fontSize: 14}}>登出</Item>
+        <Item key="modify" style={{fontSize: 14}}>修改密码</Item>
+        <Item key="exit" style={{fontSize: 14}}>登出</Item>
       </SubMenu>));
     return (<TweenOne
       component="header"
@@ -70,7 +84,7 @@ class Header extends React.Component {
           animation={{ x: 30, delay: 100, opacity: 0, type: 'from', ease: 'easeOutQuad' }}
           className={`${this.props.className}-nav`}
         >
-          <Menu
+          <Menu onClick={this.handleClick}
             mode="horizontal" defaultSelectedKeys={['0']}
             id={`${this.props.id}-menu`}
           >
