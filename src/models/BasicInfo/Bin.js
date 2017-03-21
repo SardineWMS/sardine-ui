@@ -13,6 +13,7 @@ import {
   queryZones,
   queryBinTypes
 } from '../../services/BasicInfo/Bin';
+import { queryBinType, deleteBinType, create, update } from '../../services/BasicInfo/BinType';
 
 export default {
   namespace: 'bin',
@@ -20,7 +21,7 @@ export default {
   state: {
     list: [],
     entitys: [],
-    next:false,
+    next: false,
     loading: false,
     currentItem: {},
     wrhModalVisible: false,
@@ -28,6 +29,8 @@ export default {
     pathModalVisible: false,
     shelfModalVisible: false,
     binModalVisible: false,
+    binTypeList: [],
+    binTypeModalVisible: false,
   },
 
   subscriptions: {
@@ -40,23 +43,23 @@ export default {
         if (location.pathname === '/wms/basicInfo/bin') {
           dispatch({
             type: 'queryBin',
-            payload: { 
-                        token: localStorage.getItem("token"),
-                        fieldsvalue
-                     },
-            
+            payload: {
+              token: localStorage.getItem("token"),
+              fieldsvalue
+            },
+
           })
         }
       })
     },
   },
 
-  effects: { 
+  effects: {
     * queryBin({
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'showLoading'
@@ -71,9 +74,9 @@ export default {
             list: data.obj.pageData.records,
             treeData: data.obj.treeData,
             pagination: {
-                            total: data.obj.pageData.recordCount,
-                            current: data.obj.pageData.page,
-                        }
+              total: data.obj.pageData.recordCount,
+              current: data.obj.pageData.page,
+            }
           },
         })
       }
@@ -82,7 +85,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'showLoading'
@@ -103,7 +106,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'showLoading'
@@ -124,7 +127,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'showLoading'
@@ -145,7 +148,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideWrhModal'
@@ -156,20 +159,20 @@ export default {
       yield call(createWrh, payload);
       const {
         data
-      } = yield call(queryBin, 
-        payload: {
-          token: payload.token
-        });
+      } = yield call(queryBin,
+          payload: {
+            token: payload.token
+          });
       if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
             list: data.obj.pageData.records,
-            treeData:data.obj.treeData,
+            treeData: data.obj.treeData,
             pagination: {
-                            total: data.obj.pageData.recordCount,
-                            current: data.obj.pageData.page,
-                        }
+              total: data.obj.pageData.recordCount,
+              current: data.obj.pageData.page,
+            }
           },
         })
       }
@@ -179,7 +182,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideZoneModal'
@@ -190,20 +193,20 @@ export default {
       yield call(createZone, payload);
       const {
         data
-      } = yield call(queryBin, 
-        payload: {
-          token: payload.token
-        });
+      } = yield call(queryBin,
+          payload: {
+            token: payload.token
+          });
       if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
             list: data.obj.pageData.records,
-            treeData:data.obj.treeData,
+            treeData: data.obj.treeData,
             pagination: {
-                            total: data.obj.pageData.recordCount,
-                            current: data.obj.pageData.page,
-                        }
+              total: data.obj.pageData.recordCount,
+              current: data.obj.pageData.page,
+            }
           },
         })
       }
@@ -213,7 +216,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hidePathModal'
@@ -231,7 +234,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideShelfModal'
@@ -249,7 +252,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideBinModal'
@@ -267,7 +270,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'showLoading'
@@ -278,44 +281,112 @@ export default {
         type: 'executeNext'
       });
     },
+
+    *addBinTypeLine({ payload }, {
+      call, put
+    }) {
+      const { data } = yield call(queryBinType, parse(payload));
+      const binTypeLists = data.obj.records;
+
+      const nullBinType = new Object();
+      nullBinType.editable = true;
+      binTypeLists.push(nullBinType);
+      yield put({
+        type: 'queryBinTypeSuccess',
+        payload: {
+          binTypeList: binTypeLists,
+        }
+      })
+    },
+
+    *queryBinType({ payload }, {
+      call, put
+    }) {
+      console.log("queryBinType...");
+      const { data } = yield call(queryBinType, parse(payload));
+      if (data) {
+        yield put({
+          type: 'queryBinTypeSuccess',
+          payload: {
+            binTypeList: data.obj.records,
+          }
+        })
+      }
+    },
+
+    *deleteBinType({ payload }, { call, put }) {
+      yield call(deleteBinType, {
+        uuid: payload.uuid,
+        version: payload.version
+      });
+      yield put({
+        type: 'queryBinType',
+        payload: {}
+      })
+    },
+
+    *saveNewBinType({ payload }, { call, put }) {
+      yield call(create, payload);
+      yield put({
+        type: 'queryBinType',
+        payload: {}
+      })
+    },
+
+    *saveModifyBinType({ payload }, {
+      call, put
+    }) {
+      yield call(update, payload);
+      yield put({
+        type: 'queryBinType',
+        payload: {}
+      })
+    }
   },
 
   reducers: {
     showLoading(state) {
-      return {...state,
+      return {
+        ...state,
         loading: true
       }
     },
     querySuccess(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         loading: false
       }
     },
     showWrhModal(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         wrhModalVisible: true
       }
     },
     hideWrhModal(state) {
-      return {...state,
+      return {
+        ...state,
         wrhModalVisible: false
       }
     },
     showZoneModal(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         zoneModalVisible: true
       }
     },
     hideZoneModal(state) {
-      return {...state,
+      return {
+        ...state,
         zoneModalVisible: false
       }
     },
     showPathModal(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         pathModalVisible: true,
         batchCreatePathProcessModal: false,
@@ -324,13 +395,15 @@ export default {
       }
     },
     hidePathModal(state) {
-      return {...state,
+      return {
+        ...state,
         pathModalVisible: false,
-        batchCreatePathProcessModal : false,
+        batchCreatePathProcessModal: false,
       }
     },
     showShelfModal(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         shelfModalVisible: true,
         batchCreateShelfProcessModal: false,
@@ -339,13 +412,15 @@ export default {
       }
     },
     hideShelfModal(state) {
-      return {...state,
+      return {
+        ...state,
         shelfModalVisible: false,
-        batchCreateShelfProcessModal : false,
+        batchCreateShelfProcessModal: false,
       }
     },
     showBinModal(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         binModalVisible: true,
         batchCreateBinProcessModal: false,
@@ -354,47 +429,60 @@ export default {
       }
     },
     hideBinModal(state) {
-      return {...state,
+      return {
+        ...state,
         binModalVisible: false,
-        batchCreateBinProcessModal : false,
+        batchCreateBinProcessModal: false,
       }
     },
     hideDeleteBinModal(state) {
-      return {...state,
-        batchDeleteBinProcessModal : false,
+      return {
+        ...state,
+        batchDeleteBinProcessModal: false,
       }
     },
     batchSavePath(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         pathModalVisible: false,
         batchCreatePathProcessModal: true
       }
     },
     batchSaveShelf(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         shelfModalVisible: false,
         batchCreateShelfProcessModal: true
       }
     },
     batchSaveBin(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         binModalVisible: false,
         batchCreateBinProcessModal: true
       }
     },
     batchDeleteBin(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         batchDeleteBinProcessModal: true
       }
     },
     executeNext(state) {
-      return {...state,
+      return {
+        ...state,
         next: true
       }
+    },
+    queryBinTypeSuccess(state, action) {
+      return { ...state, ...action.payload, binTypeModalVisible: true }
+    },
+    hideBinTypeModal(state) {
+      return { ...state, binTypeModalVisible: false }
     },
   },
 }

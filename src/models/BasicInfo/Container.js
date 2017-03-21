@@ -6,6 +6,7 @@ import {
   create,
   queryContainerTypes,
 } from '../../services/BasicInfo/Container';
+import { querybypage as queryContainerType, create as createContainerType, get, edit, remove } from '../../services/BasicInfo/ContainerType';
 
 export default {
   namespace: 'container',
@@ -27,7 +28,9 @@ export default {
       current: 1,
       total: null,
       size: 'default'
-    }
+    },
+    containerTypeModalVisible: false,
+    containerTypeList: [],
   },
 
   subscriptions: {
@@ -46,11 +49,12 @@ export default {
     },
   },
 
-  effects: { * query({
+  effects: {
+    * query({
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'showLoading'
@@ -76,7 +80,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield call(create, payload);
       yield put({
@@ -88,7 +92,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'showLoading'
@@ -96,8 +100,8 @@ export default {
       const {
         data
       } = yield call(queryContainerTypes, payload: {
-        token: payload.token
-      });
+          token: payload.token
+        });
 
       if (data) {
         yield put({
@@ -109,28 +113,93 @@ export default {
       }
     },
 
+    *queryContainerType({ payload },
+      { call, put }) {
+      const { data } = yield call(queryContainerType, parse(payload));
+      if (data) {
+        yield put({
+          type: 'showContainerTypeSuccess',
+          payload: {
+            containerTypeList: data.obj.records,
+          }
+        })
+      }
+    },
+    *addContainerTypeLine({ payload }, {
+      call, put
+    }) {
+      const { data } = yield call(queryContainerType, parse(payload));
+      const containerTypeLists = data.obj.records;
+
+      const nullContainerType = new Object();
+      nullContainerType.editable = true;
+      containerTypeLists.push(nullContainerType);
+      yield put({
+        type: 'showContainerTypeSuccess',
+        payload: {
+          containerTypeList: containerTypeLists
+        }
+      })
+    },
+    *deleteContainerType({ payload }, {
+      call, put
+    }) {
+      yield call(remove, {
+        uuid: payload.uuid,
+        version: payload.version
+      });
+      yield put({
+        type: 'queryContainerType',
+        payload: {}
+      })
+    },
+
+    *saveNewContainerType({ payload }, {
+      call, put
+    }) {
+      yield call(createContainerType, payload);
+      yield put({
+        type: 'queryContainerType',
+        payload: {}
+      })
+    },
+
+    *saveModifyContainerType({ payload }, {
+      call, put
+    }) {
+      yield call(edit, parse(payload));
+      yield put({
+        type: 'queryContainerType',
+        payload: {}
+      })
+    }
+
   },
 
   reducers: {
     showBatchProcess(state) {
-      return {...state,
+      return {
+        ...state,
         batchProcess: true
       }
     },
     confirmSaveNew(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         modalVisible: false,
         batchProcessModal: true
       }
     },
     querySuccess(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload
       }
     },
     showModal(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         entitys: [],
         next: false,
@@ -139,31 +208,42 @@ export default {
       }
     },
     toggle(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
       }
     },
     hideModal(state) {
-      return {...state,
+      return {
+        ...state,
         modalVisible: false,
         batchProcessModal: false,
       }
     },
     hideBatchProcessModal(state) {
-      return {...state,
+      return {
+        ...state,
         batchProcessModal: false
       }
     },
     executeNext(state) {
-      return {...state,
+      return {
+        ...state,
         next: true
       }
     },
     queryContainerTypeSuccess(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload
       }
-    }
+    },
+    showContainerTypeSuccess(state, action) {
+      return { ...state, ...action.payload, containerTypeModalVisible: true }
+    },
+    hideContainerTypeModal(state) {
+      return { ...state, containerTypeModalVisible: false }
+    },
 
   },
 

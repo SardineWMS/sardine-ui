@@ -12,11 +12,13 @@ import CreateWrhModal from '../../components/BasicInfo/Bin/CreateWrhModal';
 import BinTree from '../../components/BasicInfo/Bin/BinTree';
 import BinSearchForm from '../../components/BasicInfo/Bin/BinSearchForm';
 import WMSProgress from '../../components/Widget/WMSProgress';
+import BinTypeModal from '../../components/BasicInfo/Bin/BinTypeModal';
 
 function Bin({ location, dispatch, bin }) {
-  const { list, wrhModalVisible,zoneModalVisible,shelfModalVisible,pathModalVisible,binModalVisible, treeData,
-      wrhs, zones, batchCreatePathProcessModal, batchCreateShelfProcessModal, batchCreateBinProcessModal, pathNext, 
-      shelfNext, binNext, pathEntitys, shelfEntitys, binEntitys, binTypes, deleteBinEntitys, batchDeleteBinProcessModal
+  const { list, wrhModalVisible, zoneModalVisible, shelfModalVisible, pathModalVisible, binModalVisible, treeData,
+    wrhs, zones, batchCreatePathProcessModal, batchCreateShelfProcessModal, batchCreateBinProcessModal, pathNext,
+    shelfNext, binNext, pathEntitys, shelfEntitys, binEntitys, binTypes, deleteBinEntitys, batchDeleteBinProcessModal, binTypeList,
+    binTypeModalVisible,
     } = bin;
 
   const { field, keyword } = location.query
@@ -66,9 +68,9 @@ function Bin({ location, dispatch, bin }) {
     zones: zones,
     onOk(data) {
       dispatch({
-        type : 'bin/batchSavePath',
-        payload :{
-          pathEntitys : data
+        type: 'bin/batchSavePath',
+        payload: {
+          pathEntitys: data
         }
       })
     },
@@ -84,9 +86,9 @@ function Bin({ location, dispatch, bin }) {
     treeData: treeData,
     onOk(data) {
       dispatch({
-        type : 'bin/batchSaveShelf',
-        payload :{
-          shelfEntitys : data
+        type: 'bin/batchSaveShelf',
+        payload: {
+          shelfEntitys: data
         }
       })
     },
@@ -103,9 +105,9 @@ function Bin({ location, dispatch, bin }) {
     treeData: treeData,
     onOk(data) {
       dispatch({
-        type : 'bin/batchSaveBin',
-        payload :{
-          binEntitys : data
+        type: 'bin/batchSaveBin',
+        payload: {
+          binEntitys: data
         }
       })
     },
@@ -119,10 +121,10 @@ function Bin({ location, dispatch, bin }) {
   const batchProcessPathModalProps = {
     showConfirmModal: batchCreatePathProcessModal,
     records: pathEntitys ? pathEntitys : [],
-    next:pathNext,
+    next: pathNext,
     actionText: '创建',
     entityCaption: '货道',
-    batchProcess(entity){
+    batchProcess(entity) {
       dispatch({
         type: 'bin/createPath',
         payload: {
@@ -130,12 +132,12 @@ function Bin({ location, dispatch, bin }) {
         }
       })
     },
-    hideConfirmModal(){
+    hideConfirmModal() {
       dispatch({
         type: 'bin/hidePathModal',
       })
     },
-    refreshGrid(){
+    refreshGrid() {
       dispatch({
         type: 'bin/queryBin',
       })
@@ -145,10 +147,10 @@ function Bin({ location, dispatch, bin }) {
   const batchProcessShelfModalProps = {
     showConfirmModal: batchCreateShelfProcessModal,
     records: shelfEntitys ? shelfEntitys : [],
-    next:shelfNext,
+    next: shelfNext,
     actionText: '创建',
     entityCaption: '货架',
-    batchProcess(entity){
+    batchProcess(entity) {
       dispatch({
         type: 'bin/createShelf',
         payload: {
@@ -156,12 +158,12 @@ function Bin({ location, dispatch, bin }) {
         }
       })
     },
-    hideConfirmModal(){
+    hideConfirmModal() {
       dispatch({
         type: 'bin/hideShelfModal',
       })
     },
-    refreshGrid(){
+    refreshGrid() {
       dispatch({
         type: 'bin/queryBin',
       })
@@ -171,10 +173,10 @@ function Bin({ location, dispatch, bin }) {
   const batchProcessBinModalProps = {
     showConfirmModal: batchCreateBinProcessModal,
     records: binEntitys ? binEntitys : [],
-    next:binNext,
+    next: binNext,
     actionText: '创建',
     entityCaption: '货位',
-    batchProcess(entity){
+    batchProcess(entity) {
       dispatch({
         type: 'bin/createBin',
         payload: {
@@ -184,12 +186,12 @@ function Bin({ location, dispatch, bin }) {
         }
       })
     },
-    hideConfirmModal(){
+    hideConfirmModal() {
       dispatch({
         type: 'bin/hideBinModal',
       })
     },
-    refreshGrid(){
+    refreshGrid() {
       dispatch({
         type: 'bin/queryBin',
       })
@@ -199,10 +201,10 @@ function Bin({ location, dispatch, bin }) {
   const batchProcessDeleteBinModalProps = {
     showConfirmModal: batchDeleteBinProcessModal,
     records: deleteBinEntitys ? deleteBinEntitys : [],
-    next:binNext,
+    next: binNext,
     actionText: '删除',
     entityCaption: '货位',
-    batchProcess(entity){
+    batchProcess(entity) {
       dispatch({
         type: 'bin/deleteBin',
         payload: {
@@ -211,12 +213,12 @@ function Bin({ location, dispatch, bin }) {
         }
       })
     },
-    hideConfirmModal(){
+    hideConfirmModal() {
       dispatch({
         type: 'bin/hideDeleteBinModal',
       })
     },
-    refreshGrid(){
+    refreshGrid() {
       dispatch({
         type: 'bin/queryBin',
       })
@@ -236,20 +238,20 @@ function Bin({ location, dispatch, bin }) {
           state: fieldsValue.state,
         }
       })
-      },
+    },
   }
 
   const binTreeProps = {
     data: treeData,
-    onSelect(selectKeys, e){
+    onSelect(selectKeys, e) {
       let wrhUuid, zoneUuid, pathUuid, shelfUuid;
-      if(e.node.props.wrhType == 'wrh'){
+      if (e.node.props.wrhType == 'wrh') {
         wrhUuid = e.node.props.nodeValue;
-      } else if (e.node.props.wrhType == 'zone'){
+      } else if (e.node.props.wrhType == 'zone') {
         zoneUuid = e.node.props.nodeValue;
-      } else if (e.node.props.wrhType == 'path'){
+      } else if (e.node.props.wrhType == 'path') {
         pathUuid = e.node.props.nodeValue;
-      } else if (e.node.props.wrhType == 'shelf'){
+      } else if (e.node.props.wrhType == 'shelf') {
         shelfUuid = e.node.props.nodeValue;
       }
       dispatch({
@@ -262,7 +264,7 @@ function Bin({ location, dispatch, bin }) {
         }
       })
     }
-  } 
+  }
 
   const binSearchProps = {
     dataSource: list,
@@ -275,38 +277,105 @@ function Bin({ location, dispatch, bin }) {
         }
       })
     },
-    onCreateWrh(){
+    onCreateWrh() {
       dispatch({
         type: 'bin/showWrhModal',
       })
     },
-    onCreateZone(){
+    onCreateZone() {
       dispatch({
         type: 'bin/queryWrhsAndShowZoneModal',
       })
     },
-    onCreateShelf(){
+    onCreateShelf() {
       dispatch({
         type: 'bin/showShelfModal',
       })
     },
-    onCreatePath(){
+    onCreatePath() {
       dispatch({
         type: 'bin/queryZonesAndShowPathModal',
       })
     },
-    onCreateBin(){
+    onCreateBin() {
       dispatch({
         type: 'bin/queryBinTypesAndShowBinModal',
       })
     },
     onDeleteBin(data) {
       dispatch({
-        type : 'bin/batchDeleteBin',
-        payload :{
-          deleteBinEntitys : data
+        type: 'bin/batchDeleteBin',
+        payload: {
+          deleteBinEntitys: data
         }
       })
+    },
+    onCreateBinType() {
+      dispatch({
+        type: 'bin/queryBinType',
+        payload: {
+
+        }
+      })
+    }
+  }
+
+  const binTypeModalProps = {
+    dataSource: binTypeList,
+    visible: binTypeModalVisible,
+    onCancel() {
+      dispatch({
+        type: 'bin/hideBinTypeModal',
+      })
+    },
+    onEdit(record) {
+      record.editable = true;
+      dispatch({
+        type: 'bin/queryBinTypeSuccess',
+        payload: record,
+      })
+    },
+    onCancelEdit(record) {
+      record.editable = false;
+      if (!record.uuid) {
+        dispatch({
+          type: 'bin/queryBinType',
+        })
+      }
+      else {
+        dispatch({
+          type: 'bin/queryBinTypeSuccess',
+          payload: record,
+        })
+      }
+    },
+    onAdd() {
+      dispatch({
+        type: 'bin/addBinTypeLine',
+      })
+    },
+    onDelete(record) {
+      if (record.uuid === undefined)
+        dispatch({
+          type: 'bin/queryBinType',
+        })
+      else
+        dispatch({
+          type: 'bin/deleteBinType',
+          payload: record,
+        })
+    },
+    onSave(record) {
+      if (record.uuid === undefined)
+        dispatch({
+          type: 'bin/saveNewBinType',
+          payload: record,
+        })
+      else
+        dispatch({
+          type: 'bin/saveModifyBinType',
+          payload: record,
+        })
     }
   }
 
@@ -319,28 +388,29 @@ function Bin({ location, dispatch, bin }) {
   const CreatePathModalGen = () =>
     <CreatePathModal {...CreatePathModalProps} />
   const CreateBinModalGen = () =>
-    <CreateBinModal {...CreateBinModalProps} />  
+    <CreateBinModal {...CreateBinModalProps} />
 
   return (
     <div className="content-inner">
-           <Layout style={{ padding: '0 0', background: '#fff' }}>
-              <Sider width={210} style={{ background: '#fff', padding: '0 5px' }}>
-                 <BinTree {...binTreeProps} /> 
-              </Sider>
-              <Content style={{ padding: '0 0 0 5px', minHeight: 280 }}>
-                 <BinSearchForm {...binSearchFormProps} />
-                 <BinSearch {...binSearchProps} />
-                 <CreateWrhModalGen />
-                 <CreateZoneModalGen />
-                 <CreateShelfModalGen />
-                 <CreatePathModalGen />
-                 <CreateBinModalGen />
-                 <WMSProgress {...batchProcessPathModalProps} />
-                 <WMSProgress {...batchProcessShelfModalProps} />
-                 <WMSProgress {...batchProcessBinModalProps} />
-                 <WMSProgress {...batchProcessDeleteBinModalProps} />
-              </Content>
-           </Layout>
+      <Layout style={{ padding: '0 0', background: '#fff' }}>
+        <Sider width={210} style={{ background: '#fff', padding: '0 5px' }}>
+          <BinTree {...binTreeProps} />
+        </Sider>
+        <Content style={{ padding: '0 0 0 5px', minHeight: 280 }}>
+          <BinSearchForm {...binSearchFormProps} />
+          <BinSearch {...binSearchProps} />
+          <CreateWrhModalGen />
+          <CreateZoneModalGen />
+          <CreateShelfModalGen />
+          <CreatePathModalGen />
+          <CreateBinModalGen />
+          <BinTypeModal {...binTypeModalProps} />
+          <WMSProgress {...batchProcessPathModalProps} />
+          <WMSProgress {...batchProcessShelfModalProps} />
+          <WMSProgress {...batchProcessBinModalProps} />
+          <WMSProgress {...batchProcessDeleteBinModalProps} />
+        </Content>
+      </Layout>
     </div>
   )
 }
