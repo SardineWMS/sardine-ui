@@ -24,7 +24,7 @@ export default {
       history
     }) {
       history.listen(location => {
-        if (location.pathname === '/wms/basicInfo/category') {
+        if (location.pathname === '/basicInfo/category') {
           dispatch({
             type: 'query',
             payload: {

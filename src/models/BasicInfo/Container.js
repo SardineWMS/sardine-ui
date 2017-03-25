@@ -39,7 +39,7 @@ export default {
       history
     }) {
       history.listen(location => {
-        if (location.pathname === '/wms/basicInfo/container') {
+        if (location.pathname === '/basicInfo/container') {
           dispatch({
             type: 'query',
             payload: location.query,
