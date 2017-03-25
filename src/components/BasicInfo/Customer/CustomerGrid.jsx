@@ -1,43 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 
-
-const columns = [{
-    title: '代码',
-    dataIndex: 'code',
-    key: 'code',
-    render: (text, record) => <a onClick={() => { onViewItem(record) }}>{text}</a>,
-    sorter: true,
-},
-{
-    title: '名称',
-    dataIndex: 'name',
-    key: 'name',
-    sorter: true,
-},
-{
-    title: '状态',
-    dataIndex: 'state',
-    key: 'state',
-},
-{
-    title: '操作',
-    key: 'operation',
-    render: (text, record) => (
-        <p>
-            <a onClick={() => { onEdit(record) }}>编辑</a>
-            &nbsp;
-                <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(record)} >
-                <a disabled={record.state === "已删除"}>删除</a>
-            </Popconfirm>
-            <Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(record)}>
-                <a disabled={record.state === "正常"}>恢复</a>
-            </Popconfirm>
-        </p>
-    )
-}
-];
-
 class CustomerGrid extends React.Component {
     constructor(props) {
         console.log("初始化");
