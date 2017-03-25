@@ -6,6 +6,7 @@
   height: 100vh;
   min-width: 800px;
   border:1px solid #008B00;
+  overflow: auto;
 
   &.fold{
     .sider{
@@ -176,7 +177,7 @@
   .main {
     margin-left: 200px;
     overflow: auto;
-    height: 100vh;
+    height: 100%;
     transition: @transition-ease-out;
 
     .container {
@@ -258,4 +259,14 @@
     height: 100vh;
   };
 }
+
+/* 去除Card 的hover属性 (CSS Modules方式)*/
+.main {
+  :global .ant-card:hover {
+    box-shadow:  none;
+  }
+}
+
+
+ 
 
