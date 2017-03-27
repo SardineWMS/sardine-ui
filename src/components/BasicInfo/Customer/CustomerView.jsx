@@ -3,6 +3,9 @@ import { Card, Form, Row, Col, Input, Button, Collapse, Popconfirm, Spin } from 
 import timeStamp2datetime from '../../../utils/DateUtils';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
 import styles from '../../Layout/common.less';
+import BaseCard from '../../Widget/BaseCard';
+import BaseFormItem from '../../Widget/BaseFormItem';
+
 const FormItem = Form.Item;
 const Panel = Collapse.Panel;
 const CustomerView = ({item = {},
@@ -12,9 +15,6 @@ const CustomerView = ({item = {},
     showEdit,
 }) => {
 
-    const formItemLayout = {
-        labelCol: { span: 9 },
-    }
     const code = item.code;
     let removeRight = false;
     let recoverRight = false;
@@ -38,45 +38,39 @@ const CustomerView = ({item = {},
                 </Popconfirm>
                 <Button onClick={() => onBack()}>返回</Button>
             </div>
-                <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
-                    <Row gutter={36}>
-                        <Col span={12}>
-                            <Form horizontal>
-                                <FormItem label="客户代码：" {...formItemLayout} className={styles.formItem}>
-                                    <span>{item.code}</span>
-                                </FormItem>
-                                <FormItem label="客户名称：" {...formItemLayout} className={styles.formItem}>
-                                    <span>{item.name}</span>
-                                </FormItem>
-                                <FormItem label="客户类型：" {...formItemLayout} className={styles.formItem}>
-                                    <span>{item.type}</span>
-                                </FormItem>
-                                <FormItem label="联系方式：" {...formItemLayout} className={styles.formItem}>
-                                    <span>{item.phone}</span>
-                                </FormItem>
-                                <FormItem label="联系地址：" {...formItemLayout} className={styles.formItem}>
-                                    <span>{item.address}</span>
-                                </FormItem>
-                            </Form>
-                        </Col>
-                        <Col span={12}>
-                            <Form horizontal>
-                                <FormItem label="状态：" {...formItemLayout} className={styles.formItem}>
-                                    <span>{item.state}</span>
-                                </FormItem>
-                                <FormItem label="创建信息：" {...formItemLayout} className={styles.formItem}>
-                                    <span>{createInfo2String(item)}</span>
-                                </FormItem>
-                                <FormItem label="修改信息：" {...formItemLayout} className={styles.formItem}>
-                                    <span>{lastModifyInfo2String(item)}</span>
-                                </FormItem>
-                            </Form>
-                        </Col>
-                    </Row>
-                </Card>
-                <Card bordered={false} title="说明">
+                <BaseCard title="基本信息" >
+                    <Form horizontal>
+                        <BaseFormItem label="客户代码：">
+                            <span>{item.code}</span>
+                        </BaseFormItem>
+                        <BaseFormItem label="客户名称：">
+                            <span>{item.name}</span>
+                        </BaseFormItem>
+                        <BaseFormItem label="客户类型：">
+                            <span>{item.type}</span>
+                        </BaseFormItem>
+                        <BaseFormItem label="联系方式：">
+                            <span>{item.phone}</span>
+                        </BaseFormItem>
+                        <BaseFormItem label="联系地址：">
+                            <span>{item.address}</span>
+                        </BaseFormItem>
+                    </Form>
+                    <Form horizontal>
+                        <BaseFormItem label="状态：">
+                            <span>{item.state}</span>
+                        </BaseFormItem>
+                        <BaseFormItem label="创建信息：">
+                            <span>{createInfo2String(item)}</span>
+                        </BaseFormItem>
+                        <BaseFormItem label="修改信息：">
+                            <span>{lastModifyInfo2String(item)}</span>
+                        </BaseFormItem>
+                    </Form>
+                </BaseCard>
+                <BaseCard title="说明">
                     <Input type="textarea" autosize={{ minRows: 4 }} disabled={true}></Input>
-                </Card>
+                </BaseCard>
         </div >
     )
 };
