@@ -22,7 +22,7 @@ export default {
     subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        if (location.pathname === '/wms/basicInfo/containerType') {
+        if (location.pathname === '/basicInfo/containerType') {
           dispatch({
             type: 'query',
             payload: location.query,

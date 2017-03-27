@@ -1,13 +1,14 @@
 import React, { PropTypes } from 'react'
 import { routerRedux } from 'dva/router'
 import { connect } from 'dva'
+import { message } from 'antd';
 
 import CustomerGrid from '../../components/BasicInfo/Customer/CustomerGrid';
 import CustomerForm from '../../components/BasicInfo/Customer/CustomerForm';
 import CustomerAdd from '../../components/BasicInfo/Customer/CustomerAdd';
 import CustomerView from '../../components/BasicInfo/Customer/CustomerView';
 import WMSProgress from '../../components/Widget/WMSProgress';
-function Customer({location, dispatch, customer}) {
+function Customer({ location, dispatch, customer }) {
     const {
         list, showCreatePage, pagination, showViewPage, currentItem, current,
         showEditPage, searchExpand, batchDeleteProcessModal, deleteCustomerEntitys,
@@ -15,7 +16,7 @@ function Customer({location, dispatch, customer}) {
         batchRecoverProcessModal, recoverCustomerEntitys,
     } = customer;
 
-    const {field, keyword} = location.query
+    const { field, keyword } = location.query
 
 
     const customerListProps = {
@@ -23,7 +24,7 @@ function Customer({location, dispatch, customer}) {
         pagination: pagination,
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
-                pathname: '/wms/basicInfo/customer',
+                pathname: '/basicInfo/customer',
                 query: {
                     page: page.current,
                     pageSize: page.pageSize,
@@ -83,6 +84,10 @@ function Customer({location, dispatch, customer}) {
             })
         },
         onRemoveBatch(customers) {
+            if (customers.length <= 0) {
+                message.warning("请选择要删除的客户！", 2, '');//延时2秒
+                return;
+            }
             dispatch({
                 type: 'customer/batchDeleteCustomer',
                 payload: {
@@ -91,6 +96,10 @@ function Customer({location, dispatch, customer}) {
             })
         },
         onRecoverBatch(customers) {
+            if (customers.length <= 0) {
+                message.warning("请选择要恢复的客户！", 2, '');
+                return;
+            }
             dispatch({
                 type: 'customer/batchRecoverCustomer',
                 payload: {
@@ -264,8 +273,6 @@ function Customer({location, dispatch, customer}) {
             })
         }
     }
-
-    const CustomerGridGen = () => <CustomerGrid {...customerListProps} />;
     const CustomerAddGen = () => <CustomerAdd {...customerAddProps} />;
 
     function RefreshWidget() {
@@ -291,7 +298,7 @@ function Customer({location, dispatch, customer}) {
                     return (
                         <div>
                             <CustomerForm {...customerSearchProps} />
-                            <CustomerGridGen />
+                            <CustomerGrid {...customerListProps} />
                             <WMSProgress {...batchProcessDeleteCustomerProps} />
                             <WMSProgress {...batchProcessRecoverCustomerProps} />
                         </div>
@@ -310,7 +317,7 @@ Customer.propTypes = {
     customer: PropTypes.object,
 }
 
-function mapStateToProps({customer}) {
+function mapStateToProps({ customer }) {
     return {
         customer,
     };

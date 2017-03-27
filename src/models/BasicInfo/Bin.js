@@ -40,7 +40,7 @@ export default {
     }) {
       history.listen(location => {
         var fieldsvalue = location.query;
-        if (location.pathname === '/wms/basicInfo/bin') {
+        if (location.pathname === '/basicInfo/bin') {
           dispatch({
             type: 'queryBin',
             payload: {

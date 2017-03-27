@@ -31,7 +31,7 @@ export default {
     subscriptions: {
     setup({ dispatch, history }) {
       history.listen(location => {
-        if (location.pathname === '/wms/basicInfo/supplier') {
+        if (location.pathname === '/basicInfo/supplier') {
           dispatch({
             type: 'query',
             payload: location.query,

@@ -102,8 +102,8 @@ function App({
   }
 
   const navProps = {
-    id:'nav_1_0',
-    key:'nav_1_0',
+    id: 'nav_1_0',
+    key: 'nav_1_0',
     user,
     siderFold,
     modifyPasswd() {
@@ -118,41 +118,41 @@ function App({
     },
   }
 
-  const updatePasswdProps={
-    visible:modifyLoading,
-    onOk(data){
+  const updatePasswdProps = {
+    visible: modifyLoading,
+    onOk(data) {
       dispatch({
         type: 'app/updatePasswd',
         payload: data
       })
     },
-    onCancel(){
+    onCancel() {
       dispatch({
         type: 'app/hideModify'
       })
     }
   }
 
-return (
+  return (
     <div>
       {login ?
         <div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
-        <Nav {...navProps} />
-        <UpdatePasswd {...updatePasswdProps}/>
-        <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
-          <Sider {...siderProps} />
-        </aside>
-        <div className={styles.main}>  
-          <Bread location={location} />
-          <div className={styles.container}>
-            <div className={styles.content}>
-              <Spin spinning={loading}>
+          <Nav {...navProps} />
+          <UpdatePasswd {...updatePasswdProps} />
+          <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
+            <Sider {...siderProps} />
+          </aside>
+          <div className={styles.main}>
+            <Bread location={location} />
+            <div className={styles.container}>
+              <div className={styles.content}>
+                <Spin spinning={loading}>
                   {children}
-              </Spin>
+                </Spin>
+              </div>
             </div>
+            <Footer />
           </div>
-        </div>
-        <Footer />  
         </div>
         : (registerLoading ?
           <div className={styles.reg}>
@@ -182,7 +182,7 @@ App.propTypes = {
   darkTheme: PropTypes.bool,
 }
 
-function mapStateToProps({loading, app}) {
+function mapStateToProps({ loading, app }) {
   return {
     loading: loading.global,
     app,
