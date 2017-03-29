@@ -2,12 +2,12 @@ import React, { PropTypes } from 'react';
 import { Card, Form, Row, Col, Input, Button, Collapse, Popconfirm, Spin } from 'antd';
 import timeStamp2datetime from '../../../utils/DateUtils';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
-import styles from '../../Layout/common.less';
+import ToolbarPanel from '../../Widget/ToolbarPanel';
 import BaseCard from '../../Widget/BaseCard';
+import RemarkCard from '../../Widget/RemarkCard';
+import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 
-const FormItem = Form.Item;
-const Panel = Collapse.Panel;
 const CustomerView = ({item = {},
     onBack,
     onRemove,
@@ -26,52 +26,41 @@ const CustomerView = ({item = {},
         removeRight = true;
         recoverRight = false;
     }
+    let basicFormItems = [];
+    basicFormItems.push(<BaseFormItem label="客户代码：">
+                            <span>{item.code}</span>
+                        </BaseFormItem>);
+    basicFormItems.push(<BaseFormItem label="客户名称：">
+                            <span>{item.name}</span>
+                        </BaseFormItem>);
+    basicFormItems.push(<BaseFormItem label="客户类型：">
+                            <span>{item.type}</span>
+                        </BaseFormItem>);
+    basicFormItems.push(<BaseFormItem label="联系方式：">
+                            <span>{item.phone}</span>
+                        </BaseFormItem>);
+    basicFormItems.push(<BaseFormItem label="联系地址：">
+                            <span>{item.address}</span>
+                        </BaseFormItem>);
+
+    let toolbar = [];
+    toolbar.push(<Button onClick={() => showEdit(item)}>编辑</Button>);
+    toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)}>
+                    <Button disabled={removeRight} >删除</Button>
+                </Popconfirm>);
+    toolbar.push(<Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)}>
+                    <Button disabled={recoverRight}>恢复</Button>
+                </Popconfirm>);
+    toolbar.push(<Button onClick={() => onBack()}>返回</Button>);
+
     return (
         <div>
-            <div className={styles.button}>
-                <Button onClick={() => showEdit(item)}>编辑</Button>
-                <Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)}>
-                    <Button disabled={removeRight} >删除</Button>
-                </Popconfirm>
-                <Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)}>
-                    <Button disabled={recoverRight}>恢复</Button>
-                </Popconfirm>
-                <Button onClick={() => onBack()}>返回</Button>
-            </div>
-                <BaseCard title="基本信息" >
-                    <Form horizontal>
-                        <BaseFormItem label="客户代码：">
-                            <span>{item.code}</span>
-                        </BaseFormItem>
-                        <BaseFormItem label="客户名称：">
-                            <span>{item.name}</span>
-                        </BaseFormItem>
-                        <BaseFormItem label="客户类型：">
-                            <span>{item.type}</span>
-                        </BaseFormItem>
-                        <BaseFormItem label="联系方式：">
-                            <span>{item.phone}</span>
-                        </BaseFormItem>
-                        <BaseFormItem label="联系地址：">
-                            <span>{item.address}</span>
-                        </BaseFormItem>
-                    </Form>
-                    <Form horizontal>
-                        <BaseFormItem label="状态：">
-                            <span>{item.state}</span>
-                        </BaseFormItem>
-                        <BaseFormItem label="创建信息：">
-                            <span>{createInfo2String(item)}</span>
-                        </BaseFormItem>
-                        <BaseFormItem label="修改信息：">
-                            <span>{lastModifyInfo2String(item)}</span>
-                        </BaseFormItem>
-                    </Form>
-                </BaseCard>
-                <BaseCard title="说明">
-                    <Input type="textarea" autosize={{ minRows: 4 }} disabled={true}></Input>
-                </BaseCard>
-        </div >
+            <ToolbarPanel children={toolbar} />
+            <BaseCard title="基本信息" single={true}>
+                <BaseForm items={basicFormItems} />
+            </BaseCard>
+            <RemarkCard remark={item.remark} />
+        </div>
     )
 };
 export default CustomerView;

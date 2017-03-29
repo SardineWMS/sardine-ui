@@ -1,9 +1,11 @@
 import React, { PropTypes } from 'react';
-import { Card, Button, Input, Form, Row, Col, Select, Spin } from 'antd';
-import styles from '../../Layout/common.less';
-const FormItem = Form.Item;
-const Option = Select.Option;
+import {Button, Input, Form, Select, Card} from 'antd';
+import BaseCard from '../../Widget/BaseCard';
+import BaseFormItem from '../../Widget/BaseFormItem';
+import ToolbarPanel from '../../Widget/ToolbarPanel';
+import BaseForm from '../../Widget/BaseForm';
 
+const Option = Select.Option;
 
 const CustomerAddForm = ({
     item = {},
@@ -20,85 +22,62 @@ const CustomerAddForm = ({
             if (errors) {
                 return;
             }
-
             const data = { ...getFieldsValue(), key: item.key, uuid: item.uuid, state: item.state, companyUuid: item.companyUuid, version: item.version };
             handleSave(data);
         });
     }
 
-    const formItemLayout = {
-        labelCol: { span: 6 },
-        wrapperCol: { span: 12 },
-
-    };
-
     const children = [];
     children.push(
-        <Col span={13} key={1}>
-            <FormItem {...formItemLayout} label={"客户代码"} className={styles.topInput}>
+            <BaseFormItem label={"客户代码"}>
                 {getFieldDecorator("code", { rules: [{ required: true }], initialValue: item.code })(
-                    <Input placeholder="请输入" key="customerCodeInput" />
+                    <Input placeholder="请输入" />
                 )}
-            </FormItem>
-        </Col>
+            </BaseFormItem>
     );
     children.push(
-        <Col span={13} key={2}>
-            <FormItem {...formItemLayout} label={"客户名称"} className={styles.normalInput}>
+            <BaseFormItem label={"客户名称"}>
                 {getFieldDecorator("name", { rules: [{ required: true }], initialValue: item.name })(
-                    <Input placeholder="请输入" key="customerNameInput" />
+                    <Input placeholder="请输入" />
                 )}
-            </FormItem>
-        </Col>
+            </BaseFormItem>
     );
     children.push(
-        <Col span={13} key={3}>
-            <FormItem {...formItemLayout} label={"客户类型"} className={styles.normalInput}>
+            <BaseFormItem label={"客户类型"}>
                 {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type })(
                     <Select placeholder="请选择" showSearch={false} size="large">
                         <Option value="store">百货</Option>
                         <Option value="shop">精品店</Option>
                     </Select>
                 )}
-            </FormItem>
-        </Col>
+            </BaseFormItem>
     );
     children.push(
-        <Col span={13} key={4}>
-            <FormItem {...formItemLayout} label={"联系方式"} className={styles.normalInput}>
+            <BaseFormItem label={"联系方式"}>
                 {getFieldDecorator("phone", { initialValue: item.phone })(
-                    <Input placeholder="请输入" key="phoneNumber" />
+                    <Input placeholder="请输入" />
                 )}
-            </FormItem>
-        </Col>
+            </BaseFormItem>
     );
     children.push(
-        <Col span={13} key={5}>
-            <FormItem {...formItemLayout} label={"地址"} className={styles.bottomInput}>
+            <BaseFormItem label={"地址"}>
                 {getFieldDecorator("address", { initialValue: item.address })(
-                    <Input type="textarea" autosize={{ minRows: 4 }}></Input>
-                    /**
-                     * 在Input属性type设置为textare之后，在示例中通过属性rows指定文本域高度无效
-                     * 所以通过autosize来指定，
-                     */
+                    <Input type="textarea" autosize={{ minRows: 4 }} />
                 )}
-            </FormItem>
-        </Col>
+            </BaseFormItem>
     );
+
+    const toolbar = [];
+    toolbar.push(<Button onClick={() => onCancel(item)}>取消</Button>);
+    toolbar.push(<Button type="primary" onClick={handleCreate}>保存</Button>);
+
+
     return (
         <div>
-            <div className={styles.button}>
-                <Button onClick={() => onCancel(item)}>取消</Button>
-                <Button type="primary" onClick={handleCreate}>保存</Button>
-            </div>
-            <Form>
-                <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
-                    <Row gutter={12} type="flex">
-                        {children}
-                    </Row>
-
-                </Card>
-            </Form>
+            <ToolbarPanel children={toolbar} />
+            <BaseCard title="基本信息" single={true}>
+              <BaseForm items={children} />
+            </BaseCard>
         </div>
     );
 }

@@ -5,20 +5,19 @@ import styles from '../Layout/common.less';
 
 const FormItem = Form.Item;
 const baseFormItemLayout = {
-        labelCol: { span: 9}
+        labelCol: { span: 8 },
+        wrapperCol: { span: 12 },
 };
-const baseClassName=styles.formItem;
+const baseClassName=styles.normalInput;
 
 class BaseFormItem extends React.Component{
   render(){
     return (
-       <FormItem label={this.props.label} {...this.props.formItemLayout? this.props.formItemLayout:baseFormItemLayout} 
-       	className={this.props.className?this.props.className:baseClassName}>
+       <FormItem label={this.props.label} {...baseFormItemLayout}	className={baseClassName}>
          {this.props.children}
        </FormItem>
       );
   }
 }
-
 
 export default BaseFormItem;
