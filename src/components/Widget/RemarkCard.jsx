@@ -11,8 +11,8 @@ class RemarkCard extends React.Component{
     let editable = this.props.editable;
     return (
        <Card title="说明" bordered={false} bodyStyle={{ padding: 0 }}>
-         {editable ?  (<Input type="textarea" autosize={{ minRows: 4 }} defaultValue={this.props.remark} readonly="true" />) : 
-         (<Input type="textarea" autosize={{ minRows: 4 }} defaultValue={this.props.remark} disabled="true" />)}
+         {editable ?  (<Input type="textarea" autosize={{ minRows: 4 }} defaultValue={this.props.remark} />) : 
+         (<Input type="textarea" autosize={{ minRows: 4 }} defaultValue={this.props.remark} disabled={true} />)}
        </Card>
       );
   }

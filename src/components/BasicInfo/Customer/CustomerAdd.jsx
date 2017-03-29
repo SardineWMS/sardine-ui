@@ -4,6 +4,7 @@ import BaseCard from '../../Widget/BaseCard';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
 import BaseForm from '../../Widget/BaseForm';
+import Guid from '../../../utils/Guid';
 
 const Option = Select.Option;
 
@@ -29,21 +30,21 @@ const CustomerAddForm = ({
 
     const children = [];
     children.push(
-            <BaseFormItem label={"客户代码"}>
+            <BaseFormItem label={"客户代码"} key={Guid()}>
                 {getFieldDecorator("code", { rules: [{ required: true }], initialValue: item.code })(
                     <Input placeholder="请输入" />
                 )}
             </BaseFormItem>
     );
     children.push(
-            <BaseFormItem label={"客户名称"}>
+            <BaseFormItem label={"客户名称"} key={Guid()}>
                 {getFieldDecorator("name", { rules: [{ required: true }], initialValue: item.name })(
                     <Input placeholder="请输入" />
                 )}
             </BaseFormItem>
     );
     children.push(
-            <BaseFormItem label={"客户类型"}>
+            <BaseFormItem label={"客户类型"} key={Guid()}>
                 {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type })(
                     <Select placeholder="请选择" showSearch={false} size="large">
                         <Option value="store">百货</Option>
@@ -53,14 +54,14 @@ const CustomerAddForm = ({
             </BaseFormItem>
     );
     children.push(
-            <BaseFormItem label={"联系方式"}>
+            <BaseFormItem label={"联系方式"} key={Guid()}>
                 {getFieldDecorator("phone", { initialValue: item.phone })(
                     <Input placeholder="请输入" />
                 )}
             </BaseFormItem>
     );
     children.push(
-            <BaseFormItem label={"地址"}>
+            <BaseFormItem label={"地址"} key={Guid()}>
                 {getFieldDecorator("address", { initialValue: item.address })(
                     <Input type="textarea" autosize={{ minRows: 4 }} />
                 )}
@@ -68,8 +69,8 @@ const CustomerAddForm = ({
     );
 
     const toolbar = [];
-    toolbar.push(<Button onClick={() => onCancel(item)}>取消</Button>);
-    toolbar.push(<Button type="primary" onClick={handleCreate}>保存</Button>);
+    toolbar.push(<Button onClick={() => onCancel(item)} key={Guid()}>取消</Button>);
+    toolbar.push(<Button type="primary" onClick={handleCreate} key={Guid()}>保存</Button>);
 
 
     return (
