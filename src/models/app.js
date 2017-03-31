@@ -21,7 +21,7 @@ export default {
     loginButtonLoading: false,
     signInButtonLoading: false,
     registerLoading: false,
-    modifyLoading:false,
+    modifyLoading: false,
     siderFold: localStorage.getItem("antdAdminSiderFold") === "true" ? true : false,
     darkTheme: localStorage.getItem("antdAdminDarkTheme") === "false" ? false : true,
   },
@@ -56,6 +56,7 @@ export default {
         localStorage.setItem("loginId", data.obj.code);
         localStorage.setItem("token", data.token);
         localStorage.setItem("admin", data.obj.administrator);
+        localStorage.setItem("companyUuid", data.obj.companyUuid);
         yield put({
           type: 'loginSuccess',
           payload: {
@@ -173,7 +174,7 @@ export default {
       const data = yield call(updatePasswd, {
         oldPasswd: payload.oldPasswd,
         newPasswd: payload.newPasswd,
-        token:payload.token
+        token: payload.token
       });
       if (data) {
         localStorage.removeItem("token");
@@ -232,7 +233,7 @@ export default {
       }
     },
 
-     showModify(state) {
+    showModify(state) {
       return {
         ...state,
         modifyLoading: true

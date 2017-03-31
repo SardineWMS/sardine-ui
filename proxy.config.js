@@ -3,7 +3,7 @@
 const mock = {};
 
 require('fs').readdirSync(require('path').join(__dirname + '/mock'))
-	.forEach(function(file) {
+	.forEach(function (file) {
 		Object.assign(mock, require('./mock/' + file))
 	});
 
@@ -33,6 +33,8 @@ module.exports = {
 	'/basic/bintype/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/bintype',
 	'/basic/containertype/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/containertype',
 	'/basic/bin/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/basicinfo/bin',
-	'/api/user/(.*)':'http://127.0.0.1:8080/sardine-wms-web/ia/user',
-	'/Log/entitylog/(.*)':'http://127.0.0.1:8080/sardine-wms-web/log/entitylog',
+	'/api/user/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/user',
+	'/Log/entitylog/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/log/entitylog',
+	'/api/role/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/role',
+	'/api/resource/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/resource',
 };

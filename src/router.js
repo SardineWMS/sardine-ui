@@ -18,7 +18,7 @@ import Container from './routes/basicInfo/Container';
 import BinType from './routes/basicInfo/BinType';
 import ContainerType from './routes/basicInfo/ContainerType';
 import Bin from './routes/basicInfo/Bin';
-
+import Role from './routes/ia/Role';
 
 export default function({
   history
@@ -39,6 +39,7 @@ export default function({
         <Route path="/basicInfo/binType" component={BinType} />
         <Route path="/basicInfo/containerType" component={ContainerType} />
         <Route path="/basicInfo/bin" component={Bin} />
+        <Route path="/ia/role" component={Role} />
       </Route>
     </Router>
   );

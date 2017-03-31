@@ -27,6 +27,7 @@ app.model(require('./models/BasicInfo/Container'));
 app.model(require('./models/BasicInfo/BinType'));
 app.model(require('./models/BasicInfo/ContainerType'));
 app.model(require('./models/BasicInfo/Bin'));
+app.model(require('./models/ia/Role'));
 
 app.router(require('./router'));
 
