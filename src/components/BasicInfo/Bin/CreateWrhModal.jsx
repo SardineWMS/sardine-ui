@@ -1,15 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Form, Input, InputNumber, Modal } from 'antd'
-const FormItem = Form.Item
-
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
+import BaseFormItem from '../../Widget/BaseFormItem';
 
 const CreateWrhModal = ({
   visible,
@@ -44,7 +35,7 @@ const CreateWrhModal = ({
   return (
     <Modal {...modalOpts}>
       <Form horizontal>
-        <FormItem label="代码：" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="代码：">
           {getFieldDecorator('code', {
             rules: [
               {
@@ -53,8 +44,8 @@ const CreateWrhModal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
-        <FormItem label="名称：" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="名称：">
           {getFieldDecorator('name', {
             rules: [
               {
@@ -63,11 +54,11 @@ const CreateWrhModal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
-        <FormItem label="备注：" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="备注：">
           {getFieldDecorator('remark', {
           })(<Input type="textarea" rows={4} />)}
-        </FormItem>
+        </BaseFormItem>
       </Form>
     </Modal>
   )

@@ -30,21 +30,21 @@ const CustomerAddForm = ({
 
     const children = [];
     children.push(
-            <BaseFormItem label={"客户代码"} key={Guid()}>
+            <BaseFormItem label={"客户代码"} >
                 {getFieldDecorator("code", { rules: [{ required: true }], initialValue: item.code })(
                     <Input placeholder="请输入" />
                 )}
             </BaseFormItem>
     );
     children.push(
-            <BaseFormItem label={"客户名称"} key={Guid()}>
+            <BaseFormItem label={"客户名称"}>
                 {getFieldDecorator("name", { rules: [{ required: true }], initialValue: item.name })(
                     <Input placeholder="请输入" />
                 )}
             </BaseFormItem>
     );
     children.push(
-            <BaseFormItem label={"客户类型"} key={Guid()}>
+            <BaseFormItem label={"客户类型"} >
                 {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type })(
                     <Select placeholder="请选择" showSearch={false} size="large">
                         <Option value="store">百货</Option>
@@ -54,14 +54,14 @@ const CustomerAddForm = ({
             </BaseFormItem>
     );
     children.push(
-            <BaseFormItem label={"联系方式"} key={Guid()}>
+            <BaseFormItem label={"联系方式"} >
                 {getFieldDecorator("phone", { initialValue: item.phone })(
                     <Input placeholder="请输入" />
                 )}
             </BaseFormItem>
     );
     children.push(
-            <BaseFormItem label={"地址"} key={Guid()}>
+            <BaseFormItem label={"地址"} >
                 {getFieldDecorator("address", { initialValue: item.address })(
                     <Input type="textarea" autosize={{ minRows: 4 }} />
                 )}

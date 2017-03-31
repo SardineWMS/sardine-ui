@@ -1,8 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Card, Collapse, Select } from 'antd';
-const FormItem = Form.Item;
-const Panel = Collapse.Panel;
 const Option = Select.Option;
+import BaseSearchPanel from '../../Widget/BaseSearchPanel';
+import BaseTwoCol from '../../Widget/BaseTwoCol';
+import BaseFormItem from '../../Widget/BaseFormItem';
 
 const ArticleSearchForm = ({
   onSearch,
@@ -25,62 +26,39 @@ const ArticleSearchForm = ({
     resetFields();
   }
 
-  const formItemLayout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 12 },
-  };
-
   const children = [];
-  children.push(<Col span={12} key='code'>
-    <FormItem {...formItemLayout} label="代码 类似于">
-      {getFieldDecorator('code')(
-        <Input type="text" placeholder="代码 类似于" />
-      )}
-    </FormItem>
-  </Col>);
-  children.push(<Col span={12} key='name'>
-    <FormItem {...formItemLayout} label="名称 类似于">
-      {getFieldDecorator('name')(
-        <Input type="text" placeholder="名称 类似于" />
-      )}
-    </FormItem>
-  </Col>);
-  children.push(<Col span={12} key='state'>
-    <FormItem {...formItemLayout} label="状态 类似于">
-      {getFieldDecorator('state')(
-        <Select size="default">
-          <Option value="normal" initialValue>正常</Option>
-        </Select>
-      )}
-    </FormItem>
-  </Col>);
+  children.push(
+    <BaseTwoCol>
+      <BaseFormItem  label="代码 类似于">
+        {getFieldDecorator('code')(
+          <Input type="text" placeholder="代码 类似于" />
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
+  children.push(
+    <BaseTwoCol>
+      <BaseFormItem label="名称 类似于">
+        {getFieldDecorator('name')(
+          <Input type="text" placeholder="名称 类似于" />
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
+  children.push(
+    <BaseTwoCol>
+      <BaseFormItem  label="状态 类似于">
+        {getFieldDecorator('state')(
+          <Select size="default">
+            <Option value="normal" initialValue>正常</Option>
+          </Select>
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
 
   return (
-    <Collapse defaultActiveKey={"articleSearchForm"}>
-      <Panel header="搜索条件" key="articleSearchForm">
-        <Form
-          horizontal
-          className="ant-advanced-search-form"
-          onSubmit={handleSearch}
-        >
-          <Row gutter={40}>
-            {children.slice(0, 2)}
-          </Row>
-          <Row gutter={40}>
-            {children.slice(2, 6)}
-          </Row>
-
-          <Row>
-            <Col span={24} style={{ textAlign: 'right' }}>
-              <Button type="primary" htmlType="submit" icon="search">搜索</Button>
-              <Button style={{ marginLeft: 8 }} onClick={handleReset}>
-                清除
-            </Button>
-            </Col>
-          </Row>
-        </Form>
-      </Panel>
-    </Collapse>
+    <BaseSearchPanel children={children} handleReset={handleReset} handleSearch={handleSearch} />
   );
 };
 

@@ -2,7 +2,11 @@ import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Table, message, Modal, Card, Select, InputNumber, Popconfirm } from 'antd';
 import styles from '../Layout/common.less';
 import { createInfo2String, lastModifyInfo2String } from '../../utils/OperatorInfoUtils';
-const FormItem = Form.Item;
+import ToolbarPanel from '../Widget/ToolbarPanel';
+import BaseCard from '../Widget/BaseCard';
+import RemarkCard from '../Widget/RemarkCard';
+import BaseForm from '../Widget/BaseForm';
+import BaseFormItem from '../Widget/BaseFormItem';
 
 const UserViewForm = ({
     item = {},
@@ -12,54 +16,40 @@ const UserViewForm = ({
     onOnline,
     onOffline,
 }) => {
+    const children=[];
+    children.push(
+         <BaseFormItem label="代码：" >
+            <span> {item.code} </span>
+        </BaseFormItem>
+    );
+    children.push(
+         <BaseFormItem label="名称：" >
+            <span> {item.name} </span>
+        </BaseFormItem>
+    );
+    children.push(
+         <BaseFormItem label="电话：" >
+            <span> {item.phone} </span>
+        </BaseFormItem>
+    );
 
-    const formItemLayout = {
-        labelCol: { span: 5 },
-    };
+    const toolbar=[];
+    toolbar.push(<Button onClick={() => onCreate()}> 新建</Button>);
+    toolbar.push(<Button onClick={() => onEdit(item)}> 编辑</Button>);
+    toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
+    toolbar.push(<Popconfirm title="确定要启用吗？" onConfirm={() => onOnline(item)}>
+                    <Button disabled={item.userState === '已启用'}>启用</Button>
+                </Popconfirm>);
+    toolbar.push(<Popconfirm title="确定要停用吗？" onConfirm={() => onOffline(item)}>
+                    <Button disabled={item.userState === '已停用'}>停用</Button>
+                </Popconfirm>);
 
     return (
         <div>
-            <div className={styles.button}>
-                <Button onClick={() => onCreate()}> 新建</Button>
-                <Button onClick={() => onEdit(item)}> 编辑</Button>
-                <Button onClick={() => onBack()}> 返回</Button>
-                <Popconfirm title="确定要启用吗？" onConfirm={() => onOnline(item)}>
-                    <Button disabled={item.userState === '已启用'}>启用</Button>
-                </Popconfirm>
-                <Popconfirm title="确定要停用吗？" onConfirm={() => onOffline(item)}>
-                    <Button disabled={item.userState === '已停用'}>停用</Button>
-                </Popconfirm>
-            </div>
-            <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
-                <Row gutter={36}>
-                    <Col span={12}>
-                        <Form horizontal>
-                            <FormItem {...formItemLayout} label="代码：" hasFeedback className={styles.formItem}>
-                                <span> {item.code} </span>
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="名称：" hasFeedback className={styles.formItem}>
-                                <label>{item.name} </label>
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="电话：" hasFeedback className={styles.formItem}>
-                                <label>{item.phone} </label>
-                            </FormItem>
-                        </Form>
-                    </Col>
-                    <Col span={12}>
-                        <Form horizontal>
-                            <FormItem {...formItemLayout} label="状态 :" hasFeedback className={styles.formItem}>
-                                <span> {item.userState} </span>
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="创建信息：" hasFeedback className={styles.formItem}>
-                                <label>{createInfo2String(item)} </label>
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="修改信息：" hasFeedback className={styles.formItem}>
-                                <label>{lastModifyInfo2String(item)} </label>
-                            </FormItem>
-                        </Form>
-                    </Col>
-                </Row>
-            </Card>
+            <ToolbarPanel children={toolbar} />
+            <BaseCard title="基本信息" single={true}>
+                <BaseForm items={children} />
+            </BaseCard>
         </div>
     );
 };

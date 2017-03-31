@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import {Menu, Form, Row, Col, Input, Button,Card ,Collapse,Select,Icon} from 'antd';
-const FormItem = Form.Item;
-const Panel = Collapse.Panel;
+import BaseSearchPanel from '../../Widget/BaseSearchPanel';
+import BaseTwoCol from '../../Widget/BaseTwoCol';
+import BaseFormItem from '../../Widget/BaseFormItem';
 const Option = Select.Option;
 
 const SupplierSearchForm = ({
@@ -25,66 +26,43 @@ const SupplierSearchForm = ({
     resetFields();
   }
 
-  const formItemLayout = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 19 },
-  };
-
   const children = [];
   children.push(
-    <Col span={12} key='code'>
-      <FormItem {...formItemLayout} label="代码 类似于">
-        {getFieldDecorator('code')(
-          <Input type="text" placeholder="请输入"/>
-          )}
-      </FormItem>
-      </Col>);
+    <BaseTwoCol key='code'>
+        <BaseFormItem label="代码 类似于">
+          {getFieldDecorator('code')(
+            <Input type="text" placeholder="请输入"/>
+            )}
+        </BaseFormItem>
+    </BaseTwoCol>);
 
   children.push(
-    <Col span={12} key='state'>
-      <FormItem {...formItemLayout} label="状态 类似于">
-        {getFieldDecorator('state',{
-          initialValue:"all"
-        })(
-          <Select showSearch={false} size="default" 
-          style={{ width: 400 }} >
-            <Option value="all">全部</Option>
-            <Option value="normal">正常</Option>
-            <Option value="deleted">已删除</Option>
-          </Select>
-          )}
-      </FormItem>
-      </Col>);
+    <BaseTwoCol key='state'>
+        <BaseFormItem label="状态 类似于">
+          {getFieldDecorator('state',{
+            initialValue:"all"
+          })(
+            <Select showSearch={false} size="default" 
+            style={{ width: 400 }} >
+              <Option value="all">全部</Option>
+              <Option value="normal">正常</Option>
+              <Option value="deleted">已删除</Option>
+            </Select>
+            )}
+        </BaseFormItem>
+    </BaseTwoCol>);
 
-  children.push(<Col span={12} key='name'>
-      <FormItem  {...formItemLayout} label="名称 类似于">
+  children.push(
+    <BaseTwoCol key='name'>
+      <BaseFormItem label="名称 类似于">
         {getFieldDecorator('name')(
           <Input type="text" placeholder="请输入"/>
         )}
-        </FormItem>
-      </Col>);
-
+      </BaseFormItem>
+    </BaseTwoCol>);
+  
     return (
-      <Card title="搜索条件">
-      <Form
-        horizontal
-        className="ant-advanced-search-form"
-        onSubmit={handleSearch}
-      >
-        <Row gutter={40}>
-          {children.slice(0, children.length)}
-        </Row>
-
-        <Row>
-          <Col span={22} style={{ textAlign: 'right' }}>
-            <Button type="primary" htmlType="submit">搜索</Button>
-            <Button style={{ marginLeft: 8 }} onClick={handleReset}>
-              清除
-            </Button>
-          </Col>
-        </Row>
-      </Form>
-    </Card>
+      <BaseSearchPanel children={children} handleReset={handleReset} handleSearch={handleSearch} />
     );
 };
 

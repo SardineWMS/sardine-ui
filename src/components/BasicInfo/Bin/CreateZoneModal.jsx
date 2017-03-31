@@ -1,15 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Form, Input, InputNumber, Select, Modal } from 'antd'
-const FormItem = Form.Item
-
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
+import BaseFormItem from '../../Widget/BaseFormItem';
 
 const CreateZoneModal = ({
   visible,
@@ -55,7 +46,7 @@ const CreateZoneModal = ({
   return (
     <Modal {...modalOpts}>
       <Form horizontal>
-        <FormItem label="代码：" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="代码：">
           {getFieldDecorator('code', {
             rules: [
               {
@@ -64,8 +55,8 @@ const CreateZoneModal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
-        <FormItem label="名称：" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="名称：">
           {getFieldDecorator('name', {
             rules: [
               {
@@ -74,8 +65,8 @@ const CreateZoneModal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="仓位：" hasFeedback>
+        </BaseFormItem>
+        <BaseFormItem label="仓位：" >
             {getFieldDecorator('wrh' ,{
             rules: [{ required: true, message: '仓位不能为空' },],
         })(
@@ -83,11 +74,11 @@ const CreateZoneModal = ({
                     {wrhOptions}
         </Select>
         )}
-        </FormItem>
-        <FormItem label="备注：" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="备注：">
           {getFieldDecorator('remark', {
           })(<Input type="textarea" rows={4} />)}
-        </FormItem>
+        </BaseFormItem>
       </Form>
     </Modal>
   )

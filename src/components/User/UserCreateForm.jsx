@@ -1,6 +1,9 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Table, message, Popconfirm, Card, Select, InputNumber } from 'antd';
-const FormItem = Form.Item;
+import BaseCard from '../Widget/BaseCard';
+import BaseFormItem from '../Widget/BaseFormItem';
+import ToolbarPanel from '../Widget/ToolbarPanel';
+import BaseForm from '../Widget/BaseForm';
 
 const DemoCreateForm = ({
   item = {},
@@ -33,50 +36,50 @@ const DemoCreateForm = ({
     }
   }
 
-  const formItemLayout = {
-    labelCol: { span: 5 },
-    wrapperCol: { span: 19 },
-  };
+  const children=[];
+  children.push(
+    <BaseFormItem label="代码 :" >
+      {getFieldDecorator('code', {
+        initialValue: item.code,
+        rules: [
+          { required: true, message: '代码未填写' },
+        ],
+      })(
+        <Input type="text" />
+        )}
+    </BaseFormItem>
+  );
 
-  return (
-    <div>
-      <div className="ant-table-title">
-        <Button onClick={handleOk}> 保存</Button>
-        <Button style={{ marginLeft: 8 }} onClick={() => onCancel()}> 取消</Button>
-      </div>
-      <Card title="基本信息">
-        <Row gutter={16}>
-          <Col span={12}>
-            <Form horizontal>
-              <FormItem {...formItemLayout} label="代码 :" hasFeedback>
-                {getFieldDecorator('code', {
-                  initialValue: item.code,
-                  rules: [
-                    { required: true, message: '代码未填写' },
-                  ],
-                })(
-                  <Input type="text" />
-                  )}
-              </FormItem>
-              <FormItem {...formItemLayout} label="姓名：" hasFeedback>
-                {getFieldDecorator('name', {
+  children.push(
+    <BaseFormItem label="姓名 :" >
+        {getFieldDecorator('name', {
                   initialValue: item.name,
                   rules: [{ required: true, message: '名称未填写' },],
                 })(
                   <Input type="text"></Input>
                   )}
-              </FormItem>
-              <FormItem {...formItemLayout} label="联系方式：" hasFeedback>
-                {getFieldDecorator('phone', {
-                  initialValue: item.phone,
-                })(
-                  <Input type="text"></Input>
-                  )}
-              </FormItem>
-            </Form>
-          </Col>
-        </Row>
-      </Card>
+    </BaseFormItem>
+  );
+
+  children.push(
+    <BaseFormItem label="联系方式 :" >
+        {getFieldDecorator('phone', {
+            initialValue: item.phone,
+          })(
+            <Input type="text"></Input>
+            )}
+    </BaseFormItem>
+  );
+
+  const toolbar=[];
+  toolbar.push(<Button onClick={handleOk}> 保存</Button>);
+  toolbar.push(<Button style={{ marginLeft: 8 }} onClick={() => onCancel()}> 取消</Button>);
+  return (
+    <div>
+       <ToolbarPanel children={toolbar} />
+        <BaseCard title="基本信息" single={true}>
+          <BaseForm items={children} />
+        </BaseCard>
     </div>
   );
 };

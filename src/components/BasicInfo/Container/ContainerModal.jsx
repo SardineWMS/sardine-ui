@@ -1,16 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Form, InputNumber, Modal,Select } from 'antd';
-const FormItem = Form.Item;
+import BaseFormItem from '../../Widget/BaseFormItem';
 const Option = Select.Option;
-
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
 
 const ContainerModal = ({
   visible,
@@ -57,7 +48,7 @@ const ContainerModal = ({
   return (
     <Modal {...modalOpts}>
       <Form horizontal>
-        <FormItem {...formItemLayout} label="容器类型：" hasFeedback>
+        <BaseFormItem  label="容器类型：" >
             {getFieldDecorator('containerType' ,{
             rules: [{ required: true, message: '地址不能为空' },],
         })(
@@ -65,12 +56,12 @@ const ContainerModal = ({
           {options}
         </Select>
         )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="生成个数：" hasFeedback>
+        </BaseFormItem>
+        <BaseFormItem  label="生成个数：" >
          {getFieldDecorator('count')(
             <InputNumber min={1} max={100} />
              )}
-        </FormItem>
+        </BaseFormItem>
       </Form>
     </Modal>
   )

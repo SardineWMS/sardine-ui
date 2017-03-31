@@ -1,15 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Form, Input, Col, InputNumber, Select, Modal } from 'antd'
-const FormItem = Form.Item
+import BaseFormItem from '../../Widget/BaseFormItem';
 const InputGroup = Input.Group;
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
 
 const CreateShelfModal = ({
   visible,
@@ -65,7 +57,7 @@ const CreateShelfModal = ({
   return (
     <Modal {...modalOpts}>
       <Form horizontal>
-      <FormItem {...formItemLayout} label="起始~截止货道：" hasFeedback>
+      <BaseFormItem label="起始~截止货道：" >
             {getFieldDecorator('shelf' ,{
             rules: [{ required: true, message: '起始截止货道不能为空' },],
          })(
@@ -92,8 +84,8 @@ const CreateShelfModal = ({
           </Col>
         </InputGroup>
          )}
-        </FormItem>
-        <FormItem label="每货道数量：" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="每货道数量：">
           {getFieldDecorator('count', {
             rules: [
               {
@@ -102,7 +94,7 @@ const CreateShelfModal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
+        </BaseFormItem>
       </Form>
     </Modal>
   )

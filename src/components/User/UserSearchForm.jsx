@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Card, Collapse, Icon, Select } from 'antd';
-const FormItem = Form.Item;
-const Panel = Collapse.Panel;
+import BaseSearchPanel from '../Widget/BaseSearchPanel';
+import BaseTwoCol from '../Widget/BaseTwoCol';
+import BaseFormItem from '../Widget/BaseFormItem';
 const Option = Select.Option;
 
 const DemoSearchForm = ({
@@ -25,60 +26,37 @@ const DemoSearchForm = ({
     resetFields();
   }
 
-  const formItemLayout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 15 },
-  };
-
   const children = [];
-  children.push(<Col span={12} key='code'>
-    <FormItem {...formItemLayout} label="代码 类似于" style={{'font-family':'Verdana'}}>
-      {getFieldDecorator("code")(
-        <Input key="codeInput" placeholder="代码 类似于" style={{border:'1px solid #B5B5B5', 'font-family':'Verdana'}}  />
-      )}
-    </FormItem>
-  </Col>);
   children.push(
-    <Col span={12} key='name'>
-      <FormItem {...formItemLayout} label="姓名 类似于">
+    <BaseTwoCol key='code'>
+      <BaseFormItem label="代码 类似于">
+        {getFieldDecorator("code")(
+          <Input key="codeInput" placeholder="代码 类似于" style={{border:'1px solid #B5B5B5', 'font-family':'Verdana'}}  />
+        )}
+      </BaseFormItem>
+  </BaseTwoCol>);
+  children.push(
+    <BaseTwoCol key='name'>
+      <BaseFormItem label="姓名 类似于">
         {getFieldDecorator("name")(
           <Input key="nameInput" placeholder="姓名 类似于" />
         )}
-      </FormItem>
-    </Col>);
-  children.push(<Col span={12} key='state'>
-    <FormItem {...formItemLayout} label="状态 等于">
-      {getFieldDecorator('userState')(
-        <Select size="default" placeholder="请选择" showSearch={false} key="stateSelecter">
-          <Option value="online">已启用</Option>
-          <Option value="offline">已停用</Option>
-        </Select>
-      )}
-    </FormItem>
-  </Col>);
+      </BaseFormItem>
+    </BaseTwoCol>);
+  children.push(
+    <BaseTwoCol key='state'>
+      <BaseFormItem label="状态 等于">
+        {getFieldDecorator('userState')(
+          <Select size="default" placeholder="请选择" showSearch={false} key="stateSelecter">
+            <Option value="online">已启用</Option>
+            <Option value="offline">已停用</Option>
+          </Select>
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>);
 
-  const shownCount = searchExpand ? children.length : 3;
   return (
-    <Card title="搜索条件" style={{border:'1px solid #71C671'}}>
-      <Form
-        horizontal
-        className="ant-advanced-search-form"
-        onSubmit={handleSearch}
-      >
-        <Row gutter={2}>
-          {children.slice(0, shownCount)}
-        </Row>
-
-        <Row>
-          <Col span={24} style={{ textAlign: 'right' }}>
-            <Button type="primary" htmlType="submit" icon="search">搜索</Button>
-            <Button style={{ marginLeft: 8 }} onClick={handleReset}>
-              清除
-            </Button>
-          </Col>
-        </Row>
-      </Form>
-    </Card>
+    <BaseSearchPanel children={children} handleReset={handleReset} handleSearch={handleSearch} />
   );
 };
 

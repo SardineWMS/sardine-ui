@@ -1,17 +1,9 @@
 import React, { PropTypes } from 'react'
 import { Form, Input, InputNumber, Modal,Col,Checkbox,Radio } from 'antd'
-const FormItem = Form.Item;
+import BaseFormItem from '../../Widget/BaseFormItem';
 const RadioGroup = Radio.Group;
 const RadioButton = Radio.Button;
-
-const formItemLayout = {
-  labelCol: {
-    span: 5,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
+const FormItem = Form.Item;
 
 const ContainerTypeModal = ({
   visible,
@@ -25,6 +17,7 @@ const ContainerTypeModal = ({
     getFieldsValue,
   },
 }) => {
+
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
@@ -52,31 +45,31 @@ const ContainerTypeModal = ({
     <Modal {...modalOpts}>
       <Form horizontal >
       {modalType != 'view' ?
-        <FormItem label="代码" hasFeedback {...formItemLayout}>
-        {getFieldDecorator('code', {
-            initialValue: item.code,
-            rules: [
-              {
-                required: true,
-                message: '代码未填写',
-              },
-            ],
-          })
-          (<Input />)
-        }
-        </FormItem>
+        <BaseFormItem label="代码">
+          {getFieldDecorator('code', {
+              initialValue: item.code,
+              rules: [
+                {
+                  required: true,
+                  message: '代码未填写',
+                },
+              ],
+            })
+            (<Input />)
+          }
+        </BaseFormItem>
         : 
-        <FormItem label="代码" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="代码">
           <span>{item.code}</span>
-        </FormItem>
+        </BaseFormItem>
       }
 
       {modalType=== 'view' ?
-        <FormItem label="名称" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="名称">
           <span>{item.name}</span>
-        </FormItem>
+        </BaseFormItem>
         :
-        <FormItem label="名称" hasFeedback {...formItemLayout} >
+        <BaseFormItem label="名称">
           {getFieldDecorator('name', {
             initialValue: item.name,
             text:item.name,
@@ -87,15 +80,15 @@ const ContainerTypeModal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
+        </BaseFormItem>
         }
 
      {modalType=== 'view' ?
-        <FormItem label="前缀/长度" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="前缀/长度">
           <span>{item.barCodePrefix}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{item.barCodeLength}</span>
-        </FormItem>
+        </BaseFormItem>
         :
-       <FormItem label="前缀/长度" hasFeedback {...formItemLayout}>
+       <BaseFormItem label="前缀/长度">
           <Col span="6">
           <FormItem>
           {getFieldDecorator('barCodePrefix', {
@@ -125,17 +118,17 @@ const ContainerTypeModal = ({
           })(<Input />)}
            </FormItem>
           </Col>
-        </FormItem>
+        </BaseFormItem>
       }
       
        {modalType=== 'view' ?
-        <FormItem label="内长/宽/高" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="内长/宽/高">
           <span>{item.inLength}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {item.inWidth}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {item.inHeight}</span>
-        </FormItem>
+        </BaseFormItem>
         :
-        <FormItem label="内长/宽/高" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="内长/宽/高">
           <Col span="6">
             <FormItem>
             {getFieldDecorator('inLength', {
@@ -157,17 +150,17 @@ const ContainerTypeModal = ({
           })(<Input />)}
             </FormItem>
           </Col>
-        </FormItem>
+        </BaseFormItem>
       }
 
       {modalType=== 'view' ?
-        <FormItem label="内长/宽/高" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="内长/宽/高">
           <span>{item.outLength}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {item.outWidth}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
           {item.outHeight}</span>
-        </FormItem>
+        </BaseFormItem>
         :
-        <FormItem label="外长/宽/高" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="外长/宽/高">
           <Col span="6">
             <FormItem>
             {getFieldDecorator('outLength', {
@@ -189,15 +182,15 @@ const ContainerTypeModal = ({
           })(<Input />)}
             </FormItem>
           </Col>
-        </FormItem>
+        </BaseFormItem>
       }
 
       {modalType=== 'view' ?
-        <FormItem label="自重/承重" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="自重/承重">
           <span>{item.weight}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{item.bearingWeight}</span>
-        </FormItem>
+        </BaseFormItem>
         :
-        <FormItem label="自重/承重" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="自重/承重">
           <Col span="6">
             <FormItem>
             {getFieldDecorator('weight', {
@@ -212,40 +205,40 @@ const ContainerTypeModal = ({
             })(<Input />)}
             </FormItem>
           </Col>
-        </FormItem>
+        </BaseFormItem>
       }
 
       {modalType=== 'view' ?
-        <FormItem label="容积率" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="容积率">
           <span>{item.rate}</span>
-        </FormItem>
+        </BaseFormItem>
         :
-        <FormItem label="容积率" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="容积率">
           {getFieldDecorator('rate', {
             initialValue: item.rate
           })(<Input />)}
-        </FormItem>
+        </BaseFormItem>
       }
 
       {modalType=== 'view' ?
-        <FormItem label="随车" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="随车">
           <span>{item.ship ?"随车":"不随车"}</span>
-        </FormItem>
+        </BaseFormItem>
         :
-        <FormItem label="随车" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="随车">
           {getFieldDecorator('ship', {
             valuePropName: 'checked',
             initialValue: item.ship,
           })(<Checkbox/>)}
-        </FormItem>
+        </BaseFormItem>
       }
 
       {modalType=== 'view' ?
-        <FormItem label="条码类型" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="条码类型">
           <span>{item.barCodeType==='ONCE' ? "一次性":"永久性"}</span>
-        </FormItem>
+        </BaseFormItem>
         :
-        <FormItem label="条码类型" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="条码类型">
            {getFieldDecorator('barCodeType',{
             initialValue:item.barCodeType
            })(
@@ -254,7 +247,7 @@ const ContainerTypeModal = ({
               <RadioButton value="FOREVER">永久</RadioButton>
             </RadioGroup>
           )}
-        </FormItem>
+        </BaseFormItem>
       }
 
       </Form>

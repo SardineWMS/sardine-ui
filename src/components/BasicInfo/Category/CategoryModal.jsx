@@ -1,15 +1,6 @@
 import React, { PropTypes } from 'react'
 import { Form, Input, InputNumber, Modal } from 'antd'
-const FormItem = Form.Item
-
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
+import BaseFormItem from '../../Widget/BaseFormItem';
 
 const CategoryModal = ({
   visible,
@@ -51,11 +42,11 @@ const CategoryModal = ({
     <Modal {...modalOpts}>
       <Form horizontal>
         {showUpper ? 
-        <FormItem label="上级类别：" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="上级类别：">
           <span> [{upperCategory.code}]{upperCategory.name} </span>
-        </FormItem> : ''
+        </BaseFormItem> : ''
         }
-        <FormItem label="类别代码：" hasFeedback {...formItemLayout}>
+        <BaseFormItem label="类别代码：">
           {getFieldDecorator('code', {
             initialValue: item.code,
             rules: [
@@ -65,8 +56,8 @@ const CategoryModal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
-        <FormItem label="类别名称" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="类别名称" >
           {getFieldDecorator('name', {
             initialValue: item.name,
             rules: [
@@ -76,12 +67,12 @@ const CategoryModal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
-        <FormItem label="备注：" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="备注：">
           {getFieldDecorator('remark', {
             initialValue: item.remark,
           })(<Input type="textarea" rows={4} />)}
-        </FormItem>
+        </BaseFormItem>
       </Form>
     </Modal>
   )

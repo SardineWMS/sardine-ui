@@ -1,16 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Form, Input, Col, InputNumber, Select, Modal } from 'antd'
-const FormItem = Form.Item
+import BaseFormItem from '../../Widget/BaseFormItem';
 const InputGroup = Input.Group;
-
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
 
 const CreatePathModal = ({
   visible,
@@ -62,7 +53,7 @@ const CreatePathModal = ({
   return (
     <Modal {...modalOpts}>
       <Form horizontal>
-      <FormItem {...formItemLayout} label="货区：" hasFeedback>
+      <BaseFormItem label="货区：" >
             {getFieldDecorator('zones' ,{
             rules: [{ required: true, message: '货区不能为空' },],
         })(
@@ -70,8 +61,8 @@ const CreatePathModal = ({
                     {zoneOptions}
         </Select>
         )}
-        </FormItem>
-        <FormItem label="每货区数量：" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="每货区数量：">
           {getFieldDecorator('count', {
             rules: [
               {
@@ -80,7 +71,7 @@ const CreatePathModal = ({
               },
             ],
           })(<Input />)}
-        </FormItem>
+        </BaseFormItem>
       </Form>
     </Modal>
   )

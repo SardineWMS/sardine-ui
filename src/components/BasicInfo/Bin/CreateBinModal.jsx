@@ -1,16 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Form, Input, Col, InputNumber, Select, Modal } from 'antd'
-const FormItem = Form.Item
+import BaseFormItem from '../../Widget/BaseFormItem';
 const InputGroup = Input.Group;
-
-const formItemLayout = {
-  labelCol: {
-    span: 6,
-  },
-  wrapperCol: {
-    span: 14,
-  },
-}
 
 const CreateBinModal = ({
   visible,
@@ -93,7 +84,7 @@ const CreateBinModal = ({
   return (
     <Modal {...modalOpts}>
       <Form horizontal>
-        <FormItem {...formItemLayout} label="起始~截止货架：" hasFeedback>
+        <BaseFormItem label="起始~截止货架：">
             {getFieldDecorator('shelf' ,{
             rules: [{ required: true, message: '起始截止货架不能为空' },],
          })(
@@ -120,8 +111,8 @@ const CreateBinModal = ({
           </Col>
         </InputGroup>
          )}
-        </FormItem>
-        <FormItem label="起始~截止列码：" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="起始~截止列码：">
           {getFieldDecorator('count', {
             rules: [
               {
@@ -151,8 +142,8 @@ const CreateBinModal = ({
           })(<Input />)}
           </Col>
         </InputGroup>)}
-        </FormItem>
-        <FormItem label="起始~截止层码：" hasFeedback {...formItemLayout}>
+        </BaseFormItem>
+        <BaseFormItem label="起始~截止层码：">
           {getFieldDecorator('count', {
             rules: [
               {
@@ -182,8 +173,8 @@ const CreateBinModal = ({
           })(<Input />)}
           </Col>
         </InputGroup>)}
-        </FormItem>
-        <FormItem {...formItemLayout} label="货位用途：" hasFeedback>
+        </BaseFormItem>
+        <BaseFormItem label="货位用途：">
             {getFieldDecorator('usage' ,{
             rules: [{ required: true, message: '货位用途不能为空' },],
         })(
@@ -196,8 +187,8 @@ const CreateBinModal = ({
                     <Select.Option value="QueryRtnWrhBin">退货退仓位</Select.Option>
         </Select>
         )}
-        </FormItem>
-        <FormItem {...formItemLayout} label="货位类型：" hasFeedback>
+        </BaseFormItem>
+        <BaseFormItem label="货位类型：">
             {getFieldDecorator('binType' ,{
             rules: [{ required: true, message: '货位类型不能为空' },],
         })(
@@ -205,7 +196,7 @@ const CreateBinModal = ({
                     {binTypeOptions}
         </Select>
         )}
-        </FormItem>
+        </BaseFormItem>
       </Form>
     </Modal>
   )

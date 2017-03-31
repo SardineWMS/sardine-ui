@@ -1,7 +1,8 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Card, Collapse, Icon, Table, Spin } from 'antd';
-const FormItem = Form.Item;
-const Panel = Collapse.Panel;
+import BaseFormItem from '../../Widget/BaseFormItem';
+import BaseTwoCol from '../../Widget/BaseTwoCol';
+import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 
 const ContainerSearch = ({
 	dataSource,
@@ -16,6 +17,7 @@ const ContainerSearch = ({
     getFieldDecorator,
     validateFields,
     getFieldsValue,
+    resetFields
   },
   onCreateContainerType,
 }) => {
@@ -27,6 +29,7 @@ const ContainerSearch = ({
 
   function handleReset(e) {
     e.preventDefault();
+    resetFields();
   }
 
   function handleCreate(e) {
@@ -39,41 +42,36 @@ const ContainerSearch = ({
     onCreateContainerType();
   }
 
-  const formItemLayout = {
-    labelCol: { span: 8 },
-    wrapperCol: { span: 12 },
-  };
-
   const children = [];
   children.push(
-    <Col span={12} key='barcode'>
-      <FormItem {...formItemLayout} label="条码 类似于">
+    <BaseTwoCol>
+      <BaseFormItem label="条码 类似于">
         {getFieldDecorator('barcode')(
           <Input type="text" placeholder="条码 类似于" />
         )}
-      </FormItem>
-    </Col>);
-  children.push(<Col span={12} key='state'>
-    <FormItem {...formItemLayout} label="状态 等于">
+      </BaseFormItem>
+    </BaseTwoCol>);
+  children.push(<BaseTwoCol>
+    <BaseFormItem label="状态 等于">
       {getFieldDecorator('state')(
         <Input type="text" placeholder="状态 等于" />
       )}
-    </FormItem>
-  </Col>);
-  children.push(<Col span={12} key='position'>
-    <FormItem {...formItemLayout} label="当前位置 等于">
+    </BaseFormItem>
+  </BaseTwoCol>);
+  children.push(<BaseTwoCol>
+    <BaseFormItem label="当前位置 等于">
       {getFieldDecorator('position')(
         <Input type="text" placeholder="当前位置 等于" />
       )}
-    </FormItem>
-  </Col>);
-  children.push(<Col span={12} key='toPosition'>
-    <FormItem {...formItemLayout} label="目标位置 等于">
+    </BaseFormItem>
+  </BaseTwoCol>);
+  children.push(<BaseTwoCol>
+    <BaseFormItem label="目标位置 等于">
       {getFieldDecorator('toPosition')(
         <Input type="text" placeholder="目标位置 等于" />
       )}
-    </FormItem>
-  </Col>);
+    </BaseFormItem>
+  </BaseTwoCol>);
 
   const shownCount = searchExpand ? children.length : 2;
 
@@ -111,31 +109,7 @@ const ContainerSearch = ({
 
   return (
     <div>
-      <Collapse defaultActiveKey={["1"]}>
-        <Panel header="搜索" key="1">
-          <Form horizontal
-            className="ant-advanced-search-form"
-            onSubmit={handleSearch}
-          >
-            <Row gutter={40}>
-              {children.slice(0, shownCount)}
-            </Row>
-
-            <Row>
-              <Col span={24} style={{ textAlign: 'right' }}>
-                <Button type="primary" htmlType="submit" icon="search">搜索</Button>
-                <Button style={{ marginLeft: 8 }} onClick={handleReset}>
-                  清除
-            </Button>
-                <a style={{ marginLeft: 8, fontSize: 12 }} onClick={() => onToggle(searchExpand)}>
-                  高级搜索 <Icon type={searchExpand ? 'up' : 'down'} />
-                </a>
-              </Col>
-            </Row>
-          </Form>
-        </Panel>
-      </Collapse>
-
+      <BaseSearchPanel children={children} handleReset={handleReset} handleSearch={handleSearch} />
       <Table size="small"
         bordered
         columns={columns}

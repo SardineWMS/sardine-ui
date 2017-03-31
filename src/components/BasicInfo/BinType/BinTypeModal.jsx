@@ -1,16 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Form, Input, InputNumber, Modal, Row, Col, } from 'antd';
 const FormItem = Form.Item;
-
-const formItemLayout = {
-    labelCol: {
-        span: 6,
-    },
-    wrapperCol: {
-        span: 14,
-    },
-}
-
+import BaseFormItem from '../../Widget/BaseFormItem';
 
 const BinTypeModal = ({
     visible,
@@ -48,7 +39,7 @@ const BinTypeModal = ({
     return (
         <Modal {...modalOpts}>
             <Form horizontal>
-                <FormItem label="代码：" hasFeedback {...formItemLayout}>
+                <BaseFormItem label="代码：">
                     {getFieldDecorator('code', {
                         initialValue: item.code,
                         rules: [{
@@ -56,8 +47,8 @@ const BinTypeModal = ({
                             message: '货位类型代码未填写',
                         }],
                     })(<Input />)}
-                </FormItem>
-                <FormItem label="名称：" hasFeedback {...formItemLayout}>
+                </BaseFormItem>
+                <BaseFormItem label="名称：">
                     {getFieldDecorator('name', {
                         initialValue: item.name,
                         rules: [{
@@ -65,8 +56,8 @@ const BinTypeModal = ({
                             message: '货位类型名称未填写',
                         }],
                     })(<Input />)}
-                </FormItem>
-                <FormItem label="长/宽/高(cm)：" hasFeedback {...formItemLayout}>
+                </BaseFormItem>
+                <BaseFormItem label="长/宽/高(cm)：">
                     <Input.Group>
                         {getFieldDecorator('length', {
                             initialValue: item.length,
@@ -90,8 +81,8 @@ const BinTypeModal = ({
                             }],
                         })(<Input style={{ width: "33.333333%" }}></Input>)}
                     </Input.Group>
-                </FormItem>
-                <FormItem label="承重(kg)：" hasFeedback {...formItemLayout}>
+                </BaseFormItem>
+                <BaseFormItem label="承重(kg)：">
                     {getFieldDecorator('bearing', {
                         initialValue: item.bearing,
                         rules: [{
@@ -99,8 +90,8 @@ const BinTypeModal = ({
                             message: '货位类型承重未填写',
                         }],
                     })(<Input />)}
-                </FormItem>
-                <FormItem label="容积率(%)：" hasFeedback {...formItemLayout}>
+                </BaseFormItem>
+                <BaseFormItem label="容积率(%)：">
                     {getFieldDecorator('plotRatio', {
                         initialValue: item.plotRatio,
                         rules: [{
@@ -108,7 +99,7 @@ const BinTypeModal = ({
                             message: '货位类型容积率未填写',
                         }],
                     })(<Input />)}
-                </FormItem>
+                </BaseFormItem>
             </Form>
         </Modal>
     )

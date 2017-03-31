@@ -14,7 +14,7 @@ class BaseCard extends React.Component{
                       {
                         React.Children.map(this.props.children, function (child) {
                           return (
-                            <Col span={single ? 13 : 12} key={Guid()}>
+                            <Col span={single ? 13 : 12} >
                                 {child}
                             </Col>
                           );

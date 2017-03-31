@@ -3,7 +3,10 @@ import { Form, Row, Col, Input, Button, Icon, Table, message, Modal,Card,Select,
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
 import styles from '../../Layout/common.less';
 
-const FormItem = Form.Item;
+import BaseCard from '../../Widget/BaseCard';
+import RemarkCard from '../../Widget/RemarkCard';
+import BaseForm from '../../Widget/BaseForm';
+import BaseFormItem from '../../Widget/BaseFormItem';
 
 const SupplierView = ({
   item = {},
@@ -14,64 +17,46 @@ const SupplierView = ({
   onViewLog
   }) => {
 
-  const formItemLayout = {
-      labelCol: { span: 9 },
-  };
+    const children=[];
+    children.push(
+       <BaseFormItem  label="代码 :">
+          <span> {item.code} </span>
+      </BaseFormItem>
+      );
+    children.push(
+       <BaseFormItem  label="名称 :">
+          <span> {item.name} </span>
+      </BaseFormItem>
+      );
+    children.push(
+         <BaseFormItem  label="联系方式 :">
+            <span>{item.phone} </span>
+        </BaseFormItem>
+      );
+    children.push(
+         <BaseFormItem  label="地址：">
+            <span>{item.address} </span>
+        </BaseFormItem>
+      );
 
-return (
-        <div>
-            <Card title={"基本资料 / 供应商" + item.code}>
-                <div className={styles.button}>
-                    <Button  onClick={() => onEdit(item)}> 编辑</Button>
-                    <Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)}>
+    const toolbar = [];
+    toolbar.push(<Button  onClick={() => onEdit(item)}> 编辑</Button>);
+    toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)}>
                       <Button disabled={item.state==="deleted"} >删除</Button>
-                    </Popconfirm>
-                    <Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)}>
+                    </Popconfirm>);
+    toolbar.push( <Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)}>
                        <Button disabled={item.state==="normal"}>恢复</Button>
-                    </Popconfirm>                   
-                    <Button onClick={() => onBack()}> 返回</Button>
-                </div>
-                <Card title="基本信息">
-                    <Row gutter={36}>
-                        <Col span={12}>
-                            <Form horizontal>
-                            <FormItem  label="代码 :" {...formItemLayout} className={styles.fromItem}>
-                                <span> {item.code} </span>
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="名称 :" className={styles.fromItem}>
-                                <span> {item.name} </span>
-                            </FormItem>
-                                <FormItem {...formItemLayout} label="联系方式：" className={styles.fromItem}>
-                                <span>{item.phone} </span>
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="地址：" className={styles.fromItem}>
-                                <span>{item.address} </span>
-                            </FormItem>
-                          </Form>
-                        </Col>
-                        <Col span={12}>
-                            <Form horizontal>
-                            <FormItem {...formItemLayout} label="状态 :" className={styles.fromItem}>
-                                <span> {item.state=='normal'?"正常":"已删除"} </span>
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="创建信息：" hasFeedback>
-                                <span>{createInfo2String(item)}</span>
-                            </FormItem>
-                            <FormItem {...formItemLayout} label="最后修改信息：" hasFeedback>
-                                <span>{lastModifyInfo2String(item)}</span>
-                            </FormItem>
-                            <FormItem {...formItemLayout}  hasFeedback>
-                                <Button onClick={() => onViewLog(item)}>详情</Button>
-                            </FormItem>
-                          </Form>
-                        </Col>
-                    </Row>
-                </Card>
-                <Card bordered={false} title="说明">
-                    <Input type="textarea" autosize={{ minRows: 4 }} disabled={true}>{item.remark}</Input>
-                </Card>
-            </Card>
-        </div >
+                    </Popconfirm> );
+    toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
+
+    return (
+        <div>
+            <ToolbarPanel children={toolbar} />
+            <BaseCard title="基本信息" single={true}>
+                <BaseForm items={basicFormItems} />
+            </BaseCard>
+            <RemarkCard remark={item.remark} />
+        </div>
     );
 };
 

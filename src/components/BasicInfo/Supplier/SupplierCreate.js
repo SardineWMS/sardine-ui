@@ -1,6 +1,10 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Table, message, Popconfirm,Card,InputNumber} from 'antd';
 const FormItem = Form.Item;
+import BaseCard from '../../Widget/BaseCard';
+import BaseFormItem from '../../Widget/BaseFormItem';
+import BaseForm from '../../Widget/BaseForm';
+import ToolbarPanel from '../../Widget/ToolbarPanel';
 
 const SupplierCreate = ({
   item = {},
@@ -24,82 +28,66 @@ const SupplierCreate = ({
     });
   }
 
-    const formItemLayout = {
-      labelCol: { span: 6 },
-      wrapperCol: { span: 12 },
-    };
-
     const children = [];
     children.push(
-        <Col span={13} key={1}>
-          <FormItem {...formItemLayout} label="代码 :" hasFeedback>
-            {getFieldDecorator('code', {
-            initialValue: item.code,
-            rules: [
-              { required: true, message: '代码未填写' },
-             ],
-            })(
-              <Input type="text"/>
-             )}
-          </FormItem>
-        </Col>
+          <BaseFormItem  label="代码 :" >
+              {getFieldDecorator('code', {
+              initialValue: item.code,
+              rules: [
+                { required: true, message: '代码未填写' },
+               ],
+              })(
+                <Input type="text"/>
+               )}
+          </BaseFormItem>
     );
 
     children.push(
-        <Col span={13} key={2}>
-           <FormItem {...formItemLayout} label="姓名 :" hasFeedback>
-            {getFieldDecorator('name', {
-            initialValue: item.name,
-            rules: [
-              { required: true, message: '名称未填写' },
-            ],
-           })(
-              <Input type="text"/>
-            )}
-          </FormItem>
-        </Col>
+           <BaseFormItem label="姓名 :" >
+              {getFieldDecorator('name', {
+              initialValue: item.name,
+              rules: [
+                { required: true, message: '姓名未填写' },
+              ],
+             })(
+                <Input type="text"/>
+              )}
+          </BaseFormItem>
     );
 
     children.push(
-        <Col span={13} key={3}>
-          <FormItem {...formItemLayout} label="联系方式：" hasFeedback>
+        <BaseFormItem  label="联系方式：" >
            {getFieldDecorator('phone',{
               initialValue: item.phone,
              rules: [
-                { required: true, message: '名称未填写' }            ],
+                { required: true, message: '联系方式未填写' }            ],
             })(
               <Input type="text"/>
                )}
-        </FormItem>
-        </Col>
+        </BaseFormItem>
     );
 
     children.push(
-        <Col span={13} key={4}>
-          <FormItem {...formItemLayout} label="地址：" hasFeedback>
-            {getFieldDecorator('address' ,{
-            initialValue: item.address,
-            })(
-                <Input type="textarea" autosize={{ minRows: 4 }}></Input>
-            )}
-          </FormItem>
-        </Col>
+          <BaseFormItem  label="地址：" hasFeedback>
+              {getFieldDecorator('address' ,{
+              initialValue: item.address,
+              })(
+                  <Input type="textarea" autosize={{ minRows: 4 }}></Input>
+              )}
+          </BaseFormItem>
     );
 
+    const toolbar = [];
+    toolbar.push(<Button style={{ marginLeft: 8 }} onClick={() => onCancel()}> 取消</Button>);
+    toolbar.push(<Button type="primary" onClick={handleOk}> 保存</Button>);
+
     return (
-     <div>
-     <div className="ant-table-title">
-      <Button style={{ marginLeft: 8 }} onClick={() => onCancel()}> 取消</Button>
-      <Button type="primary" onClick={handleOk}> 保存</Button>
-     </div>
-     <Form>
-        <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
-          <Row gutter={12} type="flex">
-            {children}
-          </Row>
-        </Card>
-    </Form>
-    </div>
+      <div>
+            <ToolbarPanel children={toolbar} />
+            <BaseCard title="基本信息" single={true}>
+              <BaseForm items={children} />
+            </BaseCard>
+        </div>
     );
 };
 
