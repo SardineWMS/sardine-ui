@@ -10,7 +10,7 @@ import Login from './routes/Login';
 import Register from './routes/Register';
 import App from './routes/app';
 import Category from './routes/basicInfo/Category';
-import User from './routes/User';
+import User from './routes/ia/User';
 import Customer from './routes/basicInfo/Customer';
 import Article from './routes/basicInfo/Article';
 import Supplier from './routes/basicInfo/Supplier';
@@ -20,7 +20,7 @@ import ContainerType from './routes/basicInfo/ContainerType';
 import Bin from './routes/basicInfo/Bin';
 import Role from './routes/ia/Role';
 
-export default function({
+export default function ({
   history
 }) {
   return (

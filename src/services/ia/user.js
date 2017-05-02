@@ -1,6 +1,6 @@
-import request from '../utils/request';
+import request from '../../utils/request';
 import qs from 'qs';
-import { query, createBase, addTokenToUrl, updateBase, deleteBase, updateBaseNullBody } from '../utils/BaseService';
+import { query, createBase, addTokenToUrl, updateBase, deleteBase, updateBaseNullBody } from '../../utils/BaseService';
 
 export async function queryUser(params) {
   const url = "/api/user/querybypage";
@@ -8,12 +8,10 @@ export async function queryUser(params) {
 }
 
 export async function login(params) {
-  console.log('service ');
   return request(`/api/ia/authen/login?${qs.stringify(params)}`);
 }
 
 export async function register(params) {
-  console.log('注册用户 ');
   return request('/api/register', {
     method: 'post',
     body: qs.stringify(params),
@@ -48,4 +46,22 @@ export async function onlineUser(params) {
 export async function offlineUser(params) {
   const url = "/api/user/offline";
   return request(query(url, params), updateBaseNullBody(null));
+}
+
+export async function queryAllResourceByUser(params) {
+  const url = "/api/resource/queryAllResourceByUser";
+  return request(query(url, params));
+}
+
+export async function saveUserResource(params) {
+  const userUuid = params.userUuid;
+  const url = "/api/resource/saveUserResource";
+  return request(query(url, params), createBase(params.resourceUuids));
+}
+
+export async function saveUserRole(params) {
+  const roleUuids = params.roleUuids;
+  delete params.roleUuids;
+  const url = "/api/user/saveUserRoles";
+  return request(query(url, params), createBase(roleUuids));
 }

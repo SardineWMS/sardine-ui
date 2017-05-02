@@ -39,3 +39,22 @@ export async function queryAllResourceByRole(params) {
     const url = "/api/resource/queryAllResourceByRole";
     return request(query(url, params));
 }
+
+/**
+ * 不分页查所有角色
+ * @param {* 查询参数} params 
+ */
+export async function queryAllRole(params) {
+    const url = '';
+}
+
+export async function saveRoleResource(params) {
+    const roleUuid = params.roleUuid;
+    const url = "/api/resource/saveRoleResource";
+    return request(query(url, params), createBase(params.resourceUuids));
+}
+
+export async function queryOwnedResourceByRole(params) {
+    const url = "/api/resource/queryOwnedResourceByRole";
+    return request(query(url, params));
+}

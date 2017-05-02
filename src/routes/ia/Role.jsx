@@ -1,11 +1,14 @@
 import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
+import { message } from 'antd';
 import { connect } from 'dva';
 import RoleSearchForm from '../../components/ia/Role/RoleSearchForm';
 import RoleSearchGrid from '../../components/ia/Role/RoleSearchGrid';
 import RoleCreateModal from '../../components/ia/Role/RoleCreateModal';
 import ResourceAssignmentModal from '../../components/ia/Role/ResourceAssignmentModal';
 import RoleAssignTree from '../../components/ia/Role/RoleAssignTree';
+import WMSProgress from '../../components/Widget/WMSProgress';
+import ViewResourceModal from '../../components/ia/Role/ViewResourceModal';
 
 
 function Role({ location, dispatch, role }) {
@@ -18,11 +21,18 @@ function Role({ location, dispatch, role }) {
         batchOnlineProcessModal,
         batchOfflineProcessModal,
         batchDeleteProcessModal,
+        batchAssignResourceProcessModal,
         deleteRoleEntitys,
         onlineRoleEntitys,
         offlineRoleEntitys,
+        assignResourceEntitys,
         showResourceAssignmentModal,
         resourceListTree,
+        currentRoleUuid,
+        roleNext,
+        currentSelected,
+        showViewResourceModal,
+        viewResourceListTree
 } = role;
 
     const roleSearchGridProps = {
@@ -44,13 +54,17 @@ function Role({ location, dispatch, role }) {
         },
         onViewItem(item) {
             dispatch({
-                type: 'role/showViewPage',
+                type: 'role/viewResource',
                 payload: {
-                    currentItem: item,
+                    roleUuid: item.uuid
                 }
             })
         },
-        onBatchDelete(items) {
+        onBatchRemove(items) {
+            if (items.length <= 0) {
+                message.warning("请选择要删除的角色！", 2);
+                return;
+            }
             dispatch({
                 type: 'role/batchDeleteRole',
                 payload: {
@@ -59,6 +73,10 @@ function Role({ location, dispatch, role }) {
             })
         },
         onBatchOnline(items) {
+            if (items.length <= 0) {
+                message.warning("请选择要启用的角色！", 2);
+                return;
+            }
             dispatch({
                 type: 'role/batchOnlineRole',
                 payload: {
@@ -67,6 +85,10 @@ function Role({ location, dispatch, role }) {
             })
         },
         onBatchOffline(items) {
+            if (items.length <= 0) {
+                message.warning("请选择要禁用的角色！", 2);
+                return;
+            }
             dispatch({
                 type: 'role/batchOfflineRole',
                 payload: {
@@ -93,7 +115,6 @@ function Role({ location, dispatch, role }) {
             })
         },
         onOffline(item) {
-            console.log('onOffline...');
             dispatch({
                 type: 'role/gridOffline',
                 payload: {
@@ -122,13 +143,13 @@ function Role({ location, dispatch, role }) {
             })
         },
         onAssign(record) {
-            console.log("onAssign...");
-            dispatch({
-                type: 'role/assginResource',
-                payload: {
-                    roleUuid: record.uuid
-                },
-            })
+            currentItem: record,
+                dispatch({
+                    type: 'role/assginResource',
+                    payload: {
+                        roleUuid: record.uuid
+                    },
+                })
         },
     }
 
@@ -142,7 +163,6 @@ function Role({ location, dispatch, role }) {
     }
 
     const createModalProps = {
-        item: currentItem,
         visible: showCreate,
         onCancel() {
             dispatch({
@@ -150,7 +170,6 @@ function Role({ location, dispatch, role }) {
             })
         },
         onOk(data) {
-            console.log("sourcedata.....", data);
             dispatch({
                 type: 'role/create',
                 payload: data,
@@ -162,26 +181,130 @@ function Role({ location, dispatch, role }) {
         item: currentItem,
         visible: showResourceAssignmentModal,
         treeData: resourceListTree,
+        value: currentSelected,
         onCancel() {
             dispatch({
-                type: 'role/hideResourceAssignmentModal',
+                type: 'role/hideResourceAssignment',
             })
         },
-        // onSave(values) {
-        //     for(let value of values){
+        onSave(values) {
+            dispatch({
+                type: 'role/saveResource',
+                payload: { resourceUuids: values.resource, roleUuid: currentRoleUuid.roleUuid },
+            })
+        }
+    }
 
-        //     }
-        //     dispatch({
-        //         type: 'role/saveResource',
-        //         payload:
-        //     })
-        // }
+    const viewResourceModalProps = {
+        item: currentItem,
+        visible: showViewResourceModal,
+        treeData: viewResourceListTree,
+        value: currentSelected,
+        onCancel() {
+            dispatch({
+                type: 'role/hideViewResource',
+            })
+        },
+    }
+
+    const batchProcessDeleteRoleProps = {
+        showConfirmModal: batchDeleteProcessModal,
+        records: deleteRoleEntitys ? deleteRoleEntitys : [],
+        next: roleNext,
+        actionText: '删除',
+        entityCaption: '角色',
+        batchProcess(entity) {
+            dispatch({
+                type: 'role/gridDelete',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version,
+                    token: localStorage.getItem("token"),
+                }
+            })
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'role/hideDeleteRoleModal',
+            })
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'role/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            })
+        }
+    }
+
+    const batchProcessOnlineRoleProps = {
+        showConfirmModal: batchOnlineProcessModal,
+        records: onlineRoleEntitys ? onlineRoleEntitys : [],
+        next: roleNext,
+        actionText: '启用',
+        entityCaption: '角色',
+        batchProcess(entity) {
+            dispatch({
+                type: 'role/gridOnline',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version,
+                    token: localStorage.getItem("token"),
+                }
+            })
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'role/hideOnlineRoleModal',
+            })
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'role/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            })
+        }
+    }
+
+    const batchProcessOfflineRoleProps = {
+        showConfirmModal: batchOfflineProcessModal,
+        records: offlineRoleEntitys ? offlineRoleEntitys : [],
+        next: roleNext,
+        actionText: '停用',
+        entityCaption: '角色',
+        batchProcess(entity) {
+            dispatch({
+                type: 'role/gridOffline',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version,
+                    token: localStorage.getItem("token"),
+                }
+            })
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'role/hideOfflineRoleModal',
+            })
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'role/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            })
+        }
     }
 
 
 
     const CreateFormGen = () => <RoleCreateModal {...createModalProps} />;
     const AssignModalGen = () => <ResourceAssignmentModal {...resourceAssignmentModalProps} />
+    const ViewResourceGen = () => <ViewResourceModal {...viewResourceModalProps} />
 
     function refreshWidget() {
         return (
@@ -189,7 +312,11 @@ function Role({ location, dispatch, role }) {
                 <RoleSearchForm {...roleSearchFormProps} />
                 <RoleSearchGrid {...roleSearchGridProps} />
                 <CreateFormGen />
-                <ResourceAssignmentModal {...resourceAssignmentModalProps} />
+                <AssignModalGen></AssignModalGen>
+                <ViewResourceGen></ViewResourceGen>
+                <WMSProgress {...batchProcessDeleteRoleProps} />
+                <WMSProgress {...batchProcessOnlineRoleProps} />
+                <WMSProgress {...batchProcessOfflineRoleProps} />
             </div>
         )
     }

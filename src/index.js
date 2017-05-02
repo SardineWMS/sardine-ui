@@ -17,7 +17,7 @@ const app = dva({
 });
 app.use(createLoading());
 
-app.model(require('./models/User'));
+app.model(require('./models/ia/User'));
 app.model(require('./models/app'));
 app.model(require('./models/BasicInfo/Category'));
 app.model(require('./models/BasicInfo/Customer'));

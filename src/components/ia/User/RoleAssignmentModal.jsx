@@ -1,7 +1,5 @@
 import React, { PropTypes } from 'react';
 import { Form, Modal, Col, Row, Input, TreeSelect } from 'antd';
-import RoleAssignTree from './RoleAssignTree';
-
 const FormItem = Form.Item;
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 
@@ -14,7 +12,7 @@ const formItemLayout = {
     },
 }
 
-const ResourceAssginmentModal = ({
+const RoleAssginmentModal = ({
     visible,
     onSave,
     onCancel,
@@ -24,7 +22,6 @@ const ResourceAssginmentModal = ({
         getFieldsValue,
     },
     treeData,
-    value,
 }) => {
     function handleOk() {
         validateFields((errors) => {
@@ -33,14 +30,13 @@ const ResourceAssginmentModal = ({
             const data = {
                 ...getFieldsValue(),
             }
-            console.log("getFieldsValue...", data);
 
             onSave(data)
         })
     };
 
     const modalOpts = {
-        title: '分配权限',
+        title: '选择角色',
         visible,
         onOk: handleOk,
         onCancel,
@@ -49,18 +45,18 @@ const ResourceAssginmentModal = ({
 
     const treeSelectProps = {
         treeData: treeData,
+        value: getFieldsValue,
     }
 
     return (
         <Modal {...modalOpts}>
             <Form horizontal>
-                <FormItem label="权限：" hasFeedback {...formItemLayout}>
-                    {getFieldDecorator('resource', {
+                <FormItem label="角色：" hasFeedback {...formItemLayout}>
+                    {getFieldDecorator('role', {
                         rules: [{
                             required: true,
-                            message: '请选择权限',
-                        }
-                        ], initialValue: value
+                            message: '请选择角色',
+                        }],
                     })(<TreeSelect treeData={treeData}
                         multiple={true} treeCheckable={true}
                         showCheckedStrategy={SHOW_PARENT}
@@ -71,9 +67,4 @@ const ResourceAssginmentModal = ({
         </Modal>
     )
 }
-
-function mapPropsToFields(value) {
-    return { resource: value }
-}
-
-export default Form.create(mapPropsToFields)(ResourceAssginmentModal);
+export default Form.create()(RoleAssginmentModal);

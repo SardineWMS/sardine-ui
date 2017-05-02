@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Form, Modal, Col, Row, Input, TreeSelect } from 'antd';
-import RoleAssignTree from './RoleAssignTree';
+import { Form, Modal, Col, Row, Input, TreeSelect, Button } from 'antd';
 
 const FormItem = Form.Item;
 const SHOW_PARENT = TreeSelect.SHOW_PARENT;
@@ -14,7 +13,7 @@ const formItemLayout = {
     },
 }
 
-const ResourceAssginmentModal = ({
+const ViewResourceModal = ({
     visible,
     onSave,
     onCancel,
@@ -42,9 +41,12 @@ const ResourceAssginmentModal = ({
     const modalOpts = {
         title: '分配权限',
         visible,
-        onOk: handleOk,
+        onOk: false,
         onCancel,
         wrapClassName: 'vertical-center-modal',
+        footer: [
+            <Button key="return" type="primary" onClick={onCancel}>返回</Button>
+        ]
     };
 
     const treeSelectProps = {
@@ -76,4 +78,4 @@ function mapPropsToFields(value) {
     return { resource: value }
 }
 
-export default Form.create(mapPropsToFields)(ResourceAssginmentModal);
+export default Form.create(mapPropsToFields)(ViewResourceModal);

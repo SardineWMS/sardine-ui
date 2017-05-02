@@ -1,13 +1,17 @@
 import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
-import UserSearchForm from '../components/User/UserSearchForm';
-import UserSearchGrid from '../components/User/UserSearchGrid';
-import UserCreateForm from '../components/User/UserCreateForm';
-import UserViewForm from '../components/User/UserViewForm';
-import WMSProgress from '../components/Widget/WMSProgress';
+import { message } from 'antd';
+import UserSearchForm from '../../components/ia/User/UserSearchForm';
+import UserSearchGrid from '../../components/ia/User/UserSearchGrid';
+import UserCreateForm from '../../components/ia/User/UserCreateForm';
+import UserViewForm from '../../components/ia/User/UserViewForm';
+import WMSProgress from '../../components/Widget/WMSProgress';
+import RoleAssginmentModal from '../../components/ia/User/RoleAssignmentModal';
+import ResourceAssignmentModal from '../../components/ia/Role/ResourceAssignmentModal';
+import ViewResourceModal from '../../components/ia/User/ViewResourceModal';
 
-function User({location, dispatch, user}) {
+function User({ location, dispatch, user }) {
 	const {
 		loading,
 		list,
@@ -24,6 +28,14 @@ function User({location, dispatch, user}) {
 		deleteUserEntitys,
 		onlineUserEntitys,
 		offlineUserEntitys,
+		showRoleAssignmentModal,
+		roleList,
+		showResourceAssignmentModal,
+		resourceListTree,
+		currentSelected,
+		currentUserUuid,
+		showViewResourceModal,
+		viewResourceListTree
 	} = user;
 
 	const userSearchGridProps = {
@@ -46,13 +58,17 @@ function User({location, dispatch, user}) {
 		},
 		onViewItem(item) {
 			dispatch({
-				type: 'user/showViewPage',
+				type: 'user/viewResource',
 				payload: {
-					currentItem: item
+					userUuid: item.uuid
 				}
 			})
 		},
-		onDeleteUsers(items) {
+		onBatchRemove(items) {
+			if (items.length <= 0) {
+				message.warning("请选择要删除的用户！", 2);
+				return;
+			}
 			dispatch({
 				type: 'user/batchDeleteUser',
 				payload: {
@@ -81,6 +97,10 @@ function User({location, dispatch, user}) {
 			})
 		},
 		onBatchOnline(users) {
+			if (users.length <= 0) {
+				message.warning("请选择要启用的用户！", 2);
+				return;
+			}
 			dispatch({
 				type: 'user/batchOnlineUser',
 				payload: {
@@ -90,12 +110,32 @@ function User({location, dispatch, user}) {
 		},
 
 		onBatchOffline(users) {
-			console.log('选中的users');
-			console.dir(users);
+			if (users.length <= 0) {
+				message.warning("请选择要停用的用户！", 2);
+				return;
+			}
 			dispatch({
 				type: 'user/batchOfflineUser',
 				payload: {
 					offlineUserEntitys: users,
+				}
+			})
+		},
+
+		onAssignRole(record) {
+			dispatch({
+				type: 'user/assignRole',
+				payload: {
+					userUuid: record.uuid,
+				}
+			})
+		},
+
+		onAssignResource(record) {
+			dispatch({
+				type: 'user/assignResource',
+				payload: {
+					userUuid: record.uuid,
 				}
 			})
 		}
@@ -124,8 +164,6 @@ function User({location, dispatch, user}) {
 		item: currentItem,
 		onOk(data) {
 			if (data.uuid) {
-				console.log("data的uuid");
-				console.dir(data);
 				dispatch({
 					type: 'user/update',
 					payload: data,
@@ -264,9 +302,61 @@ function User({location, dispatch, user}) {
 		}
 	}
 
+	const roleAssignmentModalProps = {
+		item: currentItem,
+		visible: showRoleAssignmentModal,
+		treeData: roleList,
+		onCancel() {
+			dispatch({
+				type: 'user/hideRoleAssignment',
+			})
+		},
+		onSave(values) {
+			dispatch({
+				type: 'user/saveRole',
+				payload: { roleUuids: values.role, userUuid: currentUserUuid.userUuid },
+			})
+		}
+
+	}
+
+	const resourceAssignmentModalProps = {
+		item: currentItem,
+		visible: showResourceAssignmentModal,
+		treeData: resourceListTree,
+		value: currentSelected,
+		onCancel() {
+			dispatch({
+				type: 'user/hideResourceAssignment',
+			})
+		},
+		onSave(values) {
+			dispatch({
+				type: 'user/saveResource',
+				payload: { resourceUuids: values.resource, userUuid: currentUserUuid.userUuid },
+			})
+		}
+	}
+
+	const viewResourceModalProps = {
+		item: currentItem,
+		visible: showViewResourceModal,
+		treeData: viewResourceListTree,
+		value: currentSelected,
+		onCancel() {
+			dispatch({
+				type: 'user/hideViewResource',
+			})
+		},
+	}
+
 	const CreateFormGen = () => <UserCreateForm {...createFormProps} />;
 	const UserViewGen = () => <UserViewForm {...viewFormProps} />;
 	const UserGridGen = () => <UserSearchGrid {...userSearchGridProps} />
+	const AssignRoleModalGen = () => <RoleAssginmentModal {...roleAssignmentModalProps} />
+	const AssignResourceModalGen = () => <ResourceAssignmentModal {...resourceAssignmentModalProps} />
+	const ViewResourceModalGen = () => <ViewResourceModal {...viewResourceModalProps} />
+
 	function refreshWidget() {
 		if (showCreate)
 			return (<CreateFormGen />);
@@ -279,6 +369,9 @@ function User({location, dispatch, user}) {
 				<WMSProgress {...batchProcessOnlineUserProps} />
 				<WMSProgress {...batchProcessOfflineUserProps} />
 				<WMSProgress {...batchProcessDeleteUserProps} />
+				<AssignRoleModalGen />
+				<AssignResourceModalGen />
+				<ViewResourceModalGen />
 			</div>);
 		}
 	}
@@ -299,8 +392,8 @@ User.propTypes = {
 	searchExpand: PropTypes.bool,
 }
 
-function mapStateToProps({user}) {
+function mapStateToProps({ user }) {
 	return user;
 }
 
-export default connect(({user}) => ({ user }))(User);
+export default connect(({ user }) => ({ user }))(User);

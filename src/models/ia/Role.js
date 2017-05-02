@@ -1,5 +1,5 @@
 import { parse, stringify } from 'qs';
-import { queryRole, create, online, offline, update, remove, queryAllResourceByRole } from '../../services/ia/Role';
+import { queryRole, create, online, offline, update, remove, queryAllResourceByRole, saveRoleResource, queryOwnedResourceByRole } from '../../services/ia/Role';
 import { removeByValue } from '../../utils/ArrayUtils';
 
 export default {
@@ -21,6 +21,17 @@ export default {
         },
         showResourceAssignmentModal: false,
         resourceListTree: [],
+        currentRoleUuid: {},
+        batchDeleteProcessModal: false,
+        batchAssignResourceProcessModal: false,
+        batchOnlineProcessModal: false,
+        batchOfflineProcessModal: false,
+        deleteRoleEntitys: [],
+        onlineRoleEntitys: [],
+        offlineRoleEntitys: [],
+        assignResourceEntitys: [],
+        currentSelected: [],
+        showViewResourceModal: false,
     },
 
     subscriptions: {
@@ -134,63 +145,141 @@ export default {
         }, {
             call, put
         }) {
-            /**
-             * 构造资源树
-             * @param {*原数组} data 
-             * @param {*上级资源} resource 
-             */
-            function buildResourceTree(data, resource) {
-                var result = [];
-                var temps = [];
-                for (var i = 0; i < data.length; i++) {
-                    if (data[i].upperUuid == resource.uuid) {
-                        data[i].value = data[i].code;
-                        data[i].label = data[i].name;
-                        data[i].children = [];
-                        temps = buildResourceTree(data, data[i]);
-                        if (temps.length > 0) {
-                            for (var temp of temps)
-                                data[i].children.push(temp);
+            function buildResourceTree(resource, currentSelected) {
+                resource.value = resource.uuid;
+                resource.label = resource.name;
+                if (resource.owned) {
+                    currentSelected.push(resource.value);
+                }
+                if (resource.children.length > 0) {
+                    for (let lowerResource of resource.children) {
+                        resource.value = resource.uuid;
+                        resource.label = resource.name;
+                        if (lowerResource.owned) {
+                            currentSelected.push(lowerResource.value);
                         }
-                        result.push(data[i]);
+                        buildResourceTree(lowerResource, currentSelected);
                     }
                 }
-                return result;
+            }
+
+            const { data } = yield call(queryAllResourceByRole, parse(payload));
+            let resourceListTree = [];
+            let currentSelected = [];
+            if (data.obj.length > 0) {
+                resourceListTree = data.obj;
+                for (let resource of resourceListTree) {
+                    resource.value = resource.uuid;
+                    resource.label = resource.name;
+                    if (resource.owned) {
+                        currentSelected.push(resource.value);
+                    }
+                    buildResourceTree(resource, currentSelected);
+                }
+            }
+            yield put({
+                type: 'showResourceAssignment',
+                payload: {
+                    resourceListTree: resourceListTree,
+                    currentRoleUuid: payload,
+                    currentSelected: currentSelected,
+                },
+            })
+        },
+
+        *saveResource({ payload }, {
+            call, put
+        }) {
+            yield call(saveRoleResource, parse(payload));
+            yield put({
+                type: 'hideResourceAssignment',
+            })
+            yield put({
+                type: 'query',
+                payload: {}
+            })
+
+        },
+
+        *viewResource({ payload }, {
+            call, put
+        }) {
+
+            function buildResourceTree(resource, currentSelected, resourceListTree) {
+                resource.value = resource.uuid;
+                resource.label = resource.name;
+                resource.disabled = true;
+                if (resource.owned) {
+                    currentSelected.push(resource.value);
+
+                }
+
+                if (resource.children.length > 0) {
+                    for (let lowerResource of resource.children) {
+                        lowerResource.value = lowerResource.uuid;
+                        lowerResource.label = lowerResource.name;
+                        lowerResource.disabled = true;
+                        if (!lowerResource.owned) {
+                            removeByValue(resourceListTree, lowerResource);
+                        } else {
+                            currentSelected.push(lowerResource.value);
+
+                        }
+                        buildResourceTree(lowerResource, currentSelected, resourceListTree);
+                    }
+                }
             }
             const { data } = yield call(queryAllResourceByRole, parse(payload));
-            if (data) {
-                const resourceList = data.obj;
-                const resourceListTree = [];
-                for (let resource of resourceList) {
-                    if (!resource.upperUuid) {
-                        resource.value = resource.code;
-                        resource.label = resource.name;
-                        resource.children = [];
-                        removeByValue(resourceList, resource);
-                        const lowerList = buildResourceTree(resourceList, resource);
-                        if (lowerList.length > 0) {
-                            for (var lowerResource of lowerList) {
-                                if (lowerResource.upperUuid === resource.uuid) {
-                                    resource.children.push(lowerResource);
-                                }
-                            }
-                            resourceListTree.push(resource);
-                        }
-                        else {
-                            resource.value = resource.code;
-                            resource.label = resource.name;
-                            resource.children = [];
-                            resourceListTree.push(resource)
-                        }
+            // if (data) {
+            //     const resourceList = data.obj;
+            //     const resourceListTree = [];
+            //     for (let resource of resourceList) {
+            //         if (!resource.upperUuid) {
+            //             resource.value = resource.code;
+            //             resource.label = resource.name;
+            //             resource.children = [];
+            //             removeByValue(resourceList, resource);
+            //             const lowerList = buildResourceTree(resourceList, resource);
+            //             if (lowerList.length > 0) {
+            //                 for (var lowerResource of lowerList) {
+            //                     if (lowerResource.upperUuid === resource.uuid) {
+            //                         resource.children.push(lowerResource);
+            //                     }
+            //                 }
+            //                 resourceListTree.push(resource);
+            //             }
+            //             else {
+            //                 resource.value = resource.code;
+            //                 resource.label = resource.name;
+            //                 resource.children = [];
+            //                 resourceListTree.push(resource)
+            //             }
+            //         }
+            //     }
+
+            // }
+            let resourceListTree = [];
+            let currentSelected = [];
+            if (data.obj.length > 0) {
+                resourceListTree = data.obj;
+                for (let resource of resourceListTree) {
+                    resource.value = resource.uuid;
+                    resource.label = resource.name;
+                    resource.disabled = true;
+                    if (resource.owned) {
+                        currentSelected.push(resource.value);
                     }
+                    buildResourceTree(resource, currentSelected, resourceListTree);
                 }
-                yield put({
-                    type: 'showResourceAssignment',
-                    payload: {
-                        resourceListTree: resourceListTree
-                    },
-                })
             }
+
+            yield put({
+                type: 'showViewResource',
+                payload: {
+                    viewResourceListTree: resourceListTree,
+                    currentSelected: currentSelected,
+                }
+            })
         }
 
     },
@@ -208,9 +297,33 @@ export default {
         showResourceAssignment(state, action) {
             return { ...state, ...action.payload, showResourceAssignmentModal: true };
         },
-        hideResourceAssignmentModal(state) {
+        hideResourceAssignment(state) {
             return { ...state, showResourceAssignmentModal: false };
         },
+        batchDeleteRole(state, action) {
+            return { ...state, ...action.payload, batchDeleteProcessModal: true }
+        },
+        hideDeleteRoleModal(state) {
+            return { ...state, batchDeleteProcessModal: false }
+        },
+        batchOnlineRole(state, action) {
+            return { ...state, ...action.payload, batchOnlineProcessModal: true }
+        },
+        hideOnlineRoleModal(state) {
+            return { ...state, batchOnlineProcessModal: false }
+        },
+        batchOfflineRole(state, action) {
+            return { ...state, ...action.payload, batchOfflineProcessModal: true }
+        },
+        hideOfflineRoleModal(state) {
+            return { ...state, batchOfflineProcessModal: false };
+        },
+        showViewResource(state, action) {
+            return { ...state, ...action.payload, showViewResourceModal: true }
+        },
+        hideViewResource(state) {
+            return { ...state, showViewResourceModal: false }
+        }
 
     }
 }
