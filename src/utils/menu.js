@@ -56,6 +56,13 @@ module.exports =
         name: '装车单'
       }]
     }, {
+      key: 'inner',
+      name: '内部管理',
+      child: [{
+        key: 'task',
+        name: '指令'
+      }]
+    }, {
       key: 'backword',
       name: '退仓退货',
       child: [{
