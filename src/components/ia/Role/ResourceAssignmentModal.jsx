@@ -33,6 +33,7 @@ const ResourceAssginmentModal = ({
             const data = {
                 ...getFieldsValue(),
             }
+            console.log("getFieldsValue...", data);
 
             onSave(data)
         })
