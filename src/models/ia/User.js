@@ -40,6 +40,7 @@ export default {
 		showResourceAssignmentModal: false,
 		currentSelected: [],
 		showViewResourceModal: false,
+		currentSelectedRoles: [],
 	},
 
 	subscriptions: {
@@ -209,12 +210,18 @@ export default {
 		*assignRole({ payload }, {
 			call, put
 		}) {
-			const { data } = yield call(queryRole, parse());
-			const roleList = data.obj.records;
+			let currentSelected = [];
+			const { data } = yield call(queryAllRole, parse());
+			let roleList = [];
+			roleList = data.obj;
+			console.dir("数据" + data);
 			if (roleList.length > 0) {
 				for (let role of roleList) {
 					role.value = role.uuid;
 					role.label = role.name;
+					if (role.owned) {
+						currentSelected.push(role.value);
+					}
 				}
 			}
 
@@ -223,6 +230,7 @@ export default {
 				payload: {
 					roleList: roleList,
 					currentUserUuid: payload,
+					currentSelectedRoles:currentSelected, 
 				}
 			})
 		},

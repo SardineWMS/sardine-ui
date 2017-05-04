@@ -22,6 +22,7 @@ const RoleAssginmentModal = ({
         getFieldsValue,
     },
     treeData,
+    value,
 }) => {
     function handleOk() {
         validateFields((errors) => {
@@ -56,7 +57,7 @@ const RoleAssginmentModal = ({
                         rules: [{
                             required: true,
                             message: '请选择角色',
-                        }],
+                        }],initialValue: value
                     })(<TreeSelect treeData={treeData}
                         multiple={true} treeCheckable={true}
                         showCheckedStrategy={SHOW_PARENT}
@@ -67,4 +68,9 @@ const RoleAssginmentModal = ({
         </Modal>
     )
 }
-export default Form.create()(RoleAssginmentModal);
+
+function mapPropsToFields(value) {
+    return { role: value }
+}
+
+export default Form.create(mapPropsToFields)(RoleAssginmentModal);

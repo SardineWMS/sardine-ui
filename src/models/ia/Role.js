@@ -1,5 +1,5 @@
 import { parse, stringify } from 'qs';
-import { queryRole, create, online, offline, update, remove, queryAllResourceByRole, saveRoleResource, queryOwnedResourceByRole } from '../../services/ia/Role';
+import { queryRole, create, online, offline, update, remove, queryAllResourceByRole, saveRoleResource, queryOwnedResourceByRole ,queryAllRole} from '../../services/ia/Role';
 import { removeByValue } from '../../utils/ArrayUtils';
 
 export default {

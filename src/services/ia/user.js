@@ -55,6 +55,7 @@ export async function queryAllResourceByUser(params) {
 
 export async function saveUserResource(params) {
   const userUuid = params.userUuid;
+  console.log("资源"+params);
   const url = "/api/resource/saveUserResource";
   return request(query(url, params), createBase(params.resourceUuids));
 }
