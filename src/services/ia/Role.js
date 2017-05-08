@@ -44,8 +44,9 @@ export async function queryAllResourceByRole(params) {
  * 不分页查所有角色
  * @param {* 查询参数} params 
  */
-export async function queryAllRole(params) {
-    const url = '';
+export async function queryAllRole() {
+    const url = "/api/role/queryAllResource";
+    return request(addTokenToUrl(url));
 }
 
 export async function saveRoleResource(params) {

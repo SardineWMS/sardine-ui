@@ -35,7 +35,8 @@ function User({ location, dispatch, user }) {
 		currentSelected,
 		currentUserUuid,
 		showViewResourceModal,
-		viewResourceListTree
+		viewResourceListTree,
+		currentSelectedRoles
 	} = user;
 
 	const userSearchGridProps = {
@@ -306,6 +307,7 @@ function User({ location, dispatch, user }) {
 		item: currentItem,
 		visible: showRoleAssignmentModal,
 		treeData: roleList,
+		value:currentSelectedRoles,
 		onCancel() {
 			dispatch({
 				type: 'user/hideRoleAssignment',

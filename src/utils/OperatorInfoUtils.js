@@ -1,4 +1,4 @@
-import timeStamp2datetime from './DateUtils';
+import { timeStamp2datetime } from './DateUtils';
 /**直接传入带有操作信息的对象 ,转换成name[code] yyyy-MM-dd HH:mm:ss形式*/
 export function createInfo2String(item) {
     return item.createInfo.operator.fullName + "[" + item.createInfo.operator.code + "] " + timeStamp2datetime(item.createInfo.time);
