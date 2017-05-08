@@ -23,6 +23,8 @@ export function createBase(params) {
 }
 
 export function addTokenToUrl(url) {
+    if(url.indexOf('?') >= 0)
+        return url + `&token=` + token;
     return url + `?token=` + token;
 }
 
