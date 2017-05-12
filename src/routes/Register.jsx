@@ -40,7 +40,7 @@ const Register1 = ({
     onBack();
   }
 
-  document.onKeyup = e => e.keyCode === 13 && handleOk();
+  // document.onKeyup = e => e.keyCode === 13 && handleOk();
   const formItemLayout = {
     labelCol: { span: 6 },
     wrapperCol: { span: 14 },

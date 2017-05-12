@@ -29,6 +29,7 @@ app.model(require('./models/BasicInfo/ContainerType'));
 app.model(require('./models/BasicInfo/Bin'));
 app.model(require('./models/ia/Role'));
 app.model(require('./models/forword/OrderBill'));
+app.model(require('./models/forword/Receive'));
 
 app.router(require('./router'));
 

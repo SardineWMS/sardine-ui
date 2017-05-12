@@ -40,7 +40,7 @@ module.exports =
         name: '货位类型'
       }]
     }, {
-      key: 'forword',
+      key: 'forward',
       name: '正向物流',
       child: [{
         key: 'order',

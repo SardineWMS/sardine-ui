@@ -20,6 +20,7 @@ import ContainerType from './routes/basicInfo/ContainerType';
 import Bin from './routes/basicInfo/Bin';
 import Role from './routes/ia/Role';
 import OrderBill from './routes/forword/OrderBill';
+import Receive from './routes/forword/Receive';
 
 
 export default function ({
@@ -42,7 +43,8 @@ export default function ({
         <Route path="/basicInfo/containerType" component={ContainerType} />
         <Route path="/basicInfo/bin" component={Bin} />
         <Route path="/ia/role" component={Role} />
-        <Route path="/forword/order" component={OrderBill} />
+        <Route path="/forward/order" component={OrderBill} />
+        <Route path="/forward/receive" component={Receive} />
       </Route>
     </Router>
   );

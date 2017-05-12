@@ -53,7 +53,14 @@ export default {
       //   type: 'hideLoginButtonLoading',
       // })
       if (data.token) {
-        localStorage.setItem("loginId", data.obj.code);
+        const loginUser = new Object();
+        loginUser.uuid = data.obj.uuid;
+        loginUser.code = data.obj.code;
+        loginUser.name = data.obj.name;
+        localStorage.setItem("loginUser", loginUser);
+        localStorage.setItem("loginCode", data.obj.code);
+        localStorage.setItem("loginId", data.obj.uuid);
+        localStorage.setItem("loginName", data.obj.name);
         localStorage.setItem("token", data.token);
         localStorage.setItem("admin", data.obj.administrator);
         localStorage.setItem("companyUuid", data.obj.companyUuid);

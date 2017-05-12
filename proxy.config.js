@@ -37,5 +37,7 @@ module.exports = {
 	'/Log/entitylog/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/log/entitylog',
 	'/api/role/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/role',
 	'/api/resource/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/resource',
-	'/forword/order/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/in/order',
+	'/forward/order/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/in/order',
+	'/forward/receive/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/in/receive',
+	'/util/helper/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/common/helper',
 };
