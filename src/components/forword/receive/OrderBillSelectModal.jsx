@@ -23,10 +23,10 @@ const OrderBillSelectModal = ({
 }) => {
 
     const modalOpts = {
-        title: '请选择：订单',
         visible,
         onOk: onOk,
         onCancel,
+        width: 800,
     }
 
     const orderBillSelectGridProps = {
@@ -39,7 +39,6 @@ const OrderBillSelectModal = ({
             <BaseCard title="选择订单" single={true}>
                 <BaseForm items={<OrderBillSelectGrid {...orderBillSelectGridProps} />} />
             </BaseCard>
-            <a>是否显示modal</a>
         </Modal>
     )
 }

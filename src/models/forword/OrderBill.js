@@ -1,13 +1,13 @@
-import {parse} from 'qs';
-import {querybypage,get,create,edit,remove,bookReg,check,finish,abort,getArticle} from '../../services/forword/OrderBill';
-import {message} from 'antd';
+import { parse } from 'qs';
+import { querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle, getOrderBillByBillNo } from '../../services/forword/OrderBill';
+import { message } from 'antd';
 
 export default {
-	namespace: 'orderBill',
-	state:{
-  		list: [],
+    namespace: 'orderBill',
+    state: {
+        list: [],
         currentItem: {},
-        articleQpcs:[],
+        articleQpcs: [],
         pagination: {
             showSizeChanger: true,
             showQuickJumper: true,
@@ -30,41 +30,51 @@ export default {
         batchAbortProcessModal: false,
         abortOrderBillEntitys: [],
         modalVisible: false,
-        bookRegBills:[],
-        bookRegType:'single'
-	},
+        bookRegBills: [],
+        bookRegType: 'single'
+    },
 
-	 subscriptions: {
+    subscriptions: {
         setup({
             dispatch,
             history
         }) {
             history.listen(location => {
-                if (location.pathname === '/forword/orderBill') {
-                    dispatch({
-                        type: 'query',
-                        payload: location.query,
-                    })
+                if (location.pathname === '/forward/order') {
+                    var pp = eval('(' + location.query.payload + ')');
+                    if (location.query.type == 'getByNumber') {
+                        dispatch({
+                            type: 'getByNumber',
+                            payload: {
+                                orderBillNumber: location.query.key,
+                            }
+                        })
+                    } else {
+                        dispatch({
+                            type: 'query',
+                            payload: location.query,
+                        })
+                    }
                 }
             })
         }
     },
     effects: {
-    	*query({ payload }, { call, put }) {
-            const {data} = yield call(querybypage, parse(payload));
-                yield put({
-                    type: 'querySuccess',
-                    payload: {
-                        list: data.obj.records,
-                        pagination: {
-                            total: data.obj.recordCount,
-                            current: data.obj.page,
-                        }
+        *query({ payload }, { call, put }) {
+            const { data } = yield call(querybypage, parse(payload));
+            yield put({
+                type: 'querySuccess',
+                payload: {
+                    list: data.obj.records,
+                    pagination: {
+                        total: data.obj.recordCount,
+                        current: data.obj.page,
                     }
-                })
+                }
+            })
         },
 
-        *get({payload}, {call, put}) {
+        *get({ payload }, { call, put }) {
             const orderBill = yield call(get, {
                 uuid: payload.uuid,
             });
@@ -78,29 +88,45 @@ export default {
             }
         },
 
-        *create({payload},{call,put}){
-        	yield put({type: 'showLoading'});
-	      	const {data} = yield call(create,parse(payload));
-		      	yield put({
-                    type: 'get',
+        *getByNumber({
+            payload
+        }, {
+            call, put
+        }) {
+            const orderBill = yield call(getOrderBillByBillNo, { billNumber: payload.orderBillNumber });
+            if (orderBill) {
+                yield put({
+                    type: 'showViewPage',
                     payload: {
-                    	uuid:data.obj
+                        currentItem: orderBill.data.obj,
                     }
                 })
-   		 },
+            }
+        },
 
-   		*edit({payload},{call,put}){
-		    yield put({type: 'showLoading'});
-		    const {data} = yield call(edit,parse(payload));
-		       	yield put({
-                    type: 'get',
-                    payload: {
-                    	uuid:payload.uuid
-                    }
-                })
-	    },
+        *create({ payload }, { call, put }) {
+            yield put({ type: 'showLoading' });
+            const { data } = yield call(create, parse(payload));
+            yield put({
+                type: 'get',
+                payload: {
+                    uuid: data.obj
+                }
+            })
+        },
 
-        *remove({payload}, {call, put}) {
+        *edit({ payload }, { call, put }) {
+            yield put({ type: 'showLoading' });
+            const { data } = yield call(edit, parse(payload));
+            yield put({
+                type: 'get',
+                payload: {
+                    uuid: payload.uuid
+                }
+            })
+        },
+
+        *remove({ payload }, { call, put }) {
             yield call(remove, {
                 uuid: payload.uuid,
                 version: payload.version
@@ -110,136 +136,136 @@ export default {
             })
         },
 
-        *bookReg({payload}, {call, put}) {
+        *bookReg({ payload }, { call, put }) {
             yield call(bookReg, {
                 uuid: payload.uuid,
                 version: payload.version,
                 bookedDate: payload.bookedDate,
             })
-            yield put({type: 'hideModal'})
-         	yield put({
-                    type: 'get',
-                    payload: {
-                    	uuid:payload.uuid
-                    }
-            })
-        },
-
-        *gridBookReg({payload}, {call, put}) {
-            yield call(bookReg, {
-                uuid: payload.uuid,
-                version: payload.version,
-                bookedDate: payload.bookedDate,
-            })
-            yield put({type: 'hideModal'})
+            yield put({ type: 'hideModal' })
             yield put({
-            	type: 'query',
-        	})
+                type: 'get',
+                payload: {
+                    uuid: payload.uuid
+                }
+            })
         },
 
-        *check({payload}, {call, put}) {
+        *gridBookReg({ payload }, { call, put }) {
+            yield call(bookReg, {
+                uuid: payload.uuid,
+                version: payload.version,
+                bookedDate: payload.bookedDate,
+            })
+            yield put({ type: 'hideModal' })
+            yield put({
+                type: 'query',
+            })
+        },
+
+        *check({ payload }, { call, put }) {
             yield call(check, {
                 uuid: payload.uuid,
                 version: payload.version
             })
-          	yield put({
+            yield put({
                 type: 'get',
                 payload: {
-                	uuid:payload.uuid
+                    uuid: payload.uuid
                 }
             })
         },
 
-        *gridCheck({payload}, {call, put}) {
+        *gridCheck({ payload }, { call, put }) {
             yield call(check, {
                 uuid: payload.uuid,
                 version: payload.version
             })
-        	yield put({
-            	type: 'query',
-        	})
+            yield put({
+                type: 'query',
+            })
         },
 
-        *finish({payload}, {call, put}) {
+        *finish({ payload }, { call, put }) {
             yield call(finish, {
                 uuid: payload.uuid,
                 version: payload.version
             })
-          	yield put({
+            yield put({
                 type: 'get',
                 payload: {
-                	uuid:payload.uuid
+                    uuid: payload.uuid
                 }
             })
         },
 
-        *gridFinish({payload}, {call, put}) {
+        *gridFinish({ payload }, { call, put }) {
             yield call(finish, {
                 uuid: payload.uuid,
                 version: payload.version
             })
-        	yield put({
-            	type: 'query',
-        	})
+            yield put({
+                type: 'query',
+            })
         },
 
- 		*abort({payload}, {call, put}) {
+        *abort({ payload }, { call, put }) {
             yield call(abort, {
                 uuid: payload.uuid,
                 version: payload.version
             })
-          	yield put({
+            yield put({
                 type: 'get',
                 payload: {
-                	uuid:payload.uuid
+                    uuid: payload.uuid
                 }
             })
         },
 
-        *gridAbort({payload}, {call, put}) {
+        *gridAbort({ payload }, { call, put }) {
             yield call(abort, {
                 uuid: payload.uuid,
                 version: payload.version
             })
-        	yield put({
-            	type: 'query',
-        	})
+            yield put({
+                type: 'query',
+            })
         },
 
-        *getArticle({ payload}, {call, put}){
-              yield put({
+        *getArticle({ payload }, { call, put }) {
+            yield put({
                 type: 'showLoading'
-              })
-              const orderBillItems=payload.items;
-              const param={articleCode:orderBillItems[payload.index].article.code}
-              const {data} = yield call(getArticle, parse(param))
-              if (data.obj) {
-                const article=new Object();
-                article.uuid=data.obj.uuid;
-                article.code=data.obj.code;
-                article.name=data.obj.name;
-                orderBillItems[payload.index].article=article;
-                const qpcs=[];
-                data.obj.qpcs.map(function(articleQpc){
-                    const qpcInfo=new Object();
-                    qpcInfo.munit=articleQpc.munit;
-                    qpcInfo.qpcStr=articleQpc.qpcStr;
+            })
+            const orderBillItems = payload.items;
+            const param = { articleCode: orderBillItems[payload.index].article.code }
+            const { data } = yield call(getArticle, parse(param))
+            if (data.obj) {
+                const article = new Object();
+                article.uuid = data.obj.uuid;
+                article.code = data.obj.code;
+                article.name = data.obj.name;
+                orderBillItems[payload.index].article = article;
+                const qpcs = [];
+                data.obj.qpcs.map(function (articleQpc) {
+                    const qpcInfo = new Object();
+                    qpcInfo.munit = articleQpc.munit;
+                    qpcInfo.qpcStr = articleQpc.qpcStr;
                     qpcs.push(qpcInfo);
                 });
-                payload.currentBill.items= orderBillItems;
+                payload.currentBill.items = orderBillItems;
                 yield put({
                     type: 'showEditPage',
                     payload: {
-                        currentItem:payload.currentBill,
-                        articleQpcs:qpcs
+                        currentItem: payload.currentBill,
+                        articleQpcs: qpcs
                     }
                 })
-              }else{
+            } else {
                 message.error("商品不存在，请输入正确的商品！", 2, '');
-              }
+            }
         },
 
-        *getForEdit({payload}, {call, put}) {
+        *getForEdit({ payload }, { call, put }) {
             const orderBill = yield call(get, {
                 uuid: payload.uuid,
             });
@@ -253,140 +279,142 @@ export default {
             }
         },
 
-    },	
+    },
 
-  	reducers:{
-	   showLoading(state){
-	      return {...state,loading:true}
-	    },
-	    querySuccess(state, action) {
+    reducers: {
+        showLoading(state) {
+            return { ...state, loading: true }
+        },
+        querySuccess(state, action) {
             return {
                 ...state,
-                ...action.payload, 
-                loading:false,
+                ...action.payload,
+                loading: false,
                 showViewPage: false,
                 showCreatePage: false
             }
         },
-    	showCreatePage(state) {
-           return {
+        showCreatePage(state) {
+            return {
                 ...state,
-                loading:false,
-                showViewPage: false,
-                showCreatePage: true
-            }
-        },
-        showEditPage(state,action) {
-           return {
-                ...state,
-                ...action.payload, 
-                loading:false,
+                loading: false,
                 showViewPage: false,
                 showCreatePage: true
             }
         },
-       	showViewPage(state,action) {
-           return {
+        showEditPage(state, action) {
+            return {
                 ...state,
-                ...action.payload, 
-                loading:false,
+                ...action.payload,
+                loading: false,
+                showViewPage: false,
+                showCreatePage: true
+            }
+        },
+        showViewPage(state, action) {
+            return {
+                ...state,
+                ...action.payload,
+                loading: false,
                 showViewPage: true,
                 showCreatePage: false
             }
         },
-    	backViewForm(state) {
-           return {
+        backViewForm(state) {
+            return {
                 ...state,
-                loading:false,
+                loading: false,
                 showViewPage: true,
                 showCreatePage: false
             }
         },
-		backSearchForm(state) {
-           return {
+        backSearchForm(state) {
+            return {
                 ...state,
-                loading:false,
+                loading: false,
                 showViewPage: false,
                 showCreatePage: false
             }
         },
         batchRemoveOrderBill(state, action) {
-            return { 
-           	 	...state,
-             	...action.payload, 
-            	batchDeleteProcessModal: true 
+            return {
+                ...state,
+                ...action.payload,
+                batchDeleteProcessModal: true
             }
-    	},
-    	hideRemoveOrderBillModal(state) {
-            return { 
-            	...state, 
-            	batchDeleteProcessModal: false 
+        },
+        hideRemoveOrderBillModal(state) {
+            return {
+                ...state,
+                batchDeleteProcessModal: false
             }
-    	},
-    	batchBookRegOrderBill(state, action) {
-            return { 
-           	 	...state,
-             	...action.payload, 
-            	batchBookRegProcessModal: true 
+        },
+        batchBookRegOrderBill(state, action) {
+            return {
+                ...state,
+                ...action.payload,
+                batchBookRegProcessModal: true
             }
-    	},
-    	hideBookRegOrderBillModal(state) {
-            return { 
-            	...state, 
-            	batchBookRegProcessModal: false 
+        },
+        hideBookRegOrderBillModal(state) {
+            return {
+                ...state,
+                batchBookRegProcessModal: false
             }
-    	},
-		batchCheckOrderBill(state, action) {
-            return { 
-           	 	...state,
-             	...action.payload, 
-            	batchCheckProcessModal: true 
+        },
+        batchCheckOrderBill(state, action) {
+            return {
+                ...state,
+                ...action.payload,
+                batchCheckProcessModal: true
             }
-    	},
-    	hideCheckOrderBillModal(state) {
-            return { 
-            	...state, 
-            	batchCheckProcessModal: false 
+        },
+        hideCheckOrderBillModal(state) {
+            return {
+                ...state,
+                batchCheckProcessModal: false
             }
-    	},
-		batchFinishOrderBill(state, action) {
-            return { 
-           	 	...state,
-             	...action.payload, 
-            	batchFinishProcessModal: true 
+        },
+        batchFinishOrderBill(state, action) {
+            return {
+                ...state,
+                ...action.payload,
+                batchFinishProcessModal: true
             }
-    	},
-    	hideFinishOrderBillModal(state) {
-            return { 
-            	...state, 
-            	batchFinishProcessModal: false 
+        },
+        hideFinishOrderBillModal(state) {
+            return {
+                ...state,
+                batchFinishProcessModal: false
             }
-    	},
-		batchAbortOrderBill(state, action) {
-            return { 
-           	 	...state,
-             	...action.payload, 
-            	batchAbortProcessModal: true 
+        },
+        batchAbortOrderBill(state, action) {
+            return {
+                ...state,
+                ...action.payload,
+                batchAbortProcessModal: true
             }
-    	},
-    	hideAbortOrderBillModal(state) {
-            return { 
-            	...state, 
-            	batchAbortProcessModal: false 
+        },
+        hideAbortOrderBillModal(state) {
+            return {
+                ...state,
+                batchAbortProcessModal: false
             }
-    	},
+        },
         showModal(state, action) {
-          return {...state,
-            ...action.payload,
-            modalVisible: true
-          }
+            return {
+                ...state,
+                ...action.payload,
+                modalVisible: true
+            }
         },
 
         hideModal(state) {
-          return {...state,
-            modalVisible: false
-          }
+            return {
+                ...state,
+                modalVisible: false
+            }
         }
-	}
+    }
 
 };

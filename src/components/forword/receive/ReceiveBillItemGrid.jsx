@@ -56,10 +56,6 @@ function ReceiveBillItemGrid({
 
             calculateValidDate(record, dataSource);
         }
-        if (key === 'receiveQty') {
-            record.receiveQty = value;
-            calculateCaseQtyStr(record, dataSource);
-        }
         if (key === 'validDate')
             record.validDate = value;
         if (key === 'containerBarcode')
@@ -88,75 +84,108 @@ function ReceiveBillItemGrid({
 
     const columns = [
         {
+            title: '行号',
+            dataIndex: 'line',
+            key: 'line',
+            width: 50,
+
+        },
+        {
             title: '商品代码',
             dataIndex: 'article.code',
             key: 'articleCode',
+            width: 100,
             render: (text, record) => renderSelectColumns(record, "articleCode", text),
+
         },
         {
             title: '商品名称',
             dataIndex: 'article.name',
+            width: 200,
             key: 'articleName',
+        },
+        {
+            title: '单价',
+            dataIndex: 'price',
+            width: 100,
+            key: 'price',
         },
         {
             title: '规格',
             dataIndex: 'qpcStr',
             key: 'qpcStr',
+            width: 100,
             render: (text, record) => renderSelectColumns(record, "qpcStr", text),
         },
         {
             title: '可收货数量',
             dataIndex: 'canReceiveQty',
+            width: 100,
             key: 'canReceiveQty',
         },
         {
             title: '可收货件数',
             dataIndex: 'canReceiveCaseQtyStr',
+            width: 100,
             key: 'canReceiveCaseQtyStr',
         },
         {
             title: '收货数量',
             dataIndex: 'receiveQty',
             key: 'receiveQty',
+            width: 150,
             render: (text, record, index) => {
-                return (
-                    <EditableCell value={text}
-                        onChange={onCellChange(index, record)}
-                        editable={true}
-                    />
-                )
+                return (<RowEditCell
+                    editable={record.editable}
+                    value={text}
+                    status={status}
+                    onBlur={onCellChange(index, record)}
+                />)
             },
         },
         {
             title: '收货件数',
             dataIndex: 'receiveCaseQtyStr',
             key: 'receiveCaseQtyStr',
+            width: 200,
+        },
+        {
+            title: '金额',
+            dataIndex: 'amount',
+            key: 'amount',
+            width: 100,
         },
         {
             title: '生产日期',
             dataIndex: 'produceDate',
             key: 'produceDate',
+            width: 150,
             render: (text, record) => renderDateColumns(record, "produceDate", text),
         },
         {
             title: '到效期',
             dataIndex: 'validDate',
             key: 'validDate',
+            width: 150,
         },
         {
             title: '容器',
             dataIndex: 'containerBarcode',
             key: 'containerBarcode',
+            width: 150,
             render: (text, record) => renderColumns(record, "containerBarcode", text),
         },
         {
             title: '货位',
             dataIndex: 'bin',
             key: 'bin',
+            width: 80,
         },
         {
             title: '操作',
             key: 'operation',
+            fixed: 'right',
+            width: 100,
             render: (text, record) => {
                 return (
                     <div className={styles.editable_row_operations}>
@@ -168,7 +197,7 @@ function ReceiveBillItemGrid({
                         </span>
                             :
                             < span >
-                                <Popconfirm titldocke="确定要删除吗？" onConfirm={() => onRemoveItem(record)}>
+                                <Popconfirm title={"确定要删除吗？"} onConfirm={() => onRemoveItem(record)}>
                                     <a disabled={record.state === "deleted"}>删除</a>
                                 </Popconfirm>
                                 &nbsp;&nbsp;&nbsp;
@@ -201,7 +230,7 @@ function ReceiveBillItemGrid({
 
         return (<RowEditCellDatePicker
             editable={record.editable}
-            value={text}
+            value={record.produceDate ? text : null}
             status={status}
             onChange={value => handleChange(record, value, key)}
         />)
@@ -233,18 +262,18 @@ function ReceiveBillItemGrid({
         if (key == "articleCode" && record.article) {
             defaultValue = record.article.code;
         }
-        if (key == "qpcStr" && record.qpcStr)
+        if (key == "qpcStr" && record.qpcStr) {
             defaultValue = record.qpcStr;
+        }
 
 
 
         return (<RowEditCellSelect
             editable={record.editable}
-            value={text}
+
             options={options}
-            status={status}
             onChange={value => handleChange(record, value, key)}
-            defaultValue={defaultValue}
+            value={text}
         />)
     }
 
@@ -269,6 +298,7 @@ function ReceiveBillItemGrid({
             onChange={onPageChange}
             pagination={pagination}
             rowKey={Guid()}
+            scroll={{ x: 1830, y: 300 }}
         />
         </div>
     )

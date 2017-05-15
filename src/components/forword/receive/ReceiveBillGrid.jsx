@@ -63,7 +63,7 @@ class ReceiveBillGrid extends React.Component {
             title: '入库订单',
             dataIndex: 'orderBillNumber',
             key: 'orderBillNumber',
-            render: (text, record) => <a onClick={() => { this.state.onViewItem(record) }}>{text}</a>,
+            render: (text, record) => <a onClick={() => { this.state.onViewOrderBill(record) }}>{text}</a>,
             sorter: true,
         },
         {

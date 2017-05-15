@@ -30,26 +30,47 @@ const ReceiveBillAddForm = ({
             if (errors) {
                 return;
             }
-            const data = {
-                ...getFieldsValue(),
-                ...item,
-            };
+            let data = {};
+            if (item.type == "订单") {
+                data = {
+                    ...getFieldsValue(),
+                    supplier: {
+                        uuid: item.supplier.uuid,
+                        code: item.supplier.code,
+                        name: item.supplier.name,
+                    },
+                    wrh: {
+                        uuid: item.wrh.uuid,
+                        code: item.wrh.code,
+                        name: item.wrh.name,
+                    }
+                }
+            } else {
+                data = {
+                    ...getFieldsValue(),
+                    ...item,
+                    supplier: {
+                        uuid: item.supplier.uuid,
+                        code: item.supplier.code,
+                        name: item.supplier.name,
+                    },
+                    wrh: {
+                        uuid: item.wrh.uuid,
+                        code: item.wrh.code,
+                        name: item.wrh.name,
+                    }
+                };
+            }
             handleSave(data);
         });
     }
 
     function handleEnterPress() {
-        console.log("回调函数");
-        // validateFields((errors) => {
-        //     if (errors) {
-        //         return;
-        //     }
         const data = {
             orderBillNo: getFieldsValue().orderBillNumber,
 
         }
         onEnterOrderBill(data);
-        // })
     }
 
     const orderBillItemGridProps = {
@@ -60,37 +81,35 @@ const ReceiveBillAddForm = ({
     const children = [];
     children.push(<BaseFormItem label={"入库订单："}>
         {getFieldDecorator("orderBillNumber", { rules: [{ required: true }], initialValue: orderBillNo })(
-            <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => onOrderBillSelect()} />} onPressEnter={handleEnterPress} />
+            <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => onOrderBillSelect()} />} onBlur={handleEnterPress} />
         )}
     </BaseFormItem>);
 
     children.push(
         <BaseFormItem label={"供应商："} >
-            {getFieldDecorator("supplier", { rules: [{ required: true }], initialValue: item.uuid == null ? null : item.supplier.name + "[" + item.supplier.code + "]" })(
-                <Input placeholder="请输入" disabled={true} />
-            )}
+            <label>{item.uuid == null ? null : item.supplier.name + "[" + item.supplier.code + "]"}</label>
         </BaseFormItem>
     );
 
     children.push(
         <BaseFormItem label={"仓位："} >
-            {getFieldDecorator("wrh", { rules: [{ required: true }], initialValue: item.uuid == null ? null : item.wrh.name + "[" + item.wrh.code + "]" })(
-                <Input placeholder="请输入" disabled={true} />
-            )}
+            <label>{item.uuid == null ? null : item.wrh.name + "[" + item.wrh.code + "]"} </label>
         </BaseFormItem>
     );
 
     children.push(
         <BaseFormItem label={"收货人："} >
-            {getFieldDecorator("receiver", { rules: [{ required: true }], initialValue: item.uuid == null ? null : item.wrh.name + "[" + item.wrh.code + "]" })(
-                <Input placeholder="请输入" disabled={true} />
-            )}
+            <label>{item.receiver == null ? localStorage.getItem("loginName") + "[" + localStorage.getItem("loginCode") + "]" : item.receiver.name + "[" + item.receiver.code + "]"}</label>
         </BaseFormItem>
     );
 
     const totalCaseQtyStrForm = [];
     totalCaseQtyStrForm.push(<BaseFormItem label={"总件数："}>
-        {getFieldDecorator("totalCaseQtyStr", { initialValue: item.uuid == null ? null : item.totalCaseQtyStr })(<Input disabled={true} />)}
+        <label>{item.caseQtyStr == null ? 0 : item.caseQtyStr}</label>
+    </BaseFormItem>)
+
+    totalCaseQtyStrForm.push(<BaseFormItem label={"总金额："}>
+        <label>{item.totalAmount == null ? 0 : item.totalAmount}</label>
     </BaseFormItem>)
 
     const toolbar = [];

@@ -8,6 +8,7 @@ import { qtyToCaseQtyStr, caseQtyStrAdd } from '../../services/common/common.js'
 import { queryBin } from '../../services/BasicInfo/Bin.js';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+import { routerRedux } from 'dva/router';
 
 moment.locale('zh-cn');
 
@@ -117,7 +118,6 @@ export default {
                 for (var orderBill of orderBillList) {
                     orderBill.supplierCodeName = orderBill.supplier.name + "[" + orderBill.supplier.code + "]";
                     orderBill.wrhCodeName = orderBill.wrh.name + "[" + orderBill.wrh.code + "]";
-                    orderBill.stateName = (orderBill.state === 'Finished' ? "已完成" : '未完成');//TODO 先写假的
                     orderBill.expireDateFormat = timeStamp2date(orderBill.expireDate);
                 }
                 yield put({
@@ -150,6 +150,131 @@ export default {
                 const articles = [];
                 let itemLists = [];
 
+                /***
+                 * 获取订单，根据订单明细构造orderBillItemArticles.
+                 * orderBillItemArticles:订单中所有商品明细信息
+                 */
+                for (var itemArt of data.obj.items) {
+                    itemArt.canReceiveQty = itemArt.qty - itemArt.receivedQty;
+                    itemArt.canReceiveCaseQtyStr = itemArt.caseQtyStr - itemArt.receivedCaseQtyStr;
+                    const articleUuid = itemArt.article.uuid;
+                    const param = {};
+                    param.articleUuid = articleUuid;
+                    const article = yield call(get, parse(param));
+                    const expDays = article.data.obj.expDays;
+                    itemArt.expDays = expDays;
+                    itemArt.articleSpec = article.data.obj.spec;
+                    itemArt.editable = true;
+                    itemArt.bin = bin.data.obj.pageData.records[0].code;
+                    const sku = {};
+                    sku.value = itemArt.article.code;
+                    sku.label = itemArt.article.code;
+                    articles.push(sku);
+
+                    /***
+                     * 构造article_qpcStr对象。
+                     * 根据订单明细中的商品信息，获取商品代码及规格。
+                     * article_qpcStr对象:articleCode-qpcStrs[]
+                     */
+                    if (JSON.stringify(article_qpcStr) == "{}") {
+                        let qpcStrs = [];
+                        const qpcStr = new Object();
+                        qpcStr.value = itemArt.qpcStr;
+                        qpcStr.label = itemArt.qpcStr;
+                        qpcStrs.push(qpcStr);
+                        var articleCode = itemArt.article.code;
+                        article_qpcStr[articleCode] = qpcStrs;
+                    } else {
+                        for (var prop in article_qpcStr) {
+                            if (prop == itemArt.articleUuid) {
+                                for (var qpcStr of article_qpcStr[prop]) {
+                                    if (qpcStr != itemArt.qpcStr) {
+                                        article_qpcStr[prop].push(qpcStr);
+                                    }
+                                }
+                            } else {
+                                let qpcStrs = [];
+                                const qpcStr = new Object();
+                                qpcStr.value = itemArt.qpcStr;
+                                qpcStr.label = itemArt.qpcStr;
+                                qpcStrs.push(qpcStr);
+                                var articleCode = itemArt.article.code;
+                                article_qpcStr[articleCode] = qpcStrs;
+                            }
+                        }
+                    }
+                }
+
+
+                /***
+                 * 初始选中订单后，收货单明细行只有一条空的记录
+                 */
+                const nullOrderItem = new Object();
+                nullOrderItem.editable = true;
+                nullOrderItem.line = 1;
+
+                itemLists.push(nullOrderItem);
+                let current = data.obj;
+                current.totalCaseQtyStr = "";
+                current.type = "订单";
+                yield put({
+                    type: 'orderBillSelectSuccess',
+                    payload: {
+                        orderBillNo: data.obj.billNumber,
+                        currentItem: current,
+                        supplierMsg: data.obj.supplier,
+                        wrhMsg: data.obj.wrh.name + "[" + data.obj.wrh.code + "]",
+                        orderItems: itemLists,
+                        treeData: articles,
+                        orderBillItemArticles: data.obj.items,
+                        article_qpcStr: article_qpcStr,
+                    }
+                })
+            }
+        },
+
+        *addReceiveArticle({ payload }, {
+            call, put
+        }) {
+            const nullOrderItem = new Object();
+            nullOrderItem.editable = true;
+            const size = payload.length;
+            nullOrderItem.editable = true;
+            nullOrderItem.line = size + 1;
+            payload.push(nullOrderItem);
+            yield put({
+                type: 'addReceiveArticleSuccess',
+                payload: {
+                    orderItems: payload,
+                }
+            })
+        },
+
+        *queryOrderBillItem({ payload }, {
+            call, put
+        }) {
+            yield put({
+                type: 'orderBillSelectSuccess',
+                payload: {
+                    orderItems: payload,
+                }
+            })
+        },
+
+        /***
+         * 同*selectOderBill();
+         */
+        *getOrderBillByBillNo({
+            payload
+        }, {
+            call, put
+        }) {
+            const { data } = yield call(getOrderBillByBillNo, parse(payload));
+            if (data) {
+                const article_qpcStr = {};
+                const bin = yield call(queryBin, { wrhUuid: data.obj.wrh.uuid, usage: 'ReceiveStorageBin' });
+                const articles = [];
+                let itemLists = [];
                 for (var itemArt of data.obj.items) {
                     itemArt.canReceiveQty = itemArt.qty - itemArt.receivedQty;
                     itemArt.canReceiveCaseQtyStr = itemArt.caseQtyStr - itemArt.receivedCaseQtyStr;
@@ -201,120 +326,7 @@ export default {
                  * 初始选中订单后，明细行只有一条空的记录
                  */
                 const nullOrderItem = new Object();
-                nullOrderItem.id = 0;
-                nullOrderItem.editable = true;
-
-                itemLists.push(nullOrderItem);
-                let current = data.obj;
-                current.totalCaseQtyStr = "";
-                current.type = "订单";
-                yield put({
-                    type: 'orderBillSelectSuccess',
-                    payload: {
-                        orderBillNo: data.obj.billNumber,
-                        currentItem: current,
-                        supplierMsg: data.obj.supplier,
-                        wrhMsg: data.obj.wrh.name + "[" + data.obj.wrh.code + "]",
-                        orderItems: itemLists,
-                        treeData: articles,
-                        orderBillItemArticles: data.obj.items,
-                        article_qpcStr: article_qpcStr,
-                    }
-                })
-            }
-        },
-
-        *addReceiveArticle({ payload }, {
-            call, put
-        }) {
-            const nullOrderItem = new Object();
-            nullOrderItem.editable = true;//TODO 怎样判断新增的多条明细 根据原订单明细集合来判断
-            const size = payload.length;
-            nullOrderItem.editable = true;
-            nullOrderItem.id = size + 1;
-            payload.push(nullOrderItem);
-            yield put({
-                type: 'addReceiveArticleSuccess',
-                payload: {
-                    orderItems: payload,
-                }
-            })
-        },
-
-        *queryOrderBillItem({ payload }, {
-            call, put
-        }) {
-            yield put({
-                type: 'orderBillSelectSuccess',
-                payload: {
-                    orderItems: payload,
-                }
-            })
-        },
-
-        *getOrderBillByBillNo({
-            payload
-        }, {
-            call, put
-        }) {
-            const { data } = yield call(getOrderBillByBillNo, parse(payload));
-            if (data) {
-                const article_qpcStr = {};
-                const bin = yield call(queryBin, { wrhUuid: data.obj.wrh.uuid, usage: 'ReceiveStorageBin' });
-                const articles = [];
-                let itemLists = [];
-                for (var itemArt of data.obj.items) {
-                    itemArt.canReceiveQty = itemArt.qty - itemArt.receivedQty;
-                    itemArt.canReceiveCaseQtyStr = itemArt.caseQtyStr - itemArt.receivedCaseQtyStr;
-                    const articleUuid = itemArt.article.uuid;
-                    const param = {};
-                    param.articleUuid = articleUuid;
-                    const article = yield call(get, parse(param));
-                    const expDays = article.data.obj.expDays;
-                    itemArt.expDays = expDays;
-                    itemArt.articleSpec = article.data.obj.spec;
-                    itemArt.editable = true;
-                    itemArt.bin = bin.data.obj.pageData.records[0].code;
-                    const sku = {};
-                    sku.value = itemArt.article.code;
-                    sku.label = itemArt.article.code;
-                    articles.push(sku);
-
-                    if (JSON.stringify(article_qpcStr) == "{}") {
-                        let qpcStrs = [];
-                        const qpcStr = new Object();
-                        qpcStr.value = itemArt.qpcStr;
-                        qpcStr.label = itemArt.qpcStr;
-                        qpcStrs.push(qpcStr);
-                        var articleCode = itemArt.article.code;
-                        article_qpcStr[articleCode] = qpcStrs;
-                    } else {
-                        for (var prop in article_qpcStr) {
-                            if (prop == itemArt.articleUuid) {
-                                for (var qpcStr of article_qpcStr[prop]) {
-                                    if (qpcStr != itemArt.qpcStr) {
-                                        article_qpcStr[prop].push(qpcStr);
-                                    }
-                                }
-                            } else {
-                                let qpcStrs = [];
-                                const qpcStr = new Object();
-                                qpcStr.value = orderItem.qpcStr;
-                                qpcStr.label = orderItem.qpcStr;
-                                qpcStrs.push(qpcStr);
-                                var articleCode = orderItem.article.code;
-                                article_qpcStr[articleCode] = qpcStrs;
-                            }
-                        }
-                    }
-                }
-
-
-                /***
-                 * 初始选中订单后，明细行只有一条空的记录
-                 */
-                const nullOrderItem = new Object();
-                nullOrderItem.id = 0;
+                nullOrderItem.line = 0;
                 nullOrderItem.editable = true;
 
                 itemLists.push(nullOrderItem);
@@ -411,14 +423,15 @@ export default {
         }) {
             const { data } = yield call(getReceiveBillByBillNo, parse(payload));
             const orderBill = yield call(getOrderBillByBillNo, { billNumber: data.obj.orderBillNumber });
-            console.log("...........");
-            console.dir(data);
             const articles = [];
             let totalCaseQtyStr = '0';
             let article_qpcStr = {};//类似map，存放商品UUID-商品规格集合
             let receiveStorageBin = "";//统配收货暂存位
             const bin = yield call(queryBin, { wrhUuid: data.obj.wrh.uuid, usage: 'ReceiveStorageBin' });
             receiveStorageBin = bin.data.obj.pageData.records[0].code;
+            /***
+             * 构造订单明细集合
+             */
             for (var orderItem of orderBill.data.obj.items) {
                 for (var receiveItem of data.obj.items) {
                     if (orderItem.article.uuid == receiveItem.article.uuid && orderItem.qpcStr == receiveItem.qpcStr) {
@@ -430,8 +443,10 @@ export default {
                         const total = yield call(caseQtyStrAdd, { addend: receiveItem.receiveCaseQtyStr, augend: totalCaseQtyStr });
                         totalCaseQtyStr = total.data.obj;
                     }
-                    receiveItem.produceDate = timeStamp2date(receiveItem.produceDate);
-                    receiveItem.validDate = timeStamp2date(receiveItem.validDate);
+                    var produceDate = moment(receiveItem.produceDate);
+                    receiveItem.produceDate = produceDate.format("YYYY-MM-DD");
+                    var validDate = moment(receiveItem.validDate);
+                    receiveItem.validDate = validDate.format("YYYY-MM-DD");
                     receiveItem.editable = true;
                     receiveItem.bin = receiveStorageBin;
                     receiveItem.qpcStrs = article_qpcStr[receiveItem.article.code];
@@ -439,8 +454,6 @@ export default {
                     param.articleUuid = receiveItem.article.uuid;
                     const sku = yield call(get, parse(param));
                     const expDays = sku.data.obj.expDays;
-                    console.log("保质期");
-                    console.dir(expDays);
                     receiveItem.expDays = expDays;
                 }
 
@@ -520,18 +533,17 @@ export default {
         }, {
             call, put
         }) {
-            var produceDate = moment(payload.record.produceDate);
-            payload.record.produceDate = produceDate.format("YYYY-MM-DD");
-            yield
-            var validDate = produceDate.add(payload.record.expDays, 'days');
-            payload.record.validDate = validDate.format("YYYY-MM-DD");
+
             for (var item of payload.list) {
                 if (item.uuid == payload.record.uuid) {
-                    removeByValue(payload.list, item);
+                    var produceDate = moment(payload.record.produceDate);
+                    payload.record.produceDate = produceDate.format("YYYY-MM-DD");
+                    yield
+                    var validDate = produceDate.add(payload.record.expDays, 'days');
+                    payload.record.validDate = validDate.format("YYYY-MM-DD");
                     break;
                 }
             };
-            payload.list.push(payload.record);
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
@@ -549,23 +561,25 @@ export default {
             call, put
         }) {
             payload.record.receivedCaseQtyStr = payload.record.receivedQty;
-            const { data } = yield call(qtyToCaseQtyStr, { qty: payload.record.receiveQty, qpcStr: payload.record.qpcStr });
+            const { data } = yield call(qtyToCaseQtyStr, { qty: Number(payload.record.receiveQty), qpcStr: payload.record.qpcStr });
             payload.record.receiveCaseQtyStr = data.obj;
             let totalQty = 0;
+            let totalAmount = 0;
+            for (var item of payload.list) {
+                if (item.uuid == payload.record.uuid) {
+                    payload.record.amount = (Number(payload.record.receiveQty) * Number(payload.record.price));
+                    break;
+                }
+            };
             for (var item of payload.list) {
                 totalQty = Number(item.receiveQty) + Number(totalQty);
+                totalAmount = Number(item.amount) + Number(totalAmount);
             }
             const total = yield call(qtyToCaseQtyStr, {
                 qty: Number(totalQty), qpcStr: payload.record.qpcStr
             });
-            payload.currentItem.totalCaseQtyStr = total.data.obj;
-            for (var item of payload.list) {
-                if (item.uuid == payload.record.uuid) {
-                    removeByValue(payload.list, item);
-                    break;
-                }
-            };
-            payload.list.push(payload.record);
+            payload.currentItem.caseQtyStr = total.data.obj;
+            payload.currentItem.totalAmount = totalAmount;
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
@@ -586,7 +600,7 @@ export default {
                         removeByValue(payload.orderItems, orderItem);
                     }
                 } else {
-                    if (payload.data.id == orderItem.id) {
+                    if (payload.data.line == orderItem.line) {
                         removeByValue(payload.orderItems, orderItem);
                     }
                 }
@@ -595,7 +609,7 @@ export default {
                 const nullOrderItem = new Object();
                 nullOrderItem.editable = true;
                 nullOrderItem.editable = true;
-                nullOrderItem.id = 0;
+                nullOrderItem.line = 1;
                 payload.orderItems.push(nullOrderItem);
             }
             let totalQty = 0;
@@ -604,16 +618,20 @@ export default {
                 if (isNaN(parseInt(totalQty)))
                     totalQty = 0;
             }
-            const total = yield call(qtyToCaseQtyStr, {
-                qty: parseInt(totalQty), qpcStr: payload.data.qpcStr
-            });
-            payload.currentItem.totalCaseQtyStr = total.data.obj;
+            let totalCaseQtyStr = 0;
+            if (totalQty != 0) {
+                const total = yield call(qtyToCaseQtyStr, {
+                    qty: parseInt(totalQty), qpcStr: payload.data.qpcStr
+                });
+                totalCaseQtyStr = total.data.obj;
+            }
+            payload.currentItem.totalCaseQtyStr = totalCaseQtyStr;
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
                     orderItems: payload.orderItems,
                     currentItem: payload.currentItem,
-                    orderBillNo: payload.currentItem.billNumber,
+                    orderBillNo: payload.currentItem.orderBillNumber,
                 }
             })
         },
@@ -630,8 +648,8 @@ export default {
             const qpcStr = payload.article_qpcStr[payload.record.article.code];
             qpcStrs.push(qpcStr);
             for (var article of payload.array) {//该商品不在原收货单明细中，只存在订单明细中
-                if (payload.record.id != null) {
-                    if (article.id == payload.record.id) {
+                if (payload.record.line != null) {
+                    if (article.line == payload.record.line) {
                         for (var item of payload.orderBillItemArticles) {
                             if (item.article.code == payload.record.article.code) {
                                 article.article.uuid = item.article.uuid;
@@ -644,6 +662,12 @@ export default {
                                 const expDays = sku.data.obj.expDays;
                                 article.expDays = expDays;
                                 article.qpcStrs = qpcStrs;//商品规格数据源，也放在明细集合里
+                                article.price = item.price;
+                                article.qpcStr = '';
+                                article.receiveQty = '';
+                                article.canReceiveQty = '';
+                                article.canReceiveCaseQtyStr = '';
+                                article.receiveCaseQtyStr = '';
                                 break;
                             }
                         }
@@ -662,48 +686,19 @@ export default {
                                 const expDays = sku.data.obj.expDays;
                                 article.expDays = expDays;
                                 article.qpcStrs = qpcStrs;//商品规格数据源，也放在明细集合里
+                                article.price = item.price;
+                                article.qpcStr = '';
+                                article.receiveQty = '';
+                                article.canReceiveQty = '';
+                                article.canReceiveCaseQtyStr = '';
+                                article.receiveCaseQtyStr = '';
                                 break;
                             }
                         }
                     }
                 }
             }
-            // for (var item of payload.orderBillItemArticles) {
-            //     if (item.article.code == payload.record.article.code) {
-            //         console.log("payload.record");
-            //         console.dir(payload.record);
-            //         payload.record.article.uuid = item.article.uuid;
-            //         payload.record.article.name = item.article.name;
-            //         const param = {};
-            //         param.articleUuid = item.article.uuid;
-            //         const sku = yield call(get, parse(param));
-            //         const spec = sku.data.obj.spec;
-            //         payload.record.articleSpec = spec;
-            //         break;
-            //     }
-            // }
-            console.log("payload.array");
-            console.dir(payload.array);
-            // const param = {};
-            // param.articleUuid = payload.record.article.uuid;
-            // const sku = yield call(get, parse(param));
-            // const expDays = sku.data.obj.expDays;
-            // payload.record.expDays = expDays;
-            // payload.record.qpcStrs = qpcStrs;//商品规格数据源，也放在明细集合里
 
-            //更改商品后，清除其他表格信息
-            // payload.record.qpcStr = '';
-            // payload.record.canReceiveQty = 0;
-            // payload.record.canReceiveCaseQtyStr = 0;
-            // payload.record.receiveQty = 0;
-            // payload.record.receiveCaseQtyStr = 0;
-            // payload.record.produceDate = '';
-            // payload.record.validDate = '';
-            // payload.record.containerBarcode = '';
-
-            // payload.array.push(payload.record);
-            console.log("push之后的集合");
-            console.dir(payload.array);
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
@@ -741,21 +736,64 @@ export default {
             for (var item of payload.array) {
                 if (payload.record.article.uuid != null) {
                     if (item.article.uuid == payload.record.article.uuid) {
-                        removeByValue(payload.array, item);
+                        for (var orderBillItemArticle of payload.orderBillItemArticles) {
+                            if (orderBillItemArticle.article.code == payload.record.article.code) {
+                                payload.record.canReceiveQty = orderBillItemArticle.qty - orderBillItemArticle.receivedQty;
+                                const { data } = yield call(qtyToCaseQtyStr, {
+                                    qty: payload.record.canReceiveQty, qpcStr: payload.record.qpcStr
+                                });
+                                payload.record.canReceiveCaseQtyStr = data.obj;
+                                payload.record.expDays = orderBillItemArticle.expDays;
+                                payload.record.bin = orderBillItemArticle.bin;
+                                payload.record.munit = orderBillItemArticle.munit;
+                                payload.record.article.uuid = orderBillItemArticle.article.uuid;
+                                payload.record.article.name = orderBillItemArticle.article.name;
+                                payload.record.article.code = orderBillItemArticle.article.code;
+                                break;
+                            }
+                        }
                     }
                 } else {
-                    if (payload.record.article.id == item.id) {
-                        removeByValue(payload.array, item);
+                    if (payload.record.article.line == item.line) {
+                        for (var orderBillItemArticle of payload.orderBillItemArticles) {
+                            if (orderBillItemArticle.article.code == payload.record.article.code) {
+                                payload.record.canReceiveQty = orderBillItemArticle.qty - orderBillItemArticle.receivedQty;
+                                const { data } = yield call(qtyToCaseQtyStr, {
+                                    qty: payload.record.canReceiveQty, qpcStr: payload.record.qpcStr
+                                });
+                                payload.record.canReceiveCaseQtyStr = data.obj;
+                                payload.record.expDays = orderBillItemArticle.expDays;
+                                payload.record.bin = orderBillItemArticle.bin;
+                                payload.record.munit = orderBillItemArticle.munit;
+                                payload.record.article.uuid = orderBillItemArticle.article.uuid;
+                                payload.record.article.name = orderBillItemArticle.article.name;
+                                payload.record.article.code = orderBillItemArticle.article.code;
+                                break;
+                            }
+                        }
                     }
                 }
             }
-            payload.array.push(payload.record);
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
                     orderItems: payload.array,
                 }
             });
+        },
+
+        *toViewOrderBill({
+            payload
+        }, {
+            call, put
+        }) {
+            yield put(routerRedux.push({
+                pathname: '/forward/order',
+                query: {
+                    type: 'getByNumber',
+                    key: payload.orderBillNumber,
+                }
+            }))
         }
     },
 

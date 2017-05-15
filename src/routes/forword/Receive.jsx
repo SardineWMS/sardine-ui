@@ -16,8 +16,6 @@ import ReceiveBillSearch from '../../components/forword/receive/ReceiveBillSearc
 import { removeByValue } from '../../utils/ArrayUtils.js';
 import WMSProgress from '../../components/Widget/WMSProgress';
 
-import { StringBuffer } from '../../utils/StringBufferUtils';
-
 function Receive({ location, dispatch, receive }) {
     const {
         list, showCreatePage, pagination, showViewPage, currentItem, showOrderBillSelectModal, canReceiveOrderBillLists,
@@ -122,6 +120,12 @@ function Receive({ location, dispatch, receive }) {
                     billNumber: item.billNumber
                 }
             })
+        },
+        onViewOrderBill(item) {
+            dispatch({
+                type: 'receive/toViewOrderBill',
+                payload: item,
+            })
         }
     }
 
@@ -156,6 +160,7 @@ function Receive({ location, dispatch, receive }) {
         },
         handleSave(data) {
             data.items = orderItems;
+            data.totalAmount = currentItem.totalAmount;
             for (var item of data.items) {
                 item.qty = item.receiveQty;
             }
@@ -178,7 +183,7 @@ function Receive({ location, dispatch, receive }) {
                         message.error("第" + parseInt(i + 1) + "行明细中，生产日期不能为空", 2, '');
                         return;
                     }
-                    for (let j = 1; j < data.items.length; j++) {
+                    for (let j = i + 1; j < data.items.length; j++) {
                         if (data.items[j].article == null) {
                             message.error("第" + parseInt(j + 1) + "行明细中，商品不能为空", 2, '');
                             return;

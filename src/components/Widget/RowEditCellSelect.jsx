@@ -32,7 +32,8 @@ class RowEditCellSelect extends React.Component {
             {
                 editable ?
                     <div>
-                        <Select className={styles.selectWidth} onChange={e => this.handleChange(e)} defaultValue={defaultValue}>
+                        <Select className={styles.selectWidth} onChange={e => this.handleChange(e)} value
+                            ={value}>
                             {options}
                         </Select>
                     </div>

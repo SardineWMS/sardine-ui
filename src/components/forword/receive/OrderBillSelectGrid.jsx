@@ -7,6 +7,20 @@ function OrderBillSelectGrid({
     selectedRowKeys = [],
     onSelect,
 }) {
+    function convertState(text) {
+        if (text == "Initial")
+            return "初始";
+        if (text == "PreBookReg")
+            return "已预约";
+        if (text == "PreChecked")
+            return "已预检";
+        if (text == "InProgress")
+            return "进行中";
+        if (text == "Finished")
+            return "已完成";
+        if (text == "Aborted")
+            return "已作废";
+    };
 
     function handleSelect() {
         onSelect(selectedRowKeys);
@@ -35,8 +49,9 @@ function OrderBillSelectGrid({
     },
     {
         title: '状态',
-        dataIndex: 'stateName',
-        key: 'stateName',
+        dataIndex: 'state',
+        key: 'state',
+        render: text => convertState(text)
     },
     {
         title: '总件数',
@@ -52,22 +67,13 @@ function OrderBillSelectGrid({
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
-            console.log("onChange...");
-            console.dir(selectedRowKeys);
-            console.dir(selectedRows);
         },
         onSelect: (record, selected, selectedRows) => {
-            console.log("onSelect...");
             selectedRowKeys = selectedRows;
-            console.dir(selectedRowKeys);
-            console.dir(selectedRows);
             handleSelect();
         },
         onSelectAll: (selected, selectedRows, changeRows) => {
-            console.log("onSelectAll...");
             selectedRowKeys = selectedRows;
-            console.dir(selectedRowKeys);
-            console.dir(selectedRows);
         },
         getCheckboxProps: record => ({
 
@@ -83,7 +89,9 @@ function OrderBillSelectGrid({
                 rowSelection={rowSelection}
                 dataSource={dataSource}
                 onChange={onPageChange}
-                rowKey={record => record.uuid} />
+                rowKey={record => record.uuid}
+                filterMultiple={false}
+            />
         </div>
     )
 }

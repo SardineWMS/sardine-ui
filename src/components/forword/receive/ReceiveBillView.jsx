@@ -17,6 +17,14 @@ const ReceiveBillView = ({
     onDelete,
     onFinish,
 }) => {
+    function convertState(text) {
+        if (text == "Initial")
+            return '未审核';
+        if (text = "Audited")
+            return '已审核';
+        if (text = "InProgress")
+            return '进行中';
+    };
     let basicForm = [];
     basicForm.push(<BaseFormItem label="单号：" key={Guid()}>
         <span>{item.billNumber}</span>
@@ -36,7 +44,7 @@ const ReceiveBillView = ({
 
     let extendForm = [];
     extendForm.push(<BaseFormItem label="状态：" key={Guid()}>
-        <span>{item.state}</span>
+        <span>{convertState(item.state)}</span>
     </BaseFormItem>)
     extendForm.push(<BaseFormItem label="总件数：" key={Guid()}>
         <span>{item.caseQtyStr}</span>

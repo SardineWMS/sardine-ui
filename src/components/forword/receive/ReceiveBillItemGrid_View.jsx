@@ -3,6 +3,10 @@ import { Table, Popconfirm, Pagination, Button } from 'antd';
 import RowEditCell from '../../Widget/RowEditCell';
 import RowEditCellDatePicker from '../../Widget/RowEditCellDatePicker';
 import styles from '../../Widget/EditTable.less';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+
+moment.locale('zh-cn');
 
 function ReceiveBillItemGrid_View({
 	dataSource,
@@ -71,14 +75,24 @@ function ReceiveBillItemGrid_View({
             key: 'qpcStr',
         },
         {
+            title: '单价',
+            dataIndex: 'price',
+            key: 'price',
+        },
+        {
+            title: '金额',
+            dataIndex: 'amount',
+            key: 'amount',
+        },
+        {
             title: '数量',
             dataIndex: 'qty',
             key: 'qty',
         },
         {
             title: '件数',
-            dataIndex: 'qtyStr',
-            key: 'qtyStr',
+            dataIndex: 'caseQtyStr',
+            key: 'caseQtyStr',
         },
         {
             title: '容器',
@@ -94,11 +108,13 @@ function ReceiveBillItemGrid_View({
             title: '生产日期',
             dataIndex: 'produceDate',
             key: 'produceDate',
+            render: text => moment(text).format('YYYY-MM-DD')
         },
         {
             title: '到效期',
             dataIndex: 'validDate',
             key: 'validDate',
+            render: text => moment(text).format("YYYY-MM-DD")
         },
         {
             title: '批次',

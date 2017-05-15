@@ -33,7 +33,7 @@ class RowEditCellDatePicker extends React.Component {
                 editable ?
                     <div>
                         <DatePicker
-                            defaultValue={value == null ? null : moment(value, 'YYYY-MM-DD')}
+                            value={value == null ? null : moment(value, 'YYYY-MM-DD')}
                             onChange={(e) => this.handleChange(e)}
                             autoFocus={this.props.autoFocus}
                         />
