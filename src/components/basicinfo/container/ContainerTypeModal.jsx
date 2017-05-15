@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table, Form, Popconfirm, Button, Modal } from 'antd';
 import RowEditCell from '../../Widget/RowEditCell';
-import styles from '../../Widget/EditTable.less';
+import styles from '../../less/EditTable.less';
 
 const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave }) => {
     const columns = [

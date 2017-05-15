@@ -1,7 +1,7 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Table, message, Modal,Card,Select,InputNumber,Popconfirm} from 'antd';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
-import styles from '../../Layout/common.less';
+import styles from '../../less/common.less';
 
 import BaseCard from '../../Widget/BaseCard';
 import RemarkCard from '../../Widget/RemarkCard';
