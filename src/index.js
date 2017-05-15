@@ -30,6 +30,7 @@ app.model(require('./models/BasicInfo/Bin'));
 app.model(require('./models/ia/Role'));
 app.model(require('./models/forword/OrderBill'));
 app.model(require('./models/forword/Receive'));
+app.model(require('./models/system/System'));
 
 app.router(require('./router'));
 

@@ -19,6 +19,7 @@ import BinType from './routes/basicInfo/BinType';
 import ContainerType from './routes/basicInfo/ContainerType';
 import Bin from './routes/basicInfo/Bin';
 import Role from './routes/ia/Role';
+import System from './routes/system/System';
 import OrderBill from './routes/forword/OrderBill';
 import Receive from './routes/forword/Receive';
 
@@ -45,6 +46,7 @@ export default function ({
         <Route path="/ia/role" component={Role} />
         <Route path="/forward/order" component={OrderBill} />
         <Route path="/forward/receive" component={Receive} />
+        <Route path="/system/dc" component={System} />
       </Route>
     </Router>
   );
