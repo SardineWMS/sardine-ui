@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react'
 import { Menu, Icon, Button } from 'antd'
 import { Link } from 'dva/router'
-import styles from './main.less'
+import styles from '../less/main.less'
 
 const SubMenu = Menu.SubMenu
 

@@ -12,15 +12,16 @@ class RowEditCell extends React.Component {
     }
   }
   handleChange(e) {
-    const value = e.target.value;
-    this.setState({ value });
-    this.props.onChange(value);
+    let newValue = e.target.value;
+    this.setState({ value: newValue });
+    if (this.props.onChange) {
+      this.props.onChange(e.target.value);
+    }
   }
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      value: newProps.value,
-      editable: newProps.editable,
-    })
+  handleBlur(e) {
+    e.preventDefault();
+    this.setState({ value: e.target.value });
+    this.props.onBlur(e.target.value);
   }
   render() {
     const { value, editable } = this.state;
@@ -31,7 +32,7 @@ class RowEditCell extends React.Component {
             <Input
               value={value}
               onChange={e => this.handleChange(e)}
-              autoFocus={this.props.autoFocus}
+              onBlur={e => this.handleBlur(e)}
             />
           </div>
           :

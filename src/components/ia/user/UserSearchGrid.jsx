@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Pagination, Button, message, Row, Col, Card, Spin } from 'antd';
 import RowEditCell from '../../Widget/RowEditCell';
-import styles from '../../Widget/EditTable.less';
+import styles from '../../less/EditTable.less';
 
 
 class UserGrid extends React.Component {

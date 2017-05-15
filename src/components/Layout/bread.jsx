@@ -1,29 +1,36 @@
 import React, { PropTypes } from 'react'
 import { Breadcrumb, Icon } from 'antd'
-import styles from './main.less'
-import { config, menu } from '../../utils'
+import styles from '../less/main.less'
+import { config } from '../../utils'
 
-let pathSet = []
+let pathSet = [{}]
+const menu = localStorage.getItem("ownedMenus");
+const topMenus = menu ? eval('(' + menu + ')') : [];
 const getPathSet = function (menuArray, parentPath) {
   parentPath = parentPath || '/'
   menuArray.map(item => {
-    pathSet[(parentPath + item.key).replace(/\//g, '-').hyphenToHump()] = {
-      path: parentPath + item.key,
+    pathSet[(parentPath + item.code).replace(/\//g, '-').hyphenToHump()] = {
+      path: parentPath + item.code,
       name: item.name,
       // icon: item.icon || '',
       clickable:item.clickable==undefined?true:false
     }
-    if (!!item.child) {
-      getPathSet(item.child, parentPath + item.key + '/')
+    if (!!item.children && item.children.length > 0) {
+      getPathSet(item.children, parentPath + item.code + '/')
     }
   })
 }
 
-getPathSet(menu);
+getPathSet(topMenus);
 
 function Bread({ location }) {
   let pathNames = [];
   console.dir(pathSet);
+  pathSet['Home'] = {
+     path: '/',
+     name: '主页',
+     clickable: false
+  };
   location.pathname.substr(1).split('/').map((item, key) => {
     if (key > 0) {
       pathNames.push((pathNames[key - 1] + '-' + item).hyphenToHump())
@@ -31,8 +38,10 @@ function Bread({ location }) {
       pathNames.push(('-' + item).hyphenToHump())
     }
   })
+  console.dir(pathNames);
   const breads = pathNames.map((item, key) => {
     return (
+      
       <Breadcrumb.Item key={key}>
         {pathSet[item].icon
           ? <Icon type={pathSet[item].icon} />

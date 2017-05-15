@@ -4,17 +4,17 @@ import React, {
 import {
   connect
 } from 'dva'
-import Login from './Login';
+import Login from '../components/ia/login/Login';
 import Header from '../components/Layout/Header';
 import Bread from '../components/Layout/bread';
 import Footer from '../components/Layout/Footer';
 import Sider from '../components/Layout/sider';
 import Nav from '../components/Layout/Nav';
-import styles from '../components/Layout/main.less';
-import '../components/Layout/common.less';
-import Register from './Register';
-import '../components/Layout/antMotion_style.less';
-import UpdatePasswd from '../components/UpdatePasswd';
+import styles from '../components/less/main.less';
+import '../components/less/common.less';
+import Register from '../components/ia/login/Register';
+import '../components/less/antMotion_style.less';
+import UpdatePasswd from '../components/ia/login/UpdatePasswd';
 
 import {
   Spin,

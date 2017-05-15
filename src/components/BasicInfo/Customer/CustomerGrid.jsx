@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
+import hasPermission from '../../../utils/PermissionUtil';
 
 function CustomerGrid({
   dataSource,
@@ -84,7 +85,7 @@ function CustomerGrid({
         title={() =>
                 <div>
                     <Row type="flex">
-                       <Col><Button type="ghost" onClick={handleRemoveBatch}>批量删除</Button></Col>
+                       <Col><Button type="ghost" onClick={handleRemoveBatch} disabled={!hasPermission("customer:delete")}>批量删除</Button></Col>
                        <Col><Button type="ghost" onClick={handleRecoverBatch}>批量恢复</Button></Col>
                        <Col><Button onClick={onCreate}>新建</Button></Col>
                        <Col><span style={{ marginLeft: 8 }}>{selectedRowKeys.length > 0 ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>

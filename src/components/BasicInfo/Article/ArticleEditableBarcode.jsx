@@ -1,7 +1,7 @@
 import { Table, Input, Popconfirm, Button } from 'antd';
-import styles from '../../Widget/EditTable.less';
+import styles from '../../less/EditTable.less';
 import React, { Component, PropTypes } from 'react';
-import commonStyles from '../../Layout/common.less';
+import commonStyles from '../../less/common.less';
 
 const RowEditableCell = require('../../Widget/RowEditCell');
 const ArticleEditableBarcode = ({

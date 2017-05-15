@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import styles from './main.less'
+import styles from '../less/main.less'
 import { config } from '../../utils'
 
 const Footer = () => <div className={styles.footer}>

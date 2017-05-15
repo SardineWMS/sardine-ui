@@ -1,8 +1,8 @@
-import styles from '../../Widget/EditTable.less';
+import styles from '../../less/EditTable.less';
 import React, { Component, PropTypes } from 'react';
 import { Table, Input, Icon, Button, Popconfirm } from 'antd';
 import { Modal } from 'antd';
-import commonStyles from '../../Layout/common.less';
+import commonStyles from '../../less/common.less';
 const confirm = Modal.confirm;
 
 const EditableCell = require('../../Widget/EditableCell');

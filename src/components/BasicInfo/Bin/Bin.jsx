@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon } from 'antd';
-import styles from '../../Layout/common.less';
+import styles from '../../less/common.less';
 
 function BinSearch({
 	dataSource,
