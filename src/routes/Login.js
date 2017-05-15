@@ -17,7 +17,7 @@ import {
 import {
   config
 } from '../utils'
-import styles from './login.less'
+import styles from '../components/less/login.less'
 
 const FormItem = Form.Item
 

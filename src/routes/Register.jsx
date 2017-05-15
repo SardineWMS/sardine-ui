@@ -14,7 +14,7 @@ import {
 } from 'antd';
 
 import { config } from '../utils';
-import styles from './login.less';
+import styles from '../Components/less/login.less';
 
 const FormItem = Form.Item;
 const RadioGroup = Radio.Group;
