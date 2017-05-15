@@ -1,5 +1,5 @@
 import { Table, Input, Icon, Button, Popconfirm } from 'antd';
-import styles from './EditTable.less';
+import styles from '../less/EditTable.less';
 import React, { Component, PropTypes } from 'react';
 import { Link, withRouter } from 'react-router';
 import { connect } from 'dva';

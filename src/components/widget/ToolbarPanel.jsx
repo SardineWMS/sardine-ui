@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from '../Layout/common.less';
+import styles from '../less/common.less';
 
 class ToolbarPanel extends React.Component{
   render(){

@@ -1,6 +1,6 @@
 import React from 'react';
 import {Form} from 'antd';
-import styles from '../Layout/common.less';
+import styles from '../less/common.less';
 
 class BaseForm extends React.Component{
 

@@ -64,6 +64,8 @@ export default {
         localStorage.setItem("token", data.token);
         localStorage.setItem("admin", data.obj.administrator);
         localStorage.setItem("companyUuid", data.obj.companyUuid);
+        localStorage.setItem("ownedMenus", data.obj.ownedMenus);
+        localStorage.setItem("ownedResources", data.obj.ownedResources);
         yield put({
           type: 'loginSuccess',
           payload: {

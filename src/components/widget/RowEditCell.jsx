@@ -1,6 +1,6 @@
 import { Table, Input, Popconfirm } from 'antd';
 import React, { Component, PropTypes } from 'react';
-import styles from './EditTable.less';
+import styles from '../less/EditTable.less';
 
 class RowEditCell extends React.Component {
   constructor(props) {
