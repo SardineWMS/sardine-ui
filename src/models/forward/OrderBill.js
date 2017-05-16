@@ -1,6 +1,10 @@
 import { parse } from 'qs';
-import { querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle, getOrderBillByBillNo } from '../../services/forward/OrderBill';
+import { querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle, 
+    getOrderBillByBillNo,refreshCaseQtyAndAmount,queryWrhs,querySuppliers } from '../../services/forward/OrderBill';
 import { message } from 'antd';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 export default {
     namespace: 'orderBill',
@@ -8,7 +12,17 @@ export default {
         list: [],
         currentItem: {},
         articleQpcs: [],
+        wrhs:[],
+        suppliers:[],
         pagination: {
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: total => `共 ${total}条`,
+            current: 1,
+            total: null,
+            size: 'default'
+        },
+        supplierPagination: {
             showSizeChanger: true,
             showQuickJumper: true,
             showTotal: total => `共 ${total}条`,
@@ -29,7 +43,8 @@ export default {
         finishOrderBillEntitys: [],
         batchAbortProcessModal: false,
         abortOrderBillEntitys: [],
-        modalVisible: false,
+        dateModalVisible: false,
+        supplierModalVisible: false,
         bookRegBills: [],
         bookRegType: 'single'
     },
@@ -79,6 +94,9 @@ export default {
                 uuid: payload.uuid,
             });
             if (orderBill) {
+                orderBill.data.obj.expireDate = moment(orderBill.data.obj.expireDate);
+                orderBill.data.obj.bookedDate = moment(orderBill.data.obj.bookedDate);
+
                 yield put({
                     type: 'showViewPage',
                     payload: {
@@ -95,6 +113,8 @@ export default {
         }) {
             const orderBill = yield call(getOrderBillByBillNo, { billNumber: payload.orderBillNumber });
             if (orderBill) {
+                orderBill.data.obj.expireDate = moment(orderBill.data.obj.expireDate);
+                orderBill.data.obj.bookedDate = moment(orderBill.data.obj.bookedDate);
                 yield put({
                     type: 'showViewPage',
                     payload: {
@@ -270,7 +290,8 @@ export default {
                 uuid: payload.uuid,
             });
             if (orderBill) {
-                yield put({
+                    orderBill.data.obj.expireDate = moment(orderBill.data.obj.expireDate);
+                    orderBill.data.obj.bookedDate = moment(orderBill.data.obj.bookedDate);                yield put({
                     type: 'showEditPage',
                     payload: {
                         currentItem: orderBill.data.obj,
@@ -279,7 +300,59 @@ export default {
             }
         },
 
+        *refreshCaseQtyAndAmount({ payload }, { call, put }) {
+            yield put({ type: 'showLoading' });
+            const { data } = yield call(refreshCaseQtyAndAmount, parse(payload));
+            if(data){
+                yield put({
+                    type: 'showEditPage',
+                    payload: {
+                        currentItem: data.obj
+                    }
+                })
+            }
+        },
+
+        *queryWrhs({ payload }, { call, put }) {
+            const wrhs = yield call(queryWrhs, parse(payload));
+            if (wrhs) {
+                yield put({
+                    type: 'showEditPage',
+                    payload: {
+                        wrhs: wrhs.data.obj,
+                    }
+                })
+            }
+        },
+
+
+        *querySuppliers({ payload }, { call, put }) {
+            const result = yield call(querySuppliers, parse(payload));
+            if (result) {
+                const suppliers=[];
+                for (var supplier of result.data.obj.records) {
+                    const supplierUcn=new Object();
+                    supplierUcn.uuid=supplier.uuid;
+                    supplierUcn.code=supplier.code;
+                    supplierUcn.name=supplier.name;
+                    suppliers.push(supplierUcn);
+                }
+
+                yield put({
+                    type: 'showSupplierModal',
+                    payload: {
+                        suppliers: suppliers,
+                        supplierPagination: {
+                            total: result.data.obj.recordCount,
+                            current: result.data.obj.page,
+                        }
+                    }
+                })
+            }
+        }
     },
+
+    
 
     reducers: {
         showLoading(state) {
@@ -401,20 +474,34 @@ export default {
                 batchAbortProcessModal: false
             }
         },
-        showModal(state, action) {
+        showDateModal(state, action) {
             return {
                 ...state,
                 ...action.payload,
-                modalVisible: true
+                dateModalVisible: true
             }
         },
 
-        hideModal(state) {
+        hideDateModal(state) {
             return {
                 ...state,
-                modalVisible: false
+                dateModalVisible: false
             }
-        }
+        },
+        showSupplierModal(state, action) {
+            return {
+                ...state,
+                ...action.payload,
+                supplierModalVisible: true
+            }
+        },
+
+        hideSupplierModal(state) {
+            return {
+                ...state,
+                supplierModalVisible: false
+            }
+        },
     }
 
 };
