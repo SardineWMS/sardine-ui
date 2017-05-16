@@ -9,18 +9,20 @@ import OrderBillCreateForm from '../../components/forward/Order/OrderBillCreateF
 import OrderBillView from '../../components/forward/Order/OrderBillView';
 import OrderBillItems from '../../components/forward/Order/OrderBillItems';
 import DateModal from '../../components/forward/Order/DateModal';
+import SupplierSelectModal from '../../components/forward/Order/SupplierSelectModal';
 
 import WMSProgress from '../../components/Widget/WMSProgress';
 function OrderBill({ location, dispatch, orderBill }){
    const {
         list, showCreatePage, pagination, showViewPage,
-        currentItem, current,articleQpcs,
+        currentItem, current,articleQpcs,wrhs,suppliers,
+        supplierPagination,
         batchDeleteProcessModal, deleteOrderBillEntitys,
         batchBookRegProcessModal,bookRegOrderBillEntitys,
         batchCheckProcessModal,checkOrderBillEntitys,
         batchFinishProcessModal,finishOrderBillEntitys,
         batchAbortProcessModal,abortOrderBillEntitys,
-        orderBillNext,modalVisible,bookRegType,
+        orderBillNext,dateModalVisible,supplierModalVisible,bookRegType,
         bookRegBills
     } = orderBill;
 
@@ -79,20 +81,12 @@ function OrderBill({ location, dispatch, orderBill }){
         onBookRegItem(item) {
             bookRegBills.push(item),
             dispatch({
-                type:'orderBill/showModal',
+                type:'orderBill/showDateModal',
                 payload:{
                     bookRegBills:bookRegBills,
                     bookRegType:"single"
                 }
             })
-            // dispatch({
-            //     type: 'orderBill/gridBookReg',
-            //     payload: {
-            //         uuid:item.uuid,
-            //         version:item.version,
-            //         bookDate:item.bookDate
-            //     }
-            // })
         },
         onCheckItem(item) {
             dispatch({
@@ -139,18 +133,12 @@ function OrderBill({ location, dispatch, orderBill }){
                 return;
             }
             dispatch({
-                type:'orderBill/showModal',
+                type:'orderBill/showDateModal',
                 payload:{
                     bookRegBills:orderBills,
                     bookRegType:"group"
                 }
             })
-            // dispatch({
-            //     type: 'orderBill/batchBookRegOrderBill',
-            //     payload: {
-            //         bookRegOrderBillEntitys: orderBills
-            //     }
-            // })
         },
         onCheckBatch(orderBills) {
             if (orderBills.length <= 0) {
@@ -339,6 +327,8 @@ function OrderBill({ location, dispatch, orderBill }){
 
     const orderBillCreateProps={
     	item:currentItem,
+        wrhs:wrhs,
+        suppliers:suppliers,
     	onOk(data){
             data.items=currentItem.items;
     		if(data.uuid){
@@ -364,6 +354,16 @@ function OrderBill({ location, dispatch, orderBill }){
 		        });
     		}
     	},
+        queryWrhs(){
+            dispatch({
+                type: 'orderBill/queryWrhs',
+            }); 
+        },
+        querySuppliers(){
+            dispatch({
+                type: 'orderBill/querySuppliers',
+            }); 
+        }
     }
 
     const orderBillViewFormProps={
@@ -433,36 +433,40 @@ function OrderBill({ location, dispatch, orderBill }){
         editable:showViewPage ? false : true,
         inProgressBill:'InProgress'===currentItem.state,
         articleQpcs:articleQpcs,
-        onEdit(items,index) {
-            items[index]["editable"] = true;
-            dispatch({
-                type: 'orderBill/showCreatePage'
-            })
-        },
-        onCancel(items,index) {
-            items[index]["editable"] = false;
-            dispatch({
-                type: 'orderBill/showCreatePage'
-            })
-        },
-        onSaveItems(items,index) {
-            items[index]["editable"] = false;
-            currentItem.items=items;
-            dispatch({
-                type: 'orderBill/showCreatePage'
-            })
-        },
+        // onEdit(items,index) {
+        //     items[index]["editable"] = true;
+        //     dispatch({
+        //         type: 'orderBill/showCreatePage'
+        //     })
+        // },
+        // onCancel(items,index) {
+        //     items[index]["editable"] = false;
+        //     dispatch({
+        //         type: 'orderBill/showCreatePage'
+        //     })
+        // },
+        // onSaveItems(items,index) {
+        //     items[index]["editable"] = false;
+        //     currentItem.items=items;
+        //     dispatch({
+        //         type: 'orderBill/showCreatePage'
+        //     })
+        // },
         onDelete(items,index) {
             items.splice(index);
             currentItem.items=items;
             dispatch({
-                type: 'orderBill/showCreatePage'
-            })
+                type: 'orderBill/refreshCaseQtyAndAmount',
+                payload: {
+                    orderBill:currentItem,
+                    line: index+1
+                }
+            }); 
         },
         onAdd(items) {
             const item=new Object();
             item.line= items?items.length+1:1;
-            item.editable=true;
+            //item.editable=true;
             if(items)
                 items.push(item)
             else{
@@ -470,7 +474,7 @@ function OrderBill({ location, dispatch, orderBill }){
                 orderBillItems.push(item);
                 items=orderBillItems; 
             }
-            items[item.line-1]["editable"] = true;
+            //items[item.line-1]["editable"] = true;
             currentItem.items=items;
             dispatch({
                 type: 'orderBill/showEditPage',
@@ -488,12 +492,22 @@ function OrderBill({ location, dispatch, orderBill }){
                     index: index
                 }
             });
+        },
+        refreshCaseQtyAndAmount(items,line){
+            currentItem.items=items;
+            dispatch({
+                type: 'orderBill/refreshCaseQtyAndAmount',
+                payload: {
+                    orderBill:currentItem,
+                    line: line
+                }
+            }); 
         }
     }
 
     const dateModalProps={
         orderBills:bookRegBills,
-        visible:modalVisible,
+        visible:dateModalVisible,
         onOk(orderBills){
             if(showViewPage){
                 dispatch({
@@ -527,10 +541,27 @@ function OrderBill({ location, dispatch, orderBill }){
         },
         onCancel(){
             dispatch({
-                type: 'orderBill/hideModal'
+                type: 'orderBill/hideDateModal'
             })  
         }
     }
+
+    const supplierModalProps={
+        visible:supplierModalVisible,
+        suppliers: suppliers,
+        supplierPagination: supplierPagination,
+        onOk(suppliers){
+            currentItem.supplier=suppliers[0];
+            dispatch({
+                type: 'orderBill/hideSupplierModal'
+            })  
+        },
+        onCancel(){
+            dispatch({
+                type: 'orderBill/hideSupplierModal'
+            })  
+        }
+    } 
 
 
     function  RefreshWidget(){
@@ -547,6 +578,7 @@ function OrderBill({ location, dispatch, orderBill }){
                     <div>
                         <OrderBillCreateForm {...orderBillCreateProps}/>
                         <OrderBillItems {...orderBillItemsProps}/>
+                        <SupplierSelectModal {...supplierModalProps}/>
                     </div>
                 )
             }
