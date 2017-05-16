@@ -108,7 +108,7 @@ const ArticleCreateForm = ({
 
   children.push(
     <BaseFormItem label="商品类别 :">
-      {getFieldDecorator('categoryCode', {
+      {getFieldDecorator('category', {
                   initialValue: article ? article.category : null,
                   rules: [
                     { required: true, message: '类别未填写' },
