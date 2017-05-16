@@ -67,7 +67,7 @@ const OrderBillCreateForm=({
     baseChildren.push(
         <BaseFormItem label={"仓位"} >
             {getFieldDecorator("wrh.uuid", { rules: [{ required: true }], initialValue:item.wrh ? item.wrh.uuid: null })(
-                <Select size="large" style={{ width: 325 }} onFocus={queryWrhs} onSelect={wrhOnSelect}>
+                <Select size="large" style={{ width: 287 }} onFocus={queryWrhs} onSelect={wrhOnSelect}>
                   {options}
                 </Select>            
             )}
@@ -90,7 +90,7 @@ const OrderBillCreateForm=({
     baseChildren.push(
         <BaseFormItem label={"到校日期"} >
             {getFieldDecorator("expireDate", { rules: [{ required: false }], initialValue: item.expireDate})(
-                 <DatePicker onChange={expireDateOnSelect} format='YYYY-MM-DD'/>
+                 <DatePicker onChange={expireDateOnSelect} format='YYYY-MM-DD' style={{ width: 287 }}/>
             )}
         </BaseFormItem>
     );
