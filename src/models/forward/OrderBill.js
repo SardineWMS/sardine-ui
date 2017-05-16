@@ -1,5 +1,5 @@
 import { parse } from 'qs';
-import { querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle, getOrderBillByBillNo } from '../../services/forword/OrderBill';
+import { querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle, getOrderBillByBillNo } from '../../services/forward/OrderBill';
 import { message } from 'antd';
 
 export default {

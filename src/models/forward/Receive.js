@@ -1,11 +1,11 @@
 import { parse } from 'qs';
-import { queryReceiveBill, insetReceiveBill, getReceiveBillByBillNo, remove, audit, update } from '../../services/forword/receive.js';
-import { get as getOrderBill, querybypage as queryOrderBill, getOrderBillByBillNo } from '../../services/forword/OrderBill.js';
-import { get } from '../../services/BasicInfo/Article.js';
+import { queryReceiveBill, insetReceiveBill, getReceiveBillByBillNo, remove, audit, update } from '../../services/forward/receive.js';
+import { get as getOrderBill, querybypage as queryOrderBill, getOrderBillByBillNo } from '../../services/forward/OrderBill.js';
+import { get } from '../../services/basicinfo/Article.js';
 import { timeStamp2date } from '../../utils/DateUtils';
 import { removeByValue } from '../../utils/ArrayUtils.js';
 import { qtyToCaseQtyStr, caseQtyStrAdd } from '../../services/common/common.js';
-import { queryBin } from '../../services/BasicInfo/Bin.js';
+import { queryBin } from '../../services/basicinfo/Bin.js';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { routerRedux } from 'dva/router';
@@ -59,7 +59,7 @@ export default {
             history
         }) {
             history.listen(location => {
-                if (location.pathname === '/forward/receive') {
+                if (location.pathname === '/forward/receiveBill') {
                     dispatch({
                         type: 'query',
                         payload: location.query,

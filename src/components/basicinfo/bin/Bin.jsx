@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon } from 'antd';
 import styles from '../../less/common.less';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 function BinSearch({
 	dataSource,
@@ -117,13 +118,13 @@ function BinSearch({
   };
 
   const createMenu = (
-    <Menu onClick={onClick}>
+    <Menu onClick={onClick} visible={PermissionUtil("bin:create")}>
       <Menu.Item key="1">新增货位</Menu.Item>
       <Menu.Item key="2">新增货架</Menu.Item>
       <Menu.Item key="3">新增货道</Menu.Item>
       <Menu.Item key="4">新增货区</Menu.Item>
       <Menu.Item key="5">新增仓位</Menu.Item>
-    </Menu>
+    </Menu >
   );
 
   return (
@@ -135,12 +136,12 @@ function BinSearch({
         title={() =>
           <div >
             <Dropdown overlay={createMenu}>
-              <Button type="ghost" style={{ marginLeft: 8 }}>
+              <Button type="ghost" style={{ marginLeft: 8 }} disabled={!PermissionUtil("bin:create")}>
                 新增 <Icon type="down" />
               </Button>
             </Dropdown>
-            <Button onClick={handleDeleteBin}>删除</Button>
-            <Button onClick={handleCreateBinType}>新建货位类型</Button>
+            <Button onClick={handleDeleteBin} disabled={!PermissionUtil("bin:delete")}>删除</Button>
+            <Button onClick={handleCreateBinType} disabled={!PermissionUtil("bintype:create")}>新建货位类型</Button>
           </div>
         }
         dataSource={dataSource}

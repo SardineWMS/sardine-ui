@@ -6,13 +6,13 @@ import CategoryModal from '../../components/BasicInfo/Category/CategoryModal';
 
 function Category({ location, dispatch, category }) {
   const {
-    list, total, current, currentItem, modalVisible, modalType,modalShowUpper, pagination,
+    list, total, current, currentItem, modalVisible, modalType, modalShowUpper, pagination,
     } = category;
 
   const categoryModalProps = {
     item: modalType === 'update' ? currentItem : {},
-    upperCategory :  currentItem,
-    showUpper : modalType === 'create' ? true : false,
+    upperCategory: currentItem,
+    showUpper: modalType === 'create' ? true : false,
     visible: modalVisible,
     onOk(data) {
       data.token = localStorage.getItem("token");
@@ -35,23 +35,23 @@ function Category({ location, dispatch, category }) {
         pathname: '/wms/basicInfo/category',
       }))
     },
-    onCreate(){
+    onCreate() {
       dispatch({
         type: 'category/showModal',
         payload: {
           modalType: 'createRoot',
-          showUpper : false,
-          upperCategory : '',
+          showUpper: false,
+          upperCategory: '',
         },
       })
     },
-    onCreateLower(item){
+    onCreateLower(item) {
       item.token = localStorage.getItem("token");
       dispatch({
         type: 'category/showModal',
         payload: {
           modalType: 'create',
-          currentItem : item,
+          currentItem: item,
         },
       })
     },
@@ -62,12 +62,11 @@ function Category({ location, dispatch, category }) {
         payload: {
           uuid: item.uuid,
           version: item.version,
-          token : token,
+          token: token,
         },
       })
     },
     onEditItem(item) {
-      item.token = localStorage.getItem("token");
       dispatch({
         type: 'category/showModal',
         payload: {
@@ -95,10 +94,10 @@ Category.propTypes = {
   dispatch: PropTypes.func,
 }
 
-function mapStateToProps({category}) {
-    return {
-      category,
-    };
+function mapStateToProps({ category }) {
+  return {
+    category,
+  };
 }
 
 export default connect(mapStateToProps)(Category)

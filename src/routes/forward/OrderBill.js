@@ -3,12 +3,12 @@ import { routerRedux } from 'dva/router'
 import { connect } from 'dva'
 import { message } from 'antd';
 
-import OrderBillSearchGrid from '../../components/forword/Order/OrderBillSearchGrid';
-import OrderBillSearchForm from '../../components/forword/Order/OrderBillSearchForm';
-import OrderBillCreateForm from '../../components/forword/Order/OrderBillCreateForm';
-import OrderBillView from '../../components/forword/Order/OrderBillView';
-import OrderBillItems from '../../components/forword/Order/OrderBillItems';
-import DateModal from '../../components/forword/Order/DateModal';
+import OrderBillSearchGrid from '../../components/forward/Order/OrderBillSearchGrid';
+import OrderBillSearchForm from '../../components/forward/Order/OrderBillSearchForm';
+import OrderBillCreateForm from '../../components/forward/Order/OrderBillCreateForm';
+import OrderBillView from '../../components/forward/Order/OrderBillView';
+import OrderBillItems from '../../components/forward/Order/OrderBillItems';
+import DateModal from '../../components/forward/Order/DateModal';
 
 import WMSProgress from '../../components/Widget/WMSProgress';
 function OrderBill({ location, dispatch, orderBill }){
@@ -31,7 +31,7 @@ function OrderBill({ location, dispatch, orderBill }){
         pagination: pagination,
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
-                pathname: '/forword/orderBill',
+                pathname: '/forward/orderBill',
                 query: {
                     page: page.current,
                     pageSize: page.pageSize,

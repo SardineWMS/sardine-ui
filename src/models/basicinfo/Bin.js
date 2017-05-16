@@ -12,8 +12,8 @@ import {
   queryWrhs,
   queryZones,
   queryBinTypes
-} from '../../services/BasicInfo/Bin';
-import { queryBinType, deleteBinType, create, update } from '../../services/BasicInfo/BinType';
+} from '../../services/basicinfo/Bin';
+import { queryBinType, deleteBinType, create, update } from '../../services/basicinfo/BinType';
 
 export default {
   namespace: 'bin',

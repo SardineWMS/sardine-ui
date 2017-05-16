@@ -2,6 +2,7 @@ import { Table, Input, Popconfirm, Button } from 'antd';
 import styles from '../../less/EditTable.less';
 import React, { Component, PropTypes } from 'react';
 import commonStyles from '../../less/common.less';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const RowEditableCell = require('../../Widget/RowEditCell');
 const ArticleEditableBarcode = ({
@@ -30,16 +31,16 @@ const ArticleEditableBarcode = ({
         {
           record.editable ?
             <span>
-              <a onClick={() => onSaveBarcode(dataSource, articleUuid, index)}>保存</a>
+              <a onClick={() => onSaveBarcode(dataSource, articleUuid, index)} disabled={PermissionUtil("article:edit")}>保存</a>
               <Popconfirm title="确定要取消编辑吗？" onConfirm={() => onCancel(index)}>
                 <a>取消</a>
               </Popconfirm>
             </span>
             :
             <span>
-              <a onClick={() => onEdit(dataSource, index)}>编辑</a>
+              <a onClick={() => onEdit(dataSource, index)} disabled={PermissionUtil("article:edit")}>编辑</a>
               <Popconfirm title="确定要删除吗?" onConfirm={() => onDelete(articleUuid, record.uuid)}>
-                <a>删除</a>
+                <a disabled={PermissionUtil("article:edit")}>删除</a>
               </Popconfirm>
             </span>
         }
@@ -67,9 +68,9 @@ const ArticleEditableBarcode = ({
   return (
     <div>
       <div className={commonStyles.button}>
-        <Button type="ghost" onClick={() => onAdd(articleUuid)}>增加</Button>
+        <Button type="ghost" onClick={() => onAdd(articleUuid)} disabled={PermissionUtil("article:edit")}>增加</Button>
       </div>
-      <Table bordered dataSource={dataSource} columns={columns} size="small" pagination = {false} />
+      <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false} />
     </div>);
 }
 

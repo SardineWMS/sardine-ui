@@ -5,8 +5,8 @@ import {
   queryContainers,
   create,
   queryContainerTypes,
-} from '../../services/BasicInfo/Container';
-import { querybypage as queryContainerType, create as createContainerType, get, edit, remove } from '../../services/BasicInfo/ContainerType';
+} from '../../services/basicinfo/Container';
+import { querybypage as queryContainerType, create as createContainerType, get, edit, remove } from '../../services/basicinfo/ContainerType';
 
 export default {
   namespace: 'container',

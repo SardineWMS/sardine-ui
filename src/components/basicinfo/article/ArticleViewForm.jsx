@@ -4,6 +4,7 @@ import BaseCard from '../../Widget/BaseCard';
 import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const ArticleViewForm = ({
     article,
@@ -13,12 +14,12 @@ const ArticleViewForm = ({
     onSaveSupplier,
 }) => {
 
-    const toolbar=[];
-    toolbar.push(<Button onClick={() => onCreate()}> 新建</Button>);
-    toolbar.push(<Button onClick={() => onEdit(article)}> 编辑</Button>);
+    const toolbar = [];
+    toolbar.push(<Button onClick={() => onCreate()} disabled={PermissionUtil("article:create")}> 新建</Button>);
+    toolbar.push(<Button onClick={() => onEdit(article)} disabled={PermissionUtil("article:edit")}> 编辑</Button>);
     toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
 
-    const children=[];
+    const children = [];
     children.push(
         <BaseFormItem label="代码:" >
             <span>{article.code} </span>
@@ -59,8 +60,8 @@ const ArticleViewForm = ({
         <div>
             <ToolbarPanel children={toolbar} />
             <BaseCard>
-                <BaseForm items={children}/>
-            </BaseCard>  
+                <BaseForm items={children} />
+            </BaseCard>
         </div>
     );
 };

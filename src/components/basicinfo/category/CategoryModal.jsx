@@ -21,10 +21,9 @@ const CategoryModal = ({
         return
       }
       const data = {
+        ...item,
         ...getFieldsValue(),
-        upperCategory : upperCategory.uuid,
-        uuid : item.uuid,
-        version : item.version,
+        upperCategory: upperCategory.uuid,
       }
       onOk(data)
     })
@@ -41,10 +40,10 @@ const CategoryModal = ({
   return (
     <Modal {...modalOpts}>
       <Form horizontal>
-        {showUpper ? 
-        <BaseFormItem label="上级类别：">
-          <span> [{upperCategory.code}]{upperCategory.name} </span>
-        </BaseFormItem> : ''
+        {showUpper ?
+          <BaseFormItem label="上级类别：">
+            <span> [{upperCategory.code}]{upperCategory.name} </span>
+          </BaseFormItem> : ''
         }
         <BaseFormItem label="类别代码：">
           {getFieldDecorator('code', {
@@ -82,10 +81,10 @@ CategoryModal.propTypes = {
   visible: PropTypes.any,
   form: PropTypes.object,
   item: PropTypes.object,
-  upperCategory : PropTypes.object,
+  upperCategory: PropTypes.object,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
-  showUpper : PropTypes.bool,
+  showUpper: PropTypes.bool,
 }
 
 export default Form.create()(CategoryModal);

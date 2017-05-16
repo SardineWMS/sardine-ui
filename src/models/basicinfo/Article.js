@@ -16,7 +16,7 @@ import {
   deleteArticleBarcode,
   saveArticleBarcode,
   addArticleBarcode
-} from '../../services/BasicInfo/Article';
+} from '../../services/basicinfo/Article';
 
 export default {
   namespace: 'article',

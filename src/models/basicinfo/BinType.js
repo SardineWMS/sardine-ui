@@ -1,5 +1,5 @@
 import { parse } from 'qs';
-import { queryBinType, create, update, deleteBinType } from '../../services/BasicInfo/BinType';
+import { queryBinType, create, update, deleteBinType } from '../../services/basicinfo/BinType';
 
 export default {
     namespace: 'binType',

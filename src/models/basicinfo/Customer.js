@@ -1,7 +1,7 @@
 import {
     parse
 } from 'qs';
-import { queryCustomer, create, get, remove, recover, updateCustomer } from '../../services/BasicInfo/Customer';
+import { queryCustomer, create, get, remove, recover, updateCustomer } from '../../services/basicinfo/Customer';
 export default {
     namespace: 'customer',
 
@@ -51,9 +51,6 @@ export default {
 
             if (data) {
                 let customerList = data.obj.records;
-                for (var customer of customerList) {
-                    customer.state = (customer.state === 'normal' ? '正常' : '已删除');
-                }
                 yield put({
                     type: 'querySuccess',
                     payload: {
@@ -76,9 +73,6 @@ export default {
             const {data} = yield call(queryCustomer, parse(payload));
             if (data) {
                 let customerList = data.obj.records;
-                for (var customer of customerList) {
-                    customer.state = (customer.state === 'normal' ? '正常' : '已删除');
-                }
                 yield put({
                     type: 'refreshGridData',
                     payload: {
@@ -142,8 +136,6 @@ export default {
 
         *update({payload}, {call, put}) {
             const customer = payload;
-
-            customer.state = (customer.state === '正常' ? 'narmal' : 'deleted');
             yield call(updateCustomer, payload);
             yield put({
                 type: 'get',
@@ -183,7 +175,6 @@ export default {
                 customerUuid: payload.uuid,
             });
             if (customer) {
-                customer.data.obj.state = (customer.data.obj.state === 'normal' ? '正常' : '已删除');
                 yield put({
                     type: 'onViewItem',
                     payload: {

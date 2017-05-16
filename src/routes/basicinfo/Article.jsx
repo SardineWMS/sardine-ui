@@ -1,15 +1,15 @@
 import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
-import ArticleSearchForm from '../../components/BasicInfo/Article/ArticleSearchForm';
-import ArticleSearchGrid from '../../components/BasicInfo/Article/ArticleSearchGrid';
-import ArticleCreateForm from '../../components/BasicInfo/Article/ArticleCreateForm';
-import ArticleViewForm from '../../components/BasicInfo/Article/ArticleViewForm';
-import ArticleEditableSupplier from '../../components/BasicInfo/Article/ArticleEditableSupplier';
-import ArticleEditableQpcStr from '../../components/BasicInfo/Article/ArticleEditableQpcStr';
-import ArticleEditableBarcode from '../../components/BasicInfo/Article/ArticleEditableBarcode';
+import ArticleSearchForm from '../../components/basicinfo/Article/ArticleSearchForm';
+import ArticleSearchGrid from '../../components/basicinfo/Article/ArticleSearchGrid';
+import ArticleCreateForm from '../../components/basicinfo/Article/ArticleCreateForm';
+import ArticleViewForm from '../../components/basicinfo/Article/ArticleViewForm';
+import ArticleEditableSupplier from '../../components/basicinfo/Article/ArticleEditableSupplier';
+import ArticleEditableQpcStr from '../../components/basicinfo/Article/ArticleEditableQpcStr';
+import ArticleEditableBarcode from '../../components/basicinfo/Article/ArticleEditableBarcode';
 
-function Article({location, dispatch, article}) {
+function Article({ location, dispatch, article }) {
 	const {
 		list,
 		total,
@@ -20,7 +20,7 @@ function Article({location, dispatch, article}) {
 		showView,
 	} = article;
 
-	const { field, keyword} = location.query;
+	const { field, keyword } = location.query;
 	const articleSearchGridProps = {
 		dataSource: list,
 		pagination: pagination,
@@ -31,7 +31,7 @@ function Article({location, dispatch, article}) {
 					page: page.current,
 					pageSize: page.pageSize,
 					sort: sorter.columnKey,
-                    order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+					order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
 				},
 			})
 		},
@@ -74,7 +74,8 @@ function Article({location, dispatch, article}) {
 		onOk(data) {
 			let token = localStorage.getItem("token");
 			data.token = token;
-			data.category = null;
+			data.category = new Object();
+			data.category.code = data.categoryCode;
 			dispatch({
 				type: 'article/create',
 				payload: data,
@@ -303,8 +304,8 @@ Article.propTypes = {
 	showView: PropTypes.bool,
 }
 
-function mapStateToProps({article}) {
+function mapStateToProps({ article }) {
 	return article;
 }
 
-export default connect(({article}) => ({ article }))(Article);
+export default connect(({ article }) => ({ article }))(Article);

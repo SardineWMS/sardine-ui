@@ -3,6 +3,7 @@ import { Form, Row, Col, Input, Button, Card, Collapse, Icon, Table, Spin } from
 import BaseFormItem from '../../Widget/BaseFormItem';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseSearchPanel from '../../Widget/BaseSearchPanel';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const ContainerSearch = ({
 	dataSource,
@@ -115,8 +116,8 @@ const ContainerSearch = ({
         columns={columns}
         title={() =>
           <div>
-            <Button onClick={handleCreate}>新建</Button>
-            <Button type="primary" onClick={handleCreateContainerType}>新建容器类型</Button>
+            <Button onClick={handleCreate} disabled={!PermissionUtil("container:create")}>新建</Button>
+            <Button type="primary" onClick={handleCreateContainerType} disabled={!PermissionUtil("containertype:create")}>新建容器类型</Button>
           </div>
         }
         dataSource={dataSource}

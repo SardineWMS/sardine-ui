@@ -1,4 +1,4 @@
-import { querybypage,create,get,edit,remove} from '../../services/BasicInfo/ContainerType';
+import { querybypage,create,get,edit,remove} from '../../services/basicinfo/ContainerType';
 import { parse } from 'qs';
 
 export default {

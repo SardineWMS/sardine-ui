@@ -19,17 +19,17 @@ app.use(createLoading());
 
 app.model(require('./models/ia/User'));
 app.model(require('./models/app'));
-app.model(require('./models/BasicInfo/Category'));
-app.model(require('./models/BasicInfo/Customer'));
-app.model(require('./models/BasicInfo/Article'));
-app.model(require('./models/BasicInfo/Supplier'));
-app.model(require('./models/BasicInfo/Container'));
-app.model(require('./models/BasicInfo/BinType'));
-app.model(require('./models/BasicInfo/ContainerType'));
-app.model(require('./models/BasicInfo/Bin'));
+app.model(require('./models/basicinfo/Category'));
+app.model(require('./models/basicinfo/Customer'));
+app.model(require('./models/basicinfo/Article'));
+app.model(require('./models/basicinfo/Supplier'));
+app.model(require('./models/basicinfo/Container'));
+app.model(require('./models/basicinfo/BinType'));
+app.model(require('./models/basicinfo/ContainerType'));
+app.model(require('./models/basicinfo/Bin'));
 app.model(require('./models/ia/Role'));
-app.model(require('./models/forword/OrderBill'));
-app.model(require('./models/forword/Receive'));
+app.model(require('./models/forward/OrderBill'));
+app.model(require('./models/forward/Receive'));
 app.model(require('./models/system/System'));
 
 app.router(require('./router'));

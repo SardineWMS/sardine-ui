@@ -1,10 +1,10 @@
 import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
-import SupplierSearchForm from '../../components/BasicInfo/Supplier/SupplierSearchForm';
-import SupplierSearchGrid from '../../components/BasicInfo/Supplier/SupplierSearchGrid';
-import SupplierView from '../../components/BasicInfo/Supplier/SupplierView';
-import SupplierCreate from '../../components/BasicInfo/Supplier/SupplierCreate';
+import SupplierSearchForm from '../../components/basicinfo/Supplier/SupplierSearchForm';
+import SupplierSearchGrid from '../../components/basicinfo/Supplier/SupplierSearchGrid';
+import SupplierView from '../../components/basicinfo/Supplier/SupplierView';
+import SupplierCreate from '../../components/basicinfo/Supplier/SupplierCreate';
 import WMSProgress from '../../components/Widget/WMSProgress';
 import EntityLogGrid from '../../components/Log/EntityLogGrid';
 

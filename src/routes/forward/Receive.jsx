@@ -7,12 +7,12 @@ import 'moment/locale/zh-cn';
 
 moment.locale('zh-cn');
 
-import ReceiveGrid from '../../components/forword/receive/ReceiveBillGrid.jsx';
-import ReceiveCreate from '../../components/forword/receive/ReceiveBillAdd.jsx';
-import OrderBillSelectModal from '../../components/forword/receive/OrderBillSelectModal.jsx';
-import ReceiveBillItemGrid from '../../components/forword/receive/ReceiveBillItemGrid.jsx';
-import ReceiveBillView from '../../components/forword/receive/ReceiveBillView.jsx';
-import ReceiveBillSearch from '../../components/forword/receive/ReceiveBillSearchForm.jsx';
+import ReceiveGrid from '../../components/forward/receive/ReceiveBillGrid.jsx';
+import ReceiveCreate from '../../components/forward/receive/ReceiveBillAdd.jsx';
+import OrderBillSelectModal from '../../components/forward/receive/OrderBillSelectModal.jsx';
+import ReceiveBillItemGrid from '../../components/forward/receive/ReceiveBillItemGrid.jsx';
+import ReceiveBillView from '../../components/forward/receive/ReceiveBillView.jsx';
+import ReceiveBillSearch from '../../components/forward/receive/ReceiveBillSearchForm.jsx';
 import { removeByValue } from '../../utils/ArrayUtils.js';
 import WMSProgress from '../../components/Widget/WMSProgress';
 

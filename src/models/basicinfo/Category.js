@@ -6,7 +6,7 @@ import {
   create,
   update,
   deleteCategory,
-} from '../../services/BasicInfo/Category';
+} from '../../services/basicinfo/Category';
 
 export default {
   namespace: 'category',

@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
 import { Table, Form, Popconfirm, Button, Modal } from 'antd';
-import RowEditCell from '../../Widget/RowEditCell';
+import RowEditCellForModal from '../../Widget/RowEditCellForModal';
 import styles from '../../less/EditTable.less';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave }) => {
     const columns = [
@@ -27,16 +28,16 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
                     <div className={styles.editable_row_operations}>
                         {record.editable ?
                             <span>
-                                <a onClick={() => { onSave(record) }}>保存</a>
+                                <a onClick={() => { onSave(record) }} disabled={!PermissionUtil("bintype:create")}>保存</a>
                                 <Popconfirm title={"确定要取消编辑吗？"} onConfirm={() => onCancelEdit(record)}>
                                     <a>取消</a>
                                 </Popconfirm>
                             </span>
                             :
                             <span>
-                                <a onClick={() => { onEdit(record) }}>编辑</a>
+                                <a onClick={() => { onEdit(record) }} disabled={!PermissionUtil("bintype:edit")}>编辑</a>
                                 <Popconfirm title={"确定要删除吗？"} onConfirm={() => { onDelete(record) }}>
-                                    <a>删除</a>
+                                    <a disabled={!PermissionUtil("bintype:delete")}>删除</a>
                                 </Popconfirm>
                             </span>
                         }
@@ -50,11 +51,12 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
         if (typeof record.editable === undefined)
             return text;
 
-        return (<RowEditCell
+        return (<RowEditCellForModal
             editable={record.editable}
             value={text}
             status={status}
             onChange={value => handleChange(record, value, key)}
+            onBlur={() => { }}
         />)
     }
 

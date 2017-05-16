@@ -9,19 +9,20 @@ import NotFound from './routes/NotFound';
 import Login from './routes/Login';
 import Register from './routes/Register';
 import App from './routes/app';
-import Category from './routes/basicInfo/Category';
+import Category from './routes/basicinfo/Category';
 import User from './routes/ia/User';
-import Customer from './routes/basicInfo/Customer';
-import Article from './routes/basicInfo/Article';
-import Supplier from './routes/basicInfo/Supplier';
-import Container from './routes/basicInfo/Container';
-import BinType from './routes/basicInfo/BinType';
-import ContainerType from './routes/basicInfo/ContainerType';
-import Bin from './routes/basicInfo/Bin';
+import Customer from './routes/basicinfo/Customer';
+import Article from './routes/basicinfo/Article';
+import Supplier from './routes/basicinfo/Supplier';
+import Container from './routes/basicinfo/Container';
+import BinType from './routes/basicinfo/BinType';
+import ContainerType from './routes/basicinfo/ContainerType';
+import Bin from './routes/basicinfo/Bin';
 import Role from './routes/ia/Role';
 import System from './routes/system/System';
-import OrderBill from './routes/forword/OrderBill';
-import Receive from './routes/forword/Receive';
+import OrderBill from './routes/forward/OrderBill';
+import Receive from './routes/forward/Receive';
+import Task from './routes/inner/Task';
 
 
 export default function ({
@@ -45,8 +46,9 @@ export default function ({
         <Route path="/basicInfo/bin" component={Bin} />
         <Route path="/ia/role" component={Role} />
         <Route path="/forward/order" component={OrderBill} />
-        <Route path="/forward/receive" component={Receive} />
+        <Route path="/forward/receiveBill" component={Receive} />
         <Route path="/system/dc" component={System} />
+        <Route path="/inner/task" component={Task} />
       </Route>
     </Router>
   );

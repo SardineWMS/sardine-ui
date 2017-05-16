@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Table, Form, Popconfirm, Button, Modal } from 'antd';
 import RowEditCell from '../../Widget/RowEditCell';
 import styles from '../../less/EditTable.less';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave }) => {
     const columns = [
@@ -32,17 +33,17 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
                     <div className={styles.editable_row_operations}>
                         {record.editable ?
                             <span>
-                                <a onClick={() => { onSave(record) }}>保存</a>
+                                <a onClick={() => { onSave(record) }} disabled={!PermissionUtil("containertype:create")}>保存</a>
                                 <Popconfirm title={"确定要取消编辑吗？"} onConfirm={() => onCancelEdit(record)}>
                                     <a>取消</a>
                                 </Popconfirm>
                             </span>
                             :
                             <span>
-                                <a onClick={() => { onEdit(record) }}>编辑</a>
+                                <a onClick={() => { onEdit(record) }} disabled={!PermissionUtil("containertype:edit")}>编辑</a>
                                 <Popconfirm title={"确定要删除吗？"} onConfirm={() => { onDelete(record) }}>
-                                    <a>删除</a>
-                                </Popconfirm>
+                                    <a disabled={!PermissionUtil("containertype:delete")}>删除</a>
+                                                                 </Popconfirm>
                             </span>
                         }
                     </div>
@@ -87,7 +88,7 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
 
     return (<Modal {...modalOpts}>
         <div>
-            <Button type="ghost" onClick={() => onAdd()}>增加</Button>
+            <Button type="ghost" onClick={() => onAdd()} disabled={!PermissionUtil("containertype:create")}>增加</Button>
         </div>
         <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false}></Table>
     </Modal>)

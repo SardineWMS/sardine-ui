@@ -1,4 +1,4 @@
-import { querybypage,create,get,edit,remove,recover} from '../../services/BasicInfo/Supplier';
+import { querybypage,create,get,edit,remove,recover} from '../../services/basicinfo/Supplier';
 import { parse } from 'qs';
 import {queryEntityLogs} from '../../services/Log/EntityLog';
 

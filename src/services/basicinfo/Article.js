@@ -19,7 +19,6 @@ export async function getByCode(params) {
 }
 
 export async function create(params) {
-  params.category = null;
   const url = '/basic/article/insert';
   return request(addTokenToUrl(url), createBase(params))
 }

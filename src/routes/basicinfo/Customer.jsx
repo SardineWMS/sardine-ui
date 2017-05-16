@@ -3,10 +3,10 @@ import { routerRedux } from 'dva/router'
 import { connect } from 'dva'
 import { message } from 'antd';
 
-import CustomerGrid from '../../components/BasicInfo/Customer/CustomerGrid';
-import CustomerForm from '../../components/BasicInfo/Customer/CustomerForm';
-import CustomerAdd from '../../components/BasicInfo/Customer/CustomerAdd';
-import CustomerView from '../../components/BasicInfo/Customer/CustomerView';
+import CustomerGrid from '../../components/basicinfo/Customer/CustomerGrid';
+import CustomerForm from '../../components/basicinfo/Customer/CustomerForm';
+import CustomerAdd from '../../components/basicinfo/Customer/CustomerAdd';
+import CustomerView from '../../components/basicinfo/Customer/CustomerView';
 import WMSProgress from '../../components/Widget/WMSProgress';
 function Customer({ location, dispatch, customer }) {
     const {

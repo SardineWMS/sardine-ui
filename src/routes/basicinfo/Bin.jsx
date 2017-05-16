@@ -3,16 +3,16 @@ import { routerRedux } from 'dva/router';
 import { Layout } from 'antd';
 const { Content, Footer, Sider } = Layout;
 import { connect } from 'dva';
-import BinSearch from '../../components/BasicInfo/Bin/Bin';
-import CreateBinModal from '../../components/BasicInfo/Bin/CreateBinModal';
-import CreateShelfModal from '../../components/BasicInfo/Bin/CreateShelfModal';
-import CreatePathModal from '../../components/BasicInfo/Bin/CreatePathModal';
-import CreateZoneModal from '../../components/BasicInfo/Bin/CreateZoneModal';
-import CreateWrhModal from '../../components/BasicInfo/Bin/CreateWrhModal';
-import BinTree from '../../components/BasicInfo/Bin/BinTree';
-import BinSearchForm from '../../components/BasicInfo/Bin/BinSearchForm';
+import BinSearch from '../../components/basicinfo/Bin/Bin';
+import CreateBinModal from '../../components/basicinfo/Bin/CreateBinModal';
+import CreateShelfModal from '../../components/basicinfo/Bin/CreateShelfModal';
+import CreatePathModal from '../../components/basicinfo/Bin/CreatePathModal';
+import CreateZoneModal from '../../components/basicinfo/Bin/CreateZoneModal';
+import CreateWrhModal from '../../components/basicinfo/Bin/CreateWrhModal';
+import BinTree from '../../components/basicinfo/Bin/BinTree';
+import BinSearchForm from '../../components/basicinfo/Bin/BinSearchForm';
 import WMSProgress from '../../components/Widget/WMSProgress';
-import BinTypeModal from '../../components/BasicInfo/Bin/BinTypeModal';
+import BinTypeModal from '../../components/basicinfo/Bin/BinTypeModal';
 
 function Bin({ location, dispatch, bin }) {
   const { list, wrhModalVisible, zoneModalVisible, shelfModalVisible, pathModalVisible, binModalVisible, treeData,
