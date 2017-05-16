@@ -30,8 +30,16 @@ export async function remove(params) {
 }
 
 export async function bookReg(params) {
-  const url = `/forward/order/bookreg?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url), updateBaseNullBody(params));
+  const url = "/forward/order/bookreg";
+  const newUrl=url+`?uuid=` + params.uuid+`&version=`+params.version;
+  var req = new Object();
+  req.method = 'put';
+  req.headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+  };
+  req.body = JSON.stringify(params.bookedDate);
+  return request(addTokenToUrl(newUrl), req);
 }
 
 export async function check(params) {
@@ -58,3 +66,33 @@ export async function getOrderBillByBillNo(params) {
   const url = "/forward/order/getByBillNo";
   return request(query(url, params));
 }
+
+export async function refreshCaseQtyAndAmount(params) {
+  const url = "/forward/order/refreshcaseqtyandamount";
+  const newUrl=url+`?line=` + params.line;
+
+  console.log(params);
+
+  var req = new Object();
+  req.method = 'put';
+  req.headers = {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+  };
+  req.body = JSON.stringify(params.orderBill);
+  return request(addTokenToUrl(newUrl), req);
+}
+
+export async function queryWrhs(params) {
+  const url = "/basic/bin/queryWrhs";
+  return request(query(url, params));
+}
+
+export async function querySuppliers(params) {
+  if(params==null)
+    params={token:''};
+  const url="/basic/supplier/querybypage";
+  return request(query(url,params));
+}
+
+
