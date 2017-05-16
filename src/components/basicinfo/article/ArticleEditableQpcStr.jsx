@@ -59,7 +59,7 @@ const ArticleEditableQpcStr = ({
         {
           record.editable ?
             <span>
-              <a onClick={() => onSaveQpcStr(dataSource, articleUuid, index)} disabled={PermissionUtil("article:edit")}>保存</a>
+              <a onClick={() => onSaveQpcStr(dataSource, articleUuid, index)} disabled={!PermissionUtil("article:edit")}>保存</a>
               <Popconfirm title="确定要取消编辑吗？" onConfirm={() => onCancel(index)}>
                 <a>取消</a>
               </Popconfirm>
@@ -67,11 +67,11 @@ const ArticleEditableQpcStr = ({
             :
             <span>
               <Popconfirm title="确定要将当前规格设为默认规格吗?" onConfirm={() => onSetDefaultQpcStr(articleUuid, record.uuid)}>
-                <a disabled={PermissionUtil("article:edit")}>{record.qpcStr ? "设为默认" : ""}</a>
+                <a disabled={!PermissionUtil("article:edit")}>{record.qpcStr ? "设为默认" : ""}</a>
               </Popconfirm>
-              <a onClick={() => onEdit(dataSource, index)} disabled={PermissionUtil("article:edit")}>编辑</a>
+              <a onClick={() => onEdit(dataSource, index)} disabled={!PermissionUtil("article:edit")}>编辑</a>
               <Popconfirm title="确定要删除吗?" onConfirm={() => onDelete(articleUuid, record.uuid)}>
-                <a disabled={PermissionUtil("article:edit")}>删除</a>
+                <a disabled={!PermissionUtil("article:edit")}>删除</a>
               </Popconfirm>
             </span>
         }
@@ -99,7 +99,7 @@ const ArticleEditableQpcStr = ({
   return (
     <div>
       <div className={commonStyles.button}>
-        <Button type="ghost" onClick={() => onAdd(articleUuid)} disabled={PermissionUtil("article:edit")}>增加</Button>
+        <Button type="ghost" onClick={() => onAdd(articleUuid)} disabled={!PermissionUtil("article:edit")}>增加</Button>
       </div>
       <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false} />
     </div>);

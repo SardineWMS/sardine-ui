@@ -53,11 +53,11 @@ const ArticleEditableSupplier = ({
 
         <p>
           <Popconfirm title={"确定要删除" + record.supplierCode + "吗？"} onConfirm={() => onDelete(articleUuid, record.uuid)}>
-            <a href="#" disabled={PermissionUtil("article:edit")}>{record.uuid ? "删除" : ""}</a>
+            <a href="#" disabled={!PermissionUtil("article:edit")}>{record.uuid ? "删除" : ""}</a>
           </Popconfirm>
           &nbsp;
             <Popconfirm title={"确定要设置" + record.supplierCode + "为默认供应商吗？"} onConfirm={() => onSetDefaultSupplier(articleUuid, record.uuid)}>
-            <a href="#" disabled={PermissionUtil("article:edit")}>{(record.supplierUuid && !record.default_) ? "设为默认" : ""}</a>
+            <a href="#" disabled={!PermissionUtil("article:edit")}>{(record.supplierUuid && !record.default_) ? "设为默认" : ""}</a>
           </Popconfirm>
         </p>
       );
@@ -66,7 +66,7 @@ const ArticleEditableSupplier = ({
 
   return (<div>
     <div className={commonStyles.button}>
-      <Button type="ghost" onClick={() => onAdd(articleUuid)} disabled={PermissionUtil("article:edit")}>增加</Button>
+      <Button type="ghost" onClick={() => onAdd(articleUuid)} disabled={!PermissionUtil("article:edit")}>增加</Button>
     </div>
     <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false} />
   </div>);

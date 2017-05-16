@@ -15,8 +15,8 @@ const ArticleViewForm = ({
 }) => {
 
     const toolbar = [];
-    toolbar.push(<Button onClick={() => onCreate()} disabled={PermissionUtil("article:create")}> 新建</Button>);
-    toolbar.push(<Button onClick={() => onEdit(article)} disabled={PermissionUtil("article:edit")}> 编辑</Button>);
+    toolbar.push(<Button onClick={() => onCreate()} disabled={!PermissionUtil("article:create")}> 新建</Button>);
+    toolbar.push(<Button onClick={() => onEdit(article)} disabled={!PermissionUtil("article:edit")}> 编辑</Button>);
     toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
 
     const children = [];
@@ -33,7 +33,7 @@ const ArticleViewForm = ({
     children.push(
         <BaseFormItem label="规格：" >
             <span>{article.spec} </span>
-        </BaseFormItem>
+        </BaseFormItem> 
     );
     children.push(
         <BaseFormItem label="状态：" >

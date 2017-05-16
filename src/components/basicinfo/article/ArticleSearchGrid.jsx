@@ -20,7 +20,7 @@ function ArticleSearch({
     title: '代码',
     dataIndex: 'code',
     key: 'code',
-    render: (text, record) => <a onClick={() => onView(record)} disabled={PermissionUtil("article:view")}>{text}</a>,
+    render: (text, record) => <a onClick={() => onView(record)} disabled={!PermissionUtil("article:view")}>{text}</a>,
     sorter: true,
   }, {
     title: '名称',
@@ -50,7 +50,7 @@ function ArticleSearch({
     key: 'operation',
     render: (text, record) => (
       <p>
-        <a onClick={() => onEdit(record)}>编辑</a>
+        <a onClick={() => onEdit(record)} disabled={!PermissionUtil("article:edit")}>编辑</a>
       </p>
     ),
   }
@@ -71,7 +71,7 @@ function ArticleSearch({
         columns={columns}
         title={() =>
           <div>
-            <Button onClick={handleCreate}>新增</Button>
+            <Button onClick={handleCreate} disabled={!PermissionUtil("article:create")}>新增</Button>
             <Dropdown overlay={menu}>
               <Button type="ghost" style={{ marginLeft: 8 }}>
                 更多操作 <Icon type="down" />

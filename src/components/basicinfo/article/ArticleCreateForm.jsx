@@ -134,7 +134,7 @@ const ArticleCreateForm = ({
   );
 
   const toolbar = [];
-  toolbar.push(<Button onClick={handleOk} disabled={PermissionUtil("article:create") || PermissionUtil("article:edit")}> 保存</Button>);
+  toolbar.push(<Button onClick={handleOk} disabled={!PermissionUtil("article:create") || !PermissionUtil("article:edit")}> 保存</Button>);
   toolbar.push(<Button onClick={() => onCancel()}> 取消</Button>);
 
   return (
