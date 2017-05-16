@@ -1,6 +1,5 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Table, message, Modal,Card,Select,InputNumber,Popconfirm} from 'antd';
-import styles from '../../less/common.less';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
 import BaseCard from '../../Widget/BaseCard';
 import RemarkCard from '../../Widget/RemarkCard';
@@ -58,12 +57,12 @@ const OrderBillView=({
 	);
 	baseChildren.push(
 		    <BaseFormItem  label="到校日期 :">
-	          <span> {item.expireDate} </span>
+	          <span> {item.expireDate.format('YYYY-MM-DD')} </span>
 	        </BaseFormItem>
 	);
 	baseChildren.push(
 		    <BaseFormItem  label="预约日期 :">
-	          <span> {item.bookedDate} </span>
+	          <span> {item.bookedDate.format('YYYY-MM-DD')} </span>
 	        </BaseFormItem>
 	);
 	baseChildren.push(

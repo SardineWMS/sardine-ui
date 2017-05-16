@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import {Form,Calendar,Modal} from 'antd';
+import {Form,DatePicker,Modal} from 'antd';
 import moment from 'moment';
 
 const DateModal=({
@@ -18,7 +18,7 @@ const DateModal=({
   	}
 
   	function dateOnSelect(value){
-		bookedDate=value.format('YYYY-MM-DD HH:mm:ss');
+		bookedDate=value;
   	}
 
   	function handleOk(){
@@ -30,8 +30,8 @@ const DateModal=({
 
   return(
   	<Modal {...modalOpts}>
-        <div style={{ width: 345, border: '1px solid #d9d9d9', borderRadius: 4 }}>
-            <Calendar  fullscreen={false} onSelect={dateOnSelect}/>
+        <div style={ {width: 200}}>
+          <DatePicker onChange={dateOnSelect} format='YYYY-MM-DD'/>
         </div>    
     </Modal>
   )

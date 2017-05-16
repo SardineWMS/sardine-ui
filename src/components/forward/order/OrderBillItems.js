@@ -5,8 +5,8 @@ import { Modal } from 'antd';
 import commonStyles from '../../less/common.less';
 
 const confirm = Modal.confirm;
-const RowEditableCell = require('../../Widget/RowEditCell');
-const EditableCell = require('../../Widget/EditableCell');
+import RowEditableCell from '../../Widget/RowEditCell';
+import RowEditCellSelect from '../../Widget/RowEditCellSelect';
 
 const OrderBillItems=({
 	items,
@@ -18,27 +18,31 @@ const OrderBillItems=({
 	onDelete,
 	onCancel,
 	onSaveItems,
-	getArticle
+	getArticle,
+	refreshCaseQtyAndAmount
 }) => {
 	const columns=[];
 
 	columns.push({
 		title: '行号',
 	    key: 'line',
-		dataIndex: 'line'
+		dataIndex: 'line',
+		width: 70
 	});
 
 	columns.push({
 	 	title: '商品代码',
 	    key: 'articleCode',
-		dataIndex: 'article',	
-  	    render: (text,record, index) => renderEditableCell(index, "articleCode", text)
+		dataIndex: 'article',
+		width: 150,	
+  	    render: (text,record, index) => renderRowEditableCell(index, "articleCode", text)
 	});
 
 	columns.push({
  	    title: '商品名称',
 	    key: 'articleName',
 		dataIndex: 'article',
+		width: 200,	
     	render:(text)=> text?text.name:null
 	});
 
@@ -46,6 +50,7 @@ const OrderBillItems=({
  	 	title: '价格',
 	    key: 'price',
 		dataIndex: 'price',
+		width: 100,	
 	    render: (text, record, index) => renderRowEditableCell( index, "price", text)
 	});
 
@@ -53,37 +58,46 @@ const OrderBillItems=({
  	    title: '规格',
 	    key: 'qpcStr',
 		dataIndex: 'qpcStr',
-  	    render: (text,record, index) => renderEditableCell(index, "qpcStr", text)
+		width: 150,	
+  	    render: (text,record, index) => renderSelectColumns(record, "qpcStr", text)
 	});
 
 	columns.push({
  		title: '数量',
 	    key: 'qty',
 		dataIndex: 'qty',
+		width: 100,	
 	    render: (text, record, index) => renderRowEditableCell( index, "qty", text)
 	});
 
-	if(editable===false)
-	{
-		columns.push({
+	columns.push({
 		    title: '件数',
 		    key: 'caseQtyStr',
-			dataIndex: 'caseQtyStr'	
-		});
-	}
+			dataIndex: 'caseQtyStr',
+			width: 150
+	});
+
+	columns.push({
+		    title: '金额',
+		    key: 'amount',
+			dataIndex: 'amount',
+			width: 100
+	});
 
 
 	if(inProgressBill){
 		columns.push({
 		    title: '收货数量',
 		    key: 'receivedQty',
-			dataIndex: 'receivedQty'	
+			dataIndex: 'receivedQty',
+			width: 100
 		});
 
 		columns.push({
 		    title: '收货件数',
 		    key: 'receivedCaseQtyStr',
-			dataIndex: 'receivedCaseQtyStr'	
+			dataIndex: 'receivedCaseQtyStr',
+			width: 100
 		});
 	}
 
@@ -96,18 +110,9 @@ const OrderBillItems=({
 		    render: (text, record, index) => {
 		      return (
 		      	<div className={styles.editable_row_operations}>
-		        {
-		          record.editable ?
 		            <span>
-              			<a onClick={() => onSaveItems(items,index)}>保存</a>
-              			<a onClick={() => onCancel(items,index)}>取消</a>
-		            </span>
-		            :
-		            <span>
-		              <a onClick={() => onEdit(items,index)}>编辑</a>
 		              <a onClick={() => onDelete(items,index)}>删除</a>
 		            </span>
-		        }
 		     	</div>
 		     	);
 		    }
@@ -116,17 +121,14 @@ const OrderBillItems=({
 
 
     function renderRowEditableCell(index, key, text) {
-    	if(typeof text !='undefined' && key==='articleCode')
-    		text=text.code;
+    	if(typeof text !='undefined' && typeof text.code !='undefined')
+			text= text.code
     	if(editable === false)
     		return text;
-	    if (typeof items[index]["editable"] === 'undefined' || !items[index]["editable"]) {
-	      	return text;
-	    }
 	    return (<RowEditableCell
-	      editable={items[index]["editable"]}
+	      editable="true"
 	      value={text}
-	      onChange={value => handleChange(key, index, value)}
+	      onBlur={value => handleChange(key, index, value)}
 	      autoFocus={key == "articleCode" ? true : false}
 	      status={status}
 	    />);
@@ -134,45 +136,47 @@ const OrderBillItems=({
 
     function handleChange(key, index, value) {
 		items[index][key] = value;
-  	}
 
-  	function renderEditableCell(index, key, text){
-		if(typeof text !='undefined' && typeof text.code !='undefined')
-			text= text.code
-	    if (typeof items[index]["editable"] === 'undefined' || !items[index]["editable"]) {
-	      	return text;
-	    }
-        return (
-	        <EditableCell
-	          value={text}	
-	          onChange={value => handleEnter(key,index, value)}
-	          editable={items[index]["editable"]}
-	        />);
-  	}
-
-    function handleEnter(key,  index, value) {
-    	if(typeof value =='undefined')
-    		return;
 		if(key ==='articleCode'){
     		const article=new Object();
     		article.code=value;
 			items[index]["article"] = article;
 			getArticle(items,index);
-		}else if(key==='qpcStr'){
-			var munit=null;
-			articleQpcs.map(function(qpcInfo){
-				if(value===qpcInfo.qpcStr)
-					munit=qpcInfo.munit;
-			});
-		    if(munit){
-				items[index]["qpcStr"] = value;
-				items[index]["munit"] = munit;
-		    }else{
-		    	message.error("规格错误：商品中没有设置该规格！",2,'');
-		    }
-
+		}else if(key ==='qty'){
+			refreshCaseQtyAndAmount(items,index+1);
 		}
   	}
+
+  	function renderSelectColumns(record, key, text){
+  		if(typeof articleQpcs =='undefined')
+  			return;
+        const options = [];
+ 		articleQpcs.map(function(qpcInfo){
+		    options.push(<Option key={qpcInfo.qpcStr}>
+                    {qpcInfo.qpcStr}
+                </Option>)
+			});
+    	return (<RowEditCellSelect
+            editable='true'
+            options={options}
+            onChange={value => handleSelectQpcStr(record, value, key)}
+            value={text}
+        />)
+  	}
+
+  	function handleSelectQpcStr(record, value, key){
+			var munit=null;
+			articleQpcs.map(function(qpcInfo){
+				if(value===qpcInfo.qpcStr){
+					munit=qpcInfo.munit;
+					return;
+				}
+			});
+			record.qpcStr=value;
+			record.munit=munit;
+  	}
+
+
 
     return (
     	<div>
