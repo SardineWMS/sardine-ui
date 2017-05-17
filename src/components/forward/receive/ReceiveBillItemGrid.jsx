@@ -7,6 +7,7 @@ import styles from '../../Widget/EditTable.less';
 import BaseCard from '../../Widget/BaseCard';
 import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 
 const Option = Select.Option;
@@ -190,7 +191,7 @@ function ReceiveBillItemGrid({
                 return (
                     <div className={styles.editable_row_operations}>
                         {false ? <span>
-                            <a onClick={() => { onSave(record) }}>保存</a>
+                            <a onClick={() => { onSave(record) }} disabled={!PermissionUtil("receiveBill:create")}>保存</a>
                             <Popconfirm title={"确定要取消编辑吗？"} onConfirm={() => onCancelEdit(record)}>
                                 <a>取消</a>
                             </Popconfirm>
@@ -198,10 +199,10 @@ function ReceiveBillItemGrid({
                             :
                             < span >
                                 <Popconfirm title={"确定要删除吗？"} onConfirm={() => onRemoveItem(record)}>
-                                    <a disabled={record.state === "deleted"}>删除</a>
+                                    <a disabled={(record.state === "deleted") && (!PermissionUtil("receiveBill:delete"))}>删除</a>
                                 </Popconfirm>
                                 &nbsp;&nbsp;&nbsp;
-                <a onClick={() => onAddItem()}>新增</a>
+                <a onClick={() => onAddItem()} disabled={!PermissionUtil("receiveBill:create")}>新增</a>
                             </span >
                         }
 

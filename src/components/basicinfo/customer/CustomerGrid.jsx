@@ -56,11 +56,11 @@ function CustomerGrid({
         <a onClick={() => { onEdit(record) }} disabled={!hasPermission("customer:edit")}>编辑</a>
         &nbsp;
                 <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(record)} >
-          <a disabled={(record.state === "deleted")&& (!hasPermission("customer:delete"))}>删除</a>
+          <a disabled={(record.state === "deleted") && (!hasPermission("customer:edit"))}>删除</a>
         </Popconfirm>
         &nbsp;
         <Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(record)}>
-          <a disabled={(record.state === "normal") && (!hasPermission("customer:recover"))}>恢复</a>
+          <a disabled={(record.state === "normal") && (!hasPermission("customer:edit"))}>恢复</a>
         </Popconfirm>
       </p>
     )
@@ -94,9 +94,9 @@ function CustomerGrid({
         title={() =>
           <div>
             <Row type="flex">
-              <Col><Button type="ghost" onClick={handleRemoveBatch} disabled={!hasPermission("customer:delete")}>批量删除</Button></Col>
-              <Col><Button type="ghost" onClick={handleRecoverBatch}>批量恢复</Button></Col>
-              <Col><Button onClick={onCreate}>新建</Button></Col>
+              <Col><Button type="ghost" onClick={handleRemoveBatch} disabled={!hasPermission("customer:edit")}>批量删除</Button></Col>
+              <Col><Button type="ghost" onClick={handleRecoverBatch} disabled={!hasPermission("customer:edit")}>批量恢复</Button></Col>
+              <Col><Button onClick={onCreate} disabled={!hasPermission("customer:create")}>新建</Button></Col>
               <Col><span style={{ marginLeft: 8 }}>{selectedRowKeys.length > 0 ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
             </Row>
           </div>} />

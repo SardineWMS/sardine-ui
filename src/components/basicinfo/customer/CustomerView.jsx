@@ -8,6 +8,7 @@ import RemarkCard from '../../Widget/RemarkCard';
 import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import Guid from '../../../utils/Guid';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const CustomerView = ({ item = {},
     onBack,
@@ -53,12 +54,12 @@ const CustomerView = ({ item = {},
     </BaseFormItem>);
 
     let toolbar = [];
-    toolbar.push(<Button onClick={() => showEdit(item)} key={Guid()}>编辑</Button>);
+    toolbar.push(<Button onClick={() => showEdit(item)} key={Guid()} disabled={!PermissionUtil("customer:edit")}>编辑</Button>);
     toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)} key={Guid()}>
-        <Button disabled={removeRight} >删除</Button>
+        <Button disabled={removeRight && (!PermissionUtil("customer:edit"))} >删除</Button>
     </Popconfirm>);
     toolbar.push(<Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)} key={Guid()}>
-        <Button disabled={recoverRight}>恢复</Button>
+        <Button disabled={recoverRight&&(!PermissionUtil("customer:edit"))}>恢复</Button>
     </Popconfirm>);
     toolbar.push(<Button onClick={() => onBack()} key={Guid()}>返回</Button>);
 
@@ -69,7 +70,7 @@ const CustomerView = ({ item = {},
                 <BaseForm items={basicFormItems} />
             </BaseCard>
             <RemarkCard remark={item.remark} />
-        </div>
+            </div>
     )
 };
 export default CustomerView;

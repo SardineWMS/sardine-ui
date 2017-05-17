@@ -9,6 +9,7 @@ import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import Guid from '../../../utils/Guid';
 import ArticleItemGrid from './ReceiveBillItemGrid_View';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const ReceiveBillView = ({
     item = {},
@@ -56,14 +57,14 @@ const ReceiveBillView = ({
 
     let toolbar = [];
     toolbar.push(
-        <Button key={Guid()} onClick={() => onEdit(item)}>编辑</Button>
+        <Button key={Guid()} onClick={() => onEdit(item)} disabled={!PermissionUtil("receiveBill:edit")}>编辑</Button>
     );
     toolbar.push(
         <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(item)}>
-            <Button>删除</Button>
+            <Button disabled={!PermissionUtil("receiveBill:delete")}>删除</Button>
         </Popconfirm>
     );
-    toolbar.push(<Button onClick={() => onFinish(item)}>审核</Button>)
+    toolbar.push(<Button onClick={() => onFinish(item)} disabled={!PermissionUtil("receiveBill:finish")}>审核</Button>)
 
     return (
         <div>
