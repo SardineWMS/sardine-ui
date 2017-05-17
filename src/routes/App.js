@@ -131,7 +131,7 @@ function App({
             <Sider {...siderProps} />
           </aside>
           <div className={styles.main}>
-            <Bread location={location} />
+            <Bread location={location} menu={localStorage.getItem("ownedMenus")} />
             <div className={styles.container}>
               <div className={styles.content}>
                 <Spin spinning={loading}>

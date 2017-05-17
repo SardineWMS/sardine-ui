@@ -4,8 +4,8 @@ import styles from '../less/main.less'
 import { config } from '../../utils'
 
 let pathSet = [{}]
-const menu = localStorage.getItem("ownedMenus");
-const topMenus = menu ? eval('(' + menu + ')') : [];
+// const menu = localStorage.getItem("ownedMenus");
+// const topMenus = menu ? eval('(' + menu + ')') : [];
 const getPathSet = function (menuArray, parentPath) {
   parentPath = parentPath || '/'
   menuArray.map(item => {
@@ -21,10 +21,9 @@ const getPathSet = function (menuArray, parentPath) {
   })
 }
 
-getPathSet(topMenus);
-
-function Bread({ location }) {
+function Bread({ location, menu }) {
   let pathNames = [];
+  getPathSet(menu ? eval('(' + menu + ')') : []);
   console.dir(pathSet);
   pathSet['Home'] = {
      path: '/',
