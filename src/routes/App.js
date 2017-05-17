@@ -15,14 +15,9 @@ import '../components/less/common.less';
 import Register from '../components/ia/login/Register';
 import '../components/less/antMotion_style.less';
 import UpdatePasswd from '../components/ia/login/UpdatePasswd';
-
-import {
-  Spin,
-  message
-} from 'antd'
-import {
-  classnames
-} from '../utils'
+import guid from '../utils/Guid';
+import {Spin, message} from 'antd'
+import {classnames} from '../utils'
 
 function App({
   children,
@@ -91,14 +86,8 @@ function App({
   }
 
   const siderProps = {
-    siderFold,
-    darkTheme,
     location,
-    changeTheme() {
-      dispatch({
-        type: 'app/changeTheme'
-      })
-    }
+    menu: localStorage.getItem("ownedMenus")
   }
 
   const navProps = {
@@ -133,10 +122,9 @@ function App({
     }
   }
 
-  return (
-    <div>
-      {login ?
-        <div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
+  function renderApp() {
+    if (login) {
+      return (<div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
           <Nav {...navProps} />
           <UpdatePasswd {...updatePasswdProps} />
           <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
@@ -153,18 +141,24 @@ function App({
             </div>
             <Footer />
           </div>
-        </div>
-        : (registerLoading ?
-          <div className={styles.reg}>
+        </div>);
+    }
+    if (registerLoading) {
+      return (<div className={styles.reg}>
             <Spin spinning={loading}>
               <Register {...registerProps} />
             </Spin>
-          </div>
-          :
-          <div className={styles.spin}><Spin tip="加载用户信息..." spinning={loading} size="large">
+          </div>);
+    }
+
+    return (<div className={styles.spin}><Spin tip="加载用户信息..." spinning={loading} size="large">
             <Login {...loginProps} /></Spin>
-          </div>
-        )}
+            </div>);
+  }
+
+  return (
+    <div>
+      {renderApp()}
     </div>)
 }
 
@@ -172,7 +166,7 @@ App.propTypes = {
   children: PropTypes.element.isRequired,
   location: PropTypes.object,
   dispatch: PropTypes.func,
-  loading: PropTypes.object,
+  loading: PropTypes.bool,
   registerLoading: PropTypes.bool,
   loginButtonLoading: PropTypes.bool,
   login: PropTypes.bool,

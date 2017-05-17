@@ -40,18 +40,17 @@ export default {
     * login({
       payload
     }, {
-      call,
-        put
+      call, put
     }) {
-      // yield put({
-      //   type: 'showLoginButtonLoading'
-      // })
+      yield put({
+        type: 'showLoginButtonLoading'
+      })
       const
         { data }
           = yield call(login, payload);
-      // yield put({
-      //   type: 'hideLoginButtonLoading',
-      // })
+      yield put({
+        type: 'hideLoginButtonLoading',
+      })
       if (data.token) {
         const loginUser = new Object();
         loginUser.uuid = data.obj.uuid;
