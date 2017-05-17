@@ -3,7 +3,7 @@ import { Form, Modal, Col, Row, Input, TreeSelect } from 'antd';
 import RoleAssignTree from './RoleAssignTree';
 
 const FormItem = Form.Item;
-const SHOW_PARENT = TreeSelect.SHOW_PARENT;
+const SHOW_ALL = TreeSelect.SHOW_ALL;
 
 const formItemLayout = {
     labelCol: {
@@ -33,7 +33,6 @@ const ResourceAssginmentModal = ({
             const data = {
                 ...getFieldsValue(),
             }
-            console.log("getFieldsValue...", data);
 
             onSave(data)
         })
@@ -63,7 +62,7 @@ const ResourceAssginmentModal = ({
                         ], initialValue: value
                     })(<TreeSelect treeData={treeData}
                         multiple={true} treeCheckable={true}
-                        showCheckedStrategy={SHOW_PARENT}
+                        showCheckedStrategy={SHOW_ALL}
                         style={
                             { width: 300 }} />)}
                 </FormItem>

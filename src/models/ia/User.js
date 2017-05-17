@@ -104,16 +104,10 @@ export default {
 			}
 			if (data) {
 				yield put({
-					type: 'get',
-					payload: {
-						uuid: data.obj
-					},
+					type: 'query',
+					payload: {},
 				})
 			}
-			yield put({
-				type: 'query',
-				payload: {},
-			})
 		},
 
 		*update({ payload }, { call, put }) {
@@ -230,7 +224,7 @@ export default {
 				payload: {
 					roleList: roleList,
 					currentUserUuid: payload,
-					currentSelectedRoles:currentSelected, 
+					currentSelectedRoles: currentSelected,
 				}
 			})
 		},
@@ -241,14 +235,14 @@ export default {
 			function buildResourceTree(resource, currentSelected) {
 				resource.value = resource.uuid;
 				resource.label = resource.name;
-				if (resource.owned) {
+				if (resource.owned && resource.children.length <= 0) {
 					currentSelected.push(resource.value);
 				}
 				if (resource.children.length > 0) {
 					for (let lowerResource of resource.children) {
 						resource.value = resource.uuid;
 						resource.label = resource.name;
-						if (lowerResource.owned) {
+						if (lowerResource.owned && lowerResource.children.length <= 0) {
 							currentSelected.push(lowerResource.value);
 						}
 						buildResourceTree(lowerResource, currentSelected);
@@ -264,7 +258,7 @@ export default {
 				for (let resource of resourceListTree) {
 					resource.value = resource.uuid;
 					resource.label = resource.name;
-					if (resource.owned) {
+					if (resource.owned && resource.children.length <= 0) {
 						currentSelected.push(resource.value);
 					}
 					buildResourceTree(resource, currentSelected);
@@ -312,7 +306,7 @@ export default {
 				resource.value = resource.uuid;
 				resource.label = resource.name;
 				resource.disabled = true;
-				if (resource.owned) {
+				if (resource.owned && resource.children.length <= 0) {
 					currentSelected.push(resource.value);
 
 				}
@@ -324,7 +318,7 @@ export default {
 						lowerResource.disabled = true;
 						if (!lowerResource.owned) {
 							removeByValue(resourceListTree, lowerResource);
-						} else {
+						} else if (lowerResource.children.length <= 0) {
 							currentSelected.push(lowerResource.value);
 
 						}
@@ -341,7 +335,7 @@ export default {
 					resource.value = resource.uuid;
 					resource.label = resource.name;
 					resource.disabled = true;
-					if (resource.owned) {
+					if (resource.owned && resource.children.length <= 0) {
 						currentSelected.push(resource.value);
 					}
 					buildResourceTree(resource, currentSelected, resourceListTree);
@@ -372,7 +366,10 @@ export default {
 			return {
 				...state,
 				...action.payload,
-				loading: false
+				loading: false,
+				showCreate: false,
+				showEdit: false,
+				showView: false,
 			}
 		},
 
