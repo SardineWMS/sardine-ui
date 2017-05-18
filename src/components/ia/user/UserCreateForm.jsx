@@ -1,5 +1,6 @@
 import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Table, message, Popconfirm, Card, Select, InputNumber } from 'antd';
+import PermissionUtil from '../../../utils/PermissionUtil';
 const FormItem = Form.Item;
 
 const DemoCreateForm = ({
@@ -41,7 +42,7 @@ const DemoCreateForm = ({
   return (
     <div>
       <div className="ant-table-title">
-        <Button onClick={handleOk}> 保存</Button>
+        <Button onClick={handleOk} disabled={!PermissionUtil("user:create")}> 保存</Button>
         <Button style={{ marginLeft: 8 }} onClick={() => onCancel()}> 取消</Button>
       </div>
       <Card title="基本信息">

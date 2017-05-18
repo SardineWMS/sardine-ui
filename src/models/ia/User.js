@@ -73,11 +73,8 @@ export default {
 				data
 			} = yield call(queryUser, parse(payload));
 			if (data) {
+				console.log("用户列表", data);
 				let userList = data.obj.records;
-				for (var user of userList) {
-					user.userState = (user.userState === 'online' ? '已启用' : '已停用');
-					user.administrator = (user.administrator === true ? '是' : '否');
-				}
 				yield put({
 					type: 'querySuccess',
 					payload: {
@@ -112,10 +109,10 @@ export default {
 
 		*update({ payload }, { call, put }) {
 			yield call(update, payload);
-			yield put({
-				type: 'get',
-				payload: payload,
-			})
+			// yield put({
+			// 	type: 'get',
+			// 	payload: payload,
+			// })
 			yield put({
 				type: 'query',
 				payload: {},
@@ -160,41 +157,41 @@ export default {
 				uuid: payload.uuid,
 				version: payload.version,
 			});
-			yield put({
-				type: 'get',
-				payload: payload,
-			})
+			// yield put({
+			// 	type: 'get',
+			// 	payload: payload,
+			// })
 			yield put({
 				type: 'query',
 				payload: {},
 			})
 		},
 
-		*get({ payload }, { call, put }) {
-			const user = yield call(get, {
-				userUuid: payload.uuid,
-			});
-			if (user) {
-				user.data.obj.userState = (user.data.obj.userState === 'online' ? '已启用' : '已停用');
-				user.data.obj.administrator = (user.data.obj.administrator === true ? '是' : '否');
-				yield put({
-					type: 'showViewPage',
-					payload: {
-						currentItem: user.data.obj,
-					}
-				})
-			}
-		},
+		// *get({ payload }, { call, put }) {
+		// 	const user = yield call(get, {
+		// 		userUuid: payload.uuid,
+		// 	});
+		// 	if (user) {
+		// 		user.data.obj.userState = (user.data.obj.userState === 'online' ? '已启用' : '已停用');
+		// 		user.data.obj.administrator = (user.data.obj.administrator === true ? '是' : '否');
+		// 		yield put({
+		// 			type: 'showViewPage',
+		// 			payload: {
+		// 				currentItem: user.data.obj,
+		// 			}
+		// 		})
+		// 	}
+		// },
 
 		*offline({ payload }, { call, put }) {
 			yield call(offlineUser, {
 				uuid: payload.uuid,
 				version: payload.version,
 			});
-			yield put({
-				type: 'get',
-				payload: payload,
-			})
+			// yield put({
+			// 	type: 'get',
+			// 	payload: payload,
+			// })
 			yield put({
 				type: 'query',
 				payload: {},
@@ -208,7 +205,7 @@ export default {
 			const { data } = yield call(queryAllRole, parse());
 			let roleList = [];
 			roleList = data.obj;
-			console.dir("数据" + data);
+			// console.dir("数据" + data);
 			if (roleList.length > 0) {
 				for (let role of roleList) {
 					role.value = role.uuid;

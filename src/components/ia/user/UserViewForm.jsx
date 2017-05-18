@@ -2,6 +2,8 @@ import React, { Component, PropTypes } from 'react';
 import { Form, Row, Col, Input, Button, Icon, Table, message, Modal, Card, Select, InputNumber, Popconfirm } from 'antd';
 import styles from '../../less/common.less';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
+import PermissionUtil from '../../../utils/PermissionUtil';
+
 const FormItem = Form.Item;
 
 const UserViewForm = ({
@@ -20,14 +22,14 @@ const UserViewForm = ({
     return (
         <div>
             <div className={styles.button}>
-                <Button onClick={() => onCreate()}> 新建</Button>
-                <Button onClick={() => onEdit(item)}> 编辑</Button>
+                <Button onClick={() => onCreate()} disabled={!PermissionUtil("user:create")}> 新建</Button>
+                <Button onClick={() => onEdit(item)} disabled={!PermissionUtil("user:edit")}> 编辑</Button>
                 <Button onClick={() => onBack()}> 返回</Button>
                 <Popconfirm title="确定要启用吗？" onConfirm={() => onOnline(item)}>
-                    <Button disabled={item.userState === '已启用'}>启用</Button>
+                    <Button disabled={(item.userState === '已启用') && !PermissionUtil("user:online")}>启用</Button>
                 </Popconfirm>
                 <Popconfirm title="确定要停用吗？" onConfirm={() => onOffline(item)}>
-                    <Button disabled={item.userState === '已停用'}>停用</Button>
+                    <Button disabled={(item.userState === '已停用')&&!PermissionUtil("user:offline")}>停用</Button>
                 </Popconfirm>
             </div>
             <Card title="基本信息" bordered={false} bodyStyle={{ padding: 0 }}>
