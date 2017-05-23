@@ -15,7 +15,8 @@ import {
   addArticleQpc,
   deleteArticleBarcode,
   saveArticleBarcode,
-  addArticleBarcode
+  addArticleBarcode,
+  setArticleFixedPickBin
 } from '../../services/basicinfo/Article';
 
 export default {
@@ -27,7 +28,10 @@ export default {
     currentArticle: {},
     currentSupplier: {},
     modalVisible: false,
-    modalType: 'create',
+    modalType: 'single',
+    batchSetBinProcessModal: false,
+    setFixedPickBinEntitys: [],
+    articles:[],
     pagination: {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -138,6 +142,27 @@ export default {
         })
       }
     },
+
+    *setArticleFixedPickBin({
+      payload
+    }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'hideSetBinModal'
+      })
+      yield put({
+        type: 'showLoading'
+      })
+      const {data} = yield call(setArticleFixedPickBin, parse(payload))
+      if (data) {
+        yield put({
+            type: 'query',
+        })
+      }
+    },
+
     *getAndSaveSupplier({
       payload
     }, {
@@ -439,6 +464,37 @@ export default {
         showView: false,
       }
     },
+
+    batchSetBinModal(state, action) {
+        return {
+            ...state,
+            ...action.payload,            
+            modalVisible: false,
+            batchSetBinProcessModal: true
+        }
+    },
+    hideBatchSetBinModal(state) {
+        return {
+            ...state,
+            batchSetBinProcessModal: false
+        }
+    },
+
+    showSetBinModal(state, action) {
+        return {
+            ...state,
+            ...action.payload,
+            modalVisible: true
+        }
+    },
+
+    hideSetBinModal(state) {
+        return {
+            ...state,
+            modalVisible: false
+        }
+    },
+
   },
 
 }

@@ -55,6 +55,11 @@ const ArticleViewForm = ({
             <span>{article.firstInFirstOut ? "是" : "否"} </span>
         </BaseFormItem>
     );
+     children.push(
+        <BaseFormItem label="商品固定拣货位：" >
+            <span>{article.fixedPickBin} </span>
+        </BaseFormItem>
+    );
 
     return (
         <div>

@@ -7,14 +7,21 @@ function ArticleSearch({
   onCreate,
   onEdit,
   onView,
+  onSetFixedPickBinBatch,
+  onSetFixedPickBinItem,
   pagination,
   onPageChange,
+  selectedRowKeys = []
 }) {
 
   function handleCreate(e) {
     e.preventDefault();
     onCreate();
   }
+
+  function handleSetFixedPickBinBatch(){
+    onSetFixedPickBinBatch(selectedRowKeys);
+  };
 
   const columns = [{
     title: '代码',
@@ -51,6 +58,7 @@ function ArticleSearch({
     render: (text, record) => (
       <p>
         <a onClick={() => onEdit(record)} disabled={!PermissionUtil("article:edit")}>编辑</a>
+        <a onClick={() => onSetFixedPickBinItem(record)} >设置固定拣货位</a>
       </p>
     ),
   }
@@ -64,14 +72,30 @@ function ArticleSearch({
     </Menu>
   );
 
+  const rowSelection = {
+    onChange: (selectedRowKeys, selectedRows) => {
+    },
+    onSelect: (record, selected, selectedRows) => {
+      selectedRowKeys=selectedRows;
+      },
+    onSelectAll: (selected, selectedRows, changeRows) => {
+      selectedRowKeys=selectedRows;
+    },
+    getCheckboxProps: record => ({
+       disabled: record.name === 'Disabled User',
+    }),
+  };
+
   return (
     <div>
       <Table size="small"
         bordered
         columns={columns}
+        rowSelection={rowSelection}
         title={() =>
           <div>
             <Button onClick={handleCreate} disabled={!PermissionUtil("article:create")}>新增</Button>
+            <Button onClick={handleSetFixedPickBinBatch}>设置固定拣货位</Button>
             <Dropdown overlay={menu}>
               <Button type="ghost" style={{ marginLeft: 8 }}>
                 更多操作 <Icon type="down" />

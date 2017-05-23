@@ -8,6 +8,9 @@ import ArticleViewForm from '../../components/basicinfo/Article/ArticleViewForm'
 import ArticleEditableSupplier from '../../components/basicinfo/Article/ArticleEditableSupplier';
 import ArticleEditableQpcStr from '../../components/basicinfo/Article/ArticleEditableQpcStr';
 import ArticleEditableBarcode from '../../components/basicinfo/Article/ArticleEditableBarcode';
+import SetFixedPickBinModal from '../../components/basicinfo/Article/SetFixedPickBinModal';
+import WMSProgress from '../../components/Widget/WMSProgress';
+import { message } from 'antd';
 
 function Article({ location, dispatch, article }) {
 	const {
@@ -18,6 +21,12 @@ function Article({ location, dispatch, article }) {
 		currentArticle,
 		showCreate,
 		showView,
+		batchSetBinProcessModal,
+		setFixedPickBinEntitys,
+		articleNext,
+		modalType,
+		articles,
+		modalVisible
 	} = article;
 
 	const { field, keyword } = location.query;
@@ -56,7 +65,85 @@ function Article({ location, dispatch, article }) {
 				}
 			})
 		},
+        onSetFixedPickBinItem(article) {
+            articles.push(article),
+            dispatch({
+                type:'article/showSetBinModal',
+                payload:{
+                    articles:articles,
+                    modalType:"single"
+                }
+            })
+        },
+	   	onSetFixedPickBinBatch(articles) {
+            if (articles.length <= 0) {
+                message.warning("请选择要设置的商品！", 2, '');
+                return;
+            }
+            dispatch({
+                type:'article/showSetBinModal',
+                payload:{
+                    articles:articles,
+                    modalType:"group"
+                }
+            })
+        },
 	}
+
+    const setFixedPickBinModalProps={
+        articles:articles,
+        visible:modalVisible,
+        onOk(articles){
+            if(modalType==="single"){
+           		dispatch({
+			        type: 'article/setArticleFixedPickBin',
+			        payload: {
+			        	articleUuid: articles[0].uuid,
+			        	fixedPickBin: articles[0].fixedPickBin
+			        }
+		        })
+            }else{
+                dispatch({
+                    type: 'article/batchSetBinModal',
+                    payload: {
+                        setFixedPickBinEntitys: articles
+                    }
+                })
+            }
+        },
+        onCancel(){
+            dispatch({
+                type: 'article/hideSetBinModal'
+            })  
+        }
+    }
+
+    const batchProcesssetFixedPickBinProps = {
+	    showConfirmModal: batchSetBinProcessModal,
+	    records: setFixedPickBinEntitys ? setFixedPickBinEntitys : [],
+	    next: articleNext,
+	    actionText: '设置',
+	    entityCaption: '固定拣货位',
+	    batchProcess(entity) {
+	      dispatch({
+	        type: 'article/setArticleFixedPickBin',
+	        payload: {
+	        	articleUuid: entity.uuid,
+	        	fixedPickBin:entity.fixedPickBin
+	        }
+	      })
+	    },
+	    hideConfirmModal() {
+	      dispatch({
+	        type: 'article/hideBatchSetBinModal',
+	      })
+	    },
+	    refreshGrid() {
+	      dispatch({
+	        type: 'article/query'
+	      })
+	    }
+    }
 
 	const articleSearchFormProps = {
 		field,
@@ -285,6 +372,8 @@ function Article({ location, dispatch, article }) {
 			return (<div>
 				<ArticleSearchForm {...articleSearchFormProps} />
 				<ArticleSearchGrid {...articleSearchGridProps} />
+				<SetFixedPickBinModal {...setFixedPickBinModalProps} />
+				<WMSProgress {...batchProcesssetFixedPickBinProps} />
 			</div>);
 		}
 	}

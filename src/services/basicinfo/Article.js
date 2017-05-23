@@ -77,3 +77,9 @@ export async function addArticleBarcode(params) {
   const url = '/basic/article/addArticleBarcode';
   return request(query(url, params));
 }
+
+export async function setArticleFixedPickBin(params) {
+  const url = '/basic/article/setArticleFixedPickBin';
+  return request(query(url, params), updateBaseNullBody(null));
+}
+
