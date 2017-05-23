@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 class ReceiveBillGrid extends React.Component {
     constructor(props) {
@@ -44,7 +45,7 @@ class ReceiveBillGrid extends React.Component {
             title: '单号',
             dataIndex: 'billNumber',
             key: 'billNumber',
-            render: (text, record) => <a onClick={() => { this.state.onViewItem(record) }}>{text}</a>,
+            render: (text, record) => <a onClick={() => { this.state.onViewItem(record) }} disabled={!PermissionUtil("receiveBill:view")}>{text}</a>,
             sorter: true,
         },
         {
@@ -63,7 +64,7 @@ class ReceiveBillGrid extends React.Component {
             title: '入库订单',
             dataIndex: 'orderBillNumber',
             key: 'orderBillNumber',
-            render: (text, record) => <a onClick={() => { this.state.onViewOrderBill(record) }}>{text}</a>,
+            render: (text, record) => <a onClick={() => { this.state.onViewOrderBill(record) }} disabled={!PermissionUtil("orderBill:view")}>{text}</a>,
             sorter: true,
         },
         {
@@ -82,14 +83,14 @@ class ReceiveBillGrid extends React.Component {
             key: 'operation',
             render: (text, record) => (
                 <p>
-                    <a onClick={() => { this.state.onEdit(record) }}>编辑</a>
+                    <a onClick={() => { this.state.onEdit(record) }} disabled={!PermissionUtil("receiveBill:edit")}>编辑</a>
                     &nbsp;
                 <Popconfirm title="确定要删除吗？" onConfirm={() => this.state.onDelete(record)} >
-                        <a disabled={record.state === "已删除"}>删除</a>
+                        <a disabled={(record.state === "deleted") && !PermissionUtil("receiveBill:delete")}>删除</a>
                     </Popconfirm>
                     &nbsp;
                     <Popconfirm title="确定要完成吗？" onConfirm={() => this.state.onFinish(record)}>
-                        <a>完成</a>
+                        <a disabled={!PermissionUtil("receiveBill:finish")}>完成</a>
                     </Popconfirm>
                 </p>
             )
@@ -116,9 +117,9 @@ class ReceiveBillGrid extends React.Component {
                         () =>
                             <div>
                                 <Row type="flex">
-                                    <Col><Button onClick={this.state.onCreate}>新建</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleRemoveBatch}>删除</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleFinishBatch}>完成</Button></Col>
+                                    <Col><Button onClick={this.state.onCreate} disabled={!PermissionUtil("receiveBill:create")}>新建</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("receiveBill:delete")}>删除</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleFinishBatch} disabled={!PermissionUtil("receiveBill:finish")}>完成</Button></Col>
                                     <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                                 </Row>
                             </div>

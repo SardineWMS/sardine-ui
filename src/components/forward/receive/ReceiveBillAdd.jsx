@@ -7,6 +7,7 @@ import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
 import ReceiveBillItemGrid from './ReceiveBillItemGrid';
 const EditableCell = require('../../Widget/EditableCell');
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const ReceiveBillAddForm = ({
     item = {},
@@ -114,7 +115,7 @@ const ReceiveBillAddForm = ({
 
     const toolbar = [];
     toolbar.push(<Button onClick={() => onCancel(item)} key={Guid()} > 取消</Button>);
-    toolbar.push(<Button key={Guid()} onClick={handleCreate}>保存</Button>)
+    toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("receiveBill:create")}>保存</Button>)
 
     return (
         <div>

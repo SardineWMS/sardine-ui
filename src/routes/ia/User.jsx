@@ -85,6 +85,12 @@ function User({ location, dispatch, user }) {
 				}
 			})
 		},
+		onDeleteItem(item) {
+			dispatch({
+				type: 'user/delete',
+				payload: item,
+			})
+		},
 		onOnline(item) {
 			dispatch({
 				type: 'user/gridOnline',
@@ -307,7 +313,7 @@ function User({ location, dispatch, user }) {
 		item: currentItem,
 		visible: showRoleAssignmentModal,
 		treeData: roleList,
-		value:currentSelectedRoles,
+		value: currentSelectedRoles,
 		onCancel() {
 			dispatch({
 				type: 'user/hideRoleAssignment',

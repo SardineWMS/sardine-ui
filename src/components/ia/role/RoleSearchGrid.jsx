@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 import RowEditCell from '../../Widget/RowEditCell';
 import styles from '../../less/EditTable.less';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 class RoleGrid extends React.Component {
     constructor(props) {
@@ -88,7 +89,7 @@ class RoleGrid extends React.Component {
                 return (<div className={styles.editable_row_operations}>
                     {record.editable ?
                         <span>
-                            <a onClick={() => this.state.onSave(record)}>保存</a>
+                            <a onClick={() => this.state.onSave(record)} disabled={!PermissionUtil("role:edit")}>保存</a>
                             <Popconfirm title={"确定要取消编辑吗？"} onConfirm={() => this.state.onCancelEdit(record)}>
                                 <a>取消</a>
                             </Popconfirm>
@@ -96,13 +97,13 @@ class RoleGrid extends React.Component {
                         :
                         <span>
                             <Popconfirm title="确定要删除吗？" onConfirm={() => this.state.onDelete(record)} >
-                                <a disabled={record.state === "已删除"}>删除</a>
+                                <a disabled={!PermissionUtil("role:delete")}>删除</a>
                             </Popconfirm>
-                            <a onClick={() => { this.state.onEdit(record) }}>编辑</a>
+                            <a onClick={() => { this.state.onEdit(record) }} disabled={!PermissionUtil("role:edit")}>编辑</a>
                             <Popconfirm title={`确定要${record.state === '启用' ? '禁用' : '启用'}吗？`} onConfirm={this.handleOnlineOrOffline.bind(this, record)}>
-                                <a>{record.state === '启用' ? '禁用' : '启用'}</a>
+                                <a disabled={record.state === 'online' ? !PermissionUtil("role:offline") : !PermissionUtil("role:online")}>{record.state === 'online' ? '禁用' : '启用'}</a>
                             </Popconfirm>
-                            <a onClick={() => { this.state.onAssign(record) }}>分配权限</a>
+                            <a onClick={() => { this.state.onAssign(record) }} disabled={!PermissionUtil("role:edit")}>分配权限</a>
                         </span>
                     }
                 </div>

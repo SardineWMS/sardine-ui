@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Pagination, Button, message, Row, Col, Card, Spin } from 'antd';
 import RowEditCell from '../../Widget/RowEditCell';
 import styles from '../../less/EditTable.less';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 
 class UserGrid extends React.Component {
@@ -42,11 +43,26 @@ class UserGrid extends React.Component {
     this.state.onCreate();
   };
   handleOnlineOrOffline(record, e) {
-    record.userState === '已启用' ? this.state.onOffline(record) : this.state.onOnline(record);
+    record.userState === 'online' ? this.state.onOffline(record) : this.state.onOnline(record);
   };
   render() {
     const admin = localStorage.getItem("admin");//当前登录用户是否是管理员权限
     const loginId = localStorage.getItem("loginId");
+
+    function convertState(text) {
+      if (text == "online")
+        return '已启用';
+      if (text = "offline")
+        return '已停用';
+    };
+
+    function convertAdmin(text) {
+      if (text == false)
+        return '否';
+      if (text == true)
+        return '是';
+    }
+
     const columns = [
       {
         title: '代码',
@@ -67,28 +83,30 @@ class UserGrid extends React.Component {
         title: '是否为管理员',
         dataIndex: 'administrator',
         key: 'administrator',
+        render: text => convertAdmin(text),
       }, {
         title: '用户状态',
         dataIndex: 'userState',
         key: 'userState',
+        render: text => convertState(text),
       }, {
         title: '操作',
         key: 'operation',
         render: (text, record) => (
           <p>
             <Popconfirm title="确定要删除吗？" onConfirm={() => this.state.onDeleteItem(record)}>
-              <a disabled={!admin && loginId !== record.code}>删除</a>
+              <a disabled={!PermissionUtil('user:delete')}>删除</a>
             </Popconfirm>
             &nbsp;
-          <a onClick={() => this.state.onEditItem(record)}>编辑</a>
+          <a onClick={() => this.state.onEditItem(record)} disabled={!PermissionUtil("user:edit")}>编辑</a>
             &nbsp;
-          <Popconfirm title={`确定要${record.userState === '已启用' ? '停用' : '启用'}吗？`} onConfirm={this.handleOnlineOrOffline.bind(this, record)}>
-              <a>{record.userState === '已启用' ? '停用' : '启用'}</a>
+          <Popconfirm title={`确定要${record.userState === 'online' ? '停用' : '启用'}吗？`} onConfirm={this.handleOnlineOrOffline.bind(this, record)}>
+              <a disabled={record.userState == 'online' ? !PermissionUtil("user:offline") : !PermissionUtil("user:online")}>{record.userState === 'online' ? '停用' : '启用'}</a>
             </Popconfirm>
             &nbsp;
-            <a onClick={() => this.state.onAssignRole(record)}>分配角色</a>
+            <a onClick={() => this.state.onAssignRole(record)} disabled={!PermissionUtil("user:edit")}>分配角色</a>
             &nbsp;
-            <a onClick={() => this.state.onAssignResource(record)}>分配权限</a>
+            <a onClick={() => this.state.onAssignResource(record)} disabled={!PermissionUtil("user:edit")}>分配权限</a>
           </p>
         )
       }
@@ -148,10 +166,10 @@ class UserGrid extends React.Component {
             () =>
               <div>
                 <Row type="flex">
-                  <Col><Button type="ghost" onClick={this.handleRemoveBatch}>批量删除</Button></Col>
-                  <Col><Button type="ghost" onClick={this.handleOnlineBatch}>批量启用</Button></Col>
-                  <Col><Button type="ghost" onClick={this.handleOfflineBatch}>批量停用</Button></Col>
-                  <Col><Button onClick={this.handleCreate}>新建</Button></Col>
+                  <Col><Button type="ghost" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("user:delete")}>批量删除</Button></Col>
+                  <Col><Button type="ghost" onClick={this.handleOnlineBatch} disabled={!PermissionUtil("user:online")}>批量启用</Button></Col>
+                  <Col><Button type="ghost" onClick={this.handleOfflineBatch} disabled={!PermissionUtil("user:offline")}>批量停用</Button></Col>
+                  <Col><Button onClick={this.handleCreate} disabled={!PermissionUtil("user:create")}>新建</Button></Col>
                   <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                 </Row>
               </div>

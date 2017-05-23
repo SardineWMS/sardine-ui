@@ -7,6 +7,7 @@ import BaseCard from '../../Widget/BaseCard';
 import RemarkCard from '../../Widget/RemarkCard';
 import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const SupplierView = ({
   item = {},
@@ -40,12 +41,12 @@ const SupplierView = ({
   );
 
   const toolbar = [];
-  toolbar.push(<Button onClick={() => onEdit(item)}> 编辑</Button>);
+  toolbar.push(<Button onClick={() => onEdit(item)} disabled={!PermissionUtil("supplier:edit")}> 编辑</Button>);
   toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)}>
-    <Button disabled={item.state === "deleted"} >删除</Button>
+    <Button disabled={(item.state === "deleted") && (!PermissionUtil("supplier:edit"))} >删除</Button>
   </Popconfirm>);
   toolbar.push(<Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)}>
-    <Button disabled={item.state === "normal"}>恢复</Button>
+    <Button disabled={(item.state === "normal") && (!PermissionUtil("supplier:edit"))}>恢复</Button>
   </Popconfirm>);
   toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
 
