@@ -41,13 +41,7 @@ const SetFixedPickBinModal = ({
     <Modal {...modalOpts}>
         <BaseFormItem label="固定拣货位">
           {getFieldDecorator('fixedPickBin', {
-              initialValue: null,
-              rules: [
-                {
-                  required: true,
-                  message: '固定拣货位未填写',
-                },
-              ],
+              initialValue: null
             })
             (<Input />)
           }
