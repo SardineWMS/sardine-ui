@@ -28,6 +28,8 @@ import Task from './routes/inner/Task';
 export default function ({
   history
 }) {
+  localStorage.removeItem("help_title");
+  localStorage.removeItem("help_content");
   return (
     <Router history={history}>
       <Route path="/" component={App}>

@@ -57,7 +57,7 @@ class Header extends React.Component {
           height="30"
         />
       </span>
-      <span>zs</span>
+      <span>{localStorage.getItem("loginName")}</span>
     </div>);
 
     navChildren.push(

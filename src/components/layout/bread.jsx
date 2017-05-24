@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { Breadcrumb, Icon } from 'antd'
+import { Breadcrumb, Icon, Popover } from 'antd'
 import styles from '../less/main.less'
 import { config } from '../../utils'
 
@@ -21,6 +21,23 @@ const getPathSet = function (menuArray, parentPath) {
   })
 }
 
+const getHelpContent = function (content) {
+  if(content == undefined || content == '')
+    return <div />;
+  var strs= new Array(); //定义一数组 
+  strs=content.split(";;"); //字符分割 
+  var pArray = new Array();
+  for (let i=0; i<strs.length; i++ ) 
+  { 
+   pArray.push(<p>{strs[i]}</p>); //分割后的字符输出 
+  } 
+  return (
+   <div> 
+    {pArray}
+   </div>
+  );
+}
+
 function Bread({ location, menu }) {
   let pathNames = [];
   getPathSet(menu ? eval('(' + menu + ')') : []);
@@ -40,7 +57,6 @@ function Bread({ location, menu }) {
   console.dir(pathNames);
   const breads = pathNames.map((item, key) => {
     return (
-      
       <Breadcrumb.Item key={key}>
         {pathSet[item].icon
           ? <Icon type={pathSet[item].icon} />
@@ -52,12 +68,12 @@ function Bread({ location, menu }) {
 
   return (
     <div className={styles.bread}>
-      <Breadcrumb>
-        <Breadcrumb.Item><Icon type="home" />
-          <span className={styles.breadFont}>主页</span>
-        </Breadcrumb.Item>
+      <Breadcrumb style={{width: 300}}>
         {breads}
       </Breadcrumb>
+      <Popover content={getHelpContent(localStorage.getItem("help_content"))} title={localStorage.getItem("help_title")}>
+        <Icon type="question-circle" style={{lineHeight: 3}}/>
+      </Popover>
     </div>
   )
 }
