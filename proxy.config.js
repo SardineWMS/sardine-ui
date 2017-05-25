@@ -41,4 +41,5 @@ module.exports = {
 	'/forward/receive/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/in/receive',
 	'/util/helper/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/common/helper',
 	'/api/company/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/company',
+	'/in/decInc/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/inner/decInc',
 };

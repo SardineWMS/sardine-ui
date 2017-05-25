@@ -1,6 +1,6 @@
 import request from '../../utils/request';
 import qs from 'qs';
-import { query, addTokenToParamsAndStringify} from '../../utils/BaseService.js';
+import { query, addTokenToParamsAndStringify } from '../../utils/BaseService.js';
 
 export async function queryBin(params) {
   const url = "/basic/bin/query";
@@ -15,7 +15,7 @@ export async function queryWrhs(params) {
 export async function queryZones(params) {
   const url = "/basic/bin/queryZones";
   return request(query(url, params));
-} 
+}
 
 export async function queryBinTypes(params) {
   const url = "/basic/bin/queryBinTypes";
@@ -79,11 +79,16 @@ export async function createBin(params) {
 
 export async function deleteBin(params) {
   return request(`/basic/bin/delete?${addTokenToParamsAndStringify(params)}`, {
-        method: 'put',
+    method: 'put',
     headers: {
       'Accept': 'application/json',
       'Content-Type': 'application/json',
     },
     body: null,
   });
+}
+
+export async function getBinByCode(params) {
+  const url = '/basic/bin/getBinByCode';
+  return request(query(url, params));
 }

@@ -14,7 +14,7 @@ export async function get(params) {
 }
 
 export async function getByCode(params) {
-  const url = "/basic/article/getByCode";
+  const url = "/basic/article/getbycode";
   return request(query(url, params));
 }
 
@@ -78,8 +78,7 @@ export async function addArticleBarcode(params) {
   return request(query(url, params));
 }
 
-export async function setArticleFixedPickBin(params) {
-  const url = '/basic/article/setArticleFixedPickBin';
-  return request(query(url, params), updateBaseNullBody(null));
+export async function queryArticleInStocks(params) {
+  const url = '/basic/article/queryInStocks';
+  return request(query(url, params));
 }
-

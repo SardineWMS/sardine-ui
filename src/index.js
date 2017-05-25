@@ -31,6 +31,7 @@ app.model(require('./models/ia/Role'));
 app.model(require('./models/forward/OrderBill'));
 app.model(require('./models/forward/Receive'));
 app.model(require('./models/system/System'));
+app.model(require('./models/inner/DecInc'));
 
 app.router(require('./router'));
 

@@ -165,7 +165,7 @@ export default {
                     itemArt.expDays = expDays;
                     itemArt.articleSpec = article.data.obj.spec;
                     itemArt.editable = true;
-                    itemArt.bin = bin.data.obj.pageData.records[0].code;
+                    // itemArt.bin = bin.data.obj.pageData.records[0].code;
                     const sku = {};
                     sku.value = itemArt.article.code;
                     sku.label = itemArt.article.code;

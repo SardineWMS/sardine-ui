@@ -23,6 +23,7 @@ import System from './routes/system/System';
 import OrderBill from './routes/forward/OrderBill';
 import Receive from './routes/forward/Receive';
 import Task from './routes/inner/Task';
+import DecInc from './routes/inner/DecInc';
 
 
 export default function ({
@@ -51,6 +52,7 @@ export default function ({
         <Route path="/forward/receiveBill" component={Receive} />
         <Route path="/system/dc" component={System} />
         <Route path="/inner/task" component={Task} />
+        <Route path="/inner/decIncBill" component={DecInc} />
       </Route>
     </Router>
   );
