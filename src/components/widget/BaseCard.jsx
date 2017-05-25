@@ -2,6 +2,8 @@ import React from 'react';
 import { Form, Button, Card, Row, Col } from 'antd';
 import Guid from '../../utils/Guid';
 const FormItem = Form.Item;
+import Panel from './Panel';
+
 
 /** 基本卡片，带标题，可单列也可两列，暂不支持超过两列，两列时设置single={true}即可 **/
 class BaseCard extends React.Component {
@@ -9,7 +11,7 @@ class BaseCard extends React.Component {
   render() {
     let single = this.props.single;
     return (
-      <Card title={this.props.title} bordered={false} bodyStyle={{ padding: 0 }}>
+      <Panel title={this.props.title}>
         <Row gutter={36} >
           {
             React.Children.map(this.props.children, function (child) {
@@ -21,7 +23,7 @@ class BaseCard extends React.Component {
             })
           }
         </Row>
-      </Card>
+      </Panel>
     );
   }
 }

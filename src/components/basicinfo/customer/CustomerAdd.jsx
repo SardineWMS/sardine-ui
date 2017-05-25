@@ -77,7 +77,7 @@ const CustomerAddForm = ({
     return (
         <div>
             <ToolbarPanel children={toolbar} />
-            <BaseCard title="基本信息" single={true}>
+            <BaseCard title="基本信息">
                 <BaseForm items={children} />
             </BaseCard>
         </div>
