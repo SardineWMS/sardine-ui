@@ -99,8 +99,7 @@ export default {
       })
       const {
         data
-      } = yield call(queryContainerTypes, payload: {
-          token: payload.token
+      } = yield call(queryContainerTypes, {
         });
 
       if (data) {
@@ -113,7 +112,7 @@ export default {
       }
     },
 
-    *queryContainerType({ payload },
+    *createType({ payload },
       { call, put }) {
       const { data } = yield call(queryContainerType, parse(payload));
       if (data) {
@@ -149,7 +148,7 @@ export default {
         version: payload.version
       });
       yield put({
-        type: 'queryContainerType',
+        type: 'refreshContainerType',
         payload: {}
       })
     },
@@ -159,7 +158,7 @@ export default {
     }) {
       yield call(createContainerType, payload);
       yield put({
-        type: 'queryContainerType',
+        type: 'refreshContainerType',
         payload: {}
       })
     },
@@ -167,12 +166,39 @@ export default {
     *saveModifyContainerType({ payload }, {
       call, put
     }) {
+      console.log("修改");
       yield call(edit, parse(payload));
       yield put({
-        type: 'queryContainerType',
+        type: 'refreshContainerType',
         payload: {}
       })
-    }
+    },
+
+    * refreshContainerType({
+      payload
+    }, {
+      call,
+        put
+    }) {
+      yield put({
+        type: 'showLoading'
+      })
+      const {
+        data
+      } = yield call(queryContainerType, {
+        });
+
+      if (data) {
+        console.log("更新之后");
+        console.dir(data);
+        yield put({
+          type: 'queryContainerTypeSuccess',
+          payload: {
+            containerTypeList: data.obj.records,
+          }
+        });
+      }
+    },
 
   },
 
@@ -235,7 +261,7 @@ export default {
     queryContainerTypeSuccess(state, action) {
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
       }
     },
     showContainerTypeSuccess(state, action) {

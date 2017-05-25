@@ -1,9 +1,12 @@
 import React, { Component, PropTypes } from 'react';
-import { Form, Row, Col, Input, Button, Card, Collapse, Icon, Table, Spin } from 'antd';
+import { Form, Row, Col, Input, Button, Card, Collapse, Icon, Table, Spin, Select } from 'antd';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import { lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
+
+const Option = Select.Option;
 
 const ContainerSearch = ({
 	dataSource,
@@ -55,7 +58,14 @@ const ContainerSearch = ({
   children.push(<BaseTwoCol>
     <BaseFormItem label="状态 等于">
       {getFieldDecorator('state')(
-        <Input type="text" placeholder="状态 等于" />
+        <Select placeholder="请选择" showSearch={false} size="default">
+          <Option value="STACONTAINERIDLE">空闲</Option>
+          <Option value="STACONTAINERSTKINING">收货中</Option>
+          <Option value="STACONTAINERUSEING">已使用</Option>
+          <Option value="STACONTAINERPICKING">拣货中</Option>
+          <Option value="STACONTAINERMOVING">平移中</Option>
+          <Option value="STACONTAINERPUTAWAYING">上架中</Option>
+        </Select>
       )}
     </BaseFormItem>
   </BaseTwoCol>);
@@ -76,6 +86,21 @@ const ContainerSearch = ({
 
   const shownCount = searchExpand ? children.length : 2;
 
+  function convertState(text) {
+    if (text == "STACONTAINERIDLE")
+      return '空闲';
+    else if (text == "STACONTAINERSTKINING")
+      return '收货中';
+    else if (text == "STACONTAINERUSEING")
+      return '已使用';
+    else if (text == "STACONTAINERPICKING")
+      return '拣货中';
+    else if (text == "STACONTAINERMOVING")
+      return '平移中';
+    else if (text == "STACONTAINERPUTAWAYING")
+      return '上架中'
+  }
+
   const columns = [{
     title: '条码',
     dataIndex: 'barcode',
@@ -84,7 +109,7 @@ const ContainerSearch = ({
     title: '状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => (text == "STACONTAINERIDLE" ? '空闲' : text),
+    render: text => convertState(text),
   }, {
     title: '当前位置',
     dataIndex: 'position',
@@ -95,8 +120,9 @@ const ContainerSearch = ({
     key: 'toPosition',
   }, {
     title: '操作信息',
-    dataIndex: 'operatorInfo',
-    key: 'operatorInfo',
+    dataIndex: 'lastModifyInfo',
+    key: 'lastModifyInfo',
+    render: (text, record) => lastModifyInfo2String(record),
   }, {
     title: '操作',
     key: 'operation',

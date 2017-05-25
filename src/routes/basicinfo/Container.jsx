@@ -65,7 +65,6 @@ function Container({ location, dispatch, container }) {
         type: 'container/queryContainerType',
         payload: {
           modalType: 'create',
-          token: localStorage.getItem("token")
         },
       })
     },
@@ -85,7 +84,7 @@ function Container({ location, dispatch, container }) {
     },
     onCreateContainerType() {
       dispatch({
-        type: 'container/queryContainerType',
+        type: 'container/createType',
         payload: {}
       })
     }

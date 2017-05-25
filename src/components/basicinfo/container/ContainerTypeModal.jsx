@@ -1,11 +1,23 @@
 import React, { PropTypes } from 'react';
 import { Table, Form, Popconfirm, Button, Modal } from 'antd';
-import RowEditCell from '../../Widget/RowEditCell';
+import RowEditCellForModal from '../../Widget/RowEditCellForModal';
 import styles from '../../less/EditTable.less';
 import PermissionUtil from '../../../utils/PermissionUtil';
 
-const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave }) => {
+const ContainerTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave }) => {
     const columns = [
+        {
+            title: '前缀',
+            dataIndex: 'barCodePrefix',
+            key: 'barCodePrefix',
+            render: (text, record) => renderColumns(record, "barCodePrefix", text),
+        },
+        {
+            title: '长度',
+            dataIndex: 'barCodeLength',
+            key: 'barCodeLength',
+            render: (text, record) => renderColumns(record, "barCodeLength", text),
+        },
         {
             title: '代码',
             dataIndex: 'code',
@@ -43,7 +55,7 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
                                 <a onClick={() => { onEdit(record) }} disabled={!PermissionUtil("containertype:edit")}>编辑</a>
                                 <Popconfirm title={"确定要删除吗？"} onConfirm={() => { onDelete(record) }}>
                                     <a disabled={!PermissionUtil("containertype:delete")}>删除</a>
-                                                                 </Popconfirm>
+                                </Popconfirm>
                             </span>
                         }
                     </div>
@@ -56,7 +68,7 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
         if (typeof record.editable === undefined)
             return text;
 
-        return (<RowEditCell
+        return (<RowEditCellForModal
             editable={record.editable}
             value={text}
             status={status}
@@ -73,6 +85,10 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
             record.bearingWeight = value;
         if ("weight" == key)
             record.weight = value;
+        if ("barCodePrefix" == key)
+            record.barCodePrefix = value;
+        if ("barCodeLength" == key)
+            record.barCodeLength = value;
     }
 
     const modalOpts = {
@@ -94,4 +110,4 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
     </Modal>)
 }
 
-export default BinTypeModal;
+export default ContainerTypeModal;
