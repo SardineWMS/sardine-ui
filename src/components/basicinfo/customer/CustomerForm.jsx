@@ -20,7 +20,7 @@ const CustomerSearchForm = ({
 }) => {
     const children = [];
     children.push(
-        <BaseTwoCol key={Guid()}>
+        <BaseTwoCol key={"code"}>
             <BaseFormItem label={"代码 类似于"} >
                 {getFieldDecorator("code")(
                     <Input placeholder="请输入" />
@@ -29,10 +29,11 @@ const CustomerSearchForm = ({
         </BaseTwoCol>
     );
     children.push(
-        <BaseTwoCol key={Guid()}>
+        <BaseTwoCol key={"state"}>
             <BaseFormItem label={"状态 等于"}>
-                {getFieldDecorator("state", { initialValue: "normal" })(
+                {getFieldDecorator("state", { initialValue: '' })(
                     <Select placeholder="请选择" showSearch={false} size="default">
+                        <Option value=''> 全部</Option>
                         <Option value="normal" >正常</Option>
                         <Option value="deleted">已删除</Option>
                     </Select>
@@ -41,7 +42,7 @@ const CustomerSearchForm = ({
         </BaseTwoCol>
     );
     children.push(
-        <BaseTwoCol key={Guid()}>
+        <BaseTwoCol key={"name"}>
             <BaseFormItem label={"名称 类似于"}>
                 {getFieldDecorator("name")(
                     <Input placeholder="请输入" />
