@@ -36,7 +36,8 @@ function User({ location, dispatch, user }) {
 		currentUserUuid,
 		showViewResourceModal,
 		viewResourceListTree,
-		currentSelectedRoles
+		currentSelectedRoles,
+		allRoles,
 	} = user;
 
 	const userSearchGridProps = {
@@ -150,6 +151,7 @@ function User({ location, dispatch, user }) {
 
 	const userSearchFormProps = {
 		searchExpand,
+		allRoles,
 		onSearch(fieldsValue) {
 			dispatch({
 				type: 'user/query',

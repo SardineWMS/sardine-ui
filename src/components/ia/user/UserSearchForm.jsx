@@ -14,6 +14,7 @@ const DemoSearchForm = ({
     getFieldsValue,
     resetFields,
   },
+  allRoles,
 }) => {
   function handleSearch(e) {
     e.preventDefault();
@@ -30,11 +31,18 @@ const DemoSearchForm = ({
     wrapperCol: { span: 15 },
   };
 
+  const options = [];
+  if (allRoles) {
+    for (var role of allRoles) {
+      options.push(<Option key={role.uuid}>{role.name}</Option>)
+    }
+  }
+
   const children = [];
   children.push(<Col span={12} key='code'>
-    <FormItem {...formItemLayout} label="代码 类似于" style={{'font-family':'Verdana'}}>
+    <FormItem {...formItemLayout} label="代码 类似于" style={{ 'font-family': 'Verdana' }}>
       {getFieldDecorator("code")(
-        <Input key="codeInput" placeholder="代码 类似于" style={{border:'1px solid #B5B5B5', 'font-family':'Verdana'}}  />
+        <Input key="codeInput" placeholder="代码 类似于" style={{ border: '1px solid #B5B5B5', 'font-family': 'Verdana' }} />
       )}
     </FormItem>
   </Col>);
@@ -58,10 +66,9 @@ const DemoSearchForm = ({
   </Col>);
   children.push(<Col span={12} key='role'>
     <FormItem {...formItemLayout} label="角色 包含">
-      {getFieldDecorator('role')(
+      {getFieldDecorator('roleUuid')(
         <Select size="default" placeholder="请选择" showSearch={false} key="stateSelecter">
-          <Option value="online">已启用</Option>
-          <Option value="offline">已停用</Option>
+          {options}
         </Select>
       )}
     </FormItem>
@@ -69,7 +76,7 @@ const DemoSearchForm = ({
 
   const shownCount = searchExpand ? children.length : 4;
   return (
-    <Card title="搜索条件" style={{border:'1px solid #71C671'}}>
+    <Card title="搜索条件" style={{ border: '1px solid #71C671' }}>
       <Form
         horizontal
         className="ant-advanced-search-form"

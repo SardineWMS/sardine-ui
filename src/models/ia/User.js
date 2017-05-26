@@ -41,6 +41,7 @@ export default {
 		currentSelected: [],
 		showViewResourceModal: false,
 		currentSelectedRoles: [],
+		allRoles: [],//当前组织下所有角色，用于用户搜索时角色下拉框数据源.
 	},
 
 	subscriptions: {
@@ -73,7 +74,7 @@ export default {
 				data
 			} = yield call(queryUser, parse(payload));
 			if (data) {
-				console.log("用户列表", data);
+				const allRoles = yield call(queryAllRole, {});
 				let userList = data.obj.records;
 				yield put({
 					type: 'querySuccess',
@@ -82,7 +83,8 @@ export default {
 						pagination: {
 							total: data.obj.recordCount,
 							current: data.obj.page,
-						}
+						},
+						allRoles: allRoles.data.obj,
 					},
 				})
 			}
