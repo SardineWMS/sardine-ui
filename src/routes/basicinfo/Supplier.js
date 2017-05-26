@@ -48,7 +48,7 @@ function Supplier({dispatch, supplier, location}) {
       dispatch({
         type: 'supplier/showCreatePage',
         payload: {
-          currentItem: null
+          currentItem: {}
         }
       })
     },
