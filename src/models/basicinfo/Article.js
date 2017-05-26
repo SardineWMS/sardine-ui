@@ -31,7 +31,7 @@ export default {
     modalType: 'single',
     batchSetBinProcessModal: false,
     setFixedPickBinEntitys: [],
-    articles:[],
+    articles: [],
     pagination: {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -49,17 +49,24 @@ export default {
     }) {
       history.listen(location => {
         if (location.pathname === '/basicInfo/article') {
-          dispatch({
-            type: 'query',
-            payload: location.query,
-          })
+          if (location.query.type == 'getAndView') {
+            dispatch({
+              type: 'getAndView',
+              payload: { articleUuid: location.query.key }
+            })
+          } else {
+            dispatch({
+              type: 'query',
+              payload: location.query,
+            })
+          }
         }
       })
     },
   },
 
-  effects: { 
-    *query({ payload}, {
+  effects: {
+    *query({ payload }, {
       call,
       put
     }) {
@@ -82,10 +89,10 @@ export default {
         })
       }
     },
-    *getAndView({ payload}, {
+    *getAndView({ payload }, {
       call,
       put
-    }){
+    }) {
       yield put({
         type: 'showLoading'
       })
@@ -101,10 +108,10 @@ export default {
         })
       }
     },
-    *getAndShowEditPage({ payload}, {
+    *getAndShowEditPage({ payload }, {
       call,
       put
-    }){
+    }) {
       yield put({
         type: 'showLoading'
       })
@@ -124,7 +131,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
@@ -132,7 +139,7 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(create, payload)
+      const { data } = yield call(create, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
@@ -147,7 +154,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideSetBinModal'
@@ -155,10 +162,10 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(setArticleFixedPickBin, parse(payload))
+      const { data } = yield call(setArticleFixedPickBin, parse(payload))
       if (data) {
         yield put({
-            type: 'query',
+          type: 'query',
         })
       }
     },
@@ -167,7 +174,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
@@ -175,7 +182,7 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(getAndSaveSupplier, payload)
+      const { data } = yield call(getAndSaveSupplier, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
@@ -190,7 +197,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
@@ -198,7 +205,7 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(deleteArticleSupplier, payload)
+      const { data } = yield call(deleteArticleSupplier, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
@@ -213,7 +220,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
@@ -221,7 +228,7 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(setDefaultSupplier, payload)
+      const { data } = yield call(setDefaultSupplier, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
@@ -232,10 +239,10 @@ export default {
       }
     },
 
-    *addArticleSupplier({ payload}, {
+    *addArticleSupplier({ payload }, {
       call,
       put
-    }){
+    }) {
       yield put({
         type: 'showLoading'
       })
@@ -255,7 +262,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
@@ -263,7 +270,7 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(saveArticleQpc, payload)
+      const { data } = yield call(saveArticleQpc, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
@@ -278,7 +285,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
@@ -286,7 +293,7 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(deleteArticleQpc, payload)
+      const { data } = yield call(deleteArticleQpc, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
@@ -301,7 +308,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
@@ -309,7 +316,7 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(setDefaultQpcStr, payload)
+      const { data } = yield call(setDefaultQpcStr, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
@@ -320,10 +327,10 @@ export default {
       }
     },
 
-    *addArticleQpc({ payload}, {
+    *addArticleQpc({ payload }, {
       call,
       put
-    }){
+    }) {
       yield put({
         type: 'showLoading'
       })
@@ -343,7 +350,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
@@ -351,7 +358,7 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(saveArticleBarcode, payload)
+      const { data } = yield call(saveArticleBarcode, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
@@ -366,7 +373,7 @@ export default {
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
@@ -374,7 +381,7 @@ export default {
       yield put({
         type: 'showLoading'
       })
-      const {data} = yield call(deleteArticleBarcode, payload)
+      const { data } = yield call(deleteArticleBarcode, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
@@ -385,10 +392,10 @@ export default {
       }
     },
 
-    *addArticleBarcode({ payload}, {
+    *addArticleBarcode({ payload }, {
       call,
       put
-    }){
+    }) {
       yield put({
         type: 'showLoading'
       })
@@ -408,24 +415,28 @@ export default {
 
   reducers: {
     showLoading(state) {
-      return {...state,
+      return {
+        ...state,
         loading: true
       }
     },
     querySuccess(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         loading: false
       }
     },
     querySuccess(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         loading: false
       }
     },
     showSupplier(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         loading: false,
         showCreate: false,
@@ -433,7 +444,8 @@ export default {
       }
     },
     showCreatePage(state) {
-      return {...state,
+      return {
+        ...state,
         showCreate: true,
         showView: false,
         currentArticle: {},
@@ -441,7 +453,8 @@ export default {
     },
 
     showViewPage(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         showCreate: false,
         showView: true,
@@ -449,9 +462,10 @@ export default {
     },
 
     showEditPage(state, action) {
-            console.log("ahu  sssnn");
+      console.log("ahu  sssnn");
       console.log(action);
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         showCreate: true,
         showView: false,
@@ -459,40 +473,41 @@ export default {
     },
 
     backSearch(state) {
-      return {...state,
+      return {
+        ...state,
         showCreate: false,
         showView: false,
       }
     },
 
     batchSetBinModal(state, action) {
-        return {
-            ...state,
-            ...action.payload,            
-            modalVisible: false,
-            batchSetBinProcessModal: true
-        }
+      return {
+        ...state,
+        ...action.payload,
+        modalVisible: false,
+        batchSetBinProcessModal: true
+      }
     },
     hideBatchSetBinModal(state) {
-        return {
-            ...state,
-            batchSetBinProcessModal: false
-        }
+      return {
+        ...state,
+        batchSetBinProcessModal: false
+      }
     },
 
     showSetBinModal(state, action) {
-        return {
-            ...state,
-            ...action.payload,
-            modalVisible: true
-        }
+      return {
+        ...state,
+        ...action.payload,
+        modalVisible: true
+      }
     },
 
     hideSetBinModal(state) {
-        return {
-            ...state,
-            modalVisible: false
-        }
+      return {
+        ...state,
+        modalVisible: false
+      }
     },
 
   },

@@ -17,3 +17,7 @@ export async function queryContainerTypes(params) {
 export async function create(params) {
   return request(query('/basic/container/savenew', params), updateBaseNullBody(params));
 }
+
+export async function queryContainerStockInfo(params){
+  return request(query('/basic/container/queryContainerStockInfo',params));
+}

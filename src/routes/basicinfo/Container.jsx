@@ -5,6 +5,7 @@ import ContainerSearch from '../../components/BasicInfo/Container/ContainerSearc
 import ContainerModal from '../../components/BasicInfo/Container/ContainerModal';
 import WMSProgress from '../../components/BasicInfo/Container/WMSProgress';
 import ContainerTypeModal from '../../components/BasicInfo/Container/ContainerTypeModal';
+import ContainerStockInfo from '../../components/basicinfo/container/ContainerStockInfo';
 
 function Container({ location, dispatch, container }) {
   const {
@@ -21,6 +22,8 @@ function Container({ location, dispatch, container }) {
     modalType,
     containerTypeList,
     containerTypeModalVisible,
+    showStockInfoPage,
+    containerStockInfos
     } = container;
 
   const containerModalProps = {
@@ -87,7 +90,13 @@ function Container({ location, dispatch, container }) {
         type: 'container/createType',
         payload: {}
       })
-    }
+    },
+    onQueryStock(record) {
+      dispatch({
+        type: 'container/queryContainerStock',
+        payload: record,
+      })
+    },
   }
 
   const batchProcessModalProps = {
@@ -166,17 +175,34 @@ function Container({ location, dispatch, container }) {
           payload: record,
         })
     }
-  }
+  };
+
+  const containerStockInfoProps = {
+    dataSource: containerStockInfos,
+    onViewArticle(record) {
+      dispatch({
+        type: 'container/toViewArticle',
+        payload: record,
+      })
+    }
+  };
 
   const ContainerModalGen = () =>
     <ContainerModal {...containerModalProps} />
+  if (showStockInfoPage == false)
+    return (
+      <div className="content-inner">
+        <ContainerSearch {...containerSearchProps} />
+        <ContainerTypeModal {...containerTypeModalProps} />
+        <ContainerModalGen />
+        <WMSProgress {...batchProcessModalProps} />
 
-  return (
-    <div className="content-inner">
-      <ContainerSearch {...containerSearchProps} />
-      <ContainerTypeModal {...containerTypeModalProps} />
-      <ContainerModalGen />
-      <WMSProgress {...batchProcessModalProps} />
+
+      </div>
+    )
+  else return (
+    <div>
+      <ContainerStockInfo {...containerStockInfoProps} />
     </div>
   )
 }

@@ -5,8 +5,10 @@ import {
   queryContainers,
   create,
   queryContainerTypes,
+  queryContainerStockInfo,
 } from '../../services/basicinfo/Container';
 import { querybypage as queryContainerType, create as createContainerType, get, edit, remove } from '../../services/basicinfo/ContainerType';
+import { routerRedux } from 'dva/router';
 
 export default {
   namespace: 'container',
@@ -31,6 +33,8 @@ export default {
     },
     containerTypeModalVisible: false,
     containerTypeList: [],
+    containerStockInfos: [],//容器库存信息
+    showStockInfoPage: false,
   },
 
   subscriptions: {
@@ -71,7 +75,8 @@ export default {
             pagination: {
               total: data.obj.recordCount,
               current: data.obj.page,
-            }
+            },
+            containerStockInfos: [],
           },
         })
       }
@@ -166,7 +171,6 @@ export default {
     *saveModifyContainerType({ payload }, {
       call, put
     }) {
-      console.log("修改");
       yield call(edit, parse(payload));
       yield put({
         type: 'refreshContainerType',
@@ -189,8 +193,6 @@ export default {
         });
 
       if (data) {
-        console.log("更新之后");
-        console.dir(data);
         yield put({
           type: 'queryContainerTypeSuccess',
           payload: {
@@ -199,6 +201,30 @@ export default {
         });
       }
     },
+
+    *queryContainerStock({ payload }, { call, put }) {
+      const { data } = yield call(queryContainerStockInfo, { containerBarcode: payload.barcode });
+      console.log("查询容器商品");
+      console.dir(data);
+      if (data) {
+        yield put({
+          type: 'showStockInfo',
+          payload: {
+            containerStockInfos: data.obj,
+          }
+        })
+      }
+    },
+
+    *toViewArticle({ payload }, { call, put }) {
+      yield put(routerRedux.push({
+        pathname: '/basicInfo/article',
+        query: {
+          type: 'getAndView',
+          key: payload.article.uuid,
+        }
+      }))
+    }
 
   },
 
@@ -220,7 +246,8 @@ export default {
     querySuccess(state, action) {
       return {
         ...state,
-        ...action.payload
+        ...action.payload,
+        showStockInfoPage: false,
       }
     },
     showModal(state, action) {
@@ -269,6 +296,9 @@ export default {
     },
     hideContainerTypeModal(state) {
       return { ...state, containerTypeModalVisible: false }
+    },
+    showStockInfo(state, action) {
+      return { ...state, ...action.payload, showStockInfoPage: true }
     },
 
   },
