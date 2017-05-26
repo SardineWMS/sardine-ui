@@ -240,8 +240,9 @@ export default {
       }
     },
 
-    showCreatePage(state) {
+    showCreatePage(state,action) {
       return {...state,
+        ...action.payload,
         showCreate: true,
         showView: false,
         loading:false
