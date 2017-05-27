@@ -28,9 +28,8 @@ function Customer({ location, dispatch, customer }) {
                 query: {
                     page: page.current,
                     pageSize: page.pageSize,
-                    token: localStorage.getItem("token"),
-                    sort: sorter.field,
-                    sortDirection: sorter.order,
+                    sort: sorter.columnKey,
+                    order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
                 }
             }))
         },
