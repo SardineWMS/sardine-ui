@@ -60,8 +60,6 @@ const SupplierCreate = ({
     <BaseFormItem label="联系方式：" >
       {getFieldDecorator('phone', {
         initialValue: item.phone,
-        rules: [
-          { required: true, message: '联系方式未填写' }],
       })(
         <Input type="text" />
         )}

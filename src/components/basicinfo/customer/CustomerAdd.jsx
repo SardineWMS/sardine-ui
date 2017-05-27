@@ -56,14 +56,14 @@ const CustomerAddForm = ({
     );
     children.push(
         <BaseFormItem label={"联系方式"} >
-            {getFieldDecorator("phone", { initialValue: item.phone })(
+            {getFieldDecorator("phone", { rules: [{ required: true }], initialValue: item.phone })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
         <BaseFormItem label={"地址"} >
-            {getFieldDecorator("address", { initialValue: item.address })(
+            {getFieldDecorator("address", { rules: [{ required: true }], initialValue: item.address })(
                 <Input type="textarea" autosize={{ minRows: 4 }} />
             )}
         </BaseFormItem>
