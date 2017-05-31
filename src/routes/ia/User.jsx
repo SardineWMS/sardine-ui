@@ -46,7 +46,7 @@ function User({ location, dispatch, user }) {
 		pagination: pagination,
 		onPageChange(page) {
 			dispatch(routerRedux.push({
-				pathname: '/user',
+				pathname: '/ia/user',
 				query: {
 					page: page.current,
 					pageSize: page.pageSize

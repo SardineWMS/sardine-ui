@@ -1,7 +1,7 @@
 import {
 	queryUser, createUser, get, update, remove, onlineUser, offlineUser, queryAllResourceByUser, saveUserResource, saveUserRole
 } from '../../services/ia/user';
-import { queryAllRole, queryRole, queryAllResourceByRole, } from '../../services/ia/Role';
+import { queryAllRole, queryRole, queryAllResourceByRole, queryAllRoleByCompany } from '../../services/ia/Role';
 import { removeByValue } from '../../utils/ArrayUtils';
 
 import {
@@ -74,7 +74,7 @@ export default {
 				data
 			} = yield call(queryUser, parse(payload));
 			if (data) {
-				const allRoles = yield call(queryAllRole, {});
+				const allRoles = yield call(queryAllRoleByCompany, {});
 				let userList = data.obj.records;
 				yield put({
 					type: 'querySuccess',
@@ -83,6 +83,10 @@ export default {
 						pagination: {
 							total: data.obj.recordCount,
 							current: data.obj.page,
+							showSizeChanger: true,
+							showQuickJumper: true,
+							showTotal: total => `共 ${total} 条`,
+							pageSize: data.obj.pageSize,
 						},
 						allRoles: allRoles.data.obj,
 					},
@@ -204,15 +208,14 @@ export default {
 			call, put
 		}) {
 			let currentSelected = [];
-			const { data } = yield call(queryAllRole, parse());
+			const { data } = yield call(queryAllRole, parse(payload));
 			let roleList = [];
 			roleList = data.obj;
-			// console.dir("数据" + data);
 			if (roleList.length > 0) {
 				for (let role of roleList) {
 					role.value = role.uuid;
 					role.label = role.name;
-					if (role.owned) {
+					if (role.owned == true) {
 						currentSelected.push(role.value);
 					}
 				}

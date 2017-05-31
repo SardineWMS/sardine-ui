@@ -41,11 +41,16 @@ export async function queryAllResourceByRole(params) {
 }
 
 /**
- * 不分页查所有角色
+ * 不分页查所有角色,包括用户包含和未包含的。
  * @param {* 查询参数} params 
  */
-export async function queryAllRole() {
-    const url = "/api/role/queryAllResource";
+export async function queryAllRole(params) {
+    const url = "/api/role/queryAllRole";
+    return request(query(url, params));
+}
+
+export async function queryAllRoleByCompany() {
+    const url = '/api/role/queryAllRoleByCompany';
     return request(addTokenToUrl(url));
 }
 

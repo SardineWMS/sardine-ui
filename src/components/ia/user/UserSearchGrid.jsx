@@ -3,6 +3,7 @@ import { Table, Popconfirm, Pagination, Button, message, Row, Col, Card, Spin } 
 import RowEditCell from '../../Widget/RowEditCell';
 import styles from '../../less/EditTable.less';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import Guid from '../../../utils/Guid';
 
 
 class UserGrid extends React.Component {
@@ -157,7 +158,7 @@ class UserGrid extends React.Component {
           size="small"
           columns={columns}
           dataSource={this.state.dataSource}
-          rowKey={record => record.uuid}
+          rowKey={Guid()}
           onChange={this.state.onPageChange}
           pagination={this.state.pagination}
           bordered
