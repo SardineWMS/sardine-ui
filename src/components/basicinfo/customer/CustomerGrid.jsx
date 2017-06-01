@@ -56,11 +56,11 @@ function CustomerGrid({
         <a onClick={() => { onEdit(record) }} disabled={!hasPermission("customer:edit")}>编辑</a>
         &nbsp;
                 <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(record)} >
-          <a disabled={(record.state === "deleted") && (!hasPermission("customer:edit"))}>删除</a>
+          <a disabled={(record.state === "deleted") || (!hasPermission("customer:edit"))}>删除</a>
         </Popconfirm>
         &nbsp;
         <Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(record)}>
-          <a disabled={(record.state === "normal") && (!hasPermission("customer:edit"))}>恢复</a>
+          <a disabled={(record.state === "normal") || (!hasPermission("customer:edit"))}>恢复</a>
         </Popconfirm>
       </p>
     )
