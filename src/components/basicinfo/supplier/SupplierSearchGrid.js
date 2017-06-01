@@ -54,13 +54,13 @@ function SupplierSerachGrid({
 			render: (text, record) => (
 				<p>
 					<Popconfirm titldocke="确定要恢复吗？" onConfirm={() => onRecoverItem(record)}>
-						<a disabled={(record.state === "normal") && (!PermissionUtil("supplier:edit"))}>恢复</a>
+						<a disabled={(record.state === "normal") || (!PermissionUtil("supplier:edit"))}>恢复</a>
 					</Popconfirm> 
 					&nbsp;&nbsp;&nbsp;
     			<a onClick={() => onEditItem(record)} disabled={!PermissionUtil("supplier:edit")}> 编辑</a>
 					&nbsp;&nbsp;&nbsp;
     			<Popconfirm titldocke="确定要删除吗？" onConfirm={() => onRemoveItem(record)}>
-						<a disabled={(record.state === "deleted") && (!PermissionUtil("supplier:edit"))}>删除</a>
+						<a disabled={(record.state === "deleted") || (!PermissionUtil("supplier:edit"))}>删除</a>
 					</Popconfirm>
 				</p>
 			),
