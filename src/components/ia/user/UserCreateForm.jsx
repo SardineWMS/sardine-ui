@@ -70,6 +70,7 @@ const DemoCreateForm = ({
               <FormItem {...formItemLayout} label="联系方式：" hasFeedback>
                 {getFieldDecorator('phone', {
                   initialValue: item.phone,
+                  rules: [{ required: true, message: '联系方式未填写' },],
                 })(
                   <Input type="text"></Input>
                   )}
