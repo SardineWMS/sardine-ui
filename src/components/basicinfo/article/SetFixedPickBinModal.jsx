@@ -30,7 +30,7 @@ const SetFixedPickBinModal = ({
   }
 
   const modalOpts = {
-    title: '固定存储位设置',
+    title: '固定拣货位设置',
     visible,
     onOk: handleOk,
     onCancel,
