@@ -40,7 +40,7 @@ function Role({ location, dispatch, role }) {
         pagination: pagination,
         onPageChange(page) {
             dispatch(routerRedux.push({
-                pathname: '/role',
+                pathname: '/ia/role',
                 query: {
                     page: page.current,
                     pageSize: page.pageSize
