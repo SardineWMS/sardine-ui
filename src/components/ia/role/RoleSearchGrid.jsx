@@ -62,7 +62,7 @@ class RoleGrid extends React.Component {
                             editable={record.editable}
                             value={text}
                             status={status}
-                            onChange={value => handleChange(record, value, key)}
+                            onBlur={value => handleChange(record, value, "code")}
                         />)
                     }
 
