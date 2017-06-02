@@ -99,11 +99,11 @@ class RoleGrid extends React.Component {
                             <Popconfirm title="确定要删除吗？" onConfirm={() => this.state.onDelete(record)} >
                                 <a disabled={!PermissionUtil("role:delete")}>删除</a>
                             </Popconfirm>
-                            <a onClick={() => { this.state.onEdit(record) }} disabled={!PermissionUtil("role:edit")}>编辑</a>
+                            <a onClick={() => { this.state.onEdit(record) }} disabled={(record.state === "停用") || !PermissionUtil("role:edit")}>编辑</a>
                             <Popconfirm title={`确定要${record.state === '启用' ? '禁用' : '启用'}吗？`} onConfirm={this.handleOnlineOrOffline.bind(this, record)}>
-                                <a disabled={record.state === 'online' ? !PermissionUtil("role:offline") : !PermissionUtil("role:online")}>{record.state === 'online' ? '禁用' : '启用'}</a>
+                                <a disabled={record.state === '启用' ? !PermissionUtil("role:offline") : !PermissionUtil("role:online")}>{record.state === '启用' ? '禁用' : '启用'}</a>
                             </Popconfirm>
-                            <a onClick={() => { this.state.onAssign(record) }} disabled={!PermissionUtil("role:edit")}>分配权限</a>
+                            <a onClick={() => { this.state.onAssign(record) }} disabled={(record.state === "停用") || !PermissionUtil("role:edit")}>分配权限</a>
                         </span>
                     }
                 </div>

@@ -99,15 +99,15 @@ class UserGrid extends React.Component {
               <a disabled={!PermissionUtil('user:delete')}>删除</a>
             </Popconfirm>
             &nbsp;
-          <a onClick={() => this.state.onEditItem(record)} disabled={!PermissionUtil("user:edit")}>编辑</a>
+          <a onClick={() => this.state.onEditItem(record)} disabled={record.userState == 'offline' || !PermissionUtil("user:edit")}>编辑</a>
             &nbsp;
           <Popconfirm title={`确定要${record.userState === 'online' ? '停用' : '启用'}吗？`} onConfirm={this.handleOnlineOrOffline.bind(this, record)}>
               <a disabled={record.userState == 'online' ? !PermissionUtil("user:offline") : !PermissionUtil("user:online")}>{record.userState === 'online' ? '停用' : '启用'}</a>
             </Popconfirm>
             &nbsp;
-            <a onClick={() => this.state.onAssignRole(record)} disabled={!PermissionUtil("user:edit")}>分配角色</a>
+            <a onClick={() => this.state.onAssignRole(record)} disabled={record.userState == 'offline' || !PermissionUtil("user:edit")}>分配角色</a>
             &nbsp;
-            <a onClick={() => this.state.onAssignResource(record)} disabled={!PermissionUtil("user:edit")}>分配权限</a>
+            <a onClick={() => this.state.onAssignResource(record)} disabled={record.userState == 'offline' ||  !PermissionUtil("user:edit")}>分配权限</a>
           </p>
         )
       }
