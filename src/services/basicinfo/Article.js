@@ -82,3 +82,8 @@ export async function queryArticleInStocks(params) {
   const url = '/basic/article/queryInStocks';
   return request(query(url, params));
 }
+
+export async function setArticleFixedPickBin(params) {
+  const url = '/basic/article/setArticleFixedPickBin';
+  return request(query(url, params), updateBaseNullBody(null));
+}
