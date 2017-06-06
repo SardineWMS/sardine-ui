@@ -39,6 +39,7 @@ module.exports = {
 	'/api/resource/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/resource',
 	'/forward/order/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/in/order',
 	'/forward/receive/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/in/receive',
+	'/forward/alcNtc/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/out/alcntc',
 	'/util/helper/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/common/helper',
 	'/api/company/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/ia/company',
 	'/in/decInc/(.*)': 'http://127.0.0.1:8080/sardine-wms-web/inner/decInc',

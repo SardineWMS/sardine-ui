@@ -16,3 +16,8 @@ export async function queryStock(params) {
     const url = '/util/helper/queryStock';
     return request(query(url, params));
 }
+
+export async function caseQtyStrSubtract(params) {
+    const url = '/util/helper/caseQtyStrSubtract';
+    return request(query(url, params), updateBaseNullBody(null));
+}
