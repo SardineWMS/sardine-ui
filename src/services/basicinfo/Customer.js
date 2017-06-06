@@ -16,7 +16,7 @@ export async function create(params) {
 
 export async function get(params) {
     const url = "/basic/customer/get";
-    return request(query(url,params));
+    return request(query(url, params));
 }
 
 export async function remove(params) {
@@ -32,6 +32,11 @@ export async function recover(params) {
 export async function updateCustomer(params) {
     const url = "/basic/customer/update";
     return request(addTokenToUrl(url), updateBase(params));
+}
+
+export async function getByCode(params) {
+    const url = "/basic/customer/getbycode";
+    return request(query(url, params));
 }
 
 
