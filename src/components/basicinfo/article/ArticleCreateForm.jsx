@@ -50,10 +50,12 @@ const ArticleCreateForm = ({
   }
 
   function handleEnterPress() {
-    // const data = {
-    //   orderBillNo: getFieldsValue().orderBillNumber,
-    // }
-    // onEnterOrderBill(data);
+    let data = { ...getFieldsValue()};
+    if (article.uuid) {
+      data.uuid = article.uuid;
+      data.version = article.version;
+    }
+    onEnterCategory(data, getFieldsValue().category);
   }
 
   function firstInFirstOutChange(e){

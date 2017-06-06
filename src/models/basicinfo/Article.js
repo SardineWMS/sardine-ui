@@ -18,7 +18,7 @@ import {
   addArticleBarcode,
   setArticleFixedPickBin,
 } from '../../services/basicinfo/Article';
-import {queryLastLower} from '../../services/basicinfo/Category';
+import {queryLastLower, getCategoryByCode} from '../../services/basicinfo/Category';
 
 export default {
   namespace: 'article',
@@ -167,6 +167,26 @@ export default {
               total: data.obj.recordCount,
               current: data.obj.page,
             },
+            currentArticle: payload.article
+          },
+        })
+      }
+    },
+    *getCategoryByCode({ payload }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'showLoading'
+      })
+      const {
+        data
+      } = yield call(getCategoryByCode, {code :payload.categoryCode})
+      if (data) {
+        yield put({
+          type: 'querySuccess',
+          payload: {
+            category: data.obj,
             currentArticle: payload.article
           },
         })

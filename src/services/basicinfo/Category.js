@@ -28,3 +28,7 @@ export async function update(params) {
 export async function deleteCategory(params) {
   return request(query('/basic/category/remove', params), deleteBase(params));
 }
+
+export async function getCategoryByCode(params) {
+  return request(query('/basic/category/getByCode', params), params);
+}

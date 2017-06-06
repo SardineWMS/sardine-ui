@@ -51,7 +51,7 @@ function CategorySearch({
       pagination={false}
       title={() =>
         <div>
-          <Button onClick={handleCreate} disabled={!PermissionUtil("category:delete")}>新建根目录</Button>
+          <Button onClick={handleCreate} disabled={!PermissionUtil("category:create")}>新建根目录</Button>
         </div>
       }
       dataSource={dataSource}

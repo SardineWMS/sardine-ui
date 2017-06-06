@@ -191,11 +191,12 @@ function Article({ location, dispatch, article }) {
                 }
             })
         },
-        onEnterCategory(data) {
+        onEnterCategory(data, categoryCode) {
             dispatch({
-                type: 'receive/getOrderBillByBillNo',
+                type: 'article/getCategoryByCode',
                 payload: {
-                    billNumber: data.orderBillNo,
+                    categoryCode: categoryCode,
+                    article: data
                 }
             })
         },
