@@ -29,25 +29,25 @@ const ArticleSearchForm = ({
   const children = [];
   children.push(
     <BaseTwoCol key="code">
-      <BaseFormItem  label="代码 类似于">
+      <BaseFormItem  label="代码 等于">
         {getFieldDecorator('code')(
-          <Input type="text" placeholder="代码 类似于" />
+          <Input type="text" placeholder="代码 等于" />
         )}
       </BaseFormItem>
     </BaseTwoCol>
   );
   children.push(
     <BaseTwoCol key="name">
-      <BaseFormItem label="名称 类似于">
+      <BaseFormItem label="名称 等于">
         {getFieldDecorator('name')(
-          <Input type="text" placeholder="名称 类似于" />
+          <Input type="text" placeholder="名称 等于" />
         )}
       </BaseFormItem>
     </BaseTwoCol>
   );
   children.push(
     <BaseTwoCol key="state">
-      <BaseFormItem  label="状态 类似于">
+      <BaseFormItem  label="状态 等于">
         {getFieldDecorator('state')(
           <Select size="default">
             <Option value="normal" initialValue>正常</Option>
