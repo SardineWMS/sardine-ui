@@ -1,7 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
 import PermissionUtil from '../../../utils/PermissionUtil';
-import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
+import { createInfo2StringWithoutTime, lastModifyInfo2StringWithoutTime } from '../../../utils/OperatorInfoUtils';
 
 
 class DecIncInvSearchGrid extends React.Component {
@@ -62,12 +62,12 @@ class DecIncInvSearchGrid extends React.Component {
             title: '创建人',
             dataIndex: 'createInfo',
             key: 'createInfo',
-            render: (text, record) => createInfo2String(record),
+            render: (text, record) => createInfo2StringWithoutTime(record),
         }, {
             title: '最后修改人',
             dataIndex: 'lastModifyInfo',
             key: 'lastModifyInfo',
-            render: (text, record) => lastModifyInfo2String(record),
+            render: (text, record) => lastModifyInfo2StringWithoutTime(record),
         }]
 
         const { selectedRowKeys } = this.state;

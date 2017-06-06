@@ -21,3 +21,8 @@ export async function caseQtyStrSubtract(params) {
     const url = '/util/helper/caseQtyStrSubtract';
     return request(query(url, params), updateBaseNullBody(null));
 }
+
+export async function queryStockExtendInfo(params) {
+    const url = '/util/helper/queryStockExtendInfo';
+    return request(query(url, params));
+}

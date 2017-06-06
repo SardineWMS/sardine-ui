@@ -37,16 +37,17 @@ const DecIncView = ({
         <span>{item.wrh.name + "[" + item.wrh.code + "]"}</span>
     </BaseFormItem>)
 
+
     let operateForm = [];
     operateForm.push(<BaseFormItem label="状态：" key={Guid()}>
         <span>{convertState(item.state)}</span>
     </BaseFormItem>)
-    operateForm.push(<BaseFormItem label="创建人：" key={Guid()}>
+    /*operateForm.push(<BaseFormItem label="创建人：" key={Guid()}>
         <span>{createInfo2String(item)}</span>
     </BaseFormItem>)
     operateForm.push(<BaseFormItem label="最后修改人 ：" key={Guid()}>
         <span>{lastModifyInfo2String(item)}</span>
-    </BaseFormItem>)
+    </BaseFormItem>)*/
     operateForm.push(<BaseFormItem label="总件数：" key={Guid()}>
         <span>{item.totalCaseQtyStr}</span>
     </BaseFormItem>)
@@ -64,7 +65,8 @@ const DecIncView = ({
             <Button disabled={(item.state == 'Audited') || (!PermissionUtil("decIncBill:audit"))}>删除</Button>
         </Popconfirm>
     );
-    toolbar.push(<Button onClick={() => onFinish(item)} disabled={(item.state == 'Audited') || (!PermissionUtil("decIncBill:audit"))}>审核</Button >)
+    toolbar.push(<Button onClick={() => onFinish(item)} disabled={(item.state == 'Audited') || (!PermissionUtil("decIncBill:audit"))}>审核</Button >);
+    toolbar.push(<Button onClick={() => onBack()}>返回</Button >);
 
     const articleItemProps = {
         dataSource: item.items,

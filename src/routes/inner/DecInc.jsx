@@ -42,6 +42,18 @@ function DecInc({ location, dispatch, decinc }) {
 
     const decIncSearchGridProps = {
         dataSource: list,
+        pagination: pagination,
+        onPageChange(page, filters, sorter) {
+            dispatch(routerRedux.push({
+                pathname: '/inner/decIncBill',
+                query: {
+                    page: page.current,
+                    pageSize: page.pageSize,
+                    sort: sorter.columnKey,
+                    order: sorter.columnKey == undefined ? '' : (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+                }
+            }))
+        },
         onCreate() {
             dispatch({
                 type: 'decinc/createSuccess',
@@ -128,6 +140,7 @@ function DecInc({ location, dispatch, decinc }) {
             result.operator.uuid = localStorage.getItem("loginId");
             result.operator.code = localStorage.getItem("loginCode");
             result.operator.name = localStorage.getItem("loginName");
+            result.reason = data.reason;
             if (data.uuid) {
                 result.uuid = data.uuid;
                 result.state = data.state;
@@ -164,7 +177,7 @@ function DecInc({ location, dispatch, decinc }) {
             dispatch({
                 type: 'decinc/getArticleInfo',
                 payload: {
-                    record, dataSource,
+                    record, dataSource, currentItem
                 }
             })
         },
@@ -213,7 +226,15 @@ function DecInc({ location, dispatch, decinc }) {
                     record, dataSource
                 }
             })
-        }
+        },
+        getSupplier(record, dataSource) {
+            dispatch({
+                type: 'decinc/getSupplier',
+                payload: {
+                    record, dataSource
+                }
+            })
+        },
     };
 
     const decIncViewProps = {
@@ -234,6 +255,12 @@ function DecInc({ location, dispatch, decinc }) {
             dispatch({
                 type: 'decinc/gridAudit',
                 payload: record,
+            })
+        },
+        onBack() {
+            dispatch({
+                type: 'decinc/query',
+                payload: {}
             })
         }
     };

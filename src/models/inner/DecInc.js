@@ -2,7 +2,7 @@ import { parse } from 'qs';
 import { queryArticleInStocks } from '../../services/basicinfo/Article.js';
 import { queryWrhs, getBinByCode } from '../../services/basicinfo/Bin.js';
 import { getByCode as getArticleInfo } from '../../services/basicinfo/Article.js';
-import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd } from '../../services/common/common.js';
+import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, queryStockExtendInfo } from '../../services/common/common.js';
 import { message } from 'antd';
 import { removeByValue } from '../../utils/ArrayUtils.js';
 import { get, insert, queryDecInc, update, remove, audit } from '../../services/inner/decInc.js';
@@ -65,7 +65,11 @@ export default {
                         list: data.obj.records,
                         pagination: {
                             total: data.obj.recordCount,
-                            curretn: data.obj.page,
+                            current: data.obj.page,
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共${total}条`,
+                            size: 'default'
                         },
                         currentItem: {},
                         decIncItem: [],
@@ -90,6 +94,7 @@ export default {
             const currentItem = {};
             currentItem.totalCaseQtyStr = '0';
             currentItem.totalAmount = 0;
+            currentItem.type = payload;
             if (payload.decIncItem == null) {
                 const nullObj = new Object();
                 nullObj.line = 1;
@@ -115,11 +120,20 @@ export default {
             if (data) {
                 payload.record.article.uuid = data.obj.uuid;
                 payload.record.article.name = data.obj.name;
-                const qpcStrs = [];
-                for (var qpc of data.obj.qpcs) {
-                    qpcStrs.push(qpc.qpcStr);
+                let qpcStrs = [];
+                if (payload.currentItem.type == 'Dec') {
+                    const stockInfo = yield call(queryStock, {
+                        articleUuid: payload.record.article.uuid,
+                        binCode: payload.record.binCode,
+                        containerBarcode: payload.record.containerBarCode,
+                    });
+                    qpcStrs = stockInfo.data.obj.qpcStrs;
                 }
-
+                else {
+                    for (var qpc of data.obj.qpcs) {
+                        qpcStrs.push(qpc.qpcStr);
+                    }
+                }
                 const suppliers = [];
                 for (var supplier of data.obj.articleSuppliers) {
                     suppliers.push(supplier);
@@ -192,12 +206,27 @@ export default {
                     item.caseQtyStr = data.obj;
                 };
             }
-            const caseQtyStrResult = yield call(caseQtyStrAdd, {
-                addend: payload.currentItem.totalCaseQtyStr, augend: data.obj,
-            });
+            // const caseQtyStrResult = yield call(caseQtyStrAdd, {
+            //     addend: payload.currentItem.totalCaseQtyStr, augend: data.obj,
+            // });
             let totalAmount = 0;
-            totalAmount = payload.record.price * payload.record.qty + payload.currentItem.totalAmount;
-            payload.currentItem.totalCaseQtyStr = caseQtyStrResult.data.obj;
+            let totalCaseQtyStr = 0;
+            if (payload.dataSource.length == 1) {
+                totalCaseQtyStr = data.obj;
+                totalAmount = payload.dataSource[0].price * payload.dataSource[0].qty;
+            }
+            else {
+                for (var item of payload.dataSource) {
+                    totalAmount = Number.parseFloat(item.price) * Number.parseFloat(item.qty) + Number.parseFloat(totalAmount);
+                    if (item.caseQtyStr == 0 || item.caseQtyStr == '')
+                        continue;
+                    const totalCaseQtyStrResult = yield call(caseQtyStrAdd, { addend: totalCaseQtyStr, augend: item.caseQtyStr, });
+                    totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
+                }
+            }
+            // totalAmount = payload.record.price * payload.record.qty + payload.currentItem.totalAmount;
+            // 
+            payload.currentItem.totalCaseQtyStr = totalCaseQtyStr;
             payload.currentItem.totalAmount = totalAmount;
             yield put({
                 type: 'createSuccess',
@@ -399,6 +428,28 @@ export default {
                 type: 'query',
                 payload: {}
             })
+        },
+
+        *getSupplier({ payload }, { call, put }) {
+            const { data } = yield call(queryStockExtendInfo, {
+                articleUuid: payload.record.article.uuid,
+                binCode: payload.record.binCode,
+                containerBarcode: payload.record.containerBarCode,
+                qpcStr: payload.record.qpcStr,
+            });
+            if (data) {
+                for (var item of payload.dataSource) {
+                    if (item.line == payload.record.line) {
+                        item.suppliers = data.obj;
+                    }
+                }
+                yield put({
+                    type: 'createSuccess',
+                    payload: {
+                        decIncItem: payload.dataSource,
+                    }
+                })
+            }
         }
 
 
