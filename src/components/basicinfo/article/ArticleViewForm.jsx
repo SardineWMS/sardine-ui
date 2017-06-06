@@ -5,6 +5,7 @@ import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import RemarkCard from '../../Widget/RemarkCard';
 
 const ArticleViewForm = ({
     article,
@@ -15,58 +16,71 @@ const ArticleViewForm = ({
 }) => {
 
     const toolbar = [];
-    toolbar.push(<Button onClick={() => onCreate()} disabled={!PermissionUtil("article:create")}> 新建</Button>);
-    toolbar.push(<Button onClick={() => onEdit(article)} disabled={!PermissionUtil("article:edit")}> 编辑</Button>);
-    toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
+    toolbar.push(<Button onClick={() => onCreate()} disabled={!PermissionUtil("article:create")} key="create"> 新建</Button>);
+    toolbar.push(<Button onClick={() => onEdit(article)} disabled={!PermissionUtil("article:edit")} key="edit"> 编辑</Button>);
+    toolbar.push(<Button onClick={() => onBack()} key="back"> 返回</Button>);
 
     const children = [];
+    const businessChildren = [];
     children.push(
-        <BaseFormItem label="代码:" >
+        <BaseFormItem label="代码:" key="code">
             <span>{article.code} </span>
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label="名称：" >
+        <BaseFormItem label="名称：" key="name">
             <span>{article.name} </span>
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label="规格：" >
+        <BaseFormItem label="规格：" key="spec">
             <span>{article.spec} </span>
         </BaseFormItem> 
     );
     children.push(
-        <BaseFormItem label="状态：" >
-            <span>{article.state == "normal" ? "正常" : article.state} </span>
-        </BaseFormItem>
-    );
-    children.push(
-        <BaseFormItem label="保质期：" >
-            <span>{article.expDays}</span>
-        </BaseFormItem>
-    );
-    children.push(
-        <BaseFormItem label="商品类别：" >
+        <BaseFormItem label="商品类别：" key="category">
             <span>{article.category ? "[" + article.category.code + "]" + article.category.name : ""} </span>
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label="质量管理：" >
+        <BaseFormItem label="质量管理：" key="firstInFirstOut">
             <span>{article.firstInFirstOut ? "是" : "否"} </span>
         </BaseFormItem>
     );
-     children.push(
-        <BaseFormItem label="商品固定拣货位：" >
+    children.push(
+        <BaseFormItem label="保质期：" key="expDays">
+            <span>{article.expDays}天</span>
+        </BaseFormItem>
+    );
+    businessChildren.push(
+        <BaseFormItem label="状态：" key="state">
+            <span>{article.state == "normal" ? "正常" : article.state} </span>
+        </BaseFormItem>
+    );
+    businessChildren.push(
+        <BaseFormItem label="上架货位：" key="putawayBin">
+            <span>{article.putawayBin == "StorageBin" ? "存储位" : (article.putawayBin == "PickUpBin" ? "拣货位" : "优先考虑拣货位")} </span>
+        </BaseFormItem>
+    );
+    businessChildren.push(
+        <BaseFormItem label="固定拣货位：" key="fixedPickBin">
             <span>{article.fixedPickBin} </span>
+        </BaseFormItem>
+    );
+    businessChildren.push(
+        <BaseFormItem label="存储区域：" key="storageArea">
+            <span>{article.storageArea} </span>
         </BaseFormItem>
     );
 
     return (
         <div>
             <ToolbarPanel children={toolbar} />
-            <BaseCard>
+            <BaseCard title="基本信息">
                 <BaseForm items={children} />
+                <BaseForm items={businessChildren} />
             </BaseCard>
+            <RemarkCard remark={article.remark}/>
         </div>
     );
 };

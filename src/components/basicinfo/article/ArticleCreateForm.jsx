@@ -8,6 +8,8 @@ import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
 import BaseForm from '../../Widget/BaseForm';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import RemarkCard from '../../Widget/RemarkCard';
+import Panel from '../../Widget/Panel';
 
 const RadioGroup = Radio.Group;
 
@@ -21,31 +23,47 @@ const ArticleCreateForm = ({
     validateFields,
     getFieldsValue,
   },
+  onCategorySelect,
+  category,
+  onEnterCategory,
+  onFirstInFirstOutChange,
+  showLable,
+  firstInFirstOut
 }) => {
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
         return;
       }
-      const data = { ...getFieldsValue(), uuid: article.uuid, version: article.version };
+      const data = { ...getFieldsValue(), uuid: article.uuid, version: article.version, category: category };
       onOk(data);
     });
   }
 
-  function checkNumber(rule, value, callback) {
-    if (!value) {
-      callback(new Error('年龄未填写'));
+  function selectCategory(){
+    let data = { ...getFieldsValue()};
+    if (article.uuid) {
+      data.uuid = article.uuid;
+      data.version = article.version;
     }
-    if (!/^[\d]{1,2}$/.test(value)) {
-      callback(new Error('年龄不合法'));
-    } else {
-      callback();
-    }
+    onCategorySelect(data);
   }
 
-  const children = [];
-  children.push(
-    <BaseFormItem label="代码 :" >
+  function handleEnterPress() {
+    // const data = {
+    //   orderBillNo: getFieldsValue().orderBillNumber,
+    // }
+    // onEnterOrderBill(data);
+  }
+
+  function firstInFirstOutChange(e){
+    onFirstInFirstOutChange(e.target.value);
+  }
+
+  const basicChildren = [];
+  const businessChildren = [];
+  basicChildren.push(
+    <BaseFormItem label="代码 :" key="code">
       {getFieldDecorator('code', {
         initialValue: article ? article.code : null,
         rules: [
@@ -57,8 +75,8 @@ const ArticleCreateForm = ({
     </BaseFormItem>
   );
 
-  children.push(
-    <BaseFormItem label="名称 :" >
+  basicChildren.push(
+    <BaseFormItem label="名称 :" key="name">
       {getFieldDecorator('name', {
         initialValue: article ? article.name : null,
         rules: [
@@ -70,8 +88,8 @@ const ArticleCreateForm = ({
     </BaseFormItem>
   );
 
-  children.push(
-    <BaseFormItem label="规格 :" >
+  basicChildren.push(
+    <BaseFormItem label="规格 :" key="spec">
       {getFieldDecorator('spec', {
         initialValue: article ? article.spec : null,
         rules: [
@@ -83,21 +101,27 @@ const ArticleCreateForm = ({
     </BaseFormItem>
   );
 
-  children.push(
-    <BaseFormItem label="状态 ：" >
-      {getFieldDecorator('state', {
-        initialValue: article.state ? article.state : 'normal',
-        rules: [{ required: true, message: '状态不能为空' },],
+  basicChildren.push(<BaseFormItem label={"商品类别："} key="category">
+        {getFieldDecorator("category", { rules: [{ required: true }], initialValue: category ? "[" + category.code + "]" + category.name : null })(
+            <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => selectCategory()} />} onBlur={handleEnterPress} />
+        )}
+    </BaseFormItem>);
+
+  basicChildren.push(
+    <BaseFormItem label="质量管理 :" key="firstInFirstOut">
+      {getFieldDecorator('firstInFirstOut', {
+        initialValue: article.firstInFirstOut ? article.firstInFirstOut : true,
       })(
-        <Select>
-          <Select.Option value="normal">正常</Select.Option>
-        </Select>
+        <Radio.Group>
+          <Radio value={true}>是</Radio>
+          <Radio value={false}>否</Radio>
+        </Radio.Group>
         )}
     </BaseFormItem>
   );
 
-  children.push(
-    <BaseFormItem label="保质期 ：" >
+  basicChildren.push(
+    <BaseFormItem label="保质期 ：" key="expDays">
       {getFieldDecorator('expDays', {
         initialValue: article.expDays ? article.expDays : 0,
         rules: [{ required: true, message: '保质期不能为空' },],
@@ -107,42 +131,40 @@ const ArticleCreateForm = ({
     </BaseFormItem>
   );
 
-  children.push(
-    <BaseFormItem label="商品类别 :">
-      {getFieldDecorator('categoryCode', {
-        initialValue: article.category ? article.category.code : null,
-        rules: [
-          { required: true, message: '类别未填写' },
-        ],
+  businessChildren.push(
+    <BaseFormItem label="上架货位 ：" key="putawayBin" >
+      {getFieldDecorator('putawayBin', {
+        initialValue: article.putawayBin ? article.putawayBin : "StorageBin",
+        rules: [{ required: true, message: '上架货位不能为空' },],
       })(
-        <Input type="text" />
-        )}
-    </BaseFormItem>
-  );
-
-  children.push(
-    <BaseFormItem label="质量管理 :">
-      {getFieldDecorator('firstInFirstOut', {
-        initialValue: article.firstInFirstOut ? article.firstInFirstOut : true,
-      })(
-        <RadioGroup>
-          <Radio value={true}>是</Radio>
-          <Radio value={false}>否</Radio>
-        </RadioGroup>
+        <Select size="large">
+            <Select.Option value="StorageBin" >存储位</Select.Option>
+            <Select.Option value="PickUpBin" >拣货位</Select.Option>
+            <Select.Option value="PreChoosePickUp" >优先考虑拣货位</Select.Option>
+        </Select> 
         )}
     </BaseFormItem>
   );
 
   const toolbar = [];
-  toolbar.push(<Button onClick={handleOk} disabled={!PermissionUtil("article:create") || !PermissionUtil("article:edit")}> 保存</Button>);
-  toolbar.push(<Button onClick={() => onCancel()}> 取消</Button>);
+  toolbar.push(<Button onClick={handleOk} key="ok"> 保存</Button>);
+  toolbar.push(<Button onClick={() => onCancel()} key="cancel"> 取消</Button>);
 
   return (
     <div>
       <ToolbarPanel children={toolbar} />
-      <BaseCard>
-        <BaseForm items={children} />
+      <BaseCard title="基本信息">
+        <BaseForm items={basicChildren} />
+        <BaseForm items={businessChildren} />
       </BaseCard>
+      <Panel title="说明">
+         
+         {getFieldDecorator('remark', {
+        initialValue: article.remark
+      })(
+         <Input type="textarea" autosize={{ minRows: 4 }} defaultValue={article.remark} />
+        )}
+       </Panel>
     </div>
   );
 };
@@ -152,6 +174,10 @@ ArticleCreateForm.propTypes = {
   article: PropTypes.object,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
+  onCategorySelect: PropTypes.func,
+  category: PropTypes.object,
+  onEnterCategory: PropTypes.func,
+  onFirstInFirstOutChange: PropTypes.func
 };
 
 export default Form.create()(ArticleCreateForm);

@@ -16,8 +16,9 @@ import {
   deleteArticleBarcode,
   saveArticleBarcode,
   addArticleBarcode,
-  setArticleFixedPickBin
+  setArticleFixedPickBin,
 } from '../../services/basicinfo/Article';
+import {queryLastLower} from '../../services/basicinfo/Category';
 
 export default {
   namespace: 'article',
@@ -32,6 +33,16 @@ export default {
     batchSetBinProcessModal: false,
     setFixedPickBinEntitys: [],
     articles: [],
+    showCategorySelectModal: false,
+    categoryList: [],
+    categoryPagination: {
+      showSizeChanger: true,
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+      size: 'default'
+    },
     pagination: {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -39,7 +50,9 @@ export default {
       current: 1,
       total: null,
       size: 'default'
-    }
+    },
+    showLable: false,
+    firstInFirstOut: true
   },
 
   subscriptions: {
@@ -85,6 +98,76 @@ export default {
               total: data.obj.recordCount,
               current: data.obj.page,
             }
+          },
+        })
+      }
+    },
+    *showCreateAndqueryLastLower({payload}, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'showLoading'
+      })
+      const {
+        data
+      } = yield call(queryLastLower, parse(payload))
+      if (data) {
+        yield put({
+          type: 'showCreatePage',
+          payload: {
+            categoryList: data.obj.records,
+            categoeyPagination: {
+              total: data.obj.recordCount,
+              current: data.obj.page,
+            }
+          },
+        })
+      }
+    },
+    *showEditAndqueryLastLower({payload}, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'showLoading'
+      })
+      const {
+        data
+      } = yield call(queryLastLower, parse(payload))
+      if (data) {
+        yield put({
+          type: 'showEditPage',
+          payload: {
+            categoryList: data.obj.records,
+            categoeyPagination: {
+              total: data.obj.recordCount,
+              current: data.obj.page,
+            }
+          },
+        })
+      }
+    },
+    *queryLastLower({ payload }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'showLoading'
+      })
+      const {
+        data
+      } = yield call(queryLastLower, parse(payload))
+      if (data) {
+        yield put({
+          type: 'showCategorySelectModal',
+          payload: {
+            categoryList: data.obj.records,
+            categoeyPagination: {
+              total: data.obj.recordCount,
+              current: data.obj.page,
+            },
+            currentArticle: payload.article
           },
         })
       }
@@ -443,11 +526,12 @@ export default {
         showView: true,
       }
     },
-    showCreatePage(state) {
+    showCreatePage(state, action) {
       return {
         ...state,
         showCreate: true,
         showView: false,
+        showCategorySelectModal: false,
         currentArticle: {},
       };
     },
@@ -461,14 +545,48 @@ export default {
       }
     },
 
+    showLable(state, action) {
+      return {
+        ...state,
+        showLable: action.payload.showLable,
+        firstInFirstOut: action.payload.showLable
+      }
+    },
+
     showEditPage(state, action) {
-      console.log("ahu  sssnn");
-      console.log(action);
       return {
         ...state,
         ...action.payload,
         showCreate: true,
+        showCategorySelectModal: false,
         showView: false,
+      }
+    },
+
+    showCategorySelectModal(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+        showCategorySelectModal: true,
+      }
+    },
+
+    hideCategorySelectModal(state) {
+      return {
+        ...state,
+        showCategorySelectModal: false,
+      }
+    },
+
+    selectCategory(state, action) {
+      return {
+        ...state,
+        category: {
+          uuid: action.payload.uuid,
+          code: action.payload.code,
+          name: action.payload.name
+        },
+        showCategorySelectModal: false,
       }
     },
 

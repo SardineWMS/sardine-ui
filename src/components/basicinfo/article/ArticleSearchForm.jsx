@@ -28,7 +28,7 @@ const ArticleSearchForm = ({
 
   const children = [];
   children.push(
-    <BaseTwoCol>
+    <BaseTwoCol key="code">
       <BaseFormItem  label="代码 类似于">
         {getFieldDecorator('code')(
           <Input type="text" placeholder="代码 类似于" />
@@ -37,7 +37,7 @@ const ArticleSearchForm = ({
     </BaseTwoCol>
   );
   children.push(
-    <BaseTwoCol>
+    <BaseTwoCol key="name">
       <BaseFormItem label="名称 类似于">
         {getFieldDecorator('name')(
           <Input type="text" placeholder="名称 类似于" />
@@ -46,7 +46,7 @@ const ArticleSearchForm = ({
     </BaseTwoCol>
   );
   children.push(
-    <BaseTwoCol>
+    <BaseTwoCol key="state">
       <BaseFormItem  label="状态 类似于">
         {getFieldDecorator('state')(
           <Select size="default">

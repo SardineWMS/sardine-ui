@@ -13,6 +13,10 @@ export async function queryCategory(params) {
   return request(query('/basic/category/query', params));
 }
 
+export async function queryLastLower(params) {
+  return request(query('/basic/category/queryLastLower', params));
+}
+
 export async function create(params) {
   return request(addTokenToUrl('/basic/category/savenew'), createBase(params));
 }

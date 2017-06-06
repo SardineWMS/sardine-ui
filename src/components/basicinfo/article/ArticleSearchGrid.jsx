@@ -52,17 +52,7 @@ function ArticleSearch({
     title: '保质期天数',
     dataIndex: 'expDays',
     key: 'expDays',
-  }, {
-    title: '操作',
-    key: 'operation',
-    render: (text, record) => (
-      <p>
-        <a onClick={() => onEdit(record)} disabled={!PermissionUtil("article:edit")}>编辑</a>
-        <a onClick={() => onSetFixedPickBinItem(record)} >设置固定拣货位</a>
-      </p>
-    ),
-  }
-  ]
+  }]
 
   const menu = (
     <Menu>
@@ -95,7 +85,6 @@ function ArticleSearch({
         title={() =>
           <div>
             <Button onClick={handleCreate} disabled={!PermissionUtil("article:create")}>新增</Button>
-            <Button onClick={handleSetFixedPickBinBatch}>设置固定拣货位</Button>
             <Dropdown overlay={menu}>
               <Button type="ghost" style={{ marginLeft: 8 }}>
                 更多操作 <Icon type="down" />

@@ -9,6 +9,7 @@ import ArticleEditableSupplier from '../../components/basicinfo/Article/ArticleE
 import ArticleEditableQpcStr from '../../components/basicinfo/Article/ArticleEditableQpcStr';
 import ArticleEditableBarcode from '../../components/basicinfo/Article/ArticleEditableBarcode';
 import SetFixedPickBinModal from '../../components/basicinfo/Article/SetFixedPickBinModal';
+import CategorySelectModal from '../../components/basicinfo/Article/CategorySelectModal';
 import WMSProgress from '../../components/Widget/WMSProgress';
 import { message } from 'antd';
 
@@ -26,7 +27,13 @@ function Article({ location, dispatch, article }) {
 		articleNext,
 		modalType,
 		articles,
-		modalVisible
+		modalVisible,
+		showCategorySelectModal,
+        categoryList,
+        categoryPagination,
+        category,
+        showLable,
+        firstInFirstOut
 	} = article;
 
 	const { field, keyword } = location.query;
@@ -158,11 +165,13 @@ function Article({ location, dispatch, article }) {
 
 	const createFormProps = {
 		article: currentArticle,
+		category: category,
+		showLable: showLable,
+		firstInFirstOut: firstInFirstOut,
+		showCategorySelectModal: showCategorySelectModal,
 		onOk(data) {
 			let token = localStorage.getItem("token");
 			data.token = token;
-			data.category = new Object();
-			data.category.code = data.categoryCode;
 			dispatch({
 				type: 'article/create',
 				payload: data,
@@ -173,7 +182,53 @@ function Article({ location, dispatch, article }) {
 				type: 'article/backSearch',
 			});
 		},
+		onCategorySelect(data) {
+            dispatch({
+                type: 'article/queryLastLower',
+                payload: {
+                	token: localStorage.getItem("token"),
+                	article: data
+                }
+            })
+        },
+        onEnterCategory(data) {
+            dispatch({
+                type: 'receive/getOrderBillByBillNo',
+                payload: {
+                    billNumber: data.orderBillNo,
+                }
+            })
+        },
+        onFirstInFirstOutChange(value) {
+          dispatch({
+				type: 'article/showLable',
+				payload: {
+					showLable: value
+				}
+			});
+        }
 	}
+
+	const categorySelectModalProps = {
+        visible: showCategorySelectModal,
+        categoryList: categoryList,
+        categoryPagination: categoryPagination,
+        onOk(data) {
+            dispatch({
+                type: 'article/selectCategory',
+                payload: { uuid: data[0].uuid,
+                           code: data[0].code,
+                           name: data[0].name 
+                         }
+            })
+        },
+        onCancel() {
+            dispatch({
+                type: 'article/hideCategorySelectModal',
+            })
+        }
+    }
+
 
 	const viewFormProps = {
 		article: currentArticle,
@@ -356,9 +411,15 @@ function Article({ location, dispatch, article }) {
 	}
 
 	const CreateFormGen = () => <ArticleCreateForm {...createFormProps} />;
+	const CategorySelectModalGen = () => <CategorySelectModal {...categorySelectModalProps} />
+
 	function refreshWidget() {
-		if (showCreate)
-			return (<CreateFormGen />);
+		if (showCreate) {
+                return (<div>
+                	<CreateFormGen />
+                	<CategorySelectModal {...categorySelectModalProps}/>
+                	</div>);
+		}
 		if (showView)
 			return (
 				<div>
