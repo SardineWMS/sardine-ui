@@ -3,6 +3,10 @@ import qs from 'qs';
 import { query, addTokenToUrl, createBase, updateBase, deleteBase } from '../../utils/BaseService';
 
 export async function queryTask(params) {
+<<<<<<< HEAD
     const url = "/swms/inner/task/query";
+=======
+    const url = "/wms/inner/task/query";
+>>>>>>> 219f308b4a7a553920c22ca1e27b19d4317f35f3
     return request(query(url, params));
 }
