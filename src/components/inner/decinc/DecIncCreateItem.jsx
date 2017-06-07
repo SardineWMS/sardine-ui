@@ -171,8 +171,14 @@ function DecIncCreateItem({
         }
         else if (key == "supplierName") {
             if (record.qpcStrs != null && record.suppliers != null) {
-                for (var supplier of record.suppliers) {
-                    options.push(<Option key={supplier.uuid}>{supplier.name + "[" + supplier.code + "]"}</Option>)
+                if (currentItem.type == "Inc") {
+                    for (var supplier of record.suppliers) {
+                        options.push(<Option key={supplier.supplierUuid}>{supplier.supplierName + "[" + supplier.supplierCode + "]"}</Option>)
+                    }
+                } else {
+                    for (var supplier of record.suppliers) {
+                        options.push(<Option key={supplier.uuid}>{supplier.name + "[" + supplier.code + "]"}</Option>)
+                    }
                 }
             }
         }
@@ -193,7 +199,9 @@ function DecIncCreateItem({
         }
         if (key === 'qpcStr') {
             record.qpcStr = value;
-            getSupplier(record, dataSource);
+            if (currentItem.type == 'Dec') {
+                getSupplier(record, dataSource);
+            }
         }
         if (key == 'binCode') {
             record.binCode = value;
@@ -214,11 +222,21 @@ function DecIncCreateItem({
         if (key == 'supplierName') {
             const uuid = value;
             for (var supplier of record.suppliers) {
-                if (uuid == supplier.uuid) {
-                    record.supplier = new Object();
-                    record.supplier.uuid = uuid;
-                    record.supplier.code = supplier.code;
-                    record.supplier.name = supplier.name;
+                if (currentItem.type == 'Dec') {
+                    if (uuid == supplier.uuid) {
+                        record.supplier = new Object();
+                        record.supplier.uuid = uuid;
+                        record.supplier.code = supplier.code;
+                        record.supplier.name = supplier.name;
+                    }
+                }
+                else {
+                    if (uuid == supplier.supplierUuid) {
+                        record.supplier = new Object();
+                        record.supplier.uuid = uuid;
+                        record.supplier.code = supplier.supplierCode;
+                        record.supplier.name = supplier.supplierName;
+                    }
                 }
             }
             // refreshSupplier(record, dataSource);
