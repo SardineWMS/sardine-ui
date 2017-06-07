@@ -3,37 +3,37 @@ import qs from 'qs';
 import { query, addTokenToUrl, createBase, updateBaseNullBody, updateBase, deleteBase } from '../../utils/BaseService';
 
 export async function get(params) {
-    const url = '/forward/alcNtc/get';
+    const url = '/swms/out/alcNtc/get';
     return request(query(url, params));
 }
 
 export async function insert(params) {
-    const url = '/forward/alcNtc/insert';
+    const url = '/swms/out/alcNtc/insert';
     return request(addTokenToUrl(url), createBase(params));
 }
 
 export async function update(params) {
-    const url = '/forward/alcNtc/update';
+    const url = '/swms/out/alcNtc/update';
     return request(addTokenToUrl(url), updateBase(params));
 }
 
 
 export async function queryAlcNtcBill(params) {
-    const url = '/forward/alcNtc/query';
+    const url = '/swms/out/alcNtc/query';
     return request(query(url, params));
 }
 
 export async function remove(params) {
-    const url = '/forward/alcNtc/remove';
+    const url = '/swms/out/alcNtc/remove';
     return request(query(url, params), deleteBase(params));
 }
 
 export async function audit(params) {
-    const url = '/forward/alcNtc/audit';
+    const url = '/swms/out/alcNtc/audit';
     return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function abort(params) {
-    const url = '/forward/alcNtc/abort';
+    const url = '/swms/out/alcNtc/abort';
     return request(query(url, params), updateBaseNullBody(null));
 }

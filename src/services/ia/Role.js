@@ -3,40 +3,40 @@ import qs from 'qs';
 import { query, createBase, addTokenToUrl, updateBase, deleteBase, updateBaseNullBody } from '../../utils/BaseService';
 
 export async function queryRole(params) {
-    const url = '/api/role/querybypage';
+    const url = '/swms/ia/role/querybypage';
     return request(query(url, params));
 }
 
 export async function create(params) {
     const companyUuid = localStorage.getItem("companyUuid");
     params.companyUuid = companyUuid;
-    const url = "/api/role/insert";
+    const url = "/swms/ia/role/insert";
     return request(addTokenToUrl(url),
         createBase(params));
 }
 
 export async function online(params) {
-    const url = '/api/role/online';
+    const url = '/swms/ia/role/online';
     return request(query(url, params), updateBaseNullBody());
 }
 
 export async function offline(params) {
-    const url = '/api/role/offline';
+    const url = '/swms/ia/role/offline';
     return request(query(url, params), updateBaseNullBody());
 }
 
 export async function update(params) {
-    const url = '/api/role/update';
+    const url = '/swms/ia/role/update';
     return request(addTokenToUrl(url), updateBase(params));
 }
 
 export async function remove(params) {
-    const url = "/api/role/remove";
+    const url = "/swms/ia/role/remove";
     return request(query(url, params), deleteBase(params));
 }
 
 export async function queryAllResourceByRole(params) {
-    const url = "/api/resource/queryAllResourceByRole";
+    const url = "/swms/ia/resource/queryAllResourceByRole";
     return request(query(url, params));
 }
 
@@ -45,22 +45,22 @@ export async function queryAllResourceByRole(params) {
  * @param {* 查询参数} params 
  */
 export async function queryAllRole(params) {
-    const url = "/api/role/queryAllRole";
+    const url = "/swms/ia/role/queryAllRole";
     return request(query(url, params));
 }
 
 export async function queryAllRoleByCompany() {
-    const url = '/api/role/queryAllRoleByCompany';
+    const url = '/swms/ia/role/queryAllRoleByCompany';
     return request(addTokenToUrl(url));
 }
 
 export async function saveRoleResource(params) {
     const roleUuid = params.roleUuid;
-    const url = "/api/resource/saveRoleResource";
+    const url = "/swms/ia/resource/saveRoleResource";
     return request(query(url, params), createBase(params.resourceUuids));
 }
 
 export async function queryOwnedResourceByRole(params) {
-    const url = "/api/resource/queryOwnedResourceByRole";
+    const url = "/swms/ia/resource/queryOwnedResourceByRole";
     return request(query(url, params));
 }

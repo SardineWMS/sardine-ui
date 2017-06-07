@@ -4,38 +4,38 @@ import { query, addTokenToUrl, createBase, updateBaseNullBody, updateBase, } fro
 
 
 export async function queryCustomer(params) {
-    const url = "/basic/customer/query";
+    const url = "/swms/basicinfo/customer/query";
     return request(query(url, params));
 }
 
 export async function create(params) {
     params.customer = null;
-    const url = "/basic/customer/insert";
+    const url = "/swms/basicinfo/customer/insert";
     return request(addTokenToUrl(url), createBase(params));
 }
 
 export async function get(params) {
-    const url = "/basic/customer/get";
+    const url = "/swms/basicinfo/customer/get";
     return request(query(url, params));
 }
 
 export async function remove(params) {
-    const url = "/basic/customer/remove";
+    const url = "/swms/basicinfo/customer/remove";
     return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function recover(params) {
-    const url = "/basic/customer/recover";
+    const url = "/swms/basicinfo/customer/recover";
     return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function updateCustomer(params) {
-    const url = "/basic/customer/update";
+    const url = "/swms/basicinfo/customer/update";
     return request(addTokenToUrl(url), updateBase(params));
 }
 
 export async function getByCode(params) {
-    const url = "/basic/customer/getbycode";
+    const url = "/swms/basicinfo/customer/getbycode";
     return request(query(url, params));
 }
 

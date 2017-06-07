@@ -3,87 +3,87 @@ import qs from 'qs';
 import { query, createBase, addTokenToUrl, updateBaseNullBody } from '../../utils/BaseService.js';
 
 export async function queryArticles(params) {
-  const url = "/basic/article/querybypage";
+  const url = "/swms/basicinfo/article/querybypage";
   return request(query(url, params));
 }
 
 export async function get(params) {
-  const url = "/basic/article/get";
+  const url = "/swms/basicinfo/article/get";
 
   return request(query(url, params));
 }
 
 export async function getByCode(params) {
-  const url = "/basic/article/getbycode";
+  const url = "/swms/basicinfo/article/getbycode";
   return request(query(url, params));
 }
 
 export async function create(params) {
-  const url = '/basic/article/insert';
+  const url = '/swms/basicinfo/article/insert';
   return request(addTokenToUrl(url), createBase(params))
 }
 
 export async function getAndSaveSupplier(params) {
-  const url = '/basic/article/getAndSaveSupplier';
+  const url = '/swms/basicinfo/article/getAndSaveSupplier';
   return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function deleteArticleSupplier(params) {
-  const url = '/basic/article/deleteArticleSupplier';
+  const url = '/swms/basicinfo/article/deleteArticleSupplier';
   return request(query(url, params), updateBaseNullBody(null))
 }
 
 export async function setDefaultSupplier(params) {
-  const url = '/basic/article/setDefaultSupplier';
+  const url = '/swms/basicinfo/article/setDefaultSupplier';
   return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function addArticleSupplier(params) {
-  const url = '/basic/article/addArticleSupplier';
+  const url = '/swms/basicinfo/article/addArticleSupplier';
   return request(query(url, params));
 }
 
 export async function saveArticleQpc(params) {
-  const url = '/basic/article/saveArticleQpc';
+  const url = '/swms/basicinfo/article/saveArticleQpc';
   return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function deleteArticleQpc(params) {
-  const url = '/basic/article/deleteArticleQpc';
+  const url = '/swms/basicinfo/article/deleteArticleQpc';
   return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function setDefaultQpcStr(params) {
-  const url = '/basic/article/setDefaultQpcStr';
+  const url = '/swms/basicinfo/article/setDefaultQpcStr';
   return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function addArticleQpc(params) {
-  const url = '/basic/article/addArticleQpc';
+  const url = '/swms/basicinfo/article/addArticleQpc';
   return request(query(url, params));
 }
 
 export async function saveArticleBarcode(params) {
-  const url = '/basic/article/saveArticleBarcode';
+  const url = '/swms/basicinfo/article/saveArticleBarcode';
   return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function deleteArticleBarcode(params) {
-  const url = '/basic/article/deleteArticleBarcode';
+  const url = '/swms/basicinfo/article/deleteArticleBarcode';
   return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function addArticleBarcode(params) {
-  const url = '/basic/article/addArticleBarcode';
+  const url = '/swms/basicinfo/article/addArticleBarcode';
   return request(query(url, params));
 }
 
 export async function queryArticleInStocks(params) {
-  const url = '/basic/article/queryInStocks';
+  const url = '/swms/basicinfo/article/queryInStocks';
   return request(query(url, params));
 }
 
 export async function setArticleFixedPickBin(params) {
-  const url = '/basic/article/setArticleFixedPickBin';
+  const url = '/swms/basicinfo/article/setArticleFixedPickBin';
   return request(query(url, params), updateBaseNullBody(null));
 }

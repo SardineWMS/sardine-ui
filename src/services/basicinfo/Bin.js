@@ -3,27 +3,27 @@ import qs from 'qs';
 import { query, addTokenToParamsAndStringify } from '../../utils/BaseService.js';
 
 export async function queryBin(params) {
-  const url = "/basic/bin/query";
+  const url = "/swms/basicinfo/bin/query";
   return request(query(url, params));
 }
 
 export async function queryWrhs(params) {
-  const url = "/basic/bin/queryWrhs";
+  const url = "/swms/basicinfo/bin/queryWrhs";
   return request(query(url, params));
 }
 
 export async function queryZones(params) {
-  const url = "/basic/bin/queryZones";
+  const url = "/swms/basicinfo/bin/queryZones";
   return request(query(url, params));
 }
 
 export async function queryBinTypes(params) {
-  const url = "/basic/bin/queryBinTypes";
+  const url = "/swms/basicinfo/bin/queryBinTypes";
   return request(query(url, params));
 }
 
 export async function createWrh(params) {
-  return request(`/basic/bin/insertWrh?${addTokenToParamsAndStringify(params)}`, {
+  return request(`/swms/basicinfo/bin/insertWrh?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -34,7 +34,7 @@ export async function createWrh(params) {
 }
 
 export async function createZone(params) {
-  return request(`/basic/bin/insertZone?${addTokenToParamsAndStringify(params)}`, {
+  return request(`/swms/basicinfo/bin/insertZone?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -45,7 +45,7 @@ export async function createZone(params) {
 }
 
 export async function createPath(params) {
-  return request(`/basic/bin/insertPath?${addTokenToParamsAndStringify(params)}`, {
+  return request(`/swms/basicinfo/bin/insertPath?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -56,7 +56,7 @@ export async function createPath(params) {
 }
 
 export async function createShelf(params) {
-  return request(`/basic/bin/insertShelf?${addTokenToParamsAndStringify(params)}`, {
+  return request(`/swms/basicinfo/bin/insertShelf?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -67,7 +67,7 @@ export async function createShelf(params) {
 }
 
 export async function createBin(params) {
-  return request(`/basic/bin/insertBin?${addTokenToParamsAndStringify(params)}`, {
+  return request(`/swms/basicinfo/bin/insertBin?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -78,7 +78,7 @@ export async function createBin(params) {
 }
 
 export async function deleteBin(params) {
-  return request(`/basic/bin/delete?${addTokenToParamsAndStringify(params)}`, {
+  return request(`/swms/basicinfo/bin/delete?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
     headers: {
       'Accept': 'application/json',
@@ -89,6 +89,6 @@ export async function deleteBin(params) {
 }
 
 export async function getBinByCode(params) {
-  const url = '/basic/bin/getBinByCode';
+  const url = '/swms/basicinfo/bin/getBinByCode';
   return request(query(url, params));
 }

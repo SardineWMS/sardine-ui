@@ -5,26 +5,26 @@ import { query, createBase, addTokenToUrl, updateBaseNullBody, updateBase, delet
 export async function querybypage(params) {
   if (params == null)
     params = { token: '' };
-  const url = "/basic/containertype/querybypage";
+  const url = "/swms/basicinfo/containertype/querybypage";
   return request(query(url, params));
 }
 
 export async function get(params) {
-  const url = "/basic/containertype/get";
+  const url = "/swms/basicinfo/containertype/get";
   return request(query(url, params));
 }
 
 export async function create(params) {
-  const url = `/basic/containertype/savenew`;
+  const url = `/swms/basicinfo/containertype/savenew`;
   return request(addTokenToUrl(url), createBase(params));
 }
 
 export async function edit(params) {
-  const url = `/basic/containertype/savemodify`;
+  const url = `/swms/basicinfo/containertype/savemodify`;
   return request(addTokenToUrl(url), updateBase(params));
 }
 
 export async function remove(params) {
-  const url = "/basic/containertype/remove"
+  const url = "/swms/basicinfo/containertype/remove"
   return request(query(url, params), deleteBase(params));
 }

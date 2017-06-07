@@ -5,32 +5,32 @@ import { query, createBase, addTokenToUrl, updateBaseNullBody, updateBase, delet
 export async function querybypage(params) {
   if (params == null)
     params = { token: '' };
-  const url = "/forward/order/querybypage";
+  const url = "/swms/in/order/querybypage";
   return request(query(url, params));
 }
 
 export async function get(params) {
-  const url = "/forward/order/get";
+  const url = "/swms/in/order/get";
   return request(query(url, params));
 }
 
 export async function create(params) {
-  const url = "/forward/order/savenew";
+  const url = "/swms/in/order/savenew";
   return request(addTokenToUrl(url), createBase(params));
 }
 
 export async function edit(params) {
-  const url = "/forward/order/savemodify";
+  const url = "/swms/in/order/savemodify";
   return request(addTokenToUrl(url), updateBase(params));
 }
 
 export async function remove(params) {
-  const url = `/forward/order/remove?${qs.stringify(params)}`;
+  const url = `/swms/in/order/remove?${qs.stringify(params)}`;
   return request(addTokenToUrl(url), deleteBase(params));
 }
 
 export async function bookReg(params) {
-  const url = "/forward/order/bookreg";
+  const url = "/swms/in/order/bookreg";
   const newUrl=url+`?uuid=` + params.uuid+`&version=`+params.version;
   var req = new Object();
   req.method = 'put';
@@ -43,32 +43,32 @@ export async function bookReg(params) {
 }
 
 export async function check(params) {
-  const url = `/forward/order/check?${qs.stringify(params)}`;
+  const url = `/swms/in/order/check?${qs.stringify(params)}`;
   return request(addTokenToUrl(url), updateBaseNullBody(params));
 }
 
 export async function finish(params) {
-  const url = `/forward/order/finish?${qs.stringify(params)}`;
+  const url = `/swms/in/order/finish?${qs.stringify(params)}`;
   return request(addTokenToUrl(url), updateBaseNullBody(params));
 }
 
 export async function abort(params) {
-  const url = `/forward/order/abort?${qs.stringify(params)}`;
+  const url = `/swms/in/order/abort?${qs.stringify(params)}`;
   return request(addTokenToUrl(url), updateBaseNullBody(params));
 }
 
 export async function getArticle(params) {
-  const url = `/basic/article/getbycode`;
+  const url = `/swms/basicinfo/article/getbycode`;
   return request(query(url, params));
 }
 
 export async function getOrderBillByBillNo(params) {
-  const url = "/forward/order/getByBillNo";
+  const url = "/swms/in/order/getByBillNo";
   return request(query(url, params));
 }
 
 export async function refreshCaseQtyAndAmount(params) {
-  const url = "/forward/order/refreshcaseqtyandamount";
+  const url = "/swms/in/order/refreshcaseqtyandamount";
   const newUrl=url+`?line=` + params.line;
 
   console.log(params);
@@ -84,14 +84,14 @@ export async function refreshCaseQtyAndAmount(params) {
 }
 
 export async function queryWrhs(params) {
-  const url = "/basic/bin/queryWrhs";
+  const url = "/swms/basicinfo/bin/queryWrhs";
   return request(query(url, params));
 }
 
 export async function querySuppliers(params) {
   if(params==null)
     params={token:''};
-  const url="/basic/supplier/querybypage";
+  const url="/swms/basicinfo/supplier/querybypage";
   return request(query(url,params));
 }
 

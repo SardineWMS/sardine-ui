@@ -10,25 +10,25 @@ import {
 
 
 export async function queryCategory(params) {
-  return request(query('/basic/category/query', params));
+  return request(query('/swms/basicinfo/category/query', params));
 }
 
 export async function queryLastLower(params) {
-  return request(query('/basic/category/queryLastLower', params));
+  return request(query('/swms/basicinfo/category/queryLastLower', params));
 }
 
 export async function create(params) {
-  return request(addTokenToUrl('/basic/category/savenew'), createBase(params));
+  return request(addTokenToUrl('/swms/basicinfo/category/savenew'), createBase(params));
 }
 
 export async function update(params) {
-  return request(addTokenToUrl('/basic/category/savemodify'), updateBase(params));
+  return request(addTokenToUrl('/swms/basicinfo/category/savemodify'), updateBase(params));
 }
 
 export async function deleteCategory(params) {
-  return request(query('/basic/category/remove', params), deleteBase(params));
+  return request(query('/swms/basicinfo/category/remove', params), deleteBase(params));
 }
 
 export async function getCategoryByCode(params) {
-  return request(query('/basic/category/getByCode', params), params);
+  return request(query('/swms/basicinfo/category/getByCode', params), params);
 }
