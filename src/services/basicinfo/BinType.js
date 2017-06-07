@@ -3,21 +3,21 @@ import qs from 'qs';
 import { query, addTokenToUrl, createBase, updateBase, deleteBase } from '../../utils/BaseService';
 
 export async function queryBinType(params) {
-    const url = "/basic/bintype/query";
+    const url = "/wms/basicinfo/bintype/query";
     return request(query(url, params));
 }
 
 export async function create(params) {
-    const url = "/basic/bintype/insert";
+    const url = "/wms/basicinfo/bintype/insert";
     return request(addTokenToUrl(url), createBase(params));
 }
 
 export async function update(params) {
-    const url = "/basic/bintype/update";
+    const url = "/wms/basicinfo/bintype/update";
     return request(addTokenToUrl(url), updateBase(params));
 }
 
 export async function deleteBinType(params) {
-    const url = "/basic/bintype/remove";
+    const url = "/wms/basicinfo/bintype/remove";
     return request(query(url, params), deleteBase(params));
 }
