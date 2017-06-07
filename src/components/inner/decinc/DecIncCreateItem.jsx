@@ -28,6 +28,7 @@ function DecIncCreateItem({
     suppliers,//商品供应商选择控件数据源
     refreshSupplier,
     currentItem,
+    getSupplier,
 }) {
     const columns = [
         {
@@ -75,7 +76,7 @@ function DecIncCreateItem({
             title: '供应商',
             dataIndex: 'supplier.uuid',
             key: 'supplierName',
-            width: 200,
+            width: 100,
             render: (text, record) => renderSelectColumns(record, "supplierName", text),
         }, {
             title: '生产日期',
@@ -115,6 +116,12 @@ function DecIncCreateItem({
             dataIndex: 'caseQtyStr',
             key: 'caseQtyStr',
             width: 150,
+        }, {
+            title: '损溢原因',
+            dataIndex: 'reason',
+            key: 'reason',
+            width: 150,
+            render: (text, record) => renderColumns(record, "reason", text),
         }, {
             title: '操作',
             key: 'operation',
@@ -163,9 +170,9 @@ function DecIncCreateItem({
 
         }
         else if (key == "supplierName") {
-            if (record.qpcStrs != null) {
+            if (record.qpcStrs != null && record.suppliers != null) {
                 for (var supplier of record.suppliers) {
-                    options.push(<Option key={supplier.supplierUuid}>{supplier.supplierName + "[" + supplier.supplierCode + "]"}</Option>)
+                    options.push(<Option key={supplier.uuid}>{supplier.name + "[" + supplier.code + "]"}</Option>)
                 }
             }
         }
@@ -186,7 +193,7 @@ function DecIncCreateItem({
         }
         if (key === 'qpcStr') {
             record.qpcStr = value;
-
+            getSupplier(record, dataSource);
         }
         if (key == 'binCode') {
             record.binCode = value;
@@ -207,16 +214,19 @@ function DecIncCreateItem({
         if (key == 'supplierName') {
             const uuid = value;
             for (var supplier of record.suppliers) {
-                if (uuid == supplier.supplierUuid) {
+                if (uuid == supplier.uuid) {
                     record.supplier = new Object();
                     record.supplier.uuid = uuid;
-                    record.supplier.code = supplier.supplierCode;
-                    record.supplier.name = supplier.supplierName;
+                    record.supplier.code = supplier.code;
+                    record.supplier.name = supplier.name;
                 }
             }
             // refreshSupplier(record, dataSource);
             queryStockQty(record, dataSource);
 
+        }
+        if (key == 'reason') {
+            record.reason = value;
         }
     };
 
@@ -270,7 +280,7 @@ function DecIncCreateItem({
                 onChange={onPageChange}
                 pagination={pagination}
                 rowKey={Guid()}
-                scroll={{ x: 1650, y: 300 }}
+                scroll={{ x: 1700, y: 300 }}
             />
         </div>
     )

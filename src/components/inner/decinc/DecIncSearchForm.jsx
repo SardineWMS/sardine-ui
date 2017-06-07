@@ -29,9 +29,9 @@ const DecIncInvSearchForm = ({
     const children = [];
     children.push(
         <BaseTwoCol>
-            <BaseFormItem label="单号 等于">
+            <BaseFormItem label="单号 类似于">
                 {getFieldDecorator('billNumber')(
-                    <Input type="text" placeholder="单号 等于" />
+                    <Input type="text" placeholder="单号 类似于" />
                 )}
             </BaseFormItem>
         </BaseTwoCol>
