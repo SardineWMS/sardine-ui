@@ -25,6 +25,7 @@ import Receive from './routes/forward/Receive';
 import Task from './routes/inner/Task';
 import DecInc from './routes/inner/DecInc';
 import AlcNtcBill from './routes/forward/AlcNtcBill';
+import Carrier from './routes/tms/Carrier';
 
 
 export default function ({
@@ -55,6 +56,7 @@ export default function ({
         <Route path="/inner/task" component={Task} />
         <Route path="/inner/decIncBill" component={DecInc} />
         <Route path="/forward/alcNtcBill" component={AlcNtcBill} />
+        <Route path="/tms/carrier" component={Carrier} />
       </Route>
     </Router>
   );
