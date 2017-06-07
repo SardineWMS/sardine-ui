@@ -90,9 +90,9 @@ class DecIncInvSearchGrid extends React.Component {
                     title={() => <div>
                         <Row type="flex">
                             <Col>
-                                <Button type="ghost" onClick={this.handleRemoveBatch}>批量删除</Button>
+                                <Button onClick={this.handleRemoveBatch}>批量删除</Button>
                             </Col>
-                            <Col><Button type="ghost" onClick={this.handleFinishBatch}>批量审核</Button></Col>
+                            <Col><Button onClick={this.handleFinishBatch}>批量审核</Button></Col>
                             <Col><Button onClick={() => this.state.onCreate()}>新建</Button></Col>
                         </Row>
                     </div>}
