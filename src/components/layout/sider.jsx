@@ -15,6 +15,9 @@ const getMenus = function (menuArray,parentPath) {
         </Menu.SubMenu>
       )
     } else {
+      if (item.code == "divider") { 
+        return (<Menu.Divider />)
+      } else {
       return (
         <Menu.Item key={item.code}>
           <Link to={parentPath + item.code} style={{fontSize: 16}}>
@@ -23,6 +26,8 @@ const getMenus = function (menuArray,parentPath) {
           </Link>
         </Menu.Item>
       )
+
+    }
     }
   })
 }
