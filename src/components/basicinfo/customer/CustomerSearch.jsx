@@ -50,7 +50,7 @@ function CustomerSearch({
         <BaseTwoCol key={Guid()}>
             <BaseFormItem label={"状态 等于"}>
                 {form.getFieldDecorator("state", { initialValue: "normal" })(
-                    <Select placeholder="请选择" showSearch={false} size="default">
+                    <Select placeholder="请选择" showSearch={false} size="large">
                         <Option value="normal" >正常</Option>
                         <Option value="deleted">已删除</Option>
                     </Select>

@@ -66,7 +66,7 @@ const CustomerView = ({ item = {},
     return (
         <div>
             <ToolbarPanel children={toolbar} />
-            <BaseCard title="基本信息" single={true}>
+            <BaseCard title="基本信息" single={false}>
                 <BaseForm items={basicFormItems} />
             </BaseCard>
             <RemarkCard remark={item.remark} />

@@ -71,6 +71,23 @@ function BinSearch({
     }
   };
 
+  function convertState(text) {
+            if (text == "initial")
+                return '初始';
+            if (text == "aborted")
+                return '已作废';
+            if (text == "inAlc")
+                return '待配送';
+            if (text == 'inSorting')
+                return '分拣中';
+            if (text == 'finished')
+                return '已完成';
+            if (text == 'inProgress')
+                return '配送中';
+            if (text == 'handover')
+                return '已交接';
+        };
+
   const columns = [{
     title: '代码',
     dataIndex: 'code',
@@ -80,7 +97,7 @@ function BinSearch({
     title: '货位状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => (text == "free" ? '空闲' : text),
+    render: text => (text == "free" ? '空闲' : '使用中'),
   }, {
     title: '货位用途',
     dataIndex: 'usage',

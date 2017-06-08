@@ -12,6 +12,7 @@ function CustomerGrid({
   onRecover,
   onCreate,
   onViewItem,
+  pagination,
   selectedRowKeys = []
 }) {
 
@@ -35,35 +36,32 @@ function CustomerGrid({
     key: 'code',
     render: (text, record) => <a onClick={() => { onViewItem(record) }}>{text}</a>,
     sorter: true,
+    width: 180
   },
   {
     title: '名称',
     dataIndex: 'name',
     key: 'name',
     sorter: true,
+    width: 200
   },
   {
     title: '状态',
     dataIndex: 'state',
     key: 'state',
     render: text => convertState(text),
+    width: 100
   },
   {
-    title: '操作',
-    key: 'operation',
-    render: (text, record) => (
-      <p>
-        <a onClick={() => { onEdit(record) }} disabled={(record.state === "deleted") || !hasPermission("customer:edit")}>编辑</a>
-        &nbsp;
-                <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(record)} >
-          <a disabled={(record.state === "deleted") || (!hasPermission("customer:delete"))}>删除</a>
-        </Popconfirm>
-        &nbsp;
-        <Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(record)}>
-          <a disabled={(record.state === "normal") || (!hasPermission("customer:edit"))}>恢复</a>
-        </Popconfirm>
-      </p>
-    )
+    title: '联系方式',
+    dataIndex: 'phone',
+    key: 'phone',
+    width: 200
+  },
+  {
+    title: '地址',
+    dataIndex: 'address',
+    key: 'address'
   }];
 
   const rowSelection = {
@@ -90,6 +88,7 @@ function CustomerGrid({
         rowSelection={rowSelection}
         dataSource={dataSource}
         onChange={onPageChange}
+        pagination={pagination}
         rowKey={record => record.uuid}
         title={() =>
           <div>
@@ -114,6 +113,7 @@ CustomerGrid.propTypes = {
   onRecover: PropTypes.func,
   onCreate: PropTypes.func,
   onViewItem: PropTypes.func,
+  pagination: PropTypes.any,
 }
 
 export default CustomerGrid;

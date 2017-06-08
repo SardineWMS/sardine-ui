@@ -49,41 +49,22 @@ export default {
         }) {
             const {data} = yield call(queryCustomer, parse(payload));
 
-            if (data) {
+            if (data.status == "200") {
                 let customerList = data.obj.records;
                 yield put({
                     type: 'querySuccess',
                     payload: {
                         list: customerList,
                         pagination: {
-                            total: data.obj.recordCount,
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
                             current: data.obj.page,
+                            total: data.obj.recordCount,
+                            size: 'default'
                         }
                     }
-                },
-                )
-            }
-        },
-
-        *refreshGrid({
-            payload
-        }, {
-            call, put
-        }) {
-            const {data} = yield call(queryCustomer, parse(payload));
-            if (data) {
-                let customerList = data.obj.records;
-                yield put({
-                    type: 'refreshGridData',
-                    payload: {
-                        list: customerList,
-                        pagination: {
-                            total: data.obj.recordCount,
-                            current: data.obj.page,
-                        }
-                    }
-                },
-                )
+                });
             }
         },
 
@@ -92,16 +73,18 @@ export default {
         }, {
             call, put
         }) {
-            const {data} = yield call(create, parse(payload));
-            yield put({
-                type: 'get',
-                payload: {
-                    uuid: data.obj
-                }
-            })
-            yield put({
-                type: 'refreshGrid',
-            })
+            let {data} = yield call(create, parse(payload));
+            if (data.status == "200") {
+               let getData = yield call(get, {customerUuid: data.obj});
+               if (getData.data.status == "200") {
+                  yield put({
+                       type: 'onViewItem',
+                       payload: {
+                         currentItem: getData.data.obj
+                       }
+                   });
+               }
+            }
         },
 
         *remove({payload}, {call, put}) {
@@ -136,14 +119,18 @@ export default {
 
         *update({payload}, {call, put}) {
             const customer = payload;
-            yield call(updateCustomer, payload);
-            yield put({
-                type: 'get',
-                payload: payload,
-            })
-            yield put({
-                type: 'refreshGrid',
-            })
+            let {data} = yield call(updateCustomer, payload);
+            if (data.status == "200") {
+               let getData = yield call(get, {customerUuid: payload.data.uuid});
+               if (getData.data.status == "200") {
+                  yield put({
+                       type: 'onViewItem',
+                       payload: {
+                         currentItem: getData.data.obj
+                       }
+                   });
+               }
+            }
         },
 
         *gridRemove({payload}, {call, put}) {

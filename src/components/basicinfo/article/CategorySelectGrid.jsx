@@ -6,6 +6,7 @@ function CategorySelectGrid({
     onPageChange,
     selectedRowKeys = [],
     onSelect,
+    pagination
 }) {
     function handleSelect() {
         onSelect(selectedRowKeys);
@@ -49,6 +50,7 @@ function CategorySelectGrid({
                 rowSelection={rowSelection}
                 dataSource={dataSource}
                 onChange={onPageChange}
+                pagination={pagination}
                 rowKey={record => record.uuid}
                 filterMultiple={false}
             />
@@ -58,7 +60,8 @@ function CategorySelectGrid({
 
 CategorySelectGrid.propTypes = {
     dataSource: PropTypes.array,
-    onPageChange: PropTypes.func
+    onPageChange: PropTypes.func,
+    pagination: PropTypes.any
 }
 
 export default CategorySelectGrid;

@@ -6,6 +6,7 @@ import ToolbarPanel from '../../Widget/ToolbarPanel';
 import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import Panel from '../../Widget/Panel';
 
 const Option = Select.Option;
 
@@ -31,21 +32,21 @@ const CustomerAddForm = ({
 
     const children = [];
     children.push(
-        <BaseFormItem label={"客户代码"} >
+        <BaseFormItem label={"客户代码"} key="code">
             {getFieldDecorator("code", { rules: [{ required: true }], initialValue: item.code })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label={"客户名称"}>
+        <BaseFormItem label={"客户名称"} key="name">
             {getFieldDecorator("name", { rules: [{ required: true }], initialValue: item.name })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label={"客户类型"} >
+        <BaseFormItem label={"客户类型"} key="type">
             {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type })(
                 <Select placeholder="请选择" showSearch={false} size="large">
                     <Option value="store">百货</Option>
@@ -55,14 +56,14 @@ const CustomerAddForm = ({
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label={"联系方式"} >
+        <BaseFormItem label={"联系方式"} key="phone">
             {getFieldDecorator("phone", { rules: [{ required: true }], initialValue: item.phone })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label={"地址"} >
+        <BaseFormItem label={"地址"} key="address">
             {getFieldDecorator("address", { rules: [{ required: true }], initialValue: item.address })(
                 <Input type="textarea" autosize={{ minRows: 4 }} />
             )}
@@ -80,6 +81,13 @@ const CustomerAddForm = ({
             <BaseCard title="基本信息">
                 <BaseForm items={children} />
             </BaseCard>
+            <Panel title="说明">
+              {getFieldDecorator('remark', {
+                initialValue: item.remark
+               })(
+              <Input type="textarea" autosize={{ minRows: 4 }} />
+              )}
+            </Panel>
         </div>
     );
 }

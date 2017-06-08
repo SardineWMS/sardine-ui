@@ -95,9 +95,13 @@ export default {
           payload: {
             list: data.obj.records,
             pagination: {
-              total: data.obj.recordCount,
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
               current: data.obj.page,
-            }
+              total: data.obj.recordCount,
+              size: 'default'
+            },
           },
         })
       }
@@ -117,10 +121,14 @@ export default {
           type: 'showCreatePage',
           payload: {
             categoryList: data.obj.records,
-            categoeyPagination: {
-              total: data.obj.recordCount,
+            categoryPagination: {
+              showSizeChanger: false,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
               current: data.obj.page,
-            }
+              total: data.obj.recordCount,
+              size: 'default'
+            },
           },
         })
       }
@@ -140,10 +148,14 @@ export default {
           type: 'showEditPage',
           payload: {
             categoryList: data.obj.records,
-            categoeyPagination: {
-              total: data.obj.recordCount,
+            categoryPagination: {
+              showSizeChanger: false,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
               current: data.obj.page,
-            }
+              total: data.obj.recordCount,
+              size: 'default'
+            },
           },
         })
       }
@@ -163,9 +175,13 @@ export default {
           type: 'showCategorySelectModal',
           payload: {
             categoryList: data.obj.records,
-            categoeyPagination: {
-              total: data.obj.recordCount,
+            categoryPagination: {
+              showSizeChanger: false,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
               current: data.obj.page,
+              total: data.obj.recordCount,
+              size: 'default'
             },
             currentArticle: payload.article
           },

@@ -29,7 +29,7 @@ function Customer({ location, dispatch, customer }) {
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.columnKey,
-                    order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+                    order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
                 }
             }))
         },
@@ -152,8 +152,6 @@ function Customer({ location, dispatch, customer }) {
         },
 
         handleSave(data) {
-            let token = localStorage.getItem("token");
-            data.token = token;
             if (data.uuid) {
                 dispatch({
                     type: 'customer/update',
