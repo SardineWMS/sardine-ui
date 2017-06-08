@@ -32,21 +32,21 @@ const CustomerAddForm = ({
 
     const children = [];
     children.push(
-        <BaseFormItem label={"客户代码"} key="code">
+        <BaseFormItem label={"代码"} key="code">
             {getFieldDecorator("code", { rules: [{ required: true }], initialValue: item.code })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label={"客户名称"} key="name">
+        <BaseFormItem label={"名称"} key="name">
             {getFieldDecorator("name", { rules: [{ required: true }], initialValue: item.name })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label={"客户类型"} key="type">
+        <BaseFormItem label={"类型"} key="type">
             {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type })(
                 <Select placeholder="请选择" showSearch={false} size="large">
                     <Option value="store">百货</Option>

@@ -37,19 +37,19 @@ const CustomerView = ({ item = {},
     };
 
     let basicFormItems = [];
-    basicFormItems.push(<BaseFormItem label="客户代码：" key={Guid()}>
+    basicFormItems.push(<BaseFormItem label="代码：" key={Guid()}>
         <span>{item.code}</span>
     </BaseFormItem>);
-    basicFormItems.push(<BaseFormItem label="客户名称：" key={Guid()}>
+    basicFormItems.push(<BaseFormItem label="名称：" key={Guid()}>
         <span>{item.name}</span>
     </BaseFormItem>);
-    basicFormItems.push(<BaseFormItem label="客户类型：" key={Guid()}>
+    basicFormItems.push(<BaseFormItem label="类型：" key={Guid()}>
         <span>{convertType(item.type)}</span>
     </BaseFormItem>);
     basicFormItems.push(<BaseFormItem label="联系方式：" key={Guid()}>
         <span>{item.phone}</span>
     </BaseFormItem>);
-    basicFormItems.push(<BaseFormItem label="联系地址：" key={Guid()}>
+    basicFormItems.push(<BaseFormItem label="地址：" key={Guid()}>
         <span>{item.address}</span>
     </BaseFormItem>);
 
