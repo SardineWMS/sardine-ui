@@ -36,6 +36,13 @@ const CustomerView = ({ item = {},
             return '百货';
     };
 
+    function convertState(text) {
+        if (text == "normal")
+            return '正常';
+        if (text = "deleted")
+            return '已删除';
+    };
+
     let basicFormItems = [];
     basicFormItems.push(<BaseFormItem label="代码：" key={Guid()}>
         <span>{item.code}</span>
@@ -53,6 +60,11 @@ const CustomerView = ({ item = {},
         <span>{item.address}</span>
     </BaseFormItem>);
 
+    let stateFormItems = [];
+    stateFormItems.push(<BaseFormItem label="状态：" key={Guid()}>
+        <span>{convertState(item.state)}</span>
+    </BaseFormItem>);
+
     let toolbar = [];
     toolbar.push(<Button onClick={() => showEdit(item)} key={Guid()} disabled={!PermissionUtil("customer:edit")}>编辑</Button>);
     toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)} key={Guid()}>
@@ -68,6 +80,7 @@ const CustomerView = ({ item = {},
             <ToolbarPanel children={toolbar} />
             <BaseCard title="基本信息" single={false}>
                 <BaseForm items={basicFormItems} />
+                <BaseForm items={stateFormItems} />
             </BaseCard>
             <RemarkCard remark={item.remark} />
             </div>
