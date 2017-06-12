@@ -85,13 +85,13 @@ function ReceiveBillItemGrid_View({
         },
         {
             title: '生产日期',
-            dataIndex: 'produceDate',
+            dataIndex: 'productionDate',
             key: 'produceDate',
             render: text => moment(text).format('YYYY-MM-DD')
         },
         {
             title: '到效期',
-            dataIndex: 'validDate',
+            dataIndex: 'expireDate',
             key: 'validDate',
             render: text => moment(text).format("YYYY-MM-DD")
         },
