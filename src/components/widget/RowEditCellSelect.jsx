@@ -17,6 +17,11 @@ class RowEditCellSelect extends React.Component {
         this.setState({ value });
         this.props.onChange(value);
     }
+    handleFocus(e) {
+        const value = e;
+        this.setState({ value });
+        this.props.onFocus(value);
+    }
     componentWillReceiveProps(newProps) {
         this.setState({
             value: newProps.value,
@@ -32,7 +37,7 @@ class RowEditCellSelect extends React.Component {
             {
                 editable ?
                     <div>
-                        <Select className={styles.selectWidth} onChange={e => this.handleChange(e)} value
+                        <Select className={styles.selectWidth} onChange={e => this.handleChange(e)} onFocus={e => this.handleFocus(e)}  value
                             ={value}>
                             {options}
                         </Select>

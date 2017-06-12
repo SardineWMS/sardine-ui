@@ -33,6 +33,7 @@ app.model(require('./models/forward/Receive'));
 app.model(require('./models/system/System'));
 app.model(require('./models/inner/DecInc'));
 app.model(require('./models/forward/AlcNtcBill'));
+app.model(require('./models/forward/AcceptanceBill'));
 app.model(require('./models/tms/Carrier'));
 app.model(require('./models/tms/Vehicle'));
 
