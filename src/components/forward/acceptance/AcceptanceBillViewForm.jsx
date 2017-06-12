@@ -6,6 +6,7 @@ import RemarkCard from '../../Widget/RemarkCard';
 import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
+import PermissionUtil from '../../../utils/PermissionUtil';
 
 const AcceptanceBillViewForm=({
 	acceptanceBill={},
@@ -113,12 +114,18 @@ const AcceptanceBillViewForm=({
 
 
     const toolbar = [];
-    toolbar.push(<Button onClick={() => onEdit(acceptanceBill)}> 编辑</Button>);
-    toolbar.push(<Button onClick={() => onDelete(acceptanceBill)}> 删除</Button>);
-    toolbar.push(<Button onClick={() => onApprove(acceptanceBill)}> 批准</Button>);
-    toolbar.push(<Button onClick={() => onBeginAlc(acceptanceBill)}> 配货</Button>);
-    toolbar.push(<Button onClick={() => onFinish(acceptanceBill)}> 完成</Button>);
-    toolbar.push(<Button onClick={() => onAbort(acceptanceBill)}> 作废</Button>);
+    toolbar.push(<Button onClick={() => onEdit(acceptanceBill)} 
+    	disabled={(acceptanceBill.state != 'Initial') || (!PermissionUtil("acceptanceBill:edit"))}> 编辑</Button>);
+    toolbar.push(<Button onClick={() => onDelete(acceptanceBill)}
+    	disabled={(acceptanceBill.state != 'Initial') || (!PermissionUtil("acceptanceBill:delete"))}> 删除</Button>);
+    toolbar.push(<Button onClick={() => onApprove(acceptanceBill)}
+    	disabled={(acceptanceBill.state != 'Initial') || (!PermissionUtil("acceptanceBill:approve"))}> 批准</Button>);
+    toolbar.push(<Button onClick={() => onBeginAlc(acceptanceBill)}
+    	disabled={(acceptanceBill.state != 'Approved') || (!PermissionUtil("acceptanceBill:alc"))}> 配货</Button>);
+    toolbar.push(<Button onClick={() => onFinish(acceptanceBill)}
+    	disabled={((acceptanceBill.state != 'Approved') && (acceptanceBill.state != 'Initial')) || (!PermissionUtil("acceptanceBill:finesh"))}> 完成</Button>);
+    toolbar.push(<Button onClick={() => onAbort(acceptanceBill)}
+    	disabled={(acceptanceBill.state != 'Initial') || (!PermissionUtil("acceptanceBill:abort"))}> 作废</Button>);
     toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
 
     return (
