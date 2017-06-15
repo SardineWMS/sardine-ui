@@ -51,6 +51,10 @@ module.exports =
       }, {
         key: 'alcNtc',
         name: '出库通知单'
+      },
+      {
+        key: 'acceptance',
+        name: '领用单'
       }, {
         key: 'ship',
         name: '装车单'

@@ -25,6 +25,7 @@ import Receive from './routes/forward/Receive';
 import Task from './routes/inner/Task';
 import DecInc from './routes/inner/DecInc';
 import AlcNtcBill from './routes/forward/AlcNtcBill';
+import AcceptanceBill from './routes/forward/AcceptanceBill';
 import Carrier from './routes/tms/Carrier';
 import Vehicle from './routes/tms/Vehicle';
 import PickArea from './routes/basicinfo/PickArea';
@@ -61,6 +62,7 @@ export default function ({
         <Route path="/tms/carrier" component={Carrier} />
         <Route path="/tms/vehicle" component={Vehicle} />
         <Route path="/basicInfo/pickArea" component={PickArea} />
+        <Route path="/forward/acceptanceBill" component={AcceptanceBill} />
       </Route>
     </Router>
   );
