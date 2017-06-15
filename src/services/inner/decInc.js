@@ -31,3 +31,8 @@ export async function audit(params) {
     const url = '/swms/inner/decInc/audit';
     return request(query(url, params), updateBaseNullBody(null));
 }
+
+export async function queryStockExtendInfo(params) {
+    const url = '/swms/inner/decInc/queryStockExtendInfo';
+    return request(query(url, params));
+}

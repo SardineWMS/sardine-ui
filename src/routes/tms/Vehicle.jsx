@@ -177,7 +177,7 @@ function Vehicle({ location, dispatch, vehicle }) {
                 payload: {}
             })
         },
-        showEdit(iStem) {
+        showEdit(item) {
             dispatch({
                 type: 'vehicle/showEdit',
                 payload: item,

@@ -22,7 +22,3 @@ export async function caseQtyStrSubtract(params) {
     return request(query(url, params), updateBaseNullBody(null));
 }
 
-export async function queryStockExtendInfo(params) {
-    const url = '/swms/common/helper/queryStockExtendInfo';
-    return request(query(url, params));
-}

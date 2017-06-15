@@ -2,10 +2,10 @@ import { parse } from 'qs';
 import { queryArticleInStocks } from '../../services/basicinfo/Article.js';
 import { queryWrhs, getBinByCode } from '../../services/basicinfo/Bin.js';
 import { getByCode as getArticleInfo } from '../../services/basicinfo/Article.js';
-import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, queryStockExtendInfo } from '../../services/common/common.js';
+import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd } from '../../services/common/common.js';
 import { message } from 'antd';
 import { removeByValue } from '../../utils/ArrayUtils.js';
-import { get, insert, queryDecInc, update, remove, audit } from '../../services/inner/decInc.js';
+import { get, insert, queryDecInc, update, remove, audit, queryStockExtendInfo } from '../../services/inner/decInc.js';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 

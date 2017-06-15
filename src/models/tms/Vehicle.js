@@ -219,10 +219,10 @@ export default {
                 uuid: payload.uuid,
                 version: payload.version
             });
-            yield put({
-                type: 'query',
-                payload: {},
-            })
+            // yield put({
+            //     type: 'query',
+            //     payload: {},
+            // })
         },
 
         *gridOffline({ payload }, { call, put }) {
@@ -230,10 +230,10 @@ export default {
                 uuid: payload.uuid,
                 version: payload.version
             });
-            yield put({
-                type: 'query',
-                payload: {},
-            })
+            // yield put({
+            //     type: 'query',
+            //     payload: {},
+            // })
         },
     },
 
