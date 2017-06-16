@@ -59,15 +59,15 @@ const OrderBillCreateForm=({
 
     baseChildren.push(
         <BaseFormItem label={"供应商："}>
-            {getFieldDecorator("supplier.uuid", { rules: [{ required: true }], initialValue: item.supplier ? item.supplier.uuid : null })(
+            {getFieldDecorator("supplier.uuid", { rules: [{ required: true }], initialValue: item.supplier ? item.supplier.code : null })(
                 <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => querySuppliers()} />}  />
             )}
         </BaseFormItem>
     );
     baseChildren.push(
         <BaseFormItem label={"仓位"} >
-            {getFieldDecorator("wrh.uuid", { rules: [{ required: true }], initialValue:item.wrh ? item.wrh.uuid: null })(
-                <Select size="large" style={{ width: 287 }} onFocus={queryWrhs} onSelect={wrhOnSelect}>
+            {getFieldDecorator("wrh.uuid", { rules: [{ required: true }], initialValue:item.wrh ? item.wrh.code: null })(
+                <Select size="large"  onFocus={queryWrhs} onSelect={wrhOnSelect}>
                   {options}
                 </Select>            
             )}
@@ -90,7 +90,7 @@ const OrderBillCreateForm=({
     baseChildren.push(
         <BaseFormItem label={"到校日期"} >
             {getFieldDecorator("expireDate", { rules: [{ required: false }], initialValue: item.expireDate})(
-                 <DatePicker onChange={expireDateOnSelect} format='YYYY-MM-DD' style={{ width: 287 }}/>
+                 <DatePicker onChange={expireDateOnSelect} format='YYYY-MM-DD' style={{ width: 283 }}/>
             )}
         </BaseFormItem>
     );

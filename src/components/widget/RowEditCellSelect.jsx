@@ -18,6 +18,8 @@ class RowEditCellSelect extends React.Component {
         this.props.onChange(value);
     }
     handleFocus(e) {
+        if(typeof e =='undefined')
+            return;
         const value = e;
         this.setState({ value });
         this.props.onFocus(value);

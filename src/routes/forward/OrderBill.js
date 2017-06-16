@@ -51,6 +51,9 @@ function OrderBill({ location, dispatch, orderBill }){
         onCreate() {
             dispatch({
                 type: 'orderBill/showCreatePage',
+                payload: {
+                  currentItem: {}
+                }
             })
         },
         onViewItem(item) {

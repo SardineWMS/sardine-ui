@@ -304,6 +304,8 @@ export default {
             yield put({ type: 'showLoading' });
             const { data } = yield call(refreshCaseQtyAndAmount, parse(payload));
             if(data){
+                data.obj.expireDate = moment(data.obj.expireDate);
+                data.obj.bookedDate = moment(data.obj.bookedDate);
                 yield put({
                     type: 'showEditPage',
                     payload: {
@@ -367,9 +369,10 @@ export default {
                 showCreatePage: false
             }
         },
-        showCreatePage(state) {
+        showCreatePage(state,action) {
             return {
                 ...state,
+                ...action.payload,
                 loading: false,
                 showViewPage: false,
                 showCreatePage: true

@@ -126,7 +126,7 @@ const OrderBillItems=({
     	if(editable === false)
     		return text;
 	    return (<RowEditableCell
-	      editable="true"
+	      editable={editable}
 	      value={text}
 	      onBlur={value => handleChange(key, index, value)}
 	      autoFocus={key == "articleCode" ? true : false}
@@ -157,7 +157,7 @@ const OrderBillItems=({
                 </Option>)
 			});
     	return (<RowEditCellSelect
-            editable='true'
+            editable={editable}
             options={options}
             onChange={value => handleSelectQpcStr(record, value, key)}
             value={text}
