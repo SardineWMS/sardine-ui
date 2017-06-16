@@ -28,7 +28,7 @@ const TaskSearchForm = ({
 
   const children = [];
   children.push(
-    <BaseTwoCol>
+    <BaseTwoCol key="taskNo">
       <BaseFormItem  label="指令号 等于">
         {getFieldDecorator('taskNo')(
           <Input type="text" placeholder="指令号 等于" />
@@ -37,10 +37,10 @@ const TaskSearchForm = ({
     </BaseTwoCol>
   );
   children.push(
-    <BaseTwoCol>
+    <BaseTwoCol key="taskType">
       <BaseFormItem label="指令类型 等于">
         {getFieldDecorator('taskType')(
-          <Select size="default">
+          <Select size="large">
             <Option value="Putaway">上架指令</Option>
             <Option value="Pickup">拣货指令</Option>
             <Option value="Rpl">补货指令</Option>
@@ -55,10 +55,10 @@ const TaskSearchForm = ({
     </BaseTwoCol>
   );
   children.push(
-    <BaseTwoCol>
+    <BaseTwoCol key="state">
       <BaseFormItem  label="状态 等于">
         {getFieldDecorator('state')(
-          <Select size="default">
+          <Select size="large">
             <Option value="Initial">初始</Option>
             <Option value="InProgress">进行中</Option>
             <Option value="Finished">已完成</Option>

@@ -41,8 +41,6 @@ const login = ({
     })
   }
 
-  document.onkeyup = e => e.keyCode === 13 && handleOk()
-
   return (
     <div className={styles.form}>
       <div className={styles.logo}>
@@ -67,7 +65,7 @@ const login = ({
                 message: '请填写密码'
               }
             ]
-          })(<Input size="large" type="password" placeholder="密码" />)}
+          })(<Input size="large" type="password" placeholder="密码" onPressEnter={() => handleOk()}/>)}
         </FormItem>
         <Row>
           <Link onClick={onRegister}>注册</Link>

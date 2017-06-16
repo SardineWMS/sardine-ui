@@ -21,3 +21,7 @@ export async function create(params) {
 export async function queryContainerStockInfo(params){
   return request(query('/swms/basicinfo/container/queryContainerStockInfo',params));
 }
+
+export async function getByBarcode(params){
+  return request(query('/swms/basicinfo/container/getByBarcode',params));
+}

@@ -4,16 +4,20 @@ import { connect } from 'dva';
 
 import TaskSearchForm from '../../components/Inner/Task/TaskSearchForm';
 import TaskSearchGrid from '../../components/Inner/Task/TaskSearchGrid';
+import ArticleMove from '../../components/Inner/Task/ArticleMove';
+import ContainerMove from '../../components/Inner/Task/ContainerMove';
 
 function Task({location, dispatch, task}) {
     const {
-        list, 
-        pagination, 
-        total, 
-        current, 
-        currentItem, 
-        modalVisible, 
-        modalType
+        list,
+        loading,
+        currentArticleItem,
+        currentContainerItem,
+        container,
+        stockInfos,
+        pagination,
+        articleMoveModalVisable,
+        containerMoveModalVisable,
     } = task;
 
     const {field, keyword} = location.query;
@@ -23,8 +27,6 @@ function Task({location, dispatch, task}) {
         dataSource: list,
         pagination: pagination,
         onPageChange(page, filters, sorter) {
-            console.log("sorter");
-            console.dir(sorter);
             dispatch(routerRedux.push({
                 pathname: '/wms/inner/task',
                 query: {
@@ -35,6 +37,85 @@ function Task({location, dispatch, task}) {
                     sortDirection: sorter.order,
                 }
             }))
+        },
+        onArticleMove() {
+            dispatch({
+                type: 'task/showArticleMoveModal',
+                payload: { }
+            })
+        },
+        onContainerMove() {
+            dispatch({
+                type: 'task/showContainerMoveModal',
+                payload: { }
+            })
+        },
+    };
+
+    const articleMoveProps = {
+        currentArticleItem: currentArticleItem,
+        stockInfos: stockInfos,
+        onQueryStock(articleCode) {
+           dispatch({
+                type: 'task/queryStocks',
+                payload: {
+                  articleCode: articleCode
+                }
+            })
+        },
+        onCancel() {
+            dispatch({
+                type: 'task/query'
+            })
+        },
+        onSave(records) {
+            dispatch({
+                type: 'task/saveArticleMoveRule',
+                payload: {
+                    articleMoveRules: records
+                }
+            })
+        },
+        onSaveAndMove(records) {
+            dispatch({
+                type: 'task/saveAndMoveArticleMoveRule',
+                payload: {
+                    articleMoveRules: records
+                }
+            })
+        }
+    };
+
+    const containerMoveProps = {
+        container: container,
+        onGetContainer(containerBarcode) {
+           dispatch({
+                type: 'task/getContainer',
+                payload: {
+                  containerBarcode: containerBarcode
+                }
+            })
+        },
+        onCancel() {
+            dispatch({
+                type: 'task/query'
+            })
+        },
+        onSave(records) {
+            dispatch({
+                type: 'task/saveContainerMoveRule',
+                payload: {
+                    containereMoveRules: records
+                }
+            })
+        },
+        onSaveAndMove(records) {
+            dispatch({
+                type: 'task/saveAndMoveContainerMoveRule',
+                payload: {
+                    containereMoveRules: records
+                }
+            })
         }
     };
 
@@ -50,6 +131,20 @@ function Task({location, dispatch, task}) {
     };
 
     function refreshWidget() {
+        if (articleMoveModalVisable) {
+            return (
+               <div>
+                  <ArticleMove {...articleMoveProps} />
+               </div>
+            );
+        }
+        if (containerMoveModalVisable) {
+            return (
+               <div>
+                  <ContainerMove {...containerMoveProps} />
+               </div>
+            );
+        }
         return (
             <div>
                 <TaskSearchForm {...taskSearchProps} />

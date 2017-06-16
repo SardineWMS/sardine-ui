@@ -1,10 +1,12 @@
 import React,{PropTypes} from 'react';
-import { Table, Popconfirm, Button, Menu, Dropdown, Icon } from 'antd';
+import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
 
 function TaskSearch({
 	dataSource,
   pagination,
-  onPageChange
+  onPageChange,
+  onArticleMove,
+  onContainerMove
 }) {
 	const columns = [{
     	title: '指令号',
@@ -89,6 +91,20 @@ function TaskSearch({
     ),
   }]
 
+  const moveMenu = (
+    <Menu onClick={handleMenuClick}>
+      <Menu.Item key="1">商品移库</Menu.Item>
+      <Menu.Item key="2">容器移库</Menu.Item>
+    </Menu>
+  );
+
+  function handleMenuClick(e) {
+    if(e.key == "1")
+      onArticleMove();
+    else 
+      onContainerMove();
+  }
+
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
 
@@ -115,6 +131,20 @@ function TaskSearch({
         scroll={{ x: 1500, y: 300 }}
         rowKey={record => record.uuid}
         rowSelection={rowSelection}
+        title={() => <div>
+                        <Row type="flex">
+                            <Col>
+                                <Button >批量执行</Button>
+                            </Col>
+                            <Col>
+                                <Dropdown overlay={moveMenu}>
+                                  <Button type="ghost" style={{ marginLeft: 8 }}>
+                                    移库 <Icon type="down" />
+                                  </Button>
+                                </Dropdown>
+                            </Col>
+                        </Row>
+                    </div>}
       />
     </div>  
   )
@@ -124,6 +154,8 @@ TaskSearch.propTypes = {
 	dataSource: PropTypes.array,
   pagination: PropTypes.any,
   onPageChange: PropTypes.func,
+  onArticleMove: PropTypes.func,
+  onContainerMove: PropTypes.func,
 }
 
 export default TaskSearch;

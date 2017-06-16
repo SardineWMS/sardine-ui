@@ -123,7 +123,8 @@ function App({
   }
 
   function renderApp() {
-    if (login) {
+    let token = localStorage.getItem("token");
+    if (token) {
       return (<div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
           <Nav {...navProps} />
           <UpdatePasswd {...updatePasswdProps} />
