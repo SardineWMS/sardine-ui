@@ -21,7 +21,7 @@ const ArticleCreateForm = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue,
+    getFieldsValue
   },
   onCategorySelect,
   category,
@@ -34,33 +34,33 @@ const ArticleCreateForm = ({
     validateFields((errors) => {
       if (errors) {
         return;
-      }
+      };
       const data = { ...getFieldsValue(), uuid: article.uuid, version: article.version, category: category };
       onOk(data);
     });
-  }
+  };
 
   function selectCategory(){
     let data = { ...getFieldsValue()};
     if (article.uuid) {
       data.uuid = article.uuid;
       data.version = article.version;
-    }
+    };
     onCategorySelect(data);
-  }
+  };
 
   function handleEnterPress() {
     let data = { ...getFieldsValue()};
     if (article.uuid) {
       data.uuid = article.uuid;
       data.version = article.version;
-    }
+    };
     onEnterCategory(data, getFieldsValue().category);
-  }
+  };
 
   function firstInFirstOutChange(e){
     onFirstInFirstOutChange(e.target.value);
-  }
+  };
 
   const basicChildren = [];
   const businessChildren = [];

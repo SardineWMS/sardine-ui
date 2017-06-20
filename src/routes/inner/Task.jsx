@@ -17,7 +17,7 @@ function Task({location, dispatch, task}) {
         stockInfos,
         pagination,
         articleMoveModalVisable,
-        containerMoveModalVisable,
+        containerMoveModalVisable
     } = task;
 
     const {field, keyword} = location.query;
@@ -34,22 +34,22 @@ function Task({location, dispatch, task}) {
                     pageSize: page.pageSize,
                     token: localStorage.getItem("token"),
                     sort: sorter.field,
-                    sortDirection: sorter.order,
+                    sortDirection: sorter.order
                 }
-            }))
+            }));
         },
         onArticleMove() {
             dispatch({
                 type: 'task/showArticleMoveModal',
                 payload: { }
-            })
+            });
         },
         onContainerMove() {
             dispatch({
                 type: 'task/showContainerMoveModal',
                 payload: { }
-            })
-        },
+            });
+        }
     };
 
     const articleMoveProps = {
@@ -61,12 +61,12 @@ function Task({location, dispatch, task}) {
                 payload: {
                   articleCode: articleCode
                 }
-            })
+            });
         },
         onCancel() {
             dispatch({
                 type: 'task/query'
-            })
+            });
         },
         onSave(records) {
             dispatch({
@@ -74,7 +74,7 @@ function Task({location, dispatch, task}) {
                 payload: {
                     articleMoveRules: records
                 }
-            })
+            });
         },
         onSaveAndMove(records) {
             dispatch({
@@ -82,7 +82,7 @@ function Task({location, dispatch, task}) {
                 payload: {
                     articleMoveRules: records
                 }
-            })
+            });
         }
     };
 
@@ -94,12 +94,12 @@ function Task({location, dispatch, task}) {
                 payload: {
                   containerBarcode: containerBarcode
                 }
-            })
+            });
         },
         onCancel() {
             dispatch({
                 type: 'task/query'
-            })
+            });
         },
         onSave(records) {
             dispatch({
@@ -107,7 +107,7 @@ function Task({location, dispatch, task}) {
                 payload: {
                     containereMoveRules: records
                 }
-            })
+            });
         },
         onSaveAndMove(records) {
             dispatch({
@@ -115,7 +115,7 @@ function Task({location, dispatch, task}) {
                 payload: {
                     containereMoveRules: records
                 }
-            })
+            });
         }
     };
 
@@ -125,8 +125,8 @@ function Task({location, dispatch, task}) {
         onSearch(fieldsValue) {
             dispatch({
                 type: 'task/query',
-                payload: fieldsValue,
-            })
+                payload: fieldsValue
+            });
         }
     };
 
@@ -137,33 +137,33 @@ function Task({location, dispatch, task}) {
                   <ArticleMove {...articleMoveProps} />
                </div>
             );
-        }
+        };
         if (containerMoveModalVisable) {
             return (
                <div>
                   <ContainerMove {...containerMoveProps} />
                </div>
             );
-        }
+        };
         return (
             <div>
                 <TaskSearchForm {...taskSearchProps} />
                 <TaskSearchGrid {...taskListProps} />
             </div>
-        )
-    }
+        );
+    };
 
     return (
         <div>{refreshWidget()}</div>
-    )
-}
+    );
+};
 
 Task.propTypes = {
-    task: PropTypes.object,
-}
+    task: PropTypes.object
+};
 
 function mapStateToProps({task}) {
-    return { task }
-}
+    return { task };
+};
 
 export default connect(mapStateToProps)(Task)

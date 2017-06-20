@@ -1,7 +1,9 @@
 import { parse } from 'qs';
-import { querybypage, get, create, edit, remove, finish, abort,
-    queryCustomers,queryWrhs,refreshCaseQtyAndAmount,approve,beginalc} from '../../services/forward/AcceptanceBill';
-import {queryStockExtendInfo} from '../../services/common/common.js'; 
+import {
+    querybypage, get, create, edit, remove, finish, abort,
+    queryCustomers, queryWrhs, refreshCaseQtyAndAmount, approve, beginalc
+} from '../../services/forward/AcceptanceBill';
+import { queryStockExtendInfo } from '../../services/common/common.js';
 import { message } from 'antd';
 
 export default {
@@ -36,9 +38,9 @@ export default {
         finishAcceptanceBillEntitys: [],
         batchAbortProcessModal: false,
         abortAcceptanceBillEntitys: [],
-        customerModalVisible:false,
-        wrhs:[],
-        stocks:[]
+        customerModalVisible: false,
+        wrhs: [],
+        stocks: []
     },
 
     subscriptions: {
@@ -48,13 +50,13 @@ export default {
         }) {
             history.listen(location => {
                 if (location.pathname === '/forward/acceptanceBill') {
-             
-                        dispatch({
-                            type: 'query',
-                            payload: location.query,
-                        })
-                    }
-            })
+
+                    dispatch({
+                        type: 'query',
+                        payload: location.query,
+                    });
+                };
+            });
         }
     },
 
@@ -67,10 +69,10 @@ export default {
                     list: data.obj.records,
                     pagination: {
                         total: data.obj.recordCount,
-                        current: data.obj.page,
+                        current: data.obj.page
                     }
                 }
-            })
+            });
         },
 
         *get({ payload }, { call, put }) {
@@ -83,8 +85,8 @@ export default {
                     payload: {
                         currentAcceptanceBill: acceptanceBill.data.obj,
                     }
-                })
-            }
+                });
+            };
         },
 
         *create({ payload }, { call, put }) {
@@ -95,7 +97,7 @@ export default {
                 payload: {
                     uuid: data.obj
                 }
-            })
+            });
         },
 
         *editItem({ payload }, { call, put }) {
@@ -106,15 +108,15 @@ export default {
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
-       *editGrid({ payload }, { call, put }) {
+        *editGrid({ payload }, { call, put }) {
             yield put({ type: 'showLoading' });
             const { data } = yield call(edit, parse(payload));
             yield put({
                 type: 'query',
-            })
+            });
         },
 
 
@@ -122,92 +124,92 @@ export default {
             yield call(approve, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'get',
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
         *approveGrid({ payload }, { call, put }) {
             yield call(approve, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'query',
-            })
+            });
         },
 
         *beginAlcItem({ payload }, { call, put }) {
             yield call(beginalc, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'get',
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
         *beginAlcGrid({ payload }, { call, put }) {
             yield call(beginalc, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
-                type: 'query',
-            })
+                type: 'query'
+            });
         },
 
         *finishItem({ payload }, { call, put }) {
             yield call(finish, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'get',
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
         *finishGrid({ payload }, { call, put }) {
             yield call(finish, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'query',
-            })
+            });
         },
 
-       *abortItem({ payload }, { call, put }) {
+        *abortItem({ payload }, { call, put }) {
             yield call(abort, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'get',
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
         *abortGrid({ payload }, { call, put }) {
             yield call(abort, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
-                type: 'query',
-            })
+                type: 'query'
+            });
         },
 
 
@@ -215,23 +217,23 @@ export default {
             yield call(remove, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
-                type: 'query',
-            })
+                type: 'query'
+            });
         },
 
         *queryCustomers({ payload }, { call, put }) {
             const result = yield call(queryCustomers, parse(payload));
             if (result) {
-                const customers=[];
+                const customers = [];
                 for (var customer of result.data.obj.records) {
-                    const customerUcn=new Object();
-                    customerUcn.uuid=customer.uuid;
-                    customerUcn.code=customer.code;
-                    customerUcn.name=customer.name;
+                    const customerUcn = new Object();
+                    customerUcn.uuid = customer.uuid;
+                    customerUcn.code = customer.code;
+                    customerUcn.name = customer.name;
                     customers.push(customerUcn);
-                }
+                };
 
                 yield put({
                     type: 'showCustomerModal',
@@ -239,11 +241,11 @@ export default {
                         customers: customers,
                         customersagination: {
                             total: result.data.obj.recordCount,
-                            current: result.data.obj.page,
+                            current: result.data.obj.page
                         }
                     }
-                })
-            }
+                });
+            };
         },
 
 
@@ -253,10 +255,10 @@ export default {
                 yield put({
                     type: 'showEditPage',
                     payload: {
-                        wrhs: wrhs.data.obj,
+                        wrhs: wrhs.data.obj
                     }
-                })
-            }
+                });
+            };
         },
 
         *queryStocks({ payload }, { call, put }) {
@@ -264,29 +266,29 @@ export default {
                 articleCode: payload.articleCode
             });
             if (stocks) {
-                const acceptanceBill=payload.acceptanceBill;
-                acceptanceBill.items[payload.index].article=stocks.data.obj[0].article;
+                const acceptanceBill = payload.acceptanceBill;
+                acceptanceBill.items[payload.index].article = stocks.data.obj[0].article;
                 yield put({
                     type: 'showEditPage',
                     payload: {
                         stocks: stocks.data.obj,
-                        currentAcceptanceBill:acceptanceBill
+                        currentAcceptanceBill: acceptanceBill
                     }
-                })
-            }
+                });
+            };
         },
 
         *refreshCaseQtyAndAmount({ payload }, { call, put }) {
             yield put({ type: 'showLoading' });
             const { data } = yield call(refreshCaseQtyAndAmount, parse(payload));
-            if(data){
+            if (data) {
                 yield put({
                     type: 'showEditPage',
                     payload: {
                         currentAcceptanceBill: data.obj
                     }
-                })
-            }
+                });
+            };
         },
 
         *getForEdit({ payload }, { call, put }) {
@@ -294,23 +296,23 @@ export default {
                 uuid: payload.uuid,
             });
             if (acceptanceBill) {
-              yield put({
+                yield put({
                     type: 'showEditPage',
                     payload: {
-                        currentAcceptanceBill: acceptanceBill.data.obj,
+                        currentAcceptanceBill: acceptanceBill.data.obj
                     }
-                })
-            }
+                });
+            };
         }
 
 
     },
 
-    
+
 
     reducers: {
         showLoading(state) {
-            return { ...state, loading: true }
+            return { ...state, loading: true };
         },
         querySuccess(state, action) {
             return {
@@ -318,15 +320,15 @@ export default {
                 ...action.payload,
                 loading: false,
                 showPage: 'search'
-            }
+            };
         },
-        showCreatePage(state,action) {
+        showCreatePage(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 loading: false,
                 showPage: 'create'
-            }
+            };
         },
         showEditPage(state, action) {
             return {
@@ -334,7 +336,7 @@ export default {
                 ...action.payload,
                 loading: false,
                 showPage: 'create'
-            }
+            };
         },
         showViewPage(state, action) {
             return {
@@ -343,101 +345,101 @@ export default {
                 loading: false,
                 showPage: 'view'
 
-            }
+            };
         },
         backViewForm(state) {
             return {
                 ...state,
                 loading: false,
                 showPage: 'view'
-            }
+            };
         },
         backSearchForm(state) {
             return {
                 ...state,
                 loading: false,
                 showPage: 'search'
-            }
+            };
         },
         batchRemoveAcceptanceBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchDeleteProcessModal: true
-            }
+            };
         },
         hideRemoveAcceptanceBillModal(state) {
             return {
                 ...state,
                 batchDeleteProcessModal: false
-            }
+            };
         },
         batchApproveAcceptanceBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchApproveProcessModal: true
-            }
+            };
         },
         hideApproveAcceptanceBillModal(state) {
             return {
                 ...state,
                 batchApproveProcessModal: false
-            }
+            };
         },
         batchAlcAcceptanceBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchAlcProcessModal: true
-            }
+            };
         },
         hideAlcAcceptanceBillModal(state) {
             return {
                 ...state,
                 batchAlcProcessModal: false
-            }
+            };
         },
         batchFinishAcceptanceBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchFinishProcessModal: true
-            }
+            };
         },
         hideFinishAcceptanceBillModal(state) {
             return {
                 ...state,
                 batchFinishProcessModal: false
-            }
+            };
         },
         batchAbortAcceptanceBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchAbortProcessModal: true
-            }
+            };
         },
         hideAbortAcceptanceBillModal(state) {
             return {
                 ...state,
                 batchAbortProcessModal: false
-            }
+            };
         },
-        showCustomerModal(state,action){
+        showCustomerModal(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 customerModalVisible: true
-            }
+            };
         },
-        hideCustomerModal(state){
+        hideCustomerModal(state) {
             return {
                 ...state,
                 customerModalVisible: false
-            }
+            };
         }
-     
+
     }
 
 };

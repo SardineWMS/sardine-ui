@@ -5,12 +5,12 @@ const FormItem = Form.Item;
 
 const formItemLayout = {
     labelCol: {
-        span: 6,
+        span: 6
     },
     wrapperCol: {
-        span: 14,
-    },
-}
+        span: 14
+    }
+};
 
 const RoleCreateModal = ({
     visible,
@@ -19,8 +19,8 @@ const RoleCreateModal = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue,
-    },
+        getFieldsValue
+    }
 }) => {
     function handleOk() {
         validateFields((errors) => {
@@ -28,10 +28,10 @@ const RoleCreateModal = ({
                 return;
 
             const data = {
-                ...getFieldsValue(),
-            }
-            onOk(data)
-        })
+                ...getFieldsValue()
+            };
+            onOk(data);
+        });
     };
 
     const modalOpts = {
@@ -39,7 +39,7 @@ const RoleCreateModal = ({
         visible,
         onOk: handleOk,
         onCancel,
-        wrapClassName: 'vertical-center-modal',
+        wrapClassName: 'vertical-center-modal'
     };
 
     return (
@@ -63,6 +63,6 @@ const RoleCreateModal = ({
                 </FormItem>
             </Form>
         </Modal>
-    )
-}
+    );
+};
 export default Form.create()(RoleCreateModal);

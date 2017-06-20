@@ -23,28 +23,28 @@ const ContainerSearch = ({
     getFieldsValue,
     resetFields
   },
-  onCreateContainerType,
+  onCreateContainerType
 }) => {
 
   function handleSearch(e) {
     e.preventDefault();
     onSearch(getFieldsValue());
-  }
+  };
 
   function handleReset(e) {
     e.preventDefault();
     resetFields();
-  }
+  };
 
   function handleCreate(e) {
     e.preventDefault();
     onCreate();
-  }
+  };
 
   function handleCreateContainerType(e) {
     e.preventDefault();
     onCreateContainerType();
-  }
+  };
 
   const children = [];
   children.push(
@@ -99,7 +99,7 @@ const ContainerSearch = ({
       return '平移中';
     else if (text == "STACONTAINERPUTAWAYING")
       return '上架中'
-  }
+  };
 
   const columns = [{
     title: '条码',
@@ -109,20 +109,20 @@ const ContainerSearch = ({
     title: '状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => convertState(text),
+    render: text => convertState(text)
   }, {
     title: '当前位置',
     dataIndex: 'position',
-    key: 'position',
+    key: 'position'
   }, {
     title: '目标位置',
     dataIndex: 'toPosition',
-    key: 'toPosition',
+    key: 'toPosition'
   }, {
     title: '操作信息',
     dataIndex: 'lastModifyInfo',
     key: 'lastModifyInfo',
-    render: (text, record) => lastModifyInfo2String(record),
+    render: (text, record) => lastModifyInfo2String(record)
   }, {
     title: '操作',
     key: 'operation',
@@ -130,9 +130,9 @@ const ContainerSearch = ({
       <p>
         <a onClick={() => onQueryStock(record)}> 库存详细信息 </a>
       </p>
-    ),
+    )
   }
-  ]
+  ];
 
   return (
     <div>
@@ -152,8 +152,8 @@ const ContainerSearch = ({
         rowKey={record => record.barcode}
       />
     </div>
-  )
-}
+  );
+};
 
 ContainerSearch.propTypes = {
   form: PropTypes.object.isRequired,
@@ -163,8 +163,8 @@ ContainerSearch.propTypes = {
   onSearch: PropTypes.func,
   onToggle: PropTypes.func,
   searchExpand: PropTypes.bool,
-  onQueryStock: PropTypes.func,
-}
+  onQueryStock: PropTypes.func
+};
 
 export default Form.create()(ContainerSearch);
 

@@ -118,7 +118,7 @@ const OrderBillView=({
 OrderBillView.propTypes = {
   form: PropTypes.object,
   item: PropTypes.object,
-  onBack: PropTypes.func,
+  onBack: PropTypes.func
 };
 
 export default OrderBillView;

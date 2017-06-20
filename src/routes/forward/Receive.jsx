@@ -33,7 +33,7 @@ function Receive({ location, dispatch, receive }) {
         qpcStrTreeData,
         article_qpcStr,
         receiveStorageBin,
-        orderBillItemArticles,
+        orderBillItemArticles
     } = receive;
 
     const receiveListProps = {
@@ -46,9 +46,9 @@ function Receive({ location, dispatch, receive }) {
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.field,
-                    sortDirection: sorter.order,
+                    sortDirection: sorter.order
                 }
-            }))
+            }));
         },
         onSearch() {
             dispatch({
@@ -56,62 +56,62 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
 
                 }
-            })
+            });
         },
         onCreate() {
             dispatch({
-                type: 'receive/createSuccess',
-            })
+                type: 'receive/createSuccess'
+            });
         },
         onViewItem(item) {
             dispatch({
                 type: 'receive/getReceiveBillByBillNumber',
                 payload: {
-                    billNumber: item.billNumber,
+                    billNumber: item.billNumber
                 }
-            })
+            });
         },
         onDelete(receiveBill) {
             dispatch({
                 type: 'receive/gridRemove',
                 payload: {
                     uuid: receiveBill.uuid,
-                    version: receiveBill.version,
-                },
-            })
+                    version: receiveBill.version
+                }
+            });
         },
         onFinish(receiveBill) {
             dispatch({
                 type: 'receive/gridAudit',
                 payload: {
                     uuid: receiveBill.uuid,
-                    version: receiveBill.version,
+                    version: receiveBill.version
                 }
-            })
+            });
         },
         onRemoveBatch(receiveBills) {
             if (receiveBills.length <= 0) {
                 message.warning("请选择要删除的收货单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'receive/batchDeleteReceiveBill',
                 payload: {
-                    deleteReceiveBillEntitys: receiveBills,
+                    deleteReceiveBillEntitys: receiveBills
                 }
-            })
+            });
         },
         onFinishBatch(receiveBills) {
             if (receiveBills.length <= 0) {
                 message.error("请选择要审核的收货单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'receive/batchAuditReceiveBill',
                 payload: {
-                    finishReceiveBillEntitys: receiveBills,
+                    finishReceiveBillEntitys: receiveBills
                 }
-            })
+            });
         },
         onEdit(item) {
             dispatch({
@@ -119,15 +119,15 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
                     billNumber: item.billNumber
                 }
-            })
+            });
         },
         onViewOrderBill(item) {
             dispatch({
                 type: 'receive/toViewOrderBill',
-                payload: item,
-            })
+                payload: item
+            });
         }
-    }
+    };
 
     const receiveAddProps = {
         item: currentItem,
@@ -141,29 +141,29 @@ function Receive({ location, dispatch, receive }) {
                 type: 'receive/query',
                 payload: {
                     currentItem: {}
-                },
-            })
+                }
+            });
         },
         onOrderBillSelect() {
             dispatch({
                 type: 'receive/onOrderBillSelect',
                 payload: {}
-            })
+            });
         },
         onEnterOrderBill(data) {
             dispatch({
                 type: 'receive/getOrderBillByBillNo',
                 payload: {
-                    billNumber: data.orderBillNo,
+                    billNumber: data.orderBillNo
                 }
-            })
+            });
         },
         handleSave(data) {
             data.items = orderItems;
             data.totalAmount = currentItem.totalAmount;
             for (var item of data.items) {
                 item.qty = item.receiveQty;
-            }
+            };
             data.receiver = new Object();
             data.receiver.uuid = localStorage.getItem("loginId");
             data.receiver.code = localStorage.getItem("loginCode");
@@ -174,47 +174,46 @@ function Receive({ location, dispatch, receive }) {
                     if (data.items[i].article == null) {
                         message.error("第" + parseInt(i + 1) + "行明细中，商品不能为空", 2, '');
                         return;
-                    }
+                    };
                     if (data.items[i].receiveQty == null) {
                         message.error("第" + parseInt(i + 1) + "行明细中，收货数量不能为空", 2, '');
                         return;
-                    }
+                    };
                     if (data.items[i].produceDate == null) {
                         message.error("第" + parseInt(i + 1) + "行明细中，生产日期不能为空", 2, '');
                         return;
-                    }
+                    };
                     for (let j = i + 1; j < data.items.length; j++) {
                         if (data.items[j].article == null) {
                             message.error("第" + parseInt(j + 1) + "行明细中，商品不能为空", 2, '');
                             return;
-                        }
+                        };
                         if (data.items[i].article.code == data.items[j].article.code && data.items[i].qpcStr == data.items[j].qpcStr) {
                             message.warning("商品明细中商品：" + data.items[i].article.code + "规格：" + data.items[j].qpcStr + "不能重复", 2, '');
                             return;
-                        }
-                    }
-                }
-            }
+                        };
+                    };
+                };
+            };
             if (!data.uuid) {
                 dispatch({
                     type: 'receive/saveReceiveBill',
-                    payload: data,
-                })
+                    payload: data
+                });
             } else {
                 if (data.type == '订单')
                     dispatch({
                         type: 'receive/saveReceiveBill',
-                        payload: data,
-                    })
+                        payload: data
+                    });
                 else
                     dispatch({
                         type: 'receive/updateReceiveBill',
-                        payload: data,
-                    })
+                        payload: data
+                    });
             };
         }
-
-    }
+    };
 
     const orderBillSelectModalProps = {
         visible: showOrderBillSelectModal,
@@ -224,15 +223,15 @@ function Receive({ location, dispatch, receive }) {
         onOk(data) {
             dispatch({
                 type: 'receive/selectOderBill',
-                payload: { uuid: data[0].uuid },
-            })
+                payload: { uuid: data[0].uuid }
+            });
         },
         onCancel() {
             dispatch({
-                type: 'receive/hideOrderBillSelectModal',
-            })
+                type: 'receive/hideOrderBillSelectModal'
+            });
         }
-    }
+    };
 
     const orderBillItemGridProps = {
         dataSource: orderItems,
@@ -242,7 +241,7 @@ function Receive({ location, dispatch, receive }) {
             record.editable = true;
             dispatch({
                 type: 'receive/orderBillSelectSuccess'
-            })
+            });
         },
         onCancelEdit(record) {
             record.editable = false;
@@ -250,21 +249,21 @@ function Receive({ location, dispatch, receive }) {
                 removeByValue(orderItems, record);
                 dispatch({
                     type: 'receive/queryOrderBillItem',
-                    payload: orderItems,
-                })
+                    payload: orderItems
+                });
             }
             else {
                 dispatch({
                     type: 'receive/orderBillSelectSuccess',
-                    payload: record,
-                })
-            }
+                    payload: record
+                });
+            };
         },
         onAddItem() {
             dispatch({
                 type: 'receive/addReceiveArticle',
-                payload: orderItems,
-            })
+                payload: orderItems
+            });
         },
         onSave(record) {
             record.editable = false;
@@ -275,15 +274,15 @@ function Receive({ location, dispatch, receive }) {
                     orderItems.push(record);
                     i++;
                     break;
-                }
-            }
+                };
+            };
             if (i !== 1) {
                 orderItems.push(record);
-            }
+            };
             dispatch({
                 type: 'receive/orderBillSelectSuccess',
-                payload: orderItems,
-            })
+                payload: orderItems
+            });
         },
 
         calculateValidDate(record, list) {
@@ -291,8 +290,8 @@ function Receive({ location, dispatch, receive }) {
                 type: 'receive/calculateValidDate',
                 payload: {
                     record, list
-                },
-            })
+                }
+            });
         },
 
         calculateCaseQtyStr(record, list) {
@@ -301,16 +300,16 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
                     record, list, currentItem
                 }
-            })
+            });
         },
 
         onRemoveItem(data) {
             dispatch({
                 type: 'receive/removeItemLists',
                 payload: {
-                    data, orderItems, orderBillItemArticles, currentItem,
-                },
-            })
+                    data, orderItems, orderBillItemArticles, currentItem
+                }
+            });
         },
 
         selectArticle(record, array) {
@@ -319,8 +318,7 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
                     record, array: orderItems, article_qpcStr, orderBillItemArticles
                 }
-            })
-
+            });
         },
 
         selectQpcStr(record, array) {
@@ -329,9 +327,9 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
                     record, array, orderBillItemArticles
                 }
-            })
+            });
         }
-    }
+    };
 
     const receiveViewProps = {
         item: currentItem,
@@ -341,35 +339,35 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
                     billNumber: item.billNumber
                 }
-            })
+            });
         },
         onDelete(receiveBill) {
             dispatch({
                 type: 'receive/gridRemove',
                 payload: {
                     uuid: receiveBill.uuid,
-                    version: receiveBill.version,
-                },
-            })
+                    version: receiveBill.version
+                }
+            });
         },
         onFinish(receiveBill) {
             dispatch({
                 type: 'receive/gridAudit',
                 payload: {
                     uuid: receiveBill.uuid,
-                    version: receiveBill.version,
+                    version: receiveBill.version
                 }
-            })
-        },
-    }
+            });
+        }
+    };
 
     const receiveBillSearchProps = {
         onSearch(fieldsValue) {
             dispatch({
                 type: 'receive/query',
                 payload: fieldsValue
-            })
-        },
+            });
+        }
     };
 
     const batchProcessDeleteReceiveBillProps = {
@@ -384,14 +382,14 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'receive/hideDeleteReceiveBillModal',
-            })
+                type: 'receive/hideDeleteReceiveBillModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -399,7 +397,7 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
@@ -415,14 +413,14 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'receive/hideFinishReceiveBillModal',
-            })
+                type: 'receive/hideFinishReceiveBillModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -430,16 +428,16 @@ function Receive({ location, dispatch, receive }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
-    }
+    };
 
 
-    const OrderBillselectModalGen = () => <OrderBillSelectModal {...orderBillSelectModalProps} />
+    const OrderBillselectModalGen = () => <OrderBillSelectModal {...orderBillSelectModalProps} />;
 
-    const ReceiveBillAddGen = () => <ReceiveCreate {...receiveAddProps} />
+    const ReceiveBillAddGen = () => <ReceiveCreate {...receiveAddProps} />;
 
-    const ReceiveBillItemGridGen = () => <ReceiveBillItemGrid {...orderBillItemGridProps} />
+    const ReceiveBillItemGridGen = () => <ReceiveBillItemGrid {...orderBillItemGridProps} />;
 
     function RefreshWidget() {
         if (showCreatePage) {
@@ -459,19 +457,19 @@ function Receive({ location, dispatch, receive }) {
                 <WMSProgress {...batchProcessDeleteReceiveBillProps} />
                 <WMSProgress {...batchProcessFinishReceiveBillProps} />
             </div>
-    }
+    };
 
     return (<div>{RefreshWidget()}</div>)
-}
+};
 
 Receive.propType = {
-    receive: PropTypes.object,
-}
+    receive: PropTypes.object
+};
 
 function mapStateToProps({ receive }) {
     return {
-        receive,
+        receive
     };
-}
+};
 
 export default connect(mapStateToProps)(Receive);

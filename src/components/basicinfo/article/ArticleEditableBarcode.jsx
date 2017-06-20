@@ -18,11 +18,11 @@ const ArticleEditableBarcode = ({
   const columns = [{
     title: '条码',
     dataIndex: 'barcode',
-    render: (text, record, index) => renderColumns(dataSource, index, "barcode", text),
+    render: (text, record, index) => renderColumns(dataSource, index, "barcode", text)
   }, {
     title: '规格',
     dataIndex: 'qpcStr',
-    render: (text, record, index) => renderColumns(dataSource, index, "qpcStr", text),
+    render: (text, record, index) => renderColumns(dataSource, index, "qpcStr", text)
   }, {
     title: '操作',
     dataIndex: 'operation',
@@ -45,13 +45,13 @@ const ArticleEditableBarcode = ({
             </span>
         }
       </div>);
-    },
+    }
   }];
 
   function renderColumns(dataSource, index, key, text) {
     if (typeof dataSource[index]["editable"] === 'undefined' || !dataSource[index]["editable"]) {
       return text;
-    }
+    };
     return (<RowEditableCell
       editable={dataSource[index]["editable"]}
       value={text}
@@ -59,11 +59,11 @@ const ArticleEditableBarcode = ({
       autoFocus={key == "barcode" ? true : false}
       status={status}
     />);
-  }
+  };
 
   function handleChange(key, dataSource, index, value) {
     dataSource[index]["new" + key] = value;
-  }
+  };
 
   return (
     <div>
@@ -72,7 +72,7 @@ const ArticleEditableBarcode = ({
       </div>
       <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false} />
     </div>);
-}
+};
 
 ArticleEditableBarcode.propTypes = {
   dataSource: PropTypes.array,

@@ -67,7 +67,7 @@ SupplierView.propTypes = {
   onEdit: PropTypes.func,
   onRemove: PropTypes.func,
   onCreate: PropTypes.func,
-  onBack: PropTypes.func,
+  onBack: PropTypes.func
 };
 
 export default SupplierView;

@@ -8,8 +8,8 @@ class ReceiveBillGrid extends React.Component {
         this.state = {
             ...props,
             selectedRowKeys: [],
-            selectedRows: [],
-        }
+            selectedRows: []
+        };
         this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
         this.handleFinishBatch = this.handleFinishBatch.bind(this);
     };
@@ -17,7 +17,7 @@ class ReceiveBillGrid extends React.Component {
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: [],
+            selectedRows: []
         });
     };
     onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -46,7 +46,7 @@ class ReceiveBillGrid extends React.Component {
             dataIndex: 'billNumber',
             key: 'billNumber',
             render: (text, record) => <a onClick={() => { this.state.onViewItem(record) }} disabled={!PermissionUtil("receiveBill:view")}>{text}</a>,
-            sorter: true,
+            sorter: true
         },
         {
             title: '供应商',
@@ -65,18 +65,18 @@ class ReceiveBillGrid extends React.Component {
             dataIndex: 'orderBillNumber',
             key: 'orderBillNumber',
             render: (text, record) => <a onClick={() => { this.state.onViewOrderBill(record) }} disabled={!PermissionUtil("orderBill:view")}>{text}</a>,
-            sorter: true,
+            sorter: true
         },
         {
             title: '状态',
             dataIndex: 'state',
             key: 'state',
-            render: text => convertState(text),
+            render: text => convertState(text)
         },
         {
             title: '总件数',
             dataIndex: 'caseQtyStr',
-            key: 'caseQtyStr',
+            key: 'caseQtyStr'
         },
         {
             title: '操作',
@@ -99,7 +99,7 @@ class ReceiveBillGrid extends React.Component {
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            onChange: this.onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
         return (
@@ -128,7 +128,7 @@ class ReceiveBillGrid extends React.Component {
                 />
             </div>
         );
-    }
-}
+    };
+};
 
 export default ReceiveBillGrid;

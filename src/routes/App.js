@@ -16,8 +16,8 @@ import Register from '../components/ia/login/Register';
 import '../components/less/antMotion_style.less';
 import UpdatePasswd from '../components/ia/login/UpdatePasswd';
 import guid from '../utils/Guid';
-import {Spin, message} from 'antd'
-import {classnames} from '../utils'
+import { Spin, message } from 'antd'
+import { classnames } from '../utils'
 
 function App({
   children,
@@ -35,7 +35,7 @@ function App({
     user,
     token,
     siderFold,
-    darkTheme,
+    darkTheme
   } = app;
 
   const loginProps = {
@@ -45,14 +45,14 @@ function App({
       dispatch({
         type: 'app/login',
         payload: data
-      })
+      });
     },
     onRegister() {
       dispatch({
         type: 'app/showRegister'
-      })
+      });
     }
-  }
+  };
 
   const registerProps = {
     signInButtonLoading,
@@ -60,14 +60,14 @@ function App({
       dispatch({
         type: 'app/register',
         payload: data
-      })
+      });
     },
     onBack() {
       dispatch({
         type: 'app/registerBack'
-      })
+      });
     }
-  }
+  };
 
   const headerProps = {
     user,
@@ -76,19 +76,19 @@ function App({
       dispatch({
         type: 'app/logout',
         payload: token
-      })
+      });
     },
     switchSider() {
       dispatch({
         type: 'app/switchSider'
-      })
+      });
     }
-  }
+  };
 
   const siderProps = {
     location,
     menu: localStorage.getItem("ownedMenus")
-  }
+  };
 
   const navProps = {
     id: 'nav_1_0',
@@ -98,14 +98,14 @@ function App({
     modifyPasswd() {
       dispatch({
         type: 'app/showModify'
-      })
+      });
     },
     logout() {
       dispatch({
         type: 'app/logout'
-      })
-    },
-  }
+      });
+    }
+  };
 
   const updatePasswdProps = {
     visible: modifyLoading,
@@ -113,55 +113,55 @@ function App({
       dispatch({
         type: 'app/updatePasswd',
         payload: data
-      })
+      });
     },
     onCancel() {
       dispatch({
         type: 'app/hideModify'
-      })
+      });
     }
-  }
+  };
 
   function renderApp() {
     let token = localStorage.getItem("token");
     if (token) {
       return (<div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
-          <Nav {...navProps} />
-          <UpdatePasswd {...updatePasswdProps} />
-          <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
-            <Sider {...siderProps} />
-          </aside>
-          <div className={styles.main}>
-            <Bread location={location} menu={localStorage.getItem("ownedMenus")} />
-            <div className={styles.container}>
-              <div className={styles.content}>
-                <Spin spinning={loading}>
-                  {children}
-                </Spin>
-              </div>
+        <Nav {...navProps} />
+        <UpdatePasswd {...updatePasswdProps} />
+        <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
+          <Sider {...siderProps} />
+        </aside>
+        <div className={styles.main}>
+          <Bread location={location} menu={localStorage.getItem("ownedMenus")} />
+          <div className={styles.container}>
+            <div className={styles.content}>
+              <Spin spinning={loading}>
+                {children}
+              </Spin>
             </div>
-            <Footer />
           </div>
-        </div>);
-    }
+          <Footer />
+        </div>
+      </div>);
+    };
     if (registerLoading) {
       return (<div className={styles.reg}>
-            <Spin spinning={loading}>
-              <Register {...registerProps} />
-            </Spin>
-          </div>);
-    }
+        <Spin spinning={loading}>
+          <Register {...registerProps} />
+        </Spin>
+      </div>);
+    };
 
     return (<div className={styles.spin}><Spin tip="加载用户信息..." spinning={loading} size="large">
-            <Login {...loginProps} /></Spin>
-            </div>);
-  }
+      <Login {...loginProps} /></Spin>
+    </div>);
+  };
 
   return (
     <div>
       {renderApp()}
-    </div>)
-}
+    </div>);
+};
 
 App.propTypes = {
   children: PropTypes.element.isRequired,
@@ -174,14 +174,14 @@ App.propTypes = {
   user: PropTypes.object,
   token: PropTypes.string,
   siderFold: PropTypes.bool,
-  darkTheme: PropTypes.bool,
-}
+  darkTheme: PropTypes.bool
+};
 
 function mapStateToProps({ loading, app }) {
   return {
     loading: loading.global,
-    app,
+    app
   };
-}
+};
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps)(App);

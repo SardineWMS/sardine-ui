@@ -16,31 +16,31 @@ const OrderBillSelectModal = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue,
+        getFieldsValue
     },
     orderBillLists,
-    orderBillPagination,
+    orderBillPagination
 }) => {
 
     const modalOpts = {
         visible,
         onOk: onOk,
         onCancel,
-        width: 800,
-    }
+        width: 800
+    };
 
     const orderBillSelectGridProps = {
         dataSource: orderBillLists,
         pagination: orderBillPagination,
-        onSelect: onOk,
-    }
+        onSelect: onOk
+    };
     return (
         <Modal {...modalOpts}>
             <BaseCard title="选择订单" single={true}>
                 <BaseForm items={<OrderBillSelectGrid {...orderBillSelectGridProps} />} />
             </BaseCard>
         </Modal>
-    )
-}
+    );
+};
 
 export default Form.create()(OrderBillSelectModal);

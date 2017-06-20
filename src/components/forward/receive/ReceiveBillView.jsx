@@ -16,7 +16,7 @@ const ReceiveBillView = ({
     onBack,
     onEdit,
     onDelete,
-    onFinish,
+    onFinish
 }) => {
     function convertState(text) {
         if (text == "Initial")
@@ -29,31 +29,31 @@ const ReceiveBillView = ({
     let basicForm = [];
     basicForm.push(<BaseFormItem label="单号：" key={Guid()}>
         <span>{item.billNumber}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     basicForm.push(<BaseFormItem label="入库订单号：" key={Guid()}>
         <span>{item.orderBillNumber}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     basicForm.push(<BaseFormItem label="供应商：" key={Guid()}>
         <span>{item.supplier.name + "[" + item.supplier.code + "]"}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     basicForm.push(<BaseFormItem label="仓位：" key={Guid()}>
         <span>{item.wrh.name + "[" + item.wrh.code + "]"}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     basicForm.push(<BaseFormItem label="收货人：" key={Guid()}>
         <span>{item.receiver.name + "[" + item.receiver.code + "]"}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
 
     let extendForm = [];
     extendForm.push(<BaseFormItem label="状态：" key={Guid()}>
         <span>{convertState(item.state)}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     extendForm.push(<BaseFormItem label="总件数：" key={Guid()}>
         <span>{item.caseQtyStr}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
 
     const articleItemProps = {
-        dataSource: item.items,
-    }
+        dataSource: item.items
+    };
 
     let toolbar = [];
     toolbar.push(
@@ -64,7 +64,7 @@ const ReceiveBillView = ({
             <Button disabled={!PermissionUtil("receiveBill:delete")}>删除</Button>
         </Popconfirm>
     );
-    toolbar.push(<Button onClick={() => onFinish(item)} disabled={!PermissionUtil("receiveBill:finish")}>审核</Button>)
+    toolbar.push(<Button onClick={() => onFinish(item)} disabled={!PermissionUtil("receiveBill:finish")}>审核</Button>);
 
     return (
         <div>
@@ -79,10 +79,10 @@ const ReceiveBillView = ({
             <RemarkCard />
         </div>
     );
-}
+};
 
 ReceiveBillView.propTypes = {
-    dataSource: PropTypes.array,
-}
+    dataSource: PropTypes.array
+};
 
 export default Form.create()(ReceiveBillView);

@@ -22,25 +22,25 @@ const DCCreate = ({
     validateFieldsAndScroll((errors, values) => {
       if (errors) {
         return;
-      }
+      };
       onCreate(values);
-    })
-  }
+    });
+  };
 
   function handleCancel() {
     onBack();
-  }
+  };
 
   document.onKeyup = e => e.keyCode === 13 && handleOk();
   const formItemLayout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
+    wrapperCol: { span: 14 }
   };
   const tailFormItemLayout = {
     wrapperCol: {
       span: 6,
-      offset: 6,
-    },
+      offset: 6
+    }
   };
   const ButtonGroup = Button.Group;
 
@@ -108,14 +108,14 @@ const DCCreate = ({
         </div>
       </Form>
     </div>
-  )
-}
+  );
+};
 
 DCCreate.propTypes = {
   form: PropTypes.object,
   onCreate: PropTypes.func,
   onBack: PropTypes.func,
-  creatingButtonLoading: PropTypes.bool,
-}
+  creatingButtonLoading: PropTypes.bool
+};
 
 export default Form.create()(DCCreate);

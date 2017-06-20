@@ -12,7 +12,7 @@ const ArticleViewForm = ({
     onEdit,
     onCreate,
     onBack,
-    onSaveSupplier,
+    onSaveSupplier
 }) => {
 
     const toolbar = [];
@@ -35,7 +35,7 @@ const ArticleViewForm = ({
     children.push(
         <BaseFormItem label="规格：" key="spec">
             <span>{article.spec} </span>
-        </BaseFormItem> 
+        </BaseFormItem>
     );
     children.push(
         <BaseFormItem label="商品类别：" key="category">
@@ -80,7 +80,7 @@ const ArticleViewForm = ({
                 <BaseForm items={children} />
                 <BaseForm items={businessChildren} />
             </BaseCard>
-            <RemarkCard remark={article.remark}/>
+            <RemarkCard remark={article.remark} />
         </div>
     );
 };
@@ -90,7 +90,7 @@ ArticleViewForm.propTypes = {
     onEdit: PropTypes.func,
     onCreate: PropTypes.func,
     onBack: PropTypes.func,
-    onSaveSupplier: PropTypes.func,
+    onSaveSupplier: PropTypes.func
 };
 
 export default ArticleViewForm;

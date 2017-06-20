@@ -14,18 +14,18 @@ const AlcNtcBillSearchForm = ({
         getFieldDecorator,
         validateFields,
         getFieldsValue,
-        resetFields,
+        resetFields
     }
 }) => {
     function handleSearch(e) {
         e.preventDefault();
         onSearch(getFieldsValue());
-    }
+    };
 
     function handleReset(e) {
         e.preventDefault();
         resetFields();
-    }
+    };
     const children = [];
     children.push(
         <BaseTwoCol key={"billNumber"}>

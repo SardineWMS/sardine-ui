@@ -23,7 +23,7 @@ export default {
     registerLoading: false,
     modifyLoading: false,
     siderFold: localStorage.getItem("antdAdminSiderFold") === "true" ? true : false,
-    darkTheme: localStorage.getItem("antdAdminDarkTheme") === "false" ? false : true,
+    darkTheme: localStorage.getItem("antdAdminDarkTheme") === "false" ? false : true
   },
 
   /*  subscriptions: {
@@ -44,13 +44,13 @@ export default {
     }) {
       yield put({
         type: 'showLoginButtonLoading'
-      })
+      });
       const
         { data }
           = yield call(login, payload);
       yield put({
         type: 'hideLoginButtonLoading',
-      })
+      });
       if (data.token) {
         const loginUser = new Object();
         loginUser.uuid = data.obj.uuid;
@@ -70,15 +70,15 @@ export default {
           payload: {
             data
           }
-        })
+        });
       } else {
         yield put({
           type: 'loginFail',
           payload: {
             data
           }
-        })
-      }
+        });
+      };
     },
 
     * register({
@@ -90,10 +90,7 @@ export default {
       const {
         data
       } = yield call(signIn, parse(payload));
-      console.log("data 数据");
-      console.dir(data);
       if (data.status === "200") {
-        console.log("判断正确");
         yield put({
           type: 'signInSuccess',
           payload: {
@@ -106,8 +103,8 @@ export default {
           payload: {
             data
           }
-        })
-      }
+        });
+      };
     },
 
     * queryUser({
@@ -118,8 +115,8 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      })
-      const data = yield call(userInfo, parse(payload))
+      });
+      const data = yield call(userInfo, parse(payload));
       if (data.success) {
         yield put({
           type: 'loginSuccess',
@@ -128,12 +125,12 @@ export default {
               name: data.username
             }
           }
-        })
+        });
       } else {
         yield put({
           type: 'hideLoading'
-        })
-      }
+        });
+      };
     },
 
     * logout({
@@ -151,7 +148,7 @@ export default {
         yield put({
           type: 'logoutSuccess'
         });
-      }
+      };
     },
 
     * switchSider({
@@ -161,7 +158,7 @@ export default {
     }) {
       yield put({
         type: 'handleSwitchSider'
-      })
+      });
     },
     * changeTheme({
       payload
@@ -170,7 +167,7 @@ export default {
     }) {
       yield put({
         type: 'handleChangeTheme'
-      })
+      });
     },
 
     * updatePasswd({
@@ -193,7 +190,7 @@ export default {
         yield put({
           type: 'logoutSuccess'
         });
-      }
+      };
     },
 
   },
@@ -203,21 +200,21 @@ export default {
       return {
         ...state,
         ...action.payload,
-        login: true,
-      }
+        login: true
+      };
     },
     logoutSuccess(state) {
       return {
         ...state,
         login: false
-      }
+      };
     },
     loginFail(state) {
       return {
         ...state,
         login: false,
         loginButtonLoading: false
-      }
+      };
     },
     signInSuccess(state, action) {
       return {
@@ -225,87 +222,87 @@ export default {
         ...action.payload,
         registerLoading: false,
         signInButtonLoading: false
-      }
+      };
     },
     signInFail(state) {
       return {
         ...state,
         login: false,
         loginButtonLoading: false
-      }
+      };
     },
     showRegister(state) {
       return {
         ...state,
         registerLoading: true
-      }
+      };
     },
 
     showModify(state) {
       return {
         ...state,
         modifyLoading: true
-      }
+      };
     },
 
     hideModify(state) {
       return {
         ...state,
         modifyLoading: false
-      }
+      };
     },
 
     registerBack(state) {
       return {
         ...state,
         registerLoading: false
-      }
+      };
     },
 
     showSignInButtonLoading(state) {
       return {
         ...state,
         signInButtonLoading: true
-      }
+      };
     },
 
     showLoginButtonLoading(state) {
       return {
         ...state,
         loginButtonLoading: true
-      }
+      };
     },
     showLoading(state) {
       return {
         ...state,
         loading: true
-      }
+      };
     },
     hideLoading(state) {
       return {
         ...state,
         loading: false
-      }
+      };
     },
     handleSwitchSider(state) {
       localStorage.setItem("antdAdminSiderFold", !state.darkTheme)
       return {
         ...state,
         siderFold: !state.siderFold
-      }
+      };
     },
     handleChangeTheme(state) {
       localStorage.setItem("antdAdminDarkTheme", !state.darkTheme)
       return {
         ...state,
         darkTheme: !state.darkTheme
-      }
+      };
     },
     hideLoginButtonLoading(state) {
       return {
         ...state,
         loginButtonLoading: false
-      }
+      };
     },
   }
 }

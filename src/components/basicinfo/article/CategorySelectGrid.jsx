@@ -10,18 +10,18 @@ function CategorySelectGrid({
 }) {
     function handleSelect() {
         onSelect(selectedRowKeys);
-    }
+    };
 
     const columns = [{
         title: '代码',
         dataIndex: 'code',
         key: 'code',
-        sorter: true,
+        sorter: true
     },
     {
         title: '名称',
         dataIndex: 'name',
-        key: 'name',
+        key: 'name'
     }];
 
     const rowSelection = {
@@ -38,7 +38,7 @@ function CategorySelectGrid({
         },
         getCheckboxProps: record => ({
 
-        }),
+        })
     };
 
     return (
@@ -55,13 +55,13 @@ function CategorySelectGrid({
                 filterMultiple={false}
             />
         </div>
-    )
-}
+    );
+};
 
 CategorySelectGrid.propTypes = {
     dataSource: PropTypes.array,
     onPageChange: PropTypes.func,
     pagination: PropTypes.any
-}
+};
 
 export default CategorySelectGrid;

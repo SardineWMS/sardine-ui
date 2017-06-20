@@ -6,7 +6,7 @@ import styles from '../less/main.less'
 const SubMenu = Menu.SubMenu
 
 function Header({  user, logout, switchSider, siderFold }) {
-  let handleClickMenu = e => e.key === 'logout' && logout()
+  let handleClickMenu = e => e.key === 'logout' && logout();
   return (
     <div className={styles.header}>
       <Menu className="header-menu" mode="horizontal" onClick={handleClickMenu}>
@@ -21,7 +21,7 @@ function Header({  user, logout, switchSider, siderFold }) {
         </SubMenu>
       </Menu>
     </div>
-  )
-}
+  );
+};
 
-export default Header
+export default Header;

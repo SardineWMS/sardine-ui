@@ -1,6 +1,8 @@
 import { parse } from 'qs';
-import { querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle, 
-    getOrderBillByBillNo,refreshCaseQtyAndAmount,queryWrhs,querySuppliers } from '../../services/forward/OrderBill';
+import {
+    querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle,
+    getOrderBillByBillNo, refreshCaseQtyAndAmount, queryWrhs, querySuppliers
+} from '../../services/forward/OrderBill';
 import { message } from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -12,8 +14,8 @@ export default {
         list: [],
         currentItem: {},
         articleQpcs: [],
-        wrhs:[],
-        suppliers:[],
+        wrhs: [],
+        suppliers: [],
         pagination: {
             showSizeChanger: true,
             showQuickJumper: true,
@@ -63,15 +65,15 @@ export default {
                             payload: {
                                 orderBillNumber: location.query.key,
                             }
-                        })
+                        });
                     } else {
                         dispatch({
                             type: 'query',
                             payload: location.query,
-                        })
-                    }
-                }
-            })
+                        });
+                    };
+                };
+            });
         }
     },
     effects: {
@@ -83,10 +85,10 @@ export default {
                     list: data.obj.records,
                     pagination: {
                         total: data.obj.recordCount,
-                        current: data.obj.page,
+                        current: data.obj.page
                     }
                 }
-            })
+            });
         },
 
         *get({ payload }, { call, put }) {
@@ -100,10 +102,10 @@ export default {
                 yield put({
                     type: 'showViewPage',
                     payload: {
-                        currentItem: orderBill.data.obj,
+                        currentItem: orderBill.data.obj
                     }
-                })
-            }
+                });
+            };
         },
 
         *getByNumber({
@@ -118,10 +120,10 @@ export default {
                 yield put({
                     type: 'showViewPage',
                     payload: {
-                        currentItem: orderBill.data.obj,
+                        currentItem: orderBill.data.obj
                     }
-                })
-            }
+                });
+            };
         },
 
         *create({ payload }, { call, put }) {
@@ -132,7 +134,7 @@ export default {
                 payload: {
                     uuid: data.obj
                 }
-            })
+            });
         },
 
         *edit({ payload }, { call, put }) {
@@ -143,119 +145,119 @@ export default {
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
         *remove({ payload }, { call, put }) {
             yield call(remove, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'query',
-            })
+            });
         },
 
         *bookReg({ payload }, { call, put }) {
             yield call(bookReg, {
                 uuid: payload.uuid,
                 version: payload.version,
-                bookedDate: payload.bookedDate,
-            })
-            yield put({ type: 'hideModal' })
+                bookedDate: payload.bookedDate
+            });
+            yield put({ type: 'hideModal' });
             yield put({
                 type: 'get',
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
         *gridBookReg({ payload }, { call, put }) {
             yield call(bookReg, {
                 uuid: payload.uuid,
                 version: payload.version,
-                bookedDate: payload.bookedDate,
-            })
+                bookedDate: payload.bookedDate
+            });
             yield put({ type: 'hideModal' })
             yield put({
-                type: 'query',
-            })
+                type: 'query'
+            });
         },
 
         *check({ payload }, { call, put }) {
             yield call(check, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'get',
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
         *gridCheck({ payload }, { call, put }) {
             yield call(check, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
-                type: 'query',
-            })
+                type: 'query'
+            });
         },
 
         *finish({ payload }, { call, put }) {
             yield call(finish, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'get',
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
         *gridFinish({ payload }, { call, put }) {
             yield call(finish, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
-                type: 'query',
-            })
+                type: 'query'
+            });
         },
 
         *abort({ payload }, { call, put }) {
             yield call(abort, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
                 type: 'get',
                 payload: {
                     uuid: payload.uuid
                 }
-            })
+            });
         },
 
         *gridAbort({ payload }, { call, put }) {
             yield call(abort, {
                 uuid: payload.uuid,
                 version: payload.version
-            })
+            });
             yield put({
-                type: 'query',
-            })
+                type: 'query'
+            });
         },
 
         *getArticle({ payload }, { call, put }) {
             yield put({
                 type: 'showLoading'
-            })
+            });
             const orderBillItems = payload.items;
             const param = { articleCode: orderBillItems[payload.index].article.code }
             const { data } = yield call(getArticle, parse(param))
@@ -279,10 +281,10 @@ export default {
                         currentItem: payload.currentBill,
                         articleQpcs: qpcs
                     }
-                })
+                });
             } else {
                 message.error("商品不存在，请输入正确的商品！", 2, '');
-            }
+            };
         },
 
         *getForEdit({ payload }, { call, put }) {
@@ -290,20 +292,20 @@ export default {
                 uuid: payload.uuid,
             });
             if (orderBill) {
-                    orderBill.data.obj.expireDate = moment(orderBill.data.obj.expireDate);
-                    orderBill.data.obj.bookedDate = moment(orderBill.data.obj.bookedDate);                yield put({
+                orderBill.data.obj.expireDate = moment(orderBill.data.obj.expireDate);
+                orderBill.data.obj.bookedDate = moment(orderBill.data.obj.bookedDate); yield put({
                     type: 'showEditPage',
                     payload: {
-                        currentItem: orderBill.data.obj,
+                        currentItem: orderBill.data.obj
                     }
-                })
-            }
+                });
+            };
         },
 
         *refreshCaseQtyAndAmount({ payload }, { call, put }) {
             yield put({ type: 'showLoading' });
             const { data } = yield call(refreshCaseQtyAndAmount, parse(payload));
-            if(data){
+            if (data) {
                 data.obj.expireDate = moment(data.obj.expireDate);
                 data.obj.bookedDate = moment(data.obj.bookedDate);
                 yield put({
@@ -311,8 +313,8 @@ export default {
                     payload: {
                         currentItem: data.obj
                     }
-                })
-            }
+                });
+            };
         },
 
         *queryWrhs({ payload }, { call, put }) {
@@ -321,24 +323,24 @@ export default {
                 yield put({
                     type: 'showEditPage',
                     payload: {
-                        wrhs: wrhs.data.obj,
+                        wrhs: wrhs.data.obj
                     }
-                })
-            }
+                });
+            };
         },
 
 
         *querySuppliers({ payload }, { call, put }) {
             const result = yield call(querySuppliers, parse(payload));
             if (result) {
-                const suppliers=[];
+                const suppliers = [];
                 for (var supplier of result.data.obj.records) {
-                    const supplierUcn=new Object();
-                    supplierUcn.uuid=supplier.uuid;
-                    supplierUcn.code=supplier.code;
-                    supplierUcn.name=supplier.name;
+                    const supplierUcn = new Object();
+                    supplierUcn.uuid = supplier.uuid;
+                    supplierUcn.code = supplier.code;
+                    supplierUcn.name = supplier.name;
                     suppliers.push(supplierUcn);
-                }
+                };
 
                 yield put({
                     type: 'showSupplierModal',
@@ -346,19 +348,19 @@ export default {
                         suppliers: suppliers,
                         supplierPagination: {
                             total: result.data.obj.recordCount,
-                            current: result.data.obj.page,
+                            current: result.data.obj.page
                         }
                     }
-                })
-            }
+                });
+            };
         }
     },
 
-    
+
 
     reducers: {
         showLoading(state) {
-            return { ...state, loading: true }
+            return { ...state, loading: true };
         },
         querySuccess(state, action) {
             return {
@@ -367,16 +369,16 @@ export default {
                 loading: false,
                 showViewPage: false,
                 showCreatePage: false
-            }
+            };
         },
-        showCreatePage(state,action) {
+        showCreatePage(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 loading: false,
                 showViewPage: false,
                 showCreatePage: true
-            }
+            };
         },
         showEditPage(state, action) {
             return {
@@ -385,7 +387,7 @@ export default {
                 loading: false,
                 showViewPage: false,
                 showCreatePage: true
-            }
+            };
         },
         showViewPage(state, action) {
             return {
@@ -394,7 +396,7 @@ export default {
                 loading: false,
                 showViewPage: true,
                 showCreatePage: false
-            }
+            };
         },
         backViewForm(state) {
             return {
@@ -402,7 +404,7 @@ export default {
                 loading: false,
                 showViewPage: true,
                 showCreatePage: false
-            }
+            };
         },
         backSearchForm(state) {
             return {
@@ -410,100 +412,100 @@ export default {
                 loading: false,
                 showViewPage: false,
                 showCreatePage: false
-            }
+            };
         },
         batchRemoveOrderBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchDeleteProcessModal: true
-            }
+            };
         },
         hideRemoveOrderBillModal(state) {
             return {
                 ...state,
                 batchDeleteProcessModal: false
-            }
+            };
         },
         batchBookRegOrderBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchBookRegProcessModal: true
-            }
+            };
         },
         hideBookRegOrderBillModal(state) {
             return {
                 ...state,
                 batchBookRegProcessModal: false
-            }
+            };
         },
         batchCheckOrderBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchCheckProcessModal: true
-            }
+            };
         },
         hideCheckOrderBillModal(state) {
             return {
                 ...state,
                 batchCheckProcessModal: false
-            }
+            };
         },
         batchFinishOrderBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchFinishProcessModal: true
-            }
+            };
         },
         hideFinishOrderBillModal(state) {
             return {
                 ...state,
                 batchFinishProcessModal: false
-            }
+            };
         },
         batchAbortOrderBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 batchAbortProcessModal: true
-            }
+            };
         },
         hideAbortOrderBillModal(state) {
             return {
                 ...state,
                 batchAbortProcessModal: false
-            }
+            };
         },
         showDateModal(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 dateModalVisible: true
-            }
+            };
         },
 
         hideDateModal(state) {
             return {
                 ...state,
                 dateModalVisible: false
-            }
+            };
         },
         showSupplierModal(state, action) {
             return {
                 ...state,
                 ...action.payload,
                 supplierModalVisible: true
-            }
+            };
         },
 
         hideSupplierModal(state) {
             return {
                 ...state,
                 supplierModalVisible: false
-            }
+            };
         },
     }
 

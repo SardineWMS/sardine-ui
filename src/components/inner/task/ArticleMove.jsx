@@ -15,9 +15,9 @@ class ArticleMove extends React.Component {
             ...props,
             selectedRowKeys: [],
             selectedRows: [],
-            moveItems: [],
+            moveItems: []
             // currentArticleItem: props.currentArticleItem
-        }
+        };
         this.saveAndMove = this.saveAndMove.bind(this);
         // this.cancel = this.cancel.bind(this);
     };
@@ -26,7 +26,7 @@ class ArticleMove extends React.Component {
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: [],
+            selectedRows: []
         });
     };
 
@@ -48,7 +48,7 @@ class ArticleMove extends React.Component {
           this.setState({
             currentArticleItem: currentItem
           });
-        }
+        };
     };
 
     render() {
@@ -158,7 +158,7 @@ class ArticleMove extends React.Component {
             title: '行号',
             dataIndex: 'line',
             key: 'line',
-            width: 50,
+            width: 50
         }, {
             title: '商品代码',
             dataIndex: 'articleCode',
@@ -214,12 +214,12 @@ class ArticleMove extends React.Component {
         const toolbar = [];
         toolbar.push(<Button key="canel" > 取消</Button>);
         toolbar.push(<Button key="save" disabled={!PermissionUtil("receiveBill:create")}>保存</Button>);
-        toolbar.push(<Button key="saveAndMove" disabled={!PermissionUtil("receiveBill:create")}>保存并移库</Button>)
+        toolbar.push(<Button key="saveAndMove" disabled={!PermissionUtil("receiveBill:create")}>保存并移库</Button>);
 
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            onChange: this.onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
 
@@ -249,10 +249,9 @@ class ArticleMove extends React.Component {
                     </div>}
                 />
             </div>
-        )
-    }
-
-}
+        );
+    };
+};
 
 export default Form.create()(ArticleMove);;
 

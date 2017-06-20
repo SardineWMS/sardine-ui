@@ -7,12 +7,12 @@ const SHOW_ALL = TreeSelect.SHOW_ALL;
 
 const formItemLayout = {
     labelCol: {
-        span: 6,
+        span: 6
     },
     wrapperCol: {
-        span: 14,
-    },
-}
+        span: 14
+    }
+};
 
 const ResourceAssginmentModal = ({
     visible,
@@ -21,21 +21,21 @@ const ResourceAssginmentModal = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue,
+        getFieldsValue
     },
     treeData,
-    value,
+    value
 }) => {
     function handleOk() {
         validateFields((errors) => {
             if (errors)
                 return;
             const data = {
-                ...getFieldsValue(),
-            }
+                ...getFieldsValue()
+            };
 
-            onSave(data)
-        })
+            onSave(data);
+        });
     };
 
     const modalOpts = {
@@ -43,12 +43,12 @@ const ResourceAssginmentModal = ({
         visible,
         onOk: handleOk,
         onCancel,
-        wrapClassName: 'vertical-center-modal',
+        wrapClassName: 'vertical-center-modal'
     };
 
     const treeSelectProps = {
-        treeData: treeData,
-    }
+        treeData: treeData
+    };
 
     return (
         <Modal {...modalOpts}>
@@ -68,11 +68,11 @@ const ResourceAssginmentModal = ({
                 </FormItem>
             </Form>
         </Modal>
-    )
-}
+    );
+};
 
 function mapPropsToFields(value) {
-    return { resource: value }
-}
+    return { resource: value };
+};
 
 export default Form.create(mapPropsToFields)(ResourceAssginmentModal);

@@ -44,13 +44,13 @@ function Role({ location, dispatch, role }) {
                 query: {
                     page: page.current,
                     pageSize: page.pageSize
-                },
-            }))
+                }
+            }));
         },
         onCreate() {
             dispatch({
                 type: 'role/showCreateModal'
-            })
+            });
         },
         onViewItem(item) {
             dispatch({
@@ -58,43 +58,43 @@ function Role({ location, dispatch, role }) {
                 payload: {
                     roleUuid: item.uuid
                 }
-            })
+            });
         },
         onBatchRemove(items) {
             if (items.length <= 0) {
                 message.warning("请选择要删除的角色！", 2);
                 return;
-            }
+            };
             dispatch({
                 type: 'role/batchDeleteRole',
                 payload: {
-                    deleteRoleEntitys: items,
+                    deleteRoleEntitys: items
                 }
-            })
+            });
         },
         onBatchOnline(items) {
             if (items.length <= 0) {
                 message.warning("请选择要启用的角色！", 2);
                 return;
-            }
+            };
             dispatch({
                 type: 'role/batchOnlineRole',
                 payload: {
-                    onlineRoleEntitys: items,
+                    onlineRoleEntitys: items
                 }
-            })
+            });
         },
         onBatchOffline(items) {
             if (items.length <= 0) {
                 message.warning("请选择要禁用的角色！", 2);
                 return;
-            }
+            };
             dispatch({
                 type: 'role/batchOfflineRole',
                 payload: {
-                    offlineRoleEntitys: items,
+                    offlineRoleEntitys: items
                 }
-            })
+            });
         },
         onDelete(item) {
             dispatch({
@@ -102,45 +102,45 @@ function Role({ location, dispatch, role }) {
                 payload: {
                     uuid: item.uuid,
                     version: item.version
-                },
-            })
+                }
+            });
         },
         onOnline(item) {
             dispatch({
                 type: 'role/gridOnline',
                 payload: {
                     uuid: item.uuid,
-                    version: item.version,
+                    version: item.version
                 }
-            })
+            });
         },
         onOffline(item) {
             dispatch({
                 type: 'role/gridOffline',
                 payload: {
                     uuid: item.uuid,
-                    version: item.version,
+                    version: item.version
                 }
-            })
+            });
         },
         onEdit(record) {
             record.editable = true;
             dispatch({
                 type: 'role/querySuccess',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onCancelEdit(record) {
             record.editable = false;
             dispatch({
-                type: 'role/querySuccess',
-            })
+                type: 'role/querySuccess'
+            });
         },
         onSave(record) {
             dispatch({
                 type: 'role/update',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onAssign(record) {
             currentItem: record,
@@ -148,34 +148,34 @@ function Role({ location, dispatch, role }) {
                     type: 'role/assginResource',
                     payload: {
                         roleUuid: record.uuid
-                    },
-                })
-        },
-    }
+                    }
+                });
+        }
+    };
 
     const roleSearchFormProps = {
         onSearch(fieldsValue) {
             dispatch({
                 type: 'role/query',
-                payload: fieldsValue,
-            })
-        },
-    }
+                payload: fieldsValue
+            });
+        }
+    };
 
     const createModalProps = {
         visible: showCreate,
         onCancel() {
             dispatch({
                 type: 'role/hideModal'
-            })
+            });
         },
         onOk(data) {
             dispatch({
                 type: 'role/create',
-                payload: data,
-            })
-        },
-    }
+                payload: data
+            });
+        }
+    };
 
     const resourceAssignmentModalProps = {
         item: currentItem,
@@ -184,16 +184,16 @@ function Role({ location, dispatch, role }) {
         value: currentSelected,
         onCancel() {
             dispatch({
-                type: 'role/hideResourceAssignment',
-            })
+                type: 'role/hideResourceAssignment'
+            });
         },
         onSave(values) {
             dispatch({
                 type: 'role/saveResource',
-                payload: { resourceUuids: values.resource, roleUuid: currentRoleUuid.roleUuid },
-            })
+                payload: { resourceUuids: values.resource, roleUuid: currentRoleUuid.roleUuid }
+            });
         }
-    }
+    };
 
     const viewResourceModalProps = {
         item: currentItem,
@@ -202,10 +202,10 @@ function Role({ location, dispatch, role }) {
         value: currentSelected,
         onCancel() {
             dispatch({
-                type: 'role/hideViewResource',
-            })
-        },
-    }
+                type: 'role/hideViewResource'
+            });
+        }
+    };
 
     const batchProcessDeleteRoleProps = {
         showConfirmModal: batchDeleteProcessModal,
@@ -219,14 +219,14 @@ function Role({ location, dispatch, role }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'role/hideDeleteRoleModal',
-            })
+                type: 'role/hideDeleteRoleModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -234,9 +234,9 @@ function Role({ location, dispatch, role }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
-    }
+    };
 
     const batchProcessOnlineRoleProps = {
         showConfirmModal: batchOnlineProcessModal,
@@ -250,14 +250,14 @@ function Role({ location, dispatch, role }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'role/hideOnlineRoleModal',
-            })
+                type: 'role/hideOnlineRoleModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -265,9 +265,9 @@ function Role({ location, dispatch, role }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
-    }
+    };
 
     const batchProcessOfflineRoleProps = {
         showConfirmModal: batchOfflineProcessModal,
@@ -281,14 +281,14 @@ function Role({ location, dispatch, role }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
                 type: 'role/hideOfflineRoleModal',
-            })
+            });
         },
         refreshGrid() {
             dispatch({
@@ -296,15 +296,15 @@ function Role({ location, dispatch, role }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
-    }
+    };
 
 
 
     const CreateFormGen = () => <RoleCreateModal {...createModalProps} />;
-    const AssignModalGen = () => <ResourceAssignmentModal {...resourceAssignmentModalProps} />
-    const ViewResourceGen = () => <ViewResourceModal {...viewResourceModalProps} />
+    const AssignModalGen = () => <ResourceAssignmentModal {...resourceAssignmentModalProps} />;
+    const ViewResourceGen = () => <ViewResourceModal {...viewResourceModalProps} />;
 
     function refreshWidget() {
         return (
@@ -318,22 +318,22 @@ function Role({ location, dispatch, role }) {
                 <WMSProgress {...batchProcessOnlineRoleProps} />
                 <WMSProgress {...batchProcessOfflineRoleProps} />
             </div>
-        )
-    }
+        );
+    };
 
     return (
         <div>
             {refreshWidget()}
         </div>
-    )
-}
+    );
+};
 
 Role.propTypes = {
 
-}
+};
 
 function mapStateToProps({ role }) {
     return { role };
-}
+};
 
 export default connect(mapStateToProps)(Role);

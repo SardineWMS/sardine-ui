@@ -12,20 +12,20 @@ class RowEditCellDatePicker extends React.Component {
         super(props);
         this.state = {
             value: this.props.value,
-            editable: this.props.editable,
-        }
-    }
+            editable: this.props.editable
+        };
+    };
     handleChange(e) {
         const value = e;
         this.setState({ value });
         this.props.onChange(value);
-    }
+    };
     componentWillReceiveProps(newProps) {
         this.setState({
             value: newProps.value,
-            editable: newProps.editable,
-        })
-    }
+            editable: newProps.editable
+        });
+    };
     render() {
         const { value, editable } = this.state;
         return (<div>
@@ -44,7 +44,7 @@ class RowEditCellDatePicker extends React.Component {
                     </div>
             }
         </div>);
-    }
-}
+    };
+};
 
 export default RowEditCellDatePicker;

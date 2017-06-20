@@ -9,47 +9,47 @@ const VehicleTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit,
         {
             title: '代码',
             dataIndex: 'code',
-            render: (text, record) => renderColumns(record, "code", text),
+            render: (text, record) => renderColumns(record, "code", text)
         },
         {
             title: '名称',
             dataIndex: 'name',
-            render: (text, record) => renderColumns(record, "name", text),
+            render: (text, record) => renderColumns(record, "name", text)
         },
         {
             title: '承重(吨)',
             dataIndex: 'bearWeight',
-            render: (text, record) => renderColumns(record, "bearWeight", text),
+            render: (text, record) => renderColumns(record, "bearWeight", text)
         },
         {
             title: '自重(吨)',
             dataIndex: 'weight',
-            render: (text, record) => renderColumns(record, "weight", text),
+            render: (text, record) => renderColumns(record, "weight", text)
         },
         {
             title: '长(m)',
             dataIndex: 'length',
-            render: (text, record) => renderColumns(record, "length", text),
+            render: (text, record) => renderColumns(record, "length", text)
         },
         {
             title: '宽(m)',
             dataIndex: 'width',
-            render: (text, record) => renderColumns(record, "width", text),
+            render: (text, record) => renderColumns(record, "width", text)
         },
         {
             title: '高(m)',
             dataIndex: 'height',
-            render: (text, record) => renderColumns(record, "height", text),
+            render: (text, record) => renderColumns(record, "height", text)
         },
         {
             title: '体积(m³)',
             dataIndex: 'volume',
-            render: (text, record) => renderColumns(record, "volume", text),
+            render: (text, record) => renderColumns(record, "volume", text)
         },
         {
             title: '容积(m³)',
             dataIndex: 'bearVolume',
-            render: (text, record) => renderColumns(record, "bearVolume", text),
+            render: (text, record) => renderColumns(record, "bearVolume", text)
         },
         {
             title: '操作',
@@ -88,8 +88,8 @@ const VehicleTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit,
             status={status}
             onChange={value => handleChange(record, value, key)}
             onBlur={() => { }}
-        />)
-    }
+        />);
+    };
 
     function handleChange(record, value, key) {
         if ("code" == key)
@@ -110,7 +110,7 @@ const VehicleTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit,
             record.volume = value;
         if ("bearVolume" == key)
             record.bearVolume = value;
-    }
+    };
 
     const modalOpts = {
         title: '车型',
@@ -121,7 +121,7 @@ const VehicleTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit,
         footer: [
             <Button key="return" type="primary" onClick={onCancel}>返回</Button>
         ]
-    }
+    };
 
     return (<Modal {...modalOpts}>
         <div>
@@ -129,6 +129,6 @@ const VehicleTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit,
         </div>
         <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false}></Table>
     </Modal>)
-}
+};
 
 export default VehicleTypeModal;

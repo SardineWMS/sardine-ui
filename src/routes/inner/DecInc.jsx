@@ -28,16 +28,16 @@ function DecInc({ location, dispatch, decinc }) {
         auditDecIncBillEntitys,
         batchDeleteProcessModal,
         batchAuditProcessModal,
-        decIncBillNext,
+        decIncBillNext
     } = decinc;
 
     const decIncSearchFormProps = {
         onSearch(fieldsValue) {
             dispatch({
                 type: 'decinc/query',
-                payload: fieldsValue,
+                payload: fieldsValue
             });
-        },
+        }
     };
 
     const decIncSearchGridProps = {
@@ -52,61 +52,61 @@ function DecInc({ location, dispatch, decinc }) {
                     sort: sorter.columnKey,
                     order: sorter.columnKey == undefined ? '' : (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
                 }
-            }))
+            }));
         },
         onCreate() {
             dispatch({
                 type: 'decinc/createSuccess',
-                payload: { currentItem },
-            })
+                payload: { currentItem }
+            });
         },
         onViewItem(record) {
             dispatch({
                 type: 'decinc/viewDecInc',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onEdit(record) {
             dispatch({
                 type: 'decinc/edit',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onDelete(record) {
             dispatch({
                 type: 'decinc/gridDelete',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onAudit(record) {
             dispatch({
                 type: 'decinc/gridAudit',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onRemoveBatch(decIncBills) {
             if (decIncBills.length <= 0) {
                 message.warning("请选择要删除的损溢单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'decinc/batchDeleteDecIncBill',
                 payload: {
-                    deleteDecIncBillEntitys: decIncBills,
+                    deleteDecIncBillEntitys: decIncBills
                 }
-            })
+            });
         },
         onFinishBatch(decIncBills) {
             if (decIncBills.length <= 0) {
                 message.warning("请选择要审核的损溢单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'decinc/batchAuditDecIncBill',
                 payload: {
-                    auditDecIncBillEntitys: decIncBills,
+                    auditDecIncBillEntitys: decIncBills
                 }
-            })
+            });
         }
     };
 
@@ -116,8 +116,8 @@ function DecInc({ location, dispatch, decinc }) {
         onSelectType(value) {
             dispatch({
                 type: 'decinc/onSelectType',
-                payload: value,
-            })
+                payload: value
+            });
         },
         onSelectWrh(data) {
         },
@@ -131,8 +131,8 @@ function DecInc({ location, dispatch, decinc }) {
                 for (var wrh of wrhs) {
                     if (wrh.uuid == data.wrh)
                         result.wrh = wrh;
-                }
-            }
+                };
+            };
             result.totalCaseQtyStr = currentItem.totalCaseQtyStr;
             result.totalAmount = Math.abs(Number.parseFloat(currentItem.totalAmount));
             result.items = decIncItem;
@@ -146,24 +146,24 @@ function DecInc({ location, dispatch, decinc }) {
                 result.state = data.state;
                 result.createInfo = data.createInfo;
                 result.version = data.version;
-            }
+            };
             if (result.uuid) {
                 dispatch({
                     type: 'decinc/update',
                     payload: result,
-                })
+                });
             } else
                 dispatch({
                     type: 'decinc/insert',
                     payload: result,
-                })
+                });
         },
         onCancel() {
             dispatch({
                 type: 'decinc/query',
                 payload: {},
-            })
-        },
+            });
+        }
     };
 
     const decIncCreateItemGridProps = {
@@ -179,29 +179,29 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: {
                     record, dataSource, currentItem
                 }
-            })
+            });
         },
         verifyBin(value) {
             dispatch({
                 type: 'decinc/verifyBin',
-                payload: value,
-            })
+                payload: value
+            });
         },
         queryStockQty(record, dataSource) {
             dispatch({
                 type: 'decinc/queryStockQty',
                 payload: {
-                    record, dataSource, billType,
+                    record, dataSource, billType
                 }
-            })
+            });
         },
         calculateCaseQtyStr(record, dataSource) {
             dispatch({
                 type: 'decinc/calculateCaseQtyStr',
                 payload: {
-                    record, dataSource, totalAmount, totalCaseQtyStr, currentItem,
+                    record, dataSource, totalAmount, totalCaseQtyStr, currentItem
                 }
-            })
+            });
         },
         onRemoveItem(record, dataSource) {
             dispatch({
@@ -209,7 +209,7 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: {
                     record, dataSource
                 }
-            })
+            });
         },
         onAddItem(dataSource) {
             dispatch({
@@ -217,7 +217,7 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: {
                     dataSource: decIncItem
                 }
-            })
+            });
         },
         refreshSupplier(record, dataSource) {
             dispatch({
@@ -225,7 +225,7 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: {
                     record, dataSource
                 }
-            })
+            });
         },
         getSupplier(record, dataSource) {
             dispatch({
@@ -233,8 +233,8 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: {
                     record, dataSource
                 }
-            })
-        },
+            });
+        }
     };
 
     const decIncViewProps = {
@@ -242,31 +242,31 @@ function DecInc({ location, dispatch, decinc }) {
         onDelete(record) {
             dispatch({
                 type: 'decinc/gridDelete',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onEdit(record) {
             dispatch({
                 type: 'decinc/edit',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onFinish(record) {
             dispatch({
                 type: 'decinc/gridAudit',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onBack() {
             dispatch({
                 type: 'decinc/query',
                 payload: {}
-            })
+            });
         }
     };
 
     const decIncViewGridProps = {
-        dataSource: decIncItem,
+        dataSource: decIncItem
     };
 
     const batchProcessDeleteDecIncBillProps = {
@@ -281,14 +281,14 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'decinc/hideDeleteDecIncBillModal',
-            })
+                type: 'decinc/hideDeleteDecIncBillModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -296,7 +296,7 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
@@ -312,14 +312,14 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'decinc/hideAuditDecIncBillModal',
-            })
+                type: 'decinc/hideAuditDecIncBillModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -327,9 +327,9 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
-    }
+    };
 
     const DecIncCreateFormGen = () => <DecIncCreateForm {...decIncCreateFormProps} />;
 
@@ -342,13 +342,13 @@ function DecInc({ location, dispatch, decinc }) {
                     <DecIncCreateForm {...decIncCreateFormProps} />
                     <DecIncCreateItem {...decIncCreateItemGridProps} />
                 </div>
-            )
-        } if (showViewPage) {
+            );
+        }; if (showViewPage) {
             return (
                 <div>
                     <DecIncView {...decIncViewProps} />
                 </div>
-            )
+            );
         }
         else {
             return (
@@ -358,24 +358,24 @@ function DecInc({ location, dispatch, decinc }) {
                     <WMSProgress {...batchProcessDeleteDecIncBillProps} />
                     <WMSProgress {...batchProcessAuditDecIncBillProps} />
                 </div>
-            )
-        }
+            );
+        };
     };
 
     return (<div>{RefreshWidget()}</div>)
 
-}
+};
 
 DecInc.propTypes = {
     decinc: PropTypes.object,
     list: PropTypes.array,
     pagination: PropTypes.object,
-    currentItem: PropTypes.object,
-}
+    currentItem: PropTypes.object
+};
 
 function mapStateToProps({ decinc }) {
-    return { decinc, };
-}
+    return { decinc };
+};
 
 export default connect(mapStateToProps)(DecInc);
 

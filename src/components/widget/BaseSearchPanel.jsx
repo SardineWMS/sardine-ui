@@ -6,27 +6,27 @@ import { Form, Row, Col, Button, Collapse } from 'antd';
     handleSearch：搜索事件
     handleReset：清除事件
  **/
-class BaseSearchPanel extends React.Component{
+class BaseSearchPanel extends React.Component {
 
-  render(){
-    return (
-        <Collapse defaultActiveKey={["1"]} >
-            <Collapse.Panel header="搜索" key="1">
-                <Form onSubmit={this.props.handleSearch}>
-                    <Row gutter={40}>
-                        {this.props.children}
-                    </Row>
-                    <Row>
-                        <Col span={24} style={{ textAlign: 'right' }}>
-                            <Button type="primary" htmlType="submit">搜索</Button>
-                            <Button style={{ marginLeft: 8 }} onClick={this.props.handleReset}>清除</Button>
-                        </Col>
-                    </Row>
-                </Form>
-            </Collapse.Panel>
-        </Collapse>
-    );
-  }
-}
+    render() {
+        return (
+            <Collapse defaultActiveKey={["1"]} >
+                <Collapse.Panel header="搜索" key="1">
+                    <Form onSubmit={this.props.handleSearch}>
+                        <Row gutter={40}>
+                            {this.props.children}
+                        </Row>
+                        <Row>
+                            <Col span={24} style={{ textAlign: 'right' }}>
+                                <Button type="primary" htmlType="submit">搜索</Button>
+                                <Button style={{ marginLeft: 8 }} onClick={this.props.handleReset}>清除</Button>
+                            </Col>
+                        </Row>
+                    </Form>
+                </Collapse.Panel>
+            </Collapse>
+        );
+    };
+};
 
 export default BaseSearchPanel;

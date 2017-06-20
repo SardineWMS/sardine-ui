@@ -14,20 +14,20 @@ const SupplierCreate = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue,
-    },
+    getFieldsValue
+    }
   }) => {
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
         return;
-      }
+      };
 
       const data = { ...getFieldsValue(), uuid: item.uuid, version: item.version, state: item.state };
       onOk(data);
 
     });
-  }
+  };
 
   const children = [];
   children.push(
@@ -94,7 +94,7 @@ SupplierCreate.propTypes = {
   form: PropTypes.object,
   item: PropTypes.object,
   onOk: PropTypes.func,
-  onCancel: PropTypes.func,
+  onCancel: PropTypes.func
 };
 
 export default Form.create()(SupplierCreate);

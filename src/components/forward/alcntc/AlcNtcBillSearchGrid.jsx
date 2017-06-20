@@ -8,8 +8,8 @@ class AlcNtcBillSearchGrid extends React.Component {
         this.state = {
             ...props,
             selectedRowKeys: [],
-            selectedRows: [],
-        }
+            selectedRows: []
+        };
         this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
         this.handleFinishBatch = this.handleFinishBatch.bind(this);
         this.handleAbordBatch = this.handleAbordBatch.bind(this);
@@ -18,7 +18,7 @@ class AlcNtcBillSearchGrid extends React.Component {
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: [],
+            selectedRows: []
         });
     };
     onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -32,7 +32,7 @@ class AlcNtcBillSearchGrid extends React.Component {
     };
     handleAbordBatch() {
         this.state.onAbortBatch(this.state.selectedRows);
-    }
+    };
 
 
     render() {
@@ -69,14 +69,14 @@ class AlcNtcBillSearchGrid extends React.Component {
             if (text == 'warehouseDelivery')
                 return '仓库配送';
 
-        }
+        };
 
         const columns = [{
             title: '单号',
             dataIndex: 'billNumber',
             key: 'billNumber',
             render: (text, record) => <a onClick={() => { this.state.onViewItem(record) }} disabled={!PermissionUtil("receiveBill:view")}>{text}</a>,
-            sorter: true,
+            sorter: true
         },
         {
             title: '客户',
@@ -87,7 +87,7 @@ class AlcNtcBillSearchGrid extends React.Component {
         {
             title: '来源单据',
             dataIndex: 'souceBillNumber',
-            key: 'souceBillNumber',
+            key: 'souceBillNumber'
         },
         {
             title: '仓位',
@@ -99,24 +99,24 @@ class AlcNtcBillSearchGrid extends React.Component {
             title: '状态',
             dataIndex: 'state',
             key: 'state',
-            render: text => convertState(text),
+            render: text => convertState(text)
         },
         {
             title: '配送方式',
             dataIndex: 'deliveryMode',
             key: 'deliveryMode',
-            render: text => convertMode(text),
+            render: text => convertMode(text)
         },
         {
             title: '作业号',
             dataIndex: 'taskBillNumber',
-            key: 'taskBillNumber',
+            key: 'taskBillNumber'
         }
         ];
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            onChange: this.onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
         return (
@@ -146,7 +146,7 @@ class AlcNtcBillSearchGrid extends React.Component {
                 />
             </div>
         );
-    }
-}
+    };
+};
 
 export default AlcNtcBillSearchGrid;

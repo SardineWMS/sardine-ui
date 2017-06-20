@@ -10,33 +10,33 @@ const DemoCreateForm = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue,
-  },
+    getFieldsValue
+  }
 }) => {
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
         return;
-      }
+      };
       const data = { ...getFieldsValue(), key: item.key, uuid: item.uuid, version: item.version };
       onOk(data);
     });
-  }
+  };
 
   function checkNumber(rule, value, callback) {
     if (!value) {
       callback(new Error('年龄未填写'));
-    }
+    };
     if (!/^[\d]{1,2}$/.test(value)) {
       callback(new Error('年龄不合法'));
     } else {
       callback();
-    }
-  }
+    };
+  };
 
   const formItemLayout = {
     labelCol: { span: 5 },
-    wrapperCol: { span: 19 },
+    wrapperCol: { span: 19 }
   };
 
   return (
@@ -87,7 +87,7 @@ DemoCreateForm.propTypes = {
   form: PropTypes.object,
   item: PropTypes.object,
   onOk: PropTypes.func,
-  onCancel: PropTypes.func,
+  onCancel: PropTypes.func
 };
 
 export default Form.create()(DemoCreateForm);

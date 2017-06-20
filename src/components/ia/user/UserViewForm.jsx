@@ -12,11 +12,11 @@ const UserViewForm = ({
     onCreate,
     onBack,
     onOnline,
-    onOffline,
+    onOffline
 }) => {
 
     const formItemLayout = {
-        labelCol: { span: 5 },
+        labelCol: { span: 5 }
     };
 
     return (
@@ -72,7 +72,7 @@ UserViewForm.propTypes = {
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     onCreate: PropTypes.func,
-    onBack: PropTypes.func,
+    onBack: PropTypes.func
 };
 
 export default UserViewForm;

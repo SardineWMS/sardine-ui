@@ -15,31 +15,31 @@ const CustomerSelectModal = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue,
+        getFieldsValue
     },
     customers,
-    customerPagination,
+    customerPagination
 }) => {
 
     const modalOpts = {
         visible,
         onOk: onOk,
         onCancel,
-        width: 500,
-    }
+        width: 500
+    };
 
     const customerSelectGridProps = {
         dataSource: customers,
         pagination: customerPagination,
-        onSelect: onOk,
-    }
+        onSelect: onOk
+    };
     return (
         <Modal {...modalOpts}>
             <BaseCard title="选择客户" single={true}>
                 <BaseForm items={<CustomerSelectGrid {...customerSelectGridProps} />} />
             </BaseCard>
         </Modal>
-    )
-}
+    );
+};
 
 export default Form.create()(CustomerSelectModal);

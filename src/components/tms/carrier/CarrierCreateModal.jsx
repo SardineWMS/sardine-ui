@@ -11,21 +11,21 @@ const CarrierCreateModal = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue,
-    },
+        getFieldsValue
+    }
 }) => {
     function handleOk() {
         validateFields((errors) => {
             if (errors) {
-                return
-            }
+                return;
+            };
             const data = {
                 ...getFieldsValue(),
                 uuid: item.uuid,
-                version: item.version,
-            }
-            onOk(data)
-        })
+                version: item.version
+            };
+            onOk(data);
+        });
     };
 
     const modalOpts = {
@@ -33,7 +33,7 @@ const CarrierCreateModal = ({
         visible,
         onOk: handleOk,
         onCancel,
-        wrapClassName: 'vertical-center-modal',
+        wrapClassName: 'vertical-center-modal'
     };
 
     return (
@@ -74,7 +74,7 @@ const CarrierCreateModal = ({
                 </BaseFormItem>
             </Form>
         </Modal>
-    )
-}
+    );
+};
 
 export default Form.create()(CarrierCreateModal);

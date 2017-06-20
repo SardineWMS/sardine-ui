@@ -25,8 +25,8 @@ class BaseCard extends React.Component {
         </Row>
       </Panel>
     );
-  }
-}
+  };
+};
 
 
 export default BaseCard;

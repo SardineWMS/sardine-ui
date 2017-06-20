@@ -9,7 +9,7 @@ class PickAreaSearchGrid extends React.Component {
             ...props,
             selectedRowKeys: [],
             selectedRows: [],
-        }
+        };
         this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
     };
     componentWillReceiveProps(newProps) {
@@ -38,17 +38,17 @@ class PickAreaSearchGrid extends React.Component {
         {
             title: '名称',
             dataIndex: 'name',
-            key: 'name',
+            key: 'name'
         },
         {
             title: '货位范围',
             dataIndex: 'binScope',
-            key: 'binScope',
+            key: 'binScope'
         },
         {
             title: '存储区域',
             dataIndex: 'storageArea',
-            key: 'storageArea',
+            key: 'storageArea'
         }
         ];
         const { selectedRowKeys } = this.state;
@@ -82,7 +82,7 @@ class PickAreaSearchGrid extends React.Component {
                 />
             </div>
         );
-    }
-}
+    };
+};
 
 export default PickAreaSearchGrid;

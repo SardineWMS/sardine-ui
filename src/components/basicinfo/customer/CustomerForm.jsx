@@ -15,7 +15,7 @@ const CustomerSearchForm = ({
         getFieldDecorator,
         validateFields,
         getFieldsValue,
-        resetFields,
+        resetFields
     }
 }) => {
     const children = [];
@@ -54,12 +54,12 @@ const CustomerSearchForm = ({
     function handleSearch(e) {
         e.preventDefault();
         onSearch(getFieldsValue());
-    }
+    };
 
     function handleReset(e) {
         e.preventDefault();
         resetFields();
-    }
+    };
     return (
         <BaseSearchPanel children={children} handleReset={handleReset} handleSearch={handleSearch} />
     );

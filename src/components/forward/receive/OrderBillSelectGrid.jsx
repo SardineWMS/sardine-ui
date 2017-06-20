@@ -2,10 +2,10 @@ import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 
 function OrderBillSelectGrid({
-  dataSource,
+    dataSource,
     onPageChange,
     selectedRowKeys = [],
-    onSelect,
+    onSelect
 }) {
     function convertState(text) {
         if (text == "Initial")
@@ -24,28 +24,28 @@ function OrderBillSelectGrid({
 
     function handleSelect() {
         onSelect(selectedRowKeys);
-    }
+    };
 
     const columns = [{
         title: '单号',
         dataIndex: 'billNumber',
         key: 'billNumber',
-        sorter: true,
+        sorter: true
     },
     {
         title: '供应商',
         dataIndex: 'supplierCodeName',
-        key: 'supplierCodeName',
+        key: 'supplierCodeName'
     },
     {
         title: '来源单据',
         dataIndex: 'sourceBillNumber',
-        key: 'sourceBillNumber',
+        key: 'sourceBillNumber'
     },
     {
         title: '仓位',
         dataIndex: 'wrhCodeName',
-        key: 'wrhCodeName',
+        key: 'wrhCodeName'
     },
     {
         title: '状态',
@@ -56,13 +56,13 @@ function OrderBillSelectGrid({
     {
         title: '总件数',
         dataIndex: 'totalCaseQtyStr',
-        key: 'totalCaseQtyStr',
+        key: 'totalCaseQtyStr'
     },
     {
         title: '到效日期',
         dataIndex: 'expireDateFormat',
-        key: 'expireDateFormat',
-    },
+        key: 'expireDateFormat'
+    }
     ];
 
     const rowSelection = {
@@ -77,7 +77,7 @@ function OrderBillSelectGrid({
         },
         getCheckboxProps: record => ({
 
-        }),
+        })
     };
 
     return (
@@ -93,8 +93,8 @@ function OrderBillSelectGrid({
                 filterMultiple={false}
             />
         </div>
-    )
-}
+    );
+};
 
 OrderBillSelectGrid.propTypes = {
     dataSource: PropTypes.array,
@@ -105,7 +105,7 @@ OrderBillSelectGrid.propTypes = {
     onDelete: PropTypes.func,
     onRecover: PropTypes.func,
     onCreate: PropTypes.func,
-    onViewItem: PropTypes.func,
-}
+    onViewItem: PropTypes.func
+};
 
 export default OrderBillSelectGrid;

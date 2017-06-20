@@ -9,33 +9,32 @@ class EditableCell extends React.Component {
     super(props);
     this.state = {
       value: this.props.value,
-      editable: this.props.editable,
-    }
-  }
+      editable: this.props.editable
+    };
+  };
 
   handleChange = (e) => {
     e.preventDefault();
     const value = e.target.value;
     this.setState({ value });
-  }
+  };
   check = (e) => {
     e.preventDefault();
     this.setState({ editable: false });
     if (this.props.onChange) {
       this.props.onChange(this.state.value);
-    }
-  }
+    };
+  };
   edit = () => {
     const { editable } = this.state;
     this.setState({ editable: true });
-  }
+  };
   componentWillReceiveProps(newProps) {
     this.setState({
       value: newProps.value,
-      editable: newProps.editable,
-
-    })
-  }
+      editable: newProps.editable
+    });
+  };
   render() {
     const { value, editable } = this.state;
     return (<div className={styles.editable_cell}>
@@ -66,7 +65,7 @@ class EditableCell extends React.Component {
           </div>
       }
     </div>);
-  }
-}
+  };
+};
 
 export default EditableCell;

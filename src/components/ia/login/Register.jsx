@@ -31,25 +31,25 @@ const Register = ({
     validateFieldsAndScroll((errors, values) => {
       if (errors) {
         return;
-      }
+      };
       onSignIn(values);
-    })
-  }
+    });
+  };
 
   function handleCancel() {
     onBack();
-  }
+  };
 
   document.onKeyup = e => e.keyCode === 13 && handleOk();
   const formItemLayout = {
     labelCol: { span: 6 },
-    wrapperCol: { span: 14 },
+    wrapperCol: { span: 14 }
   };
   const tailFormItemLayout = {
     wrapperCol: {
       span: 6,
-      offset: 6,
-    },
+      offset: 6
+    }
   };
   const ButtonGroup = Button.Group;
 
@@ -103,14 +103,14 @@ const Register = ({
         </div>
       </Form>
     </div>
-  )
-}
+  );
+};
 
 Register.propTypes = {
   form: PropTypes.object,
   onSignIn: PropTypes.func,
   onBack: PropTypes.func,
-  signInButtonLoading: PropTypes.bool,
-}
+  signInButtonLoading: PropTypes.bool
+};
 
 export default Form.create()(Register);

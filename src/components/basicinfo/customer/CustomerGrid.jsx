@@ -100,8 +100,8 @@ function CustomerGrid({
             </Row>
           </div>} />
     </div>
-  )
-}
+  );
+};
 
 CustomerGrid.propTypes = {
   dataSource: PropTypes.array,
@@ -113,7 +113,7 @@ CustomerGrid.propTypes = {
   onRecover: PropTypes.func,
   onCreate: PropTypes.func,
   onViewItem: PropTypes.func,
-  pagination: PropTypes.any,
-}
+  pagination: PropTypes.any
+};
 
 export default CustomerGrid;

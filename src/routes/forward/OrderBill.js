@@ -38,15 +38,15 @@ function OrderBill({ location, dispatch, orderBill }){
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.field,
-                    sortDirection: sorter.order,
+                    sortDirection: sorter.order
                 }
-            }))
+            }));
         },
         onSearch(fieldsValue) {
             dispatch({
                 type: 'orderBill/query',
                 payload: fieldsValue
-            })
+            });
         },
         onCreate() {
             dispatch({
@@ -54,7 +54,7 @@ function OrderBill({ location, dispatch, orderBill }){
                 payload: {
                   currentItem: {}
                 }
-            })
+            });
         },
         onViewItem(item) {
             dispatch({
@@ -62,7 +62,7 @@ function OrderBill({ location, dispatch, orderBill }){
                 payload: {
                     uuid:item.uuid
                 }
-            })
+            });
         },
         onEditItem(item) {
             dispatch({
@@ -70,7 +70,7 @@ function OrderBill({ location, dispatch, orderBill }){
                 payload: {
                     uuid:item.uuid
                 }
-            })
+            });
         },
         onDeleteItem(item) {
             dispatch({
@@ -79,7 +79,7 @@ function OrderBill({ location, dispatch, orderBill }){
                     uuid:item.uuid,
                     version:item.version
                 }
-            })
+            });
         },
         onBookRegItem(item) {
             bookRegBills.push(item),
@@ -89,7 +89,7 @@ function OrderBill({ location, dispatch, orderBill }){
                     bookRegBills:bookRegBills,
                     bookRegType:"single"
                 }
-            })
+            });
         },
         onCheckItem(item) {
             dispatch({
@@ -98,7 +98,7 @@ function OrderBill({ location, dispatch, orderBill }){
                     uuid:item.uuid,
                     version:item.version
                 }
-            })
+            });
         },
         onFinishItem(item) {
             dispatch({
@@ -107,7 +107,7 @@ function OrderBill({ location, dispatch, orderBill }){
                     uuid:item.uuid,
                     version:item.version
                 }
-            })
+            });
         },
         onAbortItem(item) {
             dispatch({
@@ -116,70 +116,70 @@ function OrderBill({ location, dispatch, orderBill }){
                     uuid:item.uuid,
                     version:item.version
                 }
-            })
+            });
         },
         onDeleteBatch(orderBills) {
             if (orderBills.length <= 0) {
                 message.warning("请选择要删除的订单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'orderBill/batchRemoveOrderBill',
                 payload: {
                     deleteOrderBillEntitys: orderBills
                 }
-            })
+            });
         },
         onBookRegBatch(orderBills) {
             if (orderBills.length <= 0) {
                 message.warning("请选择要预约的订单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type:'orderBill/showDateModal',
                 payload:{
                     bookRegBills:orderBills,
                     bookRegType:"group"
                 }
-            })
+            });
         },
         onCheckBatch(orderBills) {
             if (orderBills.length <= 0) {
                 message.warning("请选择要预检的订单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'orderBill/batchCheckOrderBill',
                 payload: {
                     checkOrderBillEntitys: orderBills
                 }
-            })
+            });
         },
         onFinishBatch(orderBills) {
             if (orderBills.length <= 0) {
                 message.warning("请选择要完成的订单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'orderBill/batchFinishOrderBill',
                 payload: {
                     finishOrderBillEntitys: orderBills
                 }
-            })
+            });
         },
         onAbortBatch(orderBills) {
             if (orderBills.length <= 0) {
                 message.warning("请选择要作废的订单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'orderBill/batchAbortOrderBill',
                 payload: {
                     abortOrderBillEntitys: orderBills
                 }
-            })
+            });
         }
-    }
+    };
 
     const orderBillSearchProps = {
         field,
@@ -187,10 +187,10 @@ function OrderBill({ location, dispatch, orderBill }){
         onSearch(fieldsValue) {
             dispatch({
                 type: 'orderBill/query',
-                payload: fieldsValue,
-            })
+                payload: fieldsValue
+            });
         }
-    }
+    };
 
     const batchProcessDeleteOrderBillsProps = {
 	    showConfirmModal: batchDeleteProcessModal,
@@ -205,19 +205,19 @@ function OrderBill({ location, dispatch, orderBill }){
 	          uuid: entity.uuid,
 	          version: entity.version
 	        }
-	      })
+	      });
 	    },
 	    hideConfirmModal() {
 	      dispatch({
-	        type: 'orderBill/hideRemoveOrderBillModal',
-	      })
+	        type: 'orderBill/hideRemoveOrderBillModal'
+	      });
 	    },
 	    refreshGrid() {
 	      dispatch({
 	        type: 'orderBill/query'
-	      })
+	      });
 	    }
-    }
+    };
 
    const batchProcessBookRegOrderBillsProps = {
 	    showConfirmModal: batchBookRegProcessModal,
@@ -233,19 +233,19 @@ function OrderBill({ location, dispatch, orderBill }){
 	          version: entity.version,
 	          bookedDate:entity.bookedDate
 	        }
-	      })
+	      });
 	    },
 	    hideConfirmModal() {
 	      dispatch({
-	        type: 'orderBill/hideBookRegOrderBillModal',
-	      })
+	        type: 'orderBill/hideBookRegOrderBillModal'
+	      });
 	    },
 	    refreshGrid() {
 	      dispatch({
 	        type: 'orderBill/query'
-	      })
+	      });
 	    }
-    }
+    };
 
     const batchProcessCheckOrderBillsProps = {
 	    showConfirmModal: batchCheckProcessModal,
@@ -260,19 +260,19 @@ function OrderBill({ location, dispatch, orderBill }){
 	          uuid: entity.uuid,
 	          version: entity.version
 	        }
-	      })
+	      });
 	    },
 	    hideConfirmModal() {
 	      dispatch({
-	        type: 'orderBill/hideCheckOrderBillModal',
-	      })
+	        type: 'orderBill/hideCheckOrderBillModal'
+	      });
 	    },
 	    refreshGrid() {
 	      dispatch({
 	        type: 'orderBill/query'
-	      })
+	      });
 	    }
-    }
+    };
 
     const batchProcessFinishOrderBillsProps = {
 	    showConfirmModal: batchFinishProcessModal,
@@ -287,19 +287,19 @@ function OrderBill({ location, dispatch, orderBill }){
 	          uuid: entity.uuid,
 	          version: entity.version
 	        }
-	      })
+	      });
 	    },
 	    hideConfirmModal() {
 	      dispatch({
-	        type: 'orderBill/hideFinishOrderBillModal',
-	      })
+	        type: 'orderBill/hideFinishOrderBillModal'
+	      });
 	    },
 	    refreshGrid() {
 	      dispatch({
 	        type: 'orderBill/query'
-	      })
+	      });
 	    }
-    }
+    };
 
     const batchProcessAbortOrderBillsProps = {
 	    showConfirmModal: batchAbortProcessModal,
@@ -314,19 +314,19 @@ function OrderBill({ location, dispatch, orderBill }){
 	          uuid: entity.uuid,
 	          version: entity.version
 	        }
-	      })
+	      });
 	    },
 	    hideConfirmModal() {
 	      dispatch({
-	        type: 'orderBill/hideAbortOrderBillModal',
-	      })
+	        type: 'orderBill/hideAbortOrderBillModal'
+	      });
 	    },
 	    refreshGrid() {
 	      dispatch({
 	        type: 'orderBill/query'
-	      })
+	      });
 	    }
-    }
+    };
 
     const orderBillCreateProps={
     	item:currentItem,
@@ -337,44 +337,44 @@ function OrderBill({ location, dispatch, orderBill }){
     		if(data.uuid){
     			dispatch({
 		        	type: 'orderBill/edit',
-		          	payload: data,
+		          	payload: data
 		        });
     		}else{
 				dispatch({
 		        	type: 'orderBill/create',
-		          	payload: data,
+		          	payload: data
 		        });
-    		}
+    		};
     	},
 		onCancel(formForm){
     		if('View'.formForm){
     			dispatch({
-		        	type: 'orderBill/backViewForm',
+		        	type: 'orderBill/backViewForm'
 		        });
     		}else{
 				dispatch({
-		        	type: 'orderBill/backSearchForm',
+		        	type: 'orderBill/backSearchForm'
 		        });
-    		}
+    		};
     	},
         queryWrhs(){
             dispatch({
-                type: 'orderBill/queryWrhs',
+                type: 'orderBill/queryWrhs'
             }); 
         },
         querySuppliers(){
             dispatch({
-                type: 'orderBill/querySuppliers',
+                type: 'orderBill/querySuppliers'
             }); 
         }
-    }
+    };
 
     const orderBillViewFormProps={
     	item:currentItem,
     	onEdit(item){
 	   		dispatch({
 		        type: 'orderBill/edit',
-		        payload: item,
+		        payload: item
 	      	});
     	},
 		onDelete(item){
@@ -425,11 +425,10 @@ function OrderBill({ location, dispatch, orderBill }){
     	},
         onBack(){
             dispatch({
-                type: 'orderBill/backSearchForm',
+                type: 'orderBill/backSearchForm'
             });
         }
-
-    }
+    };
 
     const orderBillItemsProps={
         items:currentItem.items,
@@ -471,20 +470,20 @@ function OrderBill({ location, dispatch, orderBill }){
             item.line= items?items.length+1:1;
             //item.editable=true;
             if(items)
-                items.push(item)
+                items.push(item);
             else{
                 const orderBillItems=[];
                 orderBillItems.push(item);
                 items=orderBillItems; 
-            }
+            };
             //items[item.line-1]["editable"] = true;
             currentItem.items=items;
             dispatch({
                 type: 'orderBill/showEditPage',
                 payload: {
-                    currentItem: currentItem,
+                    currentItem: currentItem
                 }
-            })
+            });
         },
         getArticle(items,index){
             dispatch({
@@ -506,7 +505,7 @@ function OrderBill({ location, dispatch, orderBill }){
                 }
             }); 
         }
-    }
+    };
 
     const dateModalProps={
         orderBills:bookRegBills,
@@ -520,7 +519,7 @@ function OrderBill({ location, dispatch, orderBill }){
                       version: orderBills[0].version,
                       bookedDate:orderBills[0].bookedDate
                     }
-                })
+                });
             }else{
                 if(bookRegType==="single"){
                     dispatch({
@@ -530,24 +529,23 @@ function OrderBill({ location, dispatch, orderBill }){
                           version: orderBills[0].version,
                           bookedDate:orderBills[0].bookedDate
                         }
-                    })
+                    });
                 }else{
                     dispatch({
                         type: 'orderBill/batchBookRegOrderBill',
                         payload: {
                             bookRegOrderBillEntitys: orderBills
                         }
-                    })
-                }
-             
-            }
+                    });
+                };
+            };
         },
         onCancel(){
             dispatch({
                 type: 'orderBill/hideDateModal'
-            })  
+            });
         }
-    }
+    };
 
     const supplierModalProps={
         visible:supplierModalVisible,
@@ -557,14 +555,14 @@ function OrderBill({ location, dispatch, orderBill }){
             currentItem.supplier=suppliers[0];
             dispatch({
                 type: 'orderBill/hideSupplierModal'
-            })  
+            });
         },
         onCancel(){
             dispatch({
                 type: 'orderBill/hideSupplierModal'
-            })  
+            });
         }
-    } 
+    };
 
 
     function  RefreshWidget(){
@@ -575,7 +573,7 @@ function OrderBill({ location, dispatch, orderBill }){
                         <OrderBillItems {...orderBillItemsProps}/>
                         <DateModal {...dateModalProps}/>
                     </div>
-                )
+                );
             }else if(showCreatePage){
                 return  (
                     <div>
@@ -583,7 +581,7 @@ function OrderBill({ location, dispatch, orderBill }){
                         <OrderBillItems {...orderBillItemsProps}/>
                         <SupplierSelectModal {...supplierModalProps}/>
                     </div>
-                )
+                );
             }
             else{
                 return(
@@ -598,20 +596,20 @@ function OrderBill({ location, dispatch, orderBill }){
                             <WMSProgress {...batchProcessDeleteOrderBillsProps} />
                         </div>
                         );
-            }
-    }
+            };
+    };
 
     return (
         <div className="content-inner">{RefreshWidget()}</div>
-    )
-}
+    );
+};
 
 OrderBill.propTypes = {
-    orderBill: PropTypes.object,
-}
+    orderBill: PropTypes.object
+};
 
 function mapStateToProps({ orderBill }) {
     return {orderBill};
-}
+};
 
 export default connect(mapStateToProps)(OrderBill);

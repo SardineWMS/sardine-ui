@@ -1,5 +1,5 @@
 import { parse, stringify } from 'qs';
-import { queryRole, create, online, offline, update, remove, queryAllResourceByRole, saveRoleResource, queryOwnedResourceByRole ,queryAllRole} from '../../services/ia/Role';
+import { queryRole, create, online, offline, update, remove, queryAllResourceByRole, saveRoleResource, queryOwnedResourceByRole, queryAllRole } from '../../services/ia/Role';
 import { removeByValue } from '../../utils/ArrayUtils';
 
 export default {
@@ -31,7 +31,7 @@ export default {
         offlineRoleEntitys: [],
         assignResourceEntitys: [],
         currentSelected: [],
-        showViewResourceModal: false,
+        showViewResourceModal: false
     },
 
     subscriptions: {
@@ -44,9 +44,9 @@ export default {
                     dispatch({
                         type: 'query',
                         payload: location.query,
-                    })
-                }
-            })
+                    });
+                };
+            });
         },
     },
 
@@ -62,7 +62,7 @@ export default {
                 let roleList = data.obj.records;
                 for (var role of roleList) {
                     role.state = (role.state === 'online' ? '启用' : '停用');
-                }
+                };
                 yield put({
                     type: 'querySuccess',
                     payload: {
@@ -72,8 +72,8 @@ export default {
                             current: data.obj.page,
                         }
                     },
-                })
-            }
+                });
+            };
         },
 
         *create({
@@ -83,12 +83,12 @@ export default {
         }) {
             yield put({
                 type: 'hideModal'
-            })
+            });
             yield call(create, payload);
             yield put({
                 type: 'query',
                 payload: {},
-            })
+            });
         },
 
         *gridOnline({
@@ -100,7 +100,7 @@ export default {
             yield put({
                 type: 'query',
                 payload: {},
-            })
+            });
         },
 
         *gridOffline({
@@ -112,7 +112,7 @@ export default {
             yield put({
                 type: 'query',
                 payload: {},
-            })
+            });
         },
 
         *update({
@@ -125,7 +125,7 @@ export default {
             yield put({
                 type: 'query',
                 payload: {},
-            })
+            });
         },
 
         *gridDelete({
@@ -137,7 +137,7 @@ export default {
             yield put({
                 type: 'query',
                 payload: {},
-            })
+            });
         },
 
         *assginResource({
@@ -150,18 +150,18 @@ export default {
                 resource.label = resource.name;
                 if (resource.owned) {
                     currentSelected.push(resource.value);
-                }
+                };
                 if (resource.children.length > 0) {
                     for (let lowerResource of resource.children) {
                         resource.value = resource.uuid;
                         resource.label = resource.name;
                         if (lowerResource.owned) {
                             currentSelected.push(lowerResource.value);
-                        }
+                        };
                         buildResourceTree(lowerResource, currentSelected);
-                    }
-                }
-            }
+                    };
+                };
+            };
 
             const { data } = yield call(queryAllResourceByRole, parse(payload));
             let resourceListTree = [];
@@ -173,18 +173,18 @@ export default {
                     resource.label = resource.name;
                     if (resource.owned) {
                         currentSelected.push(resource.value);
-                    }
+                    };
                     buildResourceTree(resource, currentSelected);
-                }
-            }
+                };
+            };
             yield put({
                 type: 'showResourceAssignment',
                 payload: {
                     resourceListTree: resourceListTree,
                     currentRoleUuid: payload,
-                    currentSelected: currentSelected,
-                },
-            })
+                    currentSelected: currentSelected
+                }
+            });
         },
 
         *saveResource({ payload }, {
@@ -192,12 +192,12 @@ export default {
         }) {
             yield call(saveRoleResource, parse(payload));
             yield put({
-                type: 'hideResourceAssignment',
-            })
+                type: 'hideResourceAssignment'
+            });
             yield put({
                 type: 'query',
                 payload: {}
-            })
+            });
 
         },
 
@@ -211,9 +211,7 @@ export default {
                 resource.disabled = true;
                 if (resource.owned) {
                     currentSelected.push(resource.value);
-
-                }
-
+                };
                 if (resource.children.length > 0) {
                     for (let lowerResource of resource.children) {
                         lowerResource.value = lowerResource.uuid;
@@ -223,12 +221,11 @@ export default {
                             removeByValue(resourceListTree, lowerResource);
                         } else {
                             currentSelected.push(lowerResource.value);
-
-                        }
+                        };
                         buildResourceTree(lowerResource, currentSelected, resourceListTree);
-                    }
-                }
-            }
+                    };
+                };
+            };
             const { data } = yield call(queryAllResourceByRole, parse(payload));
             // if (data) {
             //     const resourceList = data.obj;
@@ -268,18 +265,18 @@ export default {
                     resource.disabled = true;
                     if (resource.owned) {
                         currentSelected.push(resource.value);
-                    }
+                    };
                     buildResourceTree(resource, currentSelected, resourceListTree);
-                }
-            }
+                };
+            };
 
             yield put({
                 type: 'showViewResource',
                 payload: {
                     viewResourceListTree: resourceListTree,
-                    currentSelected: currentSelected,
+                    currentSelected: currentSelected
                 }
-            })
+            });
         }
 
     },
@@ -301,28 +298,28 @@ export default {
             return { ...state, showResourceAssignmentModal: false };
         },
         batchDeleteRole(state, action) {
-            return { ...state, ...action.payload, batchDeleteProcessModal: true }
+            return { ...state, ...action.payload, batchDeleteProcessModal: true };
         },
         hideDeleteRoleModal(state) {
-            return { ...state, batchDeleteProcessModal: false }
+            return { ...state, batchDeleteProcessModal: false };
         },
         batchOnlineRole(state, action) {
-            return { ...state, ...action.payload, batchOnlineProcessModal: true }
+            return { ...state, ...action.payload, batchOnlineProcessModal: true };
         },
         hideOnlineRoleModal(state) {
-            return { ...state, batchOnlineProcessModal: false }
+            return { ...state, batchOnlineProcessModal: false };
         },
         batchOfflineRole(state, action) {
-            return { ...state, ...action.payload, batchOfflineProcessModal: true }
+            return { ...state, ...action.payload, batchOfflineProcessModal: true };
         },
         hideOfflineRoleModal(state) {
             return { ...state, batchOfflineProcessModal: false };
         },
         showViewResource(state, action) {
-            return { ...state, ...action.payload, showViewResourceModal: true }
+            return { ...state, ...action.payload, showViewResourceModal: true };
         },
         hideViewResource(state) {
-            return { ...state, showViewResourceModal: false }
+            return { ...state, showViewResourceModal: false };
         }
 
     }

@@ -18,17 +18,17 @@ const CustomerAddForm = ({
         getFieldDecorator,
         validateFields,
         getFieldsValue
-    },
+    }
 }) => {
     function handleCreate() {
         validateFields((errors) => {
             if (errors) {
                 return;
-            }
+            };
             const data = { ...getFieldsValue(), key: item.key, uuid: item.uuid, state: item.state, companyUuid: item.companyUuid, version: item.version };
             handleSave(data);
         });
-    }
+    };
 
     const children = [];
     children.push(
@@ -82,14 +82,14 @@ const CustomerAddForm = ({
                 <BaseForm items={children} />
             </BaseCard>
             <Panel title="说明">
-              {getFieldDecorator('remark', {
-                initialValue: item.remark
-               })(
-              <Input type="textarea" autosize={{ minRows: 4 }} />
-              )}
+                {getFieldDecorator('remark', {
+                    initialValue: item.remark
+                })(
+                    <Input type="textarea" autosize={{ minRows: 4 }} />
+                    )}
             </Panel>
         </div>
     );
-}
+};
 
 export default Form.create()(CustomerAddForm);

@@ -19,13 +19,13 @@ function AlcNtcBillCreateItem({
     refreshMunit,
     calculateCaseQtyStr,
     onAddItem,
-    onRemoveItem,
+    onRemoveItem
 }) {
     const columns = [
         {
             title: '行号',
             dataIndex: 'line',
-            key: 'line',
+            key: 'line'
         }, {
             title: '商品代码',
             dataIndex: 'article',
@@ -36,7 +36,7 @@ function AlcNtcBillCreateItem({
                     onBlur={value => onCellChange(index, record, value)}
                     autoFocus={false}
                     value={record.article == null ? '' : record.article.code}
-                />)
+                />);
             }
         }, {
             title: '商品名称',
@@ -47,17 +47,17 @@ function AlcNtcBillCreateItem({
             title: '规格',
             dataIndex: 'qpcStr',
             key: 'qpcStr',
-            render: (text, record) => renderSelectColumns(record, 'qpcStr', text),
+            render: (text, record) => renderSelectColumns(record, 'qpcStr', text)
 
         }, {
             title: '单位',
             dataIndex: 'munit',
-            key: 'munit',
+            key: 'munit'
         }, {
             title: '数量',
             dataIndex: 'qty',
             key: 'qty',
-            render: (text, record) => renderColumns(record, 'qty', text),
+            render: (text, record) => renderColumns(record, 'qty', text)
         }, {
             title: '件数',
             dataIndex: 'caseQtyStr',
@@ -65,11 +65,11 @@ function AlcNtcBillCreateItem({
         }, {
             title: '价格',
             dataIndex: 'price',
-            key: 'price',
+            key: 'price'
         }, {
             title: '金额',
             dataIndex: 'amount',
-            key: 'amount',
+            key: 'amount'
         }, {
             title: '操作',
             key: 'operation',
@@ -91,7 +91,7 @@ function AlcNtcBillCreateItem({
         if (!value) {
             message.warn("请输入商品代码！", 2, '');
             return;
-        }
+        };
         if (dataSource[index]["article.code"] == value)
             return;
         record.article = new Object();
@@ -110,16 +110,16 @@ function AlcNtcBillCreateItem({
             if (record.article != null && record.qpcs != null) {
                 for (var qpc of record.qpcs) {
                     options.push(<Option key={qpc.qpcStr}>{qpc.qpcStr}</Option>)
-                }
-            }
+                };
+            };
 
-        }
+        };
         return (<RowEditCellSelect
             editable={true}
             options={options}
             onChange={value => handleChange(record, value, key)}
             value={text}
-        />)
+        />);
     };
 
     function handleChange(record, value, key) {
@@ -127,13 +127,13 @@ function AlcNtcBillCreateItem({
         if (key === 'qpcStr') {
             record.qpcStr = value;
             refreshMunit(record, dataSource);
-        }
+        };
         if (key == 'qty') {
             record.qty = value;
             if (record.qty == 0 || record.qty == '')
                 return;
             calculateCaseQtyStr(record, dataSource);
-        }
+        };
     };
 
     function renderColumns(record, key, text) {
@@ -147,7 +147,7 @@ function AlcNtcBillCreateItem({
             autoFocus={false}
             value={record.article ? text : null}
         />);
-    }
+    };
 
     return (
         <div>
@@ -160,13 +160,13 @@ function AlcNtcBillCreateItem({
                 rowKey={Guid()}
             />
         </div>
-    )
-}
+    );
+};
 
 AlcNtcBillCreateItem.propTypes = {
     dataSource: PropTypes.array,
     pagination: PropTypes.any,
-    onPageChange: PropTypes.func,
-}
+    onPageChange: PropTypes.func
+};
 
 export default AlcNtcBillCreateItem;

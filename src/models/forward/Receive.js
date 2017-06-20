@@ -50,7 +50,7 @@ export default {
         qpcStrTreeData: [],//商品规格下拉框数据源
         receiveStorageBin: "",//仓位下的收货暂存位
         orderBillItemArticles: [],//订单中所有的商品明细集合，
-        article_qpcStr: {},
+        article_qpcStr: {}
     },
 
     subscriptions: {
@@ -63,9 +63,9 @@ export default {
                     dispatch({
                         type: 'query',
                         payload: location.query,
-                    })
-                }
-            })
+                    });
+                };
+            });
         }
     },
 
@@ -83,17 +83,17 @@ export default {
                         list: data.obj.records,
                         pagination: {
                             total: data.obj.recordCount,
-                            current: data.obj.page,
+                            current: data.obj.page
                         },
                         currentItem: {},
                         orderItems: [],
                         treeData: [],
                         orderBillno: "",
                         article_qpcStr: {},
-                        receiveStorageBin: "",
+                        receiveStorageBin: ""
                     }
-                })
-            }
+                });
+            };
         },
 
         *createWithOrderBill({
@@ -104,7 +104,7 @@ export default {
             const { data } = yield call(getOrderBill, parse(payload));
             if (data) {
 
-            }
+            };
         },
 
         *onOrderBillSelect({
@@ -119,17 +119,17 @@ export default {
                     orderBill.supplierCodeName = orderBill.supplier.name + "[" + orderBill.supplier.code + "]";
                     orderBill.wrhCodeName = orderBill.wrh.name + "[" + orderBill.wrh.code + "]";
                     orderBill.expireDateFormat = timeStamp2date(orderBill.expireDate);
-                }
+                };
                 yield put({
                     type: 'showOrderBillModal',
                     payload: {
                         canReceiveOrderBillLists: orderBillList,
                         orderBillPagination: {
                             total: data.obj.recordCount,
-                            current: data.obj.page,
+                            current: data.obj.page
                         }
                     }
-                })
+                });
             };
         },
 
@@ -190,8 +190,8 @@ export default {
                                 for (var qpcStr of article_qpcStr[prop]) {
                                     if (qpcStr != itemArt.qpcStr) {
                                         article_qpcStr[prop].push(qpcStr);
-                                    }
-                                }
+                                    };
+                                };
                             } else {
                                 let qpcStrs = [];
                                 const qpcStr = new Object();
@@ -200,10 +200,10 @@ export default {
                                 qpcStrs.push(qpcStr);
                                 var articleCode = itemArt.article.code;
                                 article_qpcStr[articleCode] = qpcStrs;
-                            }
-                        }
-                    }
-                }
+                            };
+                        };
+                    };
+                };
 
 
                 /***
@@ -227,10 +227,10 @@ export default {
                         orderItems: itemLists,
                         treeData: articles,
                         orderBillItemArticles: data.obj.items,
-                        article_qpcStr: article_qpcStr,
+                        article_qpcStr: article_qpcStr
                     }
-                })
-            }
+                });
+            };
         },
 
         *addReceiveArticle({ payload }, {
@@ -245,9 +245,9 @@ export default {
             yield put({
                 type: 'addReceiveArticleSuccess',
                 payload: {
-                    orderItems: payload,
+                    orderItems: payload
                 }
-            })
+            });
         },
 
         *queryOrderBillItem({ payload }, {
@@ -256,9 +256,9 @@ export default {
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
-                    orderItems: payload,
+                    orderItems: payload
                 }
-            })
+            });
         },
 
         /***
@@ -306,8 +306,8 @@ export default {
                                 for (var qpcStr of article_qpcStr[prop]) {
                                     if (qpcStr != itemArt.qpcStr) {
                                         article_qpcStr[prop].push(qpcStr);
-                                    }
-                                }
+                                    };
+                                };
                             } else {
                                 let qpcStrs = [];
                                 const qpcStr = new Object();
@@ -316,10 +316,10 @@ export default {
                                 qpcStrs.push(qpcStr);
                                 var articleCode = itemArt.article.code;
                                 article_qpcStr[articleCode] = qpcStrs;
-                            }
-                        }
-                    }
-                }
+                            };
+                        };
+                    };
+                };
 
 
                 /***
@@ -342,10 +342,10 @@ export default {
                         orderItems: itemLists,
                         treeData: articles,
                         orderBillItemArticles: data.obj.items,
-                        article_qpcStr: article_qpcStr,
+                        article_qpcStr: article_qpcStr
                     }
-                })
-            }
+                });
+            };
         },
 
         *saveReceiveBill({
@@ -363,11 +363,11 @@ export default {
                     yield put({
                         type: 'showViewSucess',
                         payload: {
-                            currentItem: receiveBill.data.obj,
+                            currentItem: receiveBill.data.obj
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
 
         *getReceiveBillByBillNumber({
@@ -380,10 +380,10 @@ export default {
                 yield put({
                     type: 'showViewSucess',
                     payload: {
-                        currentItem: data.obj,
+                        currentItem: data.obj
                     }
-                })
-            }
+                });
+            };
 
         },
 
@@ -394,13 +394,12 @@ export default {
         }) {
             yield call(remove, {
                 uuid: payload.uuid,
-                version: payload.version,
-
-            })
+                version: payload.version
+            });
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         },
 
         *gridAudit({
@@ -410,12 +409,12 @@ export default {
         }) {
             yield call(audit, {
                 uuid: payload.uuid,
-                version: payload.version,
-            })
+                version: payload.version
+            });
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         },
 
         *showEditPage({ payload }, {
@@ -442,7 +441,7 @@ export default {
                         receiveItem.receiveCaseQtyStr = receiveItem.caseQtyStr;
                         const total = yield call(caseQtyStrAdd, { addend: receiveItem.receiveCaseQtyStr, augend: totalCaseQtyStr });
                         totalCaseQtyStr = total.data.obj;
-                    }
+                    };
                     var produceDate = moment(receiveItem.produceDate);
                     receiveItem.produceDate = produceDate.format("YYYY-MM-DD");
                     var validDate = moment(receiveItem.validDate);
@@ -455,7 +454,7 @@ export default {
                     const sku = yield call(get, parse(param));
                     const expDays = sku.data.obj.expDays;
                     receiveItem.expDays = expDays;
-                }
+                };
 
                 const article = new Object();
                 article.value = orderItem.article.code;
@@ -475,8 +474,8 @@ export default {
                             for (var qpcStr of article_qpcStr[prop]) {
                                 if (qpcStr != orderItem.qpcStr) {
                                     article_qpcStr[prop].push(qpcStr);
-                                }
-                            }
+                                };
+                            };
                         } else {
                             let qpcStrs = [];
                             const qpcStr = new Object();
@@ -485,14 +484,14 @@ export default {
                             qpcStrs.push(qpcStr);
                             var articleCode = orderItem.article.code;
                             article_qpcStr[articleCode] = qpcStrs;
-                        }
-                    }
-                }
-            }
+                        };
+                    };
+                };
+            };
 
             for (var skuItem of data.obj.items) {
                 skuItem.qpcStrs = article_qpcStr[skuItem.article.code];
-            }
+            };
 
             data.obj.totalCaseQtyStr = totalCaseQtyStr;
             if (data) {
@@ -505,10 +504,10 @@ export default {
                         orderBillNo: data.obj.orderBillNumber,
                         article_qpcStr: article_qpcStr,
                         receiveStorageBin: receiveStorageBin,
-                        orderBillItemArticles: orderBill.data.obj.items,
+                        orderBillItemArticles: orderBill.data.obj.items
                     }
-                })
-            }
+                });
+            };
         },
 
         *updateReceiveBill({
@@ -522,7 +521,7 @@ export default {
                 payload: {
                     billNumber: payload.billNumber
                 }
-            })
+            });
         },
 
         /***
@@ -533,7 +532,6 @@ export default {
         }, {
             call, put
         }) {
-
             for (var item of payload.list) {
                 if (item.uuid == payload.record.uuid) {
                     var produceDate = moment(payload.record.produceDate);
@@ -542,14 +540,14 @@ export default {
                     var validDate = produceDate.add(payload.record.expDays, 'days');
                     payload.record.validDate = validDate.format("YYYY-MM-DD");
                     break;
-                }
+                };
             };
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
-                    orderItems: payload.list,
+                    orderItems: payload.list
                 }
-            })
+            });
         },
 
         /***
@@ -569,12 +567,12 @@ export default {
                 if (item.uuid == payload.record.uuid) {
                     payload.record.amount = (Number(payload.record.receiveQty) * Number(payload.record.price));
                     break;
-                }
+                };
             };
             for (var item of payload.list) {
                 totalQty = Number(item.receiveQty) + Number(totalQty);
                 totalAmount = Number(item.amount) + Number(totalAmount);
-            }
+            };
             const total = yield call(qtyToCaseQtyStr, {
                 qty: Number(totalQty), qpcStr: payload.record.qpcStr
             });
@@ -584,9 +582,9 @@ export default {
                 type: 'orderBillSelectSuccess',
                 payload: {
                     orderItems: payload.list,
-                    currentItem: payload.currentItem,
+                    currentItem: payload.currentItem
                 }
-            })
+            });
         },
 
         *removeItemLists({
@@ -598,12 +596,12 @@ export default {
                 if (payload.data.uuid != null) {
                     if (orderItem.uuid == payload.data.uuid) {
                         removeByValue(payload.orderItems, orderItem);
-                    }
+                    };
                 } else {
                     if (payload.data.line == orderItem.line) {
                         removeByValue(payload.orderItems, orderItem);
-                    }
-                }
+                    };
+                };
             };
             if (payload.orderItems.length == 0) {
                 const nullOrderItem = new Object();
@@ -611,29 +609,29 @@ export default {
                 nullOrderItem.editable = true;
                 nullOrderItem.line = 1;
                 payload.orderItems.push(nullOrderItem);
-            }
+            };
             let totalQty = 0;
             for (var item of payload.orderItems) {
                 totalQty = parseInt(item.receiveQty) + parseInt(totalQty);
                 if (isNaN(parseInt(totalQty)))
                     totalQty = 0;
-            }
+            };
             let totalCaseQtyStr = 0;
             if (totalQty != 0) {
                 const total = yield call(qtyToCaseQtyStr, {
                     qty: parseInt(totalQty), qpcStr: payload.data.qpcStr
                 });
                 totalCaseQtyStr = total.data.obj;
-            }
+            };
             payload.currentItem.totalCaseQtyStr = totalCaseQtyStr;
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
                     orderItems: payload.orderItems,
                     currentItem: payload.currentItem,
-                    orderBillNo: payload.currentItem.orderBillNumber,
+                    orderBillNo: payload.currentItem.orderBillNumber
                 }
-            })
+            });
         },
 
         /***
@@ -669,9 +667,9 @@ export default {
                                 article.canReceiveCaseQtyStr = '';
                                 article.receiveCaseQtyStr = '';
                                 break;
-                            }
-                        }
-                    }
+                            };
+                        };
+                    };
                 } else {
                     if (payload.record.uuid == article.uuid) {
                         for (var item of payload.orderBillItemArticles) {
@@ -693,18 +691,18 @@ export default {
                                 article.canReceiveCaseQtyStr = '';
                                 article.receiveCaseQtyStr = '';
                                 break;
-                            }
-                        }
-                    }
-                }
-            }
+                            };
+                        };
+                    };
+                };
+            };
 
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
-                    orderItems: payload.array,
+                    orderItems: payload.array
                 }
-            })
+            });
 
         },
 
@@ -731,8 +729,8 @@ export default {
                     payload.record.article.name = orderBillItemArticle.article.name;
                     payload.record.article.code = orderBillItemArticle.article.code;
                     break;
-                }
-            }
+                };
+            };
             for (var item of payload.array) {
                 if (payload.record.article.uuid != null) {
                     if (item.article.uuid == payload.record.article.uuid) {
@@ -750,9 +748,9 @@ export default {
                                 payload.record.article.name = orderBillItemArticle.article.name;
                                 payload.record.article.code = orderBillItemArticle.article.code;
                                 break;
-                            }
-                        }
-                    }
+                            };
+                        };
+                    };
                 } else {
                     if (payload.record.article.line == item.line) {
                         for (var orderBillItemArticle of payload.orderBillItemArticles) {
@@ -769,15 +767,15 @@ export default {
                                 payload.record.article.name = orderBillItemArticle.article.name;
                                 payload.record.article.code = orderBillItemArticle.article.code;
                                 break;
-                            }
-                        }
-                    }
-                }
-            }
+                            };
+                        };
+                    };
+                };
+            };
             yield put({
                 type: 'orderBillSelectSuccess',
                 payload: {
-                    orderItems: payload.array,
+                    orderItems: payload.array
                 }
             });
         },
@@ -791,56 +789,56 @@ export default {
                 pathname: '/forward/order',
                 query: {
                     type: 'getByNumber',
-                    key: payload.orderBillNumber,
+                    key: payload.orderBillNumber
                 }
-            }))
+            }));
         }
     },
 
     reducers: {
         querySuccess(state, action) {
-            return { ...state, ...action.payload, showViewPage: false, showCreatePage: false }
+            return { ...state, ...action.payload, showViewPage: false, showCreatePage: false };
         },
         createSuccess(state) {
-            return { ...state, showCreatePage: true, }
+            return { ...state, showCreatePage: true };
         },
         cancelSuccess(state, action) {
-            return { ...state, showCreatePage: false, showViewPage: false, ...action.payload }
+            return { ...state, showCreatePage: false, showViewPage: false, ...action.payload };
         },
         showOrderBillModal(state, action) {
-            return { ...state, showOrderBillSelectModal: true, showViewPage: false, ...action.payload }
+            return { ...state, showOrderBillSelectModal: true, showViewPage: false, ...action.payload };
         },
         hideOrderBillSelectModal(state) {
             return {
                 ...state, showOrderBillSelectModal: false, showViewPage: false
-            }
+            };
         },
         orderBillSelectSuccess(state, action) {
-            return { ...state, showOrderBillSelectModal: false, ...action.payload }
+            return { ...state, showOrderBillSelectModal: false, ...action.payload };
         },
         addReceiveArticleSuccess(state, action) {
-            return { ...state, ...action.payload }
+            return { ...state, ...action.payload };
         },
         showViewSucess(state, action) {
-            return { ...state, showCreatePage: false, showViewPage: true, ...action.payload }
+            return { ...state, showCreatePage: false, showViewPage: true, ...action.payload };
         },
         onViewItem(state, action) {
-            return { ...state, showViewPage: true, ...action.payload }
+            return { ...state, showViewPage: true, ...action.payload };
         },
         batchDeleteReceiveBill(state, action) {
-            return { ...state, ...action.payload, batchDeleteProcessModal: true, }
+            return { ...state, ...action.payload, batchDeleteProcessModal: true };
         },
         batchAuditReceiveBill(state, action) {
-            return { ...state, ...action.payload, batchFinishProcessModal: true }
+            return { ...state, ...action.payload, batchFinishProcessModal: true };
         },
         hideDeleteReceiveBillModal(state, action) {
-            return { ...state, batchDeleteProcessModal: false }
+            return { ...state, batchDeleteProcessModal: false };
         },
         hideFinishReceiveBillModal(state, action) {
-            return { ...state, batchFinishProcessModal: false }
+            return { ...state, batchFinishProcessModal: false };
         },
         showEditSuccess(state, action) {
-            return { ...state, showCreatePage: true, ...action.payload }
+            return { ...state, showCreatePage: true, ...action.payload };
         }
     }
 }

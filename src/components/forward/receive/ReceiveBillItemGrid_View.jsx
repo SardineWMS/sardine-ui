@@ -22,27 +22,27 @@ function ReceiveBillItemGrid_View({
     onCancelEdit,
     onAddItem,
     onSave,
-    calculateValidDate,
+    calculateValidDate
 }) {
 
     function handleCreate(e) {
         e.preventDefault();
         onCreate();
-    }
+    };
 
     function handleRemoveBatch() {
         onRemoveBatch(suppliers);
-    }
+    };
 
     function handleRecoverBatch() {
         onRecoverBatch(suppliers);
-    }
+    };
 
     function handleChange(record, value, key) {
         if (key === 'produceDate') {
             record.produceDate = value;
             calculateValidDate();
-        }
+        };
         if (key === 'receivedQty')
             record.receivedQty = value;
 
@@ -50,59 +50,59 @@ function ReceiveBillItemGrid_View({
             record.validDate = value;
         if (key === 'containerBarcode')
             record.containerBarcode = value;
-    }
+    };
 
     const columns = [
         {
             title: '行号',
             dataIndex: 'line',
-            key: 'line',
+            key: 'line'
         },
         {
             title: '商品代码',
             dataIndex: 'article.code',
             key: 'articleCode',
-            render: (text, record) => <p><a onClick={() => onViewItem(record)}>{text}</a></p>,
+            render: (text, record) => <p><a onClick={() => onViewItem(record)}>{text}</a></p>
         },
         {
             title: '商品名称',
             dataIndex: 'article.name',
-            key: 'articleName',
+            key: 'articleName'
         },
         {
             title: '规格',
             dataIndex: 'qpcStr',
-            key: 'qpcStr',
+            key: 'qpcStr'
         },
         {
             title: '单价',
             dataIndex: 'price',
-            key: 'price',
+            key: 'price'
         },
         {
             title: '金额',
             dataIndex: 'amount',
-            key: 'amount',
+            key: 'amount'
         },
         {
             title: '数量',
             dataIndex: 'qty',
-            key: 'qty',
+            key: 'qty'
         },
         {
             title: '件数',
             dataIndex: 'caseQtyStr',
-            key: 'caseQtyStr',
+            key: 'caseQtyStr'
         },
         {
             title: '容器',
             dataIndex: 'containerBarcode',
-            key: 'containerBarcode',
+            key: 'containerBarcode'
         },
         {
             title: '货位',
             dataIndex: 'binCode',
-            key: 'binCode',
+            key: 'binCode'
         },
         {
             title: '生产日期',
@@ -119,9 +119,8 @@ function ReceiveBillItemGrid_View({
         {
             title: '批次',
             dataIndex: 'stockBatch',
-            key: 'stockBatch',
-        },
-
+            key: 'stockBatch'
+        }
     ];
 
     return (
@@ -134,8 +133,8 @@ function ReceiveBillItemGrid_View({
                 rowKey={record => record.uuid}
             />
         </div>
-    )
-}
+    );
+};
 
 ReceiveBillItemGrid_View.propTypes = {
     onPageChange: PropTypes.func,
@@ -147,7 +146,7 @@ ReceiveBillItemGrid_View.propTypes = {
     onRemoveBatch: PropTypes.func,
     onViewItem: PropTypes.func,
     onEditItem: PropTypes.func,
-    onRemoveItem: PropTypes.func,
-}
+    onRemoveItem: PropTypes.func
+};
 
 export default ReceiveBillItemGrid_View;

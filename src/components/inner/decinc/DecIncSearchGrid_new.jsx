@@ -10,8 +10,8 @@ class DecIncInvSearchGrid extends React.Component {
         this.state = {
             ...props,
             selectedRowKeys: [],
-            selectedRows: [],
-        }
+            selectedRows: []
+        };
         this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
         this.handleFinishBatch = this.handleFinishBatch.bind(this);
     };
@@ -20,7 +20,7 @@ class DecIncInvSearchGrid extends React.Component {
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: [],
+            selectedRows: []
         });
     };
 
@@ -52,7 +52,7 @@ class DecIncInvSearchGrid extends React.Component {
             title: '状态',
             dataIndex: 'state',
             key: 'state',
-            render: text => (text == "Initial" ? '未审核' : '已审核'),
+            render: text => (text == "Initial" ? '未审核' : '已审核')
         }, {
             title: '仓位',
             dataIndex: 'wrh',
@@ -67,13 +67,13 @@ class DecIncInvSearchGrid extends React.Component {
             title: '最后修改人',
             dataIndex: 'lastModifyInfo',
             key: 'lastModifyInfo',
-            render: (text, record) => lastModifyInfo2StringWithoutTime(record),
-        }]
+            render: (text, record) => lastModifyInfo2StringWithoutTime(record)
+        }];
 
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            onChange: this.onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
 
@@ -98,10 +98,10 @@ class DecIncInvSearchGrid extends React.Component {
                     </div>}
                 />
             </div>
-        )
-    }
+        );
+    };
 
-}
+};
 
 export default DecIncInvSearchGrid;
 

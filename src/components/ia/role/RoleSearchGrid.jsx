@@ -10,8 +10,8 @@ class RoleGrid extends React.Component {
         this.state = {
             ...props,
             selectedRowKeys: [],
-            selectedRows: [],
-        }
+            selectedRows: []
+        };
         this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
         this.handleOnlineBatch = this.handleOnlineBatch.bind(this);
         this.handleOfflineBatch = this.handleOfflineBatch.bind(this);
@@ -22,7 +22,7 @@ class RoleGrid extends React.Component {
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: [],
+            selectedRows: []
         });
     };
     onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -47,7 +47,7 @@ class RoleGrid extends React.Component {
     handleView(record, e) {
         e.preventDefault();
         this.state.onViewItem(record);
-    }
+    };
     render() {
         const columns = [{
             title: '代码',
@@ -68,7 +68,7 @@ class RoleGrid extends React.Component {
 
                 </div>)
             },
-            sorter: true,
+            sorter: true
         },
         {
             title: '名称',
@@ -80,7 +80,7 @@ class RoleGrid extends React.Component {
         {
             title: '状态',
             dataIndex: 'state',
-            key: 'state',
+            key: 'state'
         },
         {
             title: '操作',
@@ -116,39 +116,39 @@ class RoleGrid extends React.Component {
 
             if (!record.editable) {
                 return (<a onClick={this.handleView.bind(this, record)}>{text}</a>);
-            }
+            };
 
             return (<RowEditCell
                 editable={record.editable}
                 value={text}
                 status={status}
                 onChange={value => handleChange(record, value, key)}
-            />)
-        }
+            />);
+        };
 
         function renderNameColumns(record, key, text) {
             if (typeof record.editable === undefined)
-                return text
+                return text;
 
             return (<RowEditCell
                 editable={record.editable}
                 value={text}
                 status={status}
                 onChange={value => handleChange(record, value, key)}
-            />)
-        }
+            />);
+        };
 
         function handleChange(record, value, key) {
             if ("code" == key)
                 record.code = value;
             if ("name" == key)
                 record.name = value;
-        }
+        };
 
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            onChange: this.onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
         return (
@@ -178,7 +178,7 @@ class RoleGrid extends React.Component {
                 />
             </div>
         );
-    }
-}
+    };
+};
 
 export default RoleGrid;

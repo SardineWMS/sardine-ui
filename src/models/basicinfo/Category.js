@@ -15,7 +15,7 @@ export default {
     list: [],
     currentItem: {},
     modalVisible: false,
-    modalType: 'create',
+    modalType: 'create'
   },
 
   subscriptions: {
@@ -30,17 +30,18 @@ export default {
             payload: {
               token: localStorage.getItem("token")
             }
-          })
-        }
-      })
+          });
+        };
+      });
     },
   },
 
-  effects: { * query({
+  effects: {
+    * query({
       payload
     }, {
       call,
-      put
+        put
     }) {
       const {
         data
@@ -49,130 +50,133 @@ export default {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.obj,
-          },
-        })
-      }
+            list: data.obj
+          }
+        });
+      };
     },
     * create({
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
-      })
+      });
       yield call(create, payload);
       const {
         data
       } = yield call(queryCategory, payload: {
-        token: payload.token
-      });
+          token: payload.token
+        });
       if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.obj,
-          },
-        })
-      }
+            list: data.obj
+          }
+        });
+      };
     },
 
     * createRoot({
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
-      })
+      });
       yield call(create, payload);
       const {
         data
       } = yield call(queryCategory, payload: {
-        token: payload.token
-      });
+          token: payload.token
+        });
       if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.obj,
-          },
-        })
-      }
+            list: data.obj
+          }
+        });
+      };
     },
 
     * update({
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield put({
         type: 'hideModal'
-      })
+      });
       yield call(update, payload);
       const {
         data
       } = yield call(queryCategory, payload: {
-        token: payload.token
-      });
+          token: payload.token
+        });
       if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.obj,
-          },
-        })
-      }
+            list: data.obj
+          }
+        });
+      };
     },
 
     * remove({
       payload
     }, {
       call,
-      put
+        put
     }) {
       yield call(deleteCategory, {
         uuid: payload.uuid,
         version: payload.version,
-        token: payload.token,
+        token: payload.token
       });
 
       const {
         data
       } = yield call(queryCategory, payload: {
-        token: payload.token
-      });
+          token: payload.token
+        });
       if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
-            list: data.obj,
-          },
-        })
-      }
+            list: data.obj
+          }
+        });
+      };
     },
   },
 
   reducers: {
     querySuccess(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload
-      }
+      };
     },
     showModal(state, action) {
-      return {...state,
+      return {
+        ...state,
         ...action.payload,
         modalVisible: true
-      }
+      };
     },
     hideModal(state) {
-      return {...state,
+      return {
+        ...state,
         modalVisible: false
-      }
+      };
     },
   },
 

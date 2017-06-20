@@ -99,7 +99,7 @@ const OrderBillItems=({
 			dataIndex: 'receivedCaseQtyStr',
 			width: 100
 		});
-	}
+	};
 
 	if(editable)
 	{
@@ -117,7 +117,7 @@ const OrderBillItems=({
 		     	);
 		    }
 		});
-	}
+	};
 
 
     function renderRowEditableCell(index, key, text) {
@@ -132,7 +132,7 @@ const OrderBillItems=({
 	      autoFocus={key == "articleCode" ? true : false}
 	      status={status}
 	    />);
-    }
+    };
 
     function handleChange(key, index, value) {
 		items[index][key] = value;
@@ -144,8 +144,8 @@ const OrderBillItems=({
 			getArticle(items,index);
 		}else if(key ==='qty'){
 			refreshCaseQtyAndAmount(items,index+1);
-		}
-  	}
+		};
+  	};
 
   	function renderSelectColumns(record, key, text){
   		if(typeof articleQpcs =='undefined')
@@ -161,8 +161,8 @@ const OrderBillItems=({
             options={options}
             onChange={value => handleSelectQpcStr(record, value, key)}
             value={text}
-        />)
-  	}
+        />);
+  	};
 
   	function handleSelectQpcStr(record, value, key){
 			var munit=null;
@@ -170,11 +170,11 @@ const OrderBillItems=({
 				if(value===qpcInfo.qpcStr){
 					munit=qpcInfo.munit;
 					return;
-				}
+				};
 			});
 			record.qpcStr=value;
 			record.munit=munit;
-  	}
+  	};
 
 
 

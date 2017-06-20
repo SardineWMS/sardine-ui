@@ -31,30 +31,30 @@ function System({
       dispatch({
         type: 'system/create',
         payload: data
-      })
+      });
     }
-  }
+  };
 
   return (
     <div>
-          <div className={styles.reg}>
-            <Spin spinning={loading}>
-              <DCCreate {...createDcProps} />
-            </Spin>
-          </div>
+      <div className={styles.reg}>
+        <Spin spinning={loading}>
+          <DCCreate {...createDcProps} />
+        </Spin>
+      </div>
     </div>
-  )
-}
+  );
+};
 
 System.propTypes = {
-   creatingButtonLoading: PropTypes.bool
-}
+  creatingButtonLoading: PropTypes.bool
+};
 
 function mapStateToProps({ loading, system }) {
   return {
     loading: loading.global,
-    system,
+    system
   };
-}
+};
 
-export default connect(mapStateToProps)(System)
+export default connect(mapStateToProps)(System);

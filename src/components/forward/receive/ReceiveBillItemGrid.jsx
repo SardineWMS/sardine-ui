@@ -33,21 +33,21 @@ function ReceiveBillItemGrid({
     qpcStrTreeData,
     article_qpcStr,
     selectArticle,
-    selectQpcStr,
+    selectQpcStr
 }) {
 
     function handleCreate(e) {
         e.preventDefault();
         onCreate();
-    }
+    };
 
     function handleRemoveBatch() {
         onRemoveBatch(suppliers);
-    }
+    };
 
     function handleRecoverBatch() {
         onRecoverBatch(suppliers);
-    }
+    };
 
     function handleChange(record, value, key) {
         if (key === 'produceDate') {
@@ -56,7 +56,7 @@ function ReceiveBillItemGrid({
             record.produceDate = value;
 
             calculateValidDate(record, dataSource);
-        }
+        };
         if (key === 'validDate')
             record.validDate = value;
         if (key === 'containerBarcode')
@@ -66,13 +66,12 @@ function ReceiveBillItemGrid({
                 record.article = new Object();
             record.article.code = value;
             selectArticle(record, dataSource);
-        }
+        };
         if (key == 'qpcStr') {
             record.qpcStr = value;
             selectQpcStr(record, dataSource);
-        }
-
-    }
+        };
+    };
 
     function onCellChange(index, record) {
         return (value) => {
@@ -80,55 +79,53 @@ function ReceiveBillItemGrid({
                 return;
             record.receiveQty = value;
             calculateCaseQtyStr(record, dataSource)
-        }
-    }
+        };
+    };
 
     const columns = [
         {
             title: '行号',
             dataIndex: 'line',
             key: 'line',
-            width: 50,
-
+            width: 50
         },
         {
             title: '商品代码',
             dataIndex: 'article.code',
             key: 'articleCode',
             width: 100,
-            render: (text, record) => renderSelectColumns(record, "articleCode", text),
-
+            render: (text, record) => renderSelectColumns(record, "articleCode", text)
         },
         {
             title: '商品名称',
             dataIndex: 'article.name',
             width: 200,
-            key: 'articleName',
+            key: 'articleName'
         },
         {
             title: '单价',
             dataIndex: 'price',
             width: 100,
-            key: 'price',
+            key: 'price'
         },
         {
             title: '规格',
             dataIndex: 'qpcStr',
             key: 'qpcStr',
             width: 100,
-            render: (text, record) => renderSelectColumns(record, "qpcStr", text),
+            render: (text, record) => renderSelectColumns(record, "qpcStr", text)
         },
         {
             title: '可收货数量',
             dataIndex: 'canReceiveQty',
             width: 100,
-            key: 'canReceiveQty',
+            key: 'canReceiveQty'
         },
         {
             title: '可收货件数',
             dataIndex: 'canReceiveCaseQtyStr',
             width: 100,
-            key: 'canReceiveCaseQtyStr',
+            key: 'canReceiveCaseQtyStr'
         },
         {
             title: '收货数量',
@@ -142,45 +139,45 @@ function ReceiveBillItemGrid({
                     status={status}
                     onBlur={onCellChange(index, record)}
                 />)
-            },
+            }
         },
         {
             title: '收货件数',
             dataIndex: 'receiveCaseQtyStr',
             key: 'receiveCaseQtyStr',
-            width: 200,
+            width: 200
         },
         {
             title: '金额',
             dataIndex: 'amount',
             key: 'amount',
-            width: 100,
+            width: 100
         },
         {
             title: '生产日期',
             dataIndex: 'produceDate',
             key: 'produceDate',
             width: 150,
-            render: (text, record) => renderDateColumns(record, "produceDate", text),
+            render: (text, record) => renderDateColumns(record, "produceDate", text)
         },
         {
             title: '到效期',
             dataIndex: 'validDate',
             key: 'validDate',
-            width: 150,
+            width: 150
         },
         {
             title: '容器',
             dataIndex: 'containerBarcode',
             key: 'containerBarcode',
             width: 150,
-            render: (text, record) => renderColumns(record, "containerBarcode", text),
+            render: (text, record) => renderColumns(record, "containerBarcode", text)
         },
         {
             title: '货位',
             dataIndex: 'bin',
             key: 'bin',
-            width: 80,
+            width: 80
         },
         {
             title: '操作',
@@ -207,9 +204,9 @@ function ReceiveBillItemGrid({
                         }
 
                     </div>
-                )
+                );
 
-            },
+            }
         }
     ];
 
@@ -222,8 +219,8 @@ function ReceiveBillItemGrid({
             value={text}
             status={status}
             onChange={value => handleChange(record, value, key)}
-        />)
-    }
+        />);
+    };
 
     function renderDateColumns(record, key, text) {
         if (typeof record.editable === undefined)
@@ -234,8 +231,8 @@ function ReceiveBillItemGrid({
             value={record.produceDate ? text : null}
             status={status}
             onChange={value => handleChange(record, value, key)}
-        />)
-    }
+        />);
+    };
 
     function renderSelectColumns(record, key, text) {
         if (typeof record.editable === undefined)
@@ -248,24 +245,24 @@ function ReceiveBillItemGrid({
                 options.push(<Option key={data.value}>
                     {data.value}
                 </Option>)
-            }
+            };
         } else {
             if (record.article != null) {
                 if (article_qpcStr[record.article.code] != null) {
                     for (var data of article_qpcStr[record.article.code]) {
                         options.push(<Option key={data.value}>{data.value}</Option>)
-                    }
-                }
-            }
-        }
+                    };
+                };
+            };
+        };
 
         let defaultValue = "";
         if (key == "articleCode" && record.article) {
             defaultValue = record.article.code;
-        }
+        };
         if (key == "qpcStr" && record.qpcStr) {
             defaultValue = record.qpcStr;
-        }
+        };
 
 
 
@@ -275,8 +272,8 @@ function ReceiveBillItemGrid({
             options={options}
             onChange={value => handleChange(record, value, key)}
             value={text}
-        />)
-    }
+        />);
+    };
 
     const rowSelection = {
         onChange: (selectedRowKeys, selectedRows) => {
@@ -289,7 +286,7 @@ function ReceiveBillItemGrid({
         },
         getCheckboxProps: record => ({
             disabled: record.name === 'Disabled User',
-        }),
+        })
     };
 
     return (
@@ -302,8 +299,8 @@ function ReceiveBillItemGrid({
             scroll={{ x: 1830, y: 300 }}
         />
         </div>
-    )
-}
+    );
+};
 
 ReceiveBillItemGrid.propTypes = {
     onPageChange: PropTypes.func,
@@ -315,7 +312,7 @@ ReceiveBillItemGrid.propTypes = {
     onRemoveBatch: PropTypes.func,
     onViewItem: PropTypes.func,
     onEditItem: PropTypes.func,
-    onRemoveItem: PropTypes.func,
-}
+    onRemoveItem: PropTypes.func
+};
 
 export default Form.create()(ReceiveBillItemGrid);

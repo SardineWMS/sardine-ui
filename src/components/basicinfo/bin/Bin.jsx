@@ -20,41 +20,41 @@ function BinSearch({
   function handleCreateWrh(e) {
     e.preventDefault();
     onCreateWrh();
-  }
+  };
 
   function handleCreateZone(e) {
     e.preventDefault();
     onCreateZone();
-  }
+  };
 
   function handleCreatePath(e) {
     e.preventDefault();
     onCreatePath();
-  }
+  };
 
   function handleCreateShelf(e) {
     e.preventDefault();
     onCreateShelf();
-  }
+  };
 
   function handleCreateBin(e) {
     e.preventDefault();
     onCreateBin();
-  }
+  };
 
   function handleDeleteBin() {
     onDeleteBin(selectBins);
-  }
+  };
 
   function handleShowStock(e) {
     e.preventDefault();
     onShowStock();
-  }
+  };
 
   function handleCreateBinType(e) {
     e.preventDefault();
     onCreateBinType();
-  }
+  };
 
   const onClick = function ({ key, e }) {
     // e.preventDefault();
@@ -68,46 +68,46 @@ function BinSearch({
       onCreateZone();
     } else if (key == 5) {
       onCreateWrh();
-    }
+    };
   };
 
   function convertState(text) {
-            if (text == "initial")
-                return '初始';
-            if (text == "aborted")
-                return '已作废';
-            if (text == "inAlc")
-                return '待配送';
-            if (text == 'inSorting')
-                return '分拣中';
-            if (text == 'finished')
-                return '已完成';
-            if (text == 'inProgress')
-                return '配送中';
-            if (text == 'handover')
-                return '已交接';
-        };
+    if (text == "initial")
+      return '初始';
+    if (text == "aborted")
+      return '已作废';
+    if (text == "inAlc")
+      return '待配送';
+    if (text == 'inSorting')
+      return '分拣中';
+    if (text == 'finished')
+      return '已完成';
+    if (text == 'inProgress')
+      return '配送中';
+    if (text == 'handover')
+      return '已交接';
+  };
 
   const columns = [{
     title: '代码',
     dataIndex: 'code',
     key: 'code',
-    sorter: true,
+    sorter: true
   }, {
     title: '货位状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => (text == "free" ? '空闲' : '使用中'),
+    render: text => (text == "free" ? '空闲' : '使用中')
   }, {
     title: '货位用途',
     dataIndex: 'usage',
     key: 'usage',
-    render: text => (text == "StorageBin" ? '存储位' : text),
+    render: text => (text == "StorageBin" ? '存储位' : text)
   }, {
     title: '货位类型',
     dataIndex: 'binType',
     key: 'binType',
-    render: (text, record) => (text ? (<a href=""> {"[" + record.binType.code + "]" + record.binType.name} </a>) : ""),
+    render: (text, record) => (text ? (<a href=""> {"[" + record.binType.code + "]" + record.binType.name} </a>) : "")
   }, {
     title: '操作',
     key: 'operation',
@@ -115,9 +115,9 @@ function BinSearch({
       <p>
         <a onClick={() => onShowStock(record.code)}> 库存详细信息 </a>
       </p>
-    ),
+    )
   }
-  ]
+  ];
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -167,8 +167,8 @@ function BinSearch({
         rowKey={record => record.uuid}
       />
     </div>
-  )
-}
+  );
+};
 
 BinSearch.propTypes = {
   dataSource: PropTypes.array,
@@ -180,7 +180,7 @@ BinSearch.propTypes = {
   onCreateBin: PropTypes.func,
   onDeleteBin: PropTypes.func,
   onShowStock: PropTypes.func
-}
+};
 
 export default BinSearch;
 

@@ -7,12 +7,12 @@ const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 
 const formItemLayout = {
     labelCol: {
-        span: 6,
+        span: 6
     },
     wrapperCol: {
-        span: 14,
-    },
-}
+        span: 14
+    }
+};
 
 const ViewResourceModal = ({
     visible,
@@ -21,22 +21,20 @@ const ViewResourceModal = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue,
+        getFieldsValue
     },
     treeData,
-    value,
+    value
 }) => {
     function handleOk() {
         validateFields((errors) => {
             if (errors)
                 return;
             const data = {
-                ...getFieldsValue(),
-            }
-            console.log("getFieldsValue...", data);
-
-            onSave(data)
-        })
+                ...getFieldsValue()
+            };
+            onSave(data);
+        });
     };
 
     const modalOpts = {
@@ -51,8 +49,8 @@ const ViewResourceModal = ({
     };
 
     const treeSelectProps = {
-        treeData: treeData,
-    }
+        treeData: treeData
+    };
 
     return (
         <Modal {...modalOpts}>
@@ -72,11 +70,11 @@ const ViewResourceModal = ({
                 </FormItem>
             </Form>
         </Modal>
-    )
-}
+    );
+};
 
 function mapPropsToFields(value) {
-    return { resource: value }
-}
+    return { resource: value };
+};
 
 export default Form.create(mapPropsToFields)(ViewResourceModal);

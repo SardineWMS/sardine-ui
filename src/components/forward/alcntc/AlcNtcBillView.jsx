@@ -16,7 +16,7 @@ const AlcNtcBillView = ({
     onBack,
     onEdit,
     onDelete,
-    onAudit,
+    onAudit
 }) => {
     function convertState(text) {
         if (text == "initial")
@@ -38,46 +38,46 @@ const AlcNtcBillView = ({
     let basicForm = [];
     basicForm.push(<BaseFormItem label="单号：" key={Guid()}>
         <span>{item.billNumber}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     basicForm.push(<BaseFormItem label="客户：" key={Guid()}>
         <span>{"[" + item.customer.code + "]" + item.customer.name}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
 
     basicForm.push(<BaseFormItem label="仓位：" key={Guid()}>
         <span>{item.wrh.name + "[" + item.wrh.code + "]"}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     basicForm.push(<BaseFormItem label="来源单据：" key={Guid()}>
         <span>{"[" + item.sourceBillNumber + "]" + item.sourceBillType}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     basicForm.push(<BaseFormItem label="配送方式：" key={Guid()}>
         <span>{item.deliveryMode}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     basicForm.push(<BaseFormItem label="配送原因：" key={Guid()}>
         <span>{item.deliveryReason}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
 
     let operateForm = [];
     operateForm.push(<BaseFormItem label="状态：" key={Guid()}>
         <span>{convertState(item.state)}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     operateForm.push(<BaseFormItem label="创建人：" key={Guid()}>
         <span>{createInfo2String(item)}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     operateForm.push(<BaseFormItem label="最后修改人 ：" key={Guid()}>
         <span>{lastModifyInfo2String(item)}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     operateForm.push(<BaseFormItem label="总件数：" key={Guid()}>
         <span>{item.totalCaseQtyStr}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     operateForm.push(<BaseFormItem label="总金额：" key={Guid()}>
         <span>{item.totalAmount == null ? 0 : item.totalAmount}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     operateForm.push(<BaseFormItem label="计划总件数：" key={Guid()}>
         <span>{item.planTotalCaseQtyStr == null ? 0 : item.planTotalCaseQtyStr}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
     operateForm.push(<BaseFormItem label="实际总件数：" key={Guid()}>
         <span>{item.realTotalCaseQtyStr == null ? 0 : item.realTotalCaseQtyStr}</span>
-    </BaseFormItem>)
+    </BaseFormItem>);
 
 
     let toolbar = [];
@@ -92,8 +92,8 @@ const AlcNtcBillView = ({
     toolbar.push(<Button onClick={() => onAudit(item)} disabled={(item.state != 'initial') || (!PermissionUtil("alcNtcBill:edit"))}>审核</Button >)
 
     const articleItemProps = {
-        dataSource: item.items,
-    }
+        dataSource: item.items
+    };
 
     return (
         <div>
@@ -108,10 +108,10 @@ const AlcNtcBillView = ({
             <RemarkCard />
         </div>
     );
-}
+};
 
 AlcNtcBillView.propTypes = {
-    item: PropTypes.object,
-}
+    item: PropTypes.object
+};
 
 export default Form.create()(AlcNtcBillView);

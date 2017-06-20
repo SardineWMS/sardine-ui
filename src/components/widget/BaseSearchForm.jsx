@@ -15,12 +15,12 @@ import { Form, Row, Col, Button, Collapse } from 'antd';
     function handleSearch(e) {
         e.preventDefault();
         onSearch(form.getFieldsValue());
-    }
+    };
 
     function handleReset(e) {
         e.preventDefault();
         form.resetFields();
-    }
+    };
 
     return (
         <Collapse defaultActiveKey={["1"]} >

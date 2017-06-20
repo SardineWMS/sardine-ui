@@ -5,12 +5,12 @@ const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 
 const formItemLayout = {
     labelCol: {
-        span: 6,
+        span: 6
     },
     wrapperCol: {
-        span: 14,
-    },
-}
+        span: 14
+    }
+};
 
 const RoleAssginmentModal = ({
     visible,
@@ -19,21 +19,20 @@ const RoleAssginmentModal = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue,
+        getFieldsValue
     },
     treeData,
-    value,
+    value
 }) => {
     function handleOk() {
         validateFields((errors) => {
             if (errors)
                 return;
             const data = {
-                ...getFieldsValue(),
-            }
-
-            onSave(data)
-        })
+                ...getFieldsValue()
+            };
+            onSave(data);
+        });
     };
 
     const modalOpts = {
@@ -41,13 +40,13 @@ const RoleAssginmentModal = ({
         visible,
         onOk: handleOk,
         onCancel,
-        wrapClassName: 'vertical-center-modal',
+        wrapClassName: 'vertical-center-modal'
     };
 
     const treeSelectProps = {
         treeData: treeData,
-        value: getFieldsValue,
-    }
+        value: getFieldsValue
+    };
 
     return (
         <Modal {...modalOpts}>
@@ -66,6 +65,6 @@ const RoleAssginmentModal = ({
                 </FormItem>
             </Form>
         </Modal>
-    )
-}
+    );
+};
 export default Form.create()(RoleAssginmentModal);

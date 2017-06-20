@@ -1,16 +1,16 @@
 import React from 'react';
-import {Form} from 'antd';
+import { Form } from 'antd';
 import styles from '../less/common.less';
 
-class BaseForm extends React.Component{
+class BaseForm extends React.Component {
 
-  render(){
+  render() {
     return (
-       <Form horizontal className={styles.baseForm}>
+      <Form horizontal className={styles.baseForm}>
         {this.props.items}
-       </Form>
-      );
-  }
-}
+      </Form>
+    );
+  };
+};
 
 export default BaseForm;

@@ -35,15 +35,15 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.field,
-                    sortDirection: sorter.order,
+                    sortDirection: sorter.order
                 }
-            }))
+            }));
         },
         onSearch(fieldsValue) {
             dispatch({
                 type: 'acceptanceBill/query',
                 payload: fieldsValue
-            })
+            });
         },
         onCreate() {
             dispatch({
@@ -51,7 +51,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                 payload: {
                   currentAcceptanceBill: {}
                 }
-            })
+            });
         },
         onViewAcceptanceBill(acceptanceBill) {
             dispatch({
@@ -59,69 +59,69 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                 payload: {
                     uuid:acceptanceBill.uuid
                 }
-            })
+            });
         },
         onDeleteBatch(acceptanceBills) {
             if (acceptanceBills.length <= 0) {
                 message.warning("请选择要删除的领用单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'acceptanceBill/batchRemoveAcceptanceBill',
                 payload: {
                     deleteAcceptanceBillEntitys: acceptanceBills
                 }
-            })
+            });
         },
         onFinishBatch(acceptanceBills) {
             if (acceptanceBills.length <= 0) {
                 message.warning("请选择要完成的领用单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'acceptanceBill/batchFinishAcceptanceBill',
                 payload: {
                     finishAcceptanceBillEntitys: acceptanceBills
                 }
-            })
+            });
         },
         onAbortBatch(acceptanceBills) {
             if (acceptanceBills.length <= 0) {
                 message.warning("请选择要作废的领用单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'acceptanceBill/batchAbortAcceptanceBill',
                 payload: {
                     abortAcceptanceBillEntitys: acceptanceBills
                 }
-            })
+            });
         },
         onApproveBatch(acceptanceBills) {
             if (acceptanceBills.length <= 0) {
                 message.warning("请选择要批准的领用单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'acceptanceBill/batchApproveAcceptanceBill',
                 payload: {
                     approveAcceptanceBillEntitys: acceptanceBills
                 }
-            })
+            });
         },
         onAlcBatch(acceptanceBills) {
             if (acceptanceBills.length <= 0) {
                 message.warning("请选择要配货的领用单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'acceptanceBill/batchAlcAcceptanceBill',
                 payload: {
                     alcAcceptanceBillEntitys: acceptanceBills
                 }
-            })
-        },
-    }
+            });
+        }
+    };
 
     const acceptanceBillSearchProps = {
         field,
@@ -129,10 +129,10 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         onSearch(fieldsValue) {
             dispatch({
                 type: 'acceptanceBill/query',
-                payload: fieldsValue,
-            })
+                payload: fieldsValue
+            });
         }
-    }
+    };
 
     const acceptanceBillCreateProps={
         acceptanceBill:currentAcceptanceBill,
@@ -142,31 +142,31 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
             if(acceptanceBill.uuid){
                 dispatch({
                     type: 'acceptanceBill/edit',
-                    payload: acceptanceBill,
+                    payload: acceptanceBill
                 });
             }else{
                 dispatch({
                     type: 'acceptanceBill/create',
-                    payload: acceptanceBill,
+                    payload: acceptanceBill
                 });
-            }
+            };
         },
         onCancel(){
             dispatch({
-                type: 'acceptanceBill/backSearchForm',
+                type: 'acceptanceBill/backSearchForm'
             });
         },
         queryCustomers(){
             dispatch({
-                type: 'acceptanceBill/queryCustomers',
+                type: 'acceptanceBill/queryCustomers'
             }); 
         },
         queryWrhs(){
             dispatch({
-                type: 'acceptanceBill/queryWrhs',
+                type: 'acceptanceBill/queryWrhs'
             }); 
         }
-    }
+    };
 
     const customerModalProps={
         visible:customerModalVisible,
@@ -176,14 +176,14 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
             currentAcceptanceBill.customer=customers[0];
             dispatch({
                 type: 'acceptanceBill/hideCustomerModal'
-            })  
+            });  
         },
         onCancel(){
             dispatch({
                 type: 'acceptanceBill/hideCustomerModal'
-            })  
+            });  
         }
-    } 
+    };
 
     let items=[];
     if(currentAcceptanceBill.items)
@@ -194,7 +194,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         item.line=1;
         items.push(item);
         currentAcceptanceBill.items=items;
-      }
+      };
     const acceptanceBillItemProps={ 
         acceptanceBillItems:items,
         stocks:stocks,
@@ -208,9 +208,9 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
             dispatch({
                 type: 'acceptanceBill/showEditPage',
                 payload: {
-                    acceptanceBill: acceptanceBill,
+                    acceptanceBill: acceptanceBill
                 }
-            })
+            });
         },
         onDelete(index){
             currentAcceptanceBill.items.splice(index);
@@ -230,14 +230,14 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                     index:index,
                     acceptanceBill:currentAcceptanceBill
                 }
-            })  
+            });
         },
         refreshStockInfo(currentAcceptanceBillItem){
             currentAcceptanceBill.items[currentAcceptanceBillItem.line-1]=currentAcceptanceBillItem;
             dispatch({
                 type: 'acceptanceBill/showEditPage',
                 payload: currentAcceptanceBill
-            })  
+            });
         },
         refreshCaseQtyAndAmount(currentAcceptanceBillItem){
             currentAcceptanceBill.items[currentAcceptanceBillItem.line-1]=currentAcceptanceBillItem;
@@ -247,9 +247,9 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                     acceptanceBill:currentAcceptanceBill,
                     line:currentAcceptanceBillItem.line
                 }
-            })  
+            });
         }
-    }
+    };
 
     const acceptanceBillViewFormProps={
         acceptanceBill:currentAcceptanceBill,
@@ -275,7 +275,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                 type: 'acceptanceBill/approveItem',
                 payload: {
                     uuid: acceptanceBill.uuid,
-                    version:acceptanceBill.version,
+                    version:acceptanceBill.version
                 }
             });
         },
@@ -284,7 +284,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                 type: 'acceptanceBill/beginAlcItem',
                 payload: {
                     uuid: acceptanceBill.uuid,
-                    version:acceptanceBill.version,
+                    version:acceptanceBill.version
                 }
             });
         },
@@ -311,8 +311,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                 type: 'acceptanceBill/backSearchForm',
             });
         }
-
-    }
+    };
 
     const batchDeleteAcceptanceBillsProps = {
         showConfirmModal: batchDeleteProcessModal,
@@ -327,19 +326,19 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
               uuid: acceptanceBill.uuid,
               version: acceptanceBill.version
             }
-          })
+          });
         },
         hideConfirmModal() {
           dispatch({
-            type: 'acceptanceBill/hideRemoveAcceptanceBillModal',
-          })
+            type: 'acceptanceBill/hideRemoveAcceptanceBillModal'
+          });
         },
         refreshGrid() {
           dispatch({
             type: 'acceptanceBill/query'
-          })
+          });
         }
-    }
+    };
 
     const batchApproveAcceptanceBillsProps = {
         showConfirmModal: batchApproveProcessModal,
@@ -354,19 +353,19 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
               uuid: acceptanceBill.uuid,
               version: acceptanceBill.version
             }
-          })
+          });
         },
         hideConfirmModal() {
           dispatch({
-            type: 'acceptanceBill/hideApproveAcceptanceBillModal',
+            type: 'acceptanceBill/hideApproveAcceptanceBillModal'
           })
         },
         refreshGrid() {
           dispatch({
             type: 'acceptanceBill/query'
-          })
+          });
         }
-    }
+    };
 
     const batchBeginAlcAcceptanceBillsProps = {
         showConfirmModal: batchAlcProcessModal,
@@ -381,19 +380,19 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
               uuid: acceptanceBill.uuid,
               version: acceptanceBill.version
             }
-          })
+          });
         },
         hideConfirmModal() {
           dispatch({
-            type: 'acceptanceBill/hideAlcAcceptanceBillModal',
-          })
+            type: 'acceptanceBill/hideAlcAcceptanceBillModal'
+          });
         },
         refreshGrid() {
           dispatch({
             type: 'acceptanceBill/query'
-          })
+          });
         }
-    }
+    };
 
     const batchFinishAcceptanceBillsProps = {
         showConfirmModal: batchFinishProcessModal,
@@ -408,19 +407,19 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
               uuid: acceptanceBill.uuid,
               version: acceptanceBill.version
             }
-          })
+          });
         },
         hideConfirmModal() {
           dispatch({
-            type: 'acceptanceBill/hideFinishAcceptanceBillModal',
-          })
+            type: 'acceptanceBill/hideFinishAcceptanceBillModal'
+          });
         },
         refreshGrid() {
           dispatch({
             type: 'acceptanceBill/query'
-          })
+          });
         }
-    }
+    };
 
     const batchAbortAcceptanceBillsProps = {
         showConfirmModal: batchAbortProcessModal,
@@ -435,19 +434,19 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
               uuid: acceptanceBill.uuid,
               version: acceptanceBill.version
             }
-          })
+          });
         },
         hideConfirmModal() {
           dispatch({
-            type: 'acceptanceBill/hideAbortAcceptanceBillModal',
-          })
+            type: 'acceptanceBill/hideAbortAcceptanceBillModal'
+          });
         },
         refreshGrid() {
           dispatch({
             type: 'acceptanceBill/query'
-          })
+          });
         }
-    }
+    };
 
 
 
@@ -488,15 +487,15 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         }
          
         </div>
-    )
-}
+    );
+};
 
 AcceptanceBill.propTypes = {
-    AcceptanceBill: PropTypes.object,
-}
+    AcceptanceBill: PropTypes.object
+};
 
 function mapStateToProps({ acceptanceBill }) {
     return {acceptanceBill};
-}
+};
 
 export default connect(mapStateToProps)(AcceptanceBill);

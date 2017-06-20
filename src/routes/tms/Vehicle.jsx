@@ -23,16 +23,16 @@ function Vehicle({ location, dispatch, vehicle }) {
         onlineVehicleEntitys,
         offlineVehicleEntitys,
         vehicleNext,
-        pagination,
+        pagination
     } = vehicle;
 
     const vehicleSearchFormProps = {
         onSearch(fieldsValue) {
             dispatch({
                 type: 'vehicle/query',
-                payload: fieldsValue,
-            })
-        },
+                payload: fieldsValue
+            });
+        }
     };
 
     const vehicleSearchGridProps = {
@@ -42,44 +42,44 @@ function Vehicle({ location, dispatch, vehicle }) {
             dispatch({
                 type: 'vehicle/queryVehicleType',
                 payload: {}
-            })
+            });
         },
         onCreate() {
             dispatch({
                 type: 'vehicle/showCreate',
-            })
+            });
         },
         onViewItem(record) {
             dispatch({
                 type: 'vehicle/onViewItem',
                 payload: {
-                    currentItem: record,
+                    currentItem: record
                 }
-            })
+            });
         },
         onOnlineBatch(vehicles) {
             if (vehicles.length <= 0) {
                 message.warning("请选择要启用的车辆", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'vehicle/batchOnlineVehicle',
                 payload: {
                     onlineVehicleEntitys: vehicles
                 }
-            })
+            });
         },
         onOfflineBatch(vehicles) {
             if (vehicles.length <= 0) {
                 message.warning("请选择要停用的车辆", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'vehicle/batchOfflineVehicle',
                 payload: {
-                    offlineVehicleEntitys: vehicles,
+                    offlineVehicleEntitys: vehicles
                 }
-            })
+            });
         }
     };
 
@@ -88,52 +88,52 @@ function Vehicle({ location, dispatch, vehicle }) {
         visible: vehicleTypeModalVisible,
         onCancel() {
             dispatch({
-                type: 'vehicle/hideVehicleTypeModal',
-            })
+                type: 'vehicle/hideVehicleTypeModal'
+            });
         },
         onAdd() {
             dispatch({
-                type: 'vehicle/addVehicleTypeLine',
-            })
+                type: 'vehicle/addVehicleTypeLine'
+            });
         },
         onSave(record) {
             if (record.uuid === undefined)
                 dispatch({
                     type: 'vehicle/insertVehicleType',
-                    payload: record,
-                })
+                    payload: record
+                });
             else
                 dispatch({
                     type: 'vehicle/updateVehicleType',
-                    payload: record,
-                })
+                    payload: record
+                });
         },
         onEdit(record) {
             record.editable = true;
             dispatch({
                 type: 'vehicle/queryVehicleTypeSuccess',
-                payload: record,
-            })
+                payload: record
+            });
         },
         onCancelEdit(record) {
             record.editable = false;
             if (!record.uuid) {
                 dispatch({
-                    type: 'vehicle/queryVehicleType',
-                })
+                    type: 'vehicle/queryVehicleType'
+                });
             }
             else {
                 dispatch({
                     type: 'vehicle/queryVehicleTypeSuccess',
-                    payload: record,
-                })
-            }
+                    payload: record
+                });
+            };
         },
         onDelete(record) {
             dispatch({
                 type: 'vehicle/deleteVehicleType',
-                payload: record,
-            })
+                payload: record
+            });
         }
     };
 
@@ -144,8 +144,8 @@ function Vehicle({ location, dispatch, vehicle }) {
         onCancel() {
             dispatch({
                 type: 'vehicle/query',
-                payload: {},
-            })
+                payload: {}
+            });
         },
         handleSave(data) {
             currentItem.code = data.code;
@@ -159,13 +159,13 @@ function Vehicle({ location, dispatch, vehicle }) {
                 dispatch({
                     type: 'vehicle/update',
                     payload: currentItem,
-                })
+                });
             } else {
                 dispatch({
                     type: 'vehicle/insert',
                     payload: currentItem,
-                })
-            }
+                });
+            };
         }
     };
 
@@ -175,25 +175,25 @@ function Vehicle({ location, dispatch, vehicle }) {
             dispatch({
                 type: 'vehicle/query',
                 payload: {}
-            })
+            });
         },
         showEdit(item) {
             dispatch({
                 type: 'vehicle/showEdit',
-                payload: item,
-            })
+                payload: item
+            });
         },
         onOnline(item) {
             dispatch({
                 type: 'vehicle/online',
                 payload: item
-            })
+            });
         },
         onOffline(item) {
             dispatch({
                 type: 'vehicle/offline',
                 payload: item
-            })
+            });
         }
     };
 
@@ -209,14 +209,14 @@ function Vehicle({ location, dispatch, vehicle }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'vehicle/hideOnlineVehicleModal',
-            })
+                type: 'vehicle/hideOnlineVehicleModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -224,7 +224,7 @@ function Vehicle({ location, dispatch, vehicle }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
@@ -240,14 +240,14 @@ function Vehicle({ location, dispatch, vehicle }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
                 type: 'vehicle/hideOfflineVehicleModal',
-            })
+            });
         },
         refreshGrid() {
             dispatch({
@@ -255,11 +255,11 @@ function Vehicle({ location, dispatch, vehicle }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
-    const VehicleTypeModalGen = () => <VehicleTypeModal {...vehicleTypeModaProps} />
+    const VehicleTypeModalGen = () => <VehicleTypeModal {...vehicleTypeModaProps} />;
 
     return (
         <div className="content-inner">
@@ -285,17 +285,17 @@ function Vehicle({ location, dispatch, vehicle }) {
                 })()
             }
         </div>
-    )
-}
+    );
+};
 
 Vehicle.propType = {
-    vehicle: PropTypes.object,
-}
+    vehicle: PropTypes.object
+};
 
 function mapStateToProps({ vehicle }) {
     return {
-        vehicle,
+        vehicle
     };
-}
+};
 
 export default connect(mapStateToProps)(Vehicle);

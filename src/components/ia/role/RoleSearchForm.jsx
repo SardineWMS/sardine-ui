@@ -13,21 +13,21 @@ const RoleSearchForm = ({
         getFieldDecorator,
         validateFields,
         getFieldsValue,
-        resetFields,
-    },
+        resetFields
+    }
 }) => {
     function handleSearch(e) {
         e.preventDefault();
         onSearch(getFieldsValue());
-    }
+    };
 
     function handleReset(e) {
         e.preventDefault();
         resetFields();
-    }
+    };
     const formItemLayout = {
         labelCol: { span: 8 },
-        wrapperCol: { span: 12 },
+        wrapperCol: { span: 12 }
     };
     const children = [];
     children.push(<Col span={12} key={1}>

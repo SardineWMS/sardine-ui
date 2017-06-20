@@ -23,7 +23,7 @@ export default {
         batchDeleteProcessModal: false,
         deleteCustomerEntitys: [],
         batchRecoverProcessModal: false,
-        recoverCustomerEntitys: [],
+        recoverCustomerEntitys: []
     },
 
     subscriptions: {
@@ -36,9 +36,9 @@ export default {
                     dispatch({
                         type: 'query',
                         payload: location.query,
-                    })
-                }
-            })
+                    });
+                };
+            });
         }
     },
     effects: {
@@ -47,7 +47,7 @@ export default {
         }, {
             call, put
         }) {
-            const {data} = yield call(queryCustomer, parse(payload));
+            const { data } = yield call(queryCustomer, parse(payload));
 
             if (data.status == "200") {
                 let customerList = data.obj.records;
@@ -65,7 +65,7 @@ export default {
                         }
                     }
                 });
-            }
+            };
         },
 
         *create({
@@ -73,102 +73,102 @@ export default {
         }, {
             call, put
         }) {
-            let {data} = yield call(create, parse(payload));
+            let { data } = yield call(create, parse(payload));
             if (data.status == "200") {
-               let getData = yield call(get, {customerUuid: data.obj});
-               if (getData.data.status == "200") {
-                  yield put({
-                       type: 'onViewItem',
-                       payload: {
-                         currentItem: getData.data.obj
-                       }
-                   });
-               }
-            }
+                let getData = yield call(get, { customerUuid: data.obj });
+                if (getData.data.status == "200") {
+                    yield put({
+                        type: 'onViewItem',
+                        payload: {
+                            currentItem: getData.data.obj
+                        }
+                    });
+                };
+            };
         },
 
-        *remove({payload}, {call, put}) {
+        *remove({ payload }, { call, put }) {
             yield call(remove, {
                 uuid: payload.uuid,
                 version: payload.version,
-                token: payload.token,
-            })
+                token: payload.token
+            });
             yield put({
                 type: 'get',
-                payload: payload,
-            })
+                payload: payload
+            });
             yield put({
-                type: 'refreshGrid',
-            })
+                type: 'refreshGrid'
+            });
         },
 
-        *recover({payload}, {call, put}) {
+        *recover({ payload }, { call, put }) {
             yield call(recover, {
                 uuid: payload.uuid,
                 version: payload.version,
-                token: payload.token,
-            })
+                token: payload.token
+            });
             yield put({
                 type: 'get',
-                payload: payload,
-            })
+                payload: payload
+            });
             yield put({
-                type: 'refreshGrid',
-            })
+                type: 'refreshGrid'
+            });
         },
 
-        *update({payload}, {call, put}) {
+        *update({ payload }, { call, put }) {
             const customer = payload;
-            let {data} = yield call(updateCustomer, payload);
+            let { data } = yield call(updateCustomer, payload);
             if (data.status == "200") {
-               let getData = yield call(get, {customerUuid: payload.data.uuid});
-               if (getData.data.status == "200") {
-                  yield put({
-                       type: 'onViewItem',
-                       payload: {
-                         currentItem: getData.data.obj
-                       }
-                   });
-               }
-            }
+                let getData = yield call(get, { customerUuid: payload.data.uuid });
+                if (getData.data.status == "200") {
+                    yield put({
+                        type: 'onViewItem',
+                        payload: {
+                            currentItem: getData.data.obj
+                        }
+                    });
+                };
+            };
         },
 
-        *gridRemove({payload}, {call, put}) {
+        *gridRemove({ payload }, { call, put }) {
             yield call(remove, {
                 uuid: payload.uuid,
                 version: payload.version,
-                token: payload.token,
-            })
+                token: payload.token
+            });
             yield put({
                 type: 'query',
                 payload: {},
-            })
+            });
         },
 
-        *gridRecover({payload}, {call, put}) {
+        *gridRecover({ payload }, { call, put }) {
             yield call(recover, {
                 uuid: payload.uuid,
                 version: payload.version,
-                token: payload.token,
-            })
+                token: payload.token
+            });
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         },
 
-        *get({payload}, {call, put}) {
+        *get({ payload }, { call, put }) {
             const customer = yield call(get, {
-                customerUuid: payload.uuid,
+                customerUuid: payload.uuid
             });
             if (customer) {
                 yield put({
                     type: 'onViewItem',
                     payload: {
-                        currentItem: customer.data.obj,
+                        currentItem: customer.data.obj
                     }
-                })
-            }
+                });
+            };
         },
     },
     reducers: {
@@ -176,46 +176,46 @@ export default {
             return {
                 ...state,
                 ...action.payload, showViewPage: false, showEditPage: false, showCreatePage: false
-            }
+            };
         },
         createSuccess(state, action) {
-            return { ...state, showCreatePage: true, }
+            return { ...state, showCreatePage: true };
         },
         cancelSuccess(state, action) {
-            return { ...state, showCreatePage: false, showViewPage: false, showEditPage: false, ...action.payload }
+            return { ...state, showCreatePage: false, showViewPage: false, showEditPage: false, ...action.payload };
         },
         onViewItem(state, action) {
-            return { ...state, ...action.payload, showViewPage: true, showCreatePage: false, showEditPage: false }
+            return { ...state, ...action.payload, showViewPage: true, showCreatePage: false, showEditPage: false };
         },
         backSuccess(state, action) {
-            return { ...state, showViewPage: false, ...action.payload }
+            return { ...state, showViewPage: false, ...action.payload };
         },
         gridEditSuccess(state, action) {
-            return { ...state, showEditPage: true, showViewPage: false, ...action.payload }
+            return { ...state, showEditPage: true, showViewPage: false, ...action.payload };
         },
         itemEditSuccess(state, action) {
-            return { ...state, showEditPage: true, showViewPage: true, ...action.payload }
+            return { ...state, showEditPage: true, showViewPage: true, ...action.payload };
         },
         cancelShoWItemSuccess(state, action) {
-            return { ...state, showEditPage: false, ...action.payload }
+            return { ...state, showEditPage: false, ...action.payload };
         },
         toggle(state, action) {
-            return { ...state, ...action.payload }
+            return { ...state, ...action.payload };
         },
         batchDeleteCustomer(state, action) {
-            return { ...state, ...action.payload, batchDeleteProcessModal: true }
+            return { ...state, ...action.payload, batchDeleteProcessModal: true };
         },
         hideDeleteCustomerModal(state, action) {
-            return { ...state, batchDeleteProcessModal: false }
+            return { ...state, batchDeleteProcessModal: false };
         },
         batchRecoverCustomer(state, action) {
-            return { ...state, ...action.payload, batchRecoverProcessModal: true }
+            return { ...state, ...action.payload, batchRecoverProcessModal: true };
         },
         hideRecoverCustomerModal(state, action) {
-            return { ...state, batchRecoverProcessModal: false }
+            return { ...state, batchRecoverProcessModal: false };
         },
         refreshGridData(state, action) {
-            return { ...state, ...action.payload }
+            return { ...state, ...action.payload };
         }
     },
 

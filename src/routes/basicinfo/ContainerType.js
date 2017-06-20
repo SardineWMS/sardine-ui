@@ -25,18 +25,17 @@ function ContainerType({location,dispatch,containerType}){
     modalType: modalType,
     visible: modalVisible,
     onOk(data) {
-      console.log(data),
       dispatch({
         type: `containerType/${modalType}`,
-        payload: data,
-      })
+        payload: data
+      });
     },
     onCancel() {
       dispatch({
-        type: 'containerType/hideModal',
-      })
+        type: 'containerType/hideModal'
+      });
     },
-  }
+  };
 
 
   const containerTypeSearchGridProps={
@@ -50,8 +49,8 @@ function ContainerType({location,dispatch,containerType}){
         query:{
           page:page.current,
           pageSize:page.pageSize
-        },
-      }))
+        }
+      }));
     },
 
    onCreate(){
@@ -60,8 +59,8 @@ function ContainerType({location,dispatch,containerType}){
         payload: {
           modalType: 'create',
           item:{}
-        },
-      })
+        }
+      });
     },
 
   onViewItem(test){
@@ -71,13 +70,13 @@ function ContainerType({location,dispatch,containerType}){
           uuid:test.uuid,
           modalType:'view'
         }
-    })
+    });
   },
 
     onDeleteItem(item) {
       dispatch({
         type: 'containerType/remove',
-        payload: item,
+        payload: item
       });
     },
 
@@ -88,9 +87,9 @@ function ContainerType({location,dispatch,containerType}){
           uuid:test.uuid,
           modalType:'edit'
         }
-    })
+    });
   },
-  }
+  };
 
   const containerTypeSearchFormProps={
     token,
@@ -98,9 +97,9 @@ function ContainerType({location,dispatch,containerType}){
       dispatch({
         type:'containerType/query',  //根据这个路径 找modes的effects中对应的方法
         payload:fieldsValue
-      })
+      });
     }
-  }
+  };
 
   function refreshWidget(){
     return (
@@ -110,26 +109,26 @@ function ContainerType({location,dispatch,containerType}){
         <ContainerTypeModal {...containerTypeModalProps}/>
       </div>
       );
-  }
+  };
 
   return (
       <div className="content-inner">
       { refreshWidget() } 
       </div>
-  )
+  );
 
-}
+};
 
 ContainerType.propTypes={
   containerType:PropTypes.object,
   location : PropTypes.object,
   dispatch : PropTypes.func,
   showCreate : PropTypes.bool,
-  showView : PropTypes.bool,
-}
+  showView : PropTypes.bool
+};
 
 function mapStateToProps({containerType}){
   return {containerType};
-}
+};
 export default connect(mapStateToProps)(ContainerType);
 

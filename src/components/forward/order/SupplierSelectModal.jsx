@@ -18,28 +18,28 @@ const SupplierSelectModal = ({
         getFieldsValue,
     },
     suppliers,
-    supplierPagination,
+    supplierPagination
 }) => {
 
     const modalOpts = {
         visible,
         onOk: onOk,
         onCancel,
-        width: 500,
-    }
+        width: 500
+    };
 
     const supplierSelectGridProps = {
         dataSource: suppliers,
         pagination: supplierPagination,
-        onSelect: onOk,
-    }
+        onSelect: onOk
+    };
     return (
         <Modal {...modalOpts}>
             <BaseCard title="选择供应商" single={true}>
                 <BaseForm items={<SupplierSelectGrid {...supplierSelectGridProps} />} />
             </BaseCard>
         </Modal>
-    )
-}
+    );
+};
 
 export default Form.create()(SupplierSelectModal);

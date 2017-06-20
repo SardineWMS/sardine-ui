@@ -23,21 +23,21 @@ const DecIncCreateForm = ({
     onSelectType,//选择单据类型之后，在查询仓位
     onSelectWrh,
     totalCaseQtyStr,
-    totalAmount,
+    totalAmount
 }) => {
     function handleCreate() {
         validateFields((errors) => {
             if (errors) {
                 return;
-            }
+            };
             let data = {};
             data = {
                 ...getFieldsValue(),
-                ...item,
-            }
+                ...item
+            };
             handleSave(data);
         });
-    }
+    };
 
 
     const children = [];
@@ -54,8 +54,8 @@ const DecIncCreateForm = ({
     if (wrhs != null) {
         for (var wrh of wrhs) {
             options.push(<Option value={wrh.uuid}>{wrh.name + "[" + wrh.code + "]"}</Option>)
-        }
-    }
+        };
+    };
 
     children.push(
         <BaseFormItem label={"仓位："}>
@@ -79,15 +79,15 @@ const DecIncCreateForm = ({
     const totalCaseQtyStrForm = [];
     totalCaseQtyStrForm.push(<BaseFormItem label={"总件数："}>
         <label>{item.totalCaseQtyStr == null ? 0 : item.totalCaseQtyStr}</label>
-    </BaseFormItem>)
+    </BaseFormItem>);
 
     totalCaseQtyStrForm.push(<BaseFormItem label={"总金额："}>
         <label>{item.totalAmount == null ? 0 : item.totalAmount}</label>
-    </BaseFormItem>)
+    </BaseFormItem>);
 
     const toolbar = [];
     toolbar.push(<Button onClick={() => onCancel(item)} key={Guid()} > 取消</Button>);
-    toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("receiveBill:create")}>保存</Button>)
+    toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("receiveBill:create")}>保存</Button>);
 
     return (
         <div>
@@ -97,8 +97,8 @@ const DecIncCreateForm = ({
                 <BaseForm items={totalCaseQtyStrForm} />
             </BaseCard>
         </div>
-    )
+    );
 
-}
+};
 
 export default Form.create()(DecIncCreateForm);

@@ -24,13 +24,13 @@ const ReceiveBillAddForm = ({
     onEditItem,
     wrhMsg,
     supplierMsg,
-    onEnterOrderBill,
+    onEnterOrderBill
 }) => {
     function handleCreate() {
         validateFields((errors) => {
             if (errors) {
                 return;
-            }
+            };
             let data = {};
             if (item.type == "订单") {
                 data = {
@@ -38,14 +38,14 @@ const ReceiveBillAddForm = ({
                     supplier: {
                         uuid: item.supplier.uuid,
                         code: item.supplier.code,
-                        name: item.supplier.name,
+                        name: item.supplier.name
                     },
                     wrh: {
                         uuid: item.wrh.uuid,
                         code: item.wrh.code,
-                        name: item.wrh.name,
+                        name: item.wrh.name
                     }
-                }
+                };
             } else {
                 data = {
                     ...getFieldsValue(),
@@ -53,31 +53,30 @@ const ReceiveBillAddForm = ({
                     supplier: {
                         uuid: item.supplier.uuid,
                         code: item.supplier.code,
-                        name: item.supplier.name,
+                        name: item.supplier.name
                     },
                     wrh: {
                         uuid: item.wrh.uuid,
                         code: item.wrh.code,
-                        name: item.wrh.name,
+                        name: item.wrh.name
                     }
                 };
-            }
+            };
             handleSave(data);
         });
-    }
+    };
 
     function handleEnterPress() {
         const data = {
-            orderBillNo: getFieldsValue().orderBillNumber,
-
-        }
+            orderBillNo: getFieldsValue().orderBillNumber
+        };
         onEnterOrderBill(data);
-    }
+    };
 
     const orderBillItemGridProps = {
         dataSource: orderItems,
-        onEditItem: onEditItem,
-    }
+        onEditItem: onEditItem
+    };
 
     const children = [];
     children.push(<BaseFormItem label={"入库订单："}>
@@ -107,15 +106,15 @@ const ReceiveBillAddForm = ({
     const totalCaseQtyStrForm = [];
     totalCaseQtyStrForm.push(<BaseFormItem label={"总件数："}>
         <label>{item.caseQtyStr == null ? 0 : item.caseQtyStr}</label>
-    </BaseFormItem>)
+    </BaseFormItem>);
 
     totalCaseQtyStrForm.push(<BaseFormItem label={"总金额："}>
         <label>{item.totalAmount == null ? 0 : item.totalAmount}</label>
-    </BaseFormItem>)
+    </BaseFormItem>);
 
     const toolbar = [];
     toolbar.push(<Button onClick={() => onCancel(item)} key={Guid()} > 取消</Button>);
-    toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("receiveBill:create")}>保存</Button>)
+    toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("receiveBill:create")}>保存</Button>);
 
     return (
         <div>
@@ -125,8 +124,8 @@ const ReceiveBillAddForm = ({
                 <BaseForm items={totalCaseQtyStrForm} />
             </BaseCard>
         </div>
-    )
+    );
 
-}
+};
 
 export default Form.create()(ReceiveBillAddForm);

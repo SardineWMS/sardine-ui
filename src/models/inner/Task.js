@@ -1,7 +1,9 @@
 import { parse } from 'qs';
-import { queryTask, queryStocks, saveArticleMoveRule, saveAndMoveArticleMoveRule, saveContainerMoveRule,
-         saveAndMoveContainerMoveRule, articleMove, containerMove} from '../../services/Inner/Task';
-import {getByBarcode} from '../../services/basicinfo/Container';
+import {
+    queryTask, queryStocks, saveArticleMoveRule, saveAndMoveArticleMoveRule, saveContainerMoveRule,
+    saveAndMoveContainerMoveRule, articleMove, containerMove
+} from '../../services/Inner/Task';
+import { getByBarcode } from '../../services/basicinfo/Container';
 
 export default {
     namespace: 'task',
@@ -22,19 +24,19 @@ export default {
             size: 'default'
         },
         articleMoveModalVisable: false,
-        containerMoveModalVisable: false,
+        containerMoveModalVisable: false
     },
 
     subscriptions: {
-        setup({dispatch, history}) {
+        setup({ dispatch, history }) {
             history.listen(location => {
                 if (location.pathname === '/inner/task') {
                     dispatch({
                         type: 'query',
                         payload: location.query,
-                    })
-                }
-            })
+                    });
+                };
+            });
         }
     },
 
@@ -46,24 +48,24 @@ export default {
         }) {
             yield put({
                 type: 'showLoading',
-            })
-            const {data} = yield call(queryTask, parse(payload));
+            });
+            const { data } = yield call(queryTask, parse(payload));
             if (data.status == "200") {
                 yield put({
                     type: 'querySuccess',
                     payload: {
                         list: data.obj.records,
                         pagination: {
-                          showSizeChanger: true,
-                          showQuickJumper: true,
-                          showTotal: total => `共 ${total} 条`,
-                          current: data.obj.page,
-                          total: data.obj.recordCount,
-                          size: 'default'
-                        },
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total} 条`,
+                            current: data.obj.page,
+                            total: data.obj.recordCount,
+                            size: 'default'
+                        }
                     }
-                })
-            }
+                });
+            };
         },
         *queryStocks({
             payload
@@ -73,15 +75,15 @@ export default {
             yield put({
                 type: 'showLoading',
             })
-            const {data} = yield call(queryStocks, parse(payload));
+            const { data } = yield call(queryStocks, parse(payload));
             if (data.status == "200") {
                 yield put({
                     type: 'queryStocksSuccess',
                     payload: {
                         stockInfos: data.obj
                     }
-                })
-            }
+                });
+            };
         },
         *getContainer({
             payload
@@ -90,16 +92,16 @@ export default {
         }) {
             yield put({
                 type: 'showLoading',
-            })
-            const {data} = yield call(getContainer, parse(payload));
+            });
+            const { data } = yield call(getContainer, parse(payload));
             if (data.status == "200") {
                 yield put({
                     type: 'getContainerSuccess',
                     payload: {
                         container: data.obj
                     }
-                })
-            }
+                });
+            };
         },
         *saveArticleMoveRule({
             payload
@@ -107,28 +109,28 @@ export default {
             call, put
         }) {
             yield put({
-                type: 'showLoading',
-            })
-            const {data} = yield call(saveArticleMoveRule, parse(payload));
+                type: 'showLoading'
+            });
+            const { data } = yield call(saveArticleMoveRule, parse(payload));
             if (data.status == "200") {
-                const {data} = yield call(queryTask, parse(payload));
+                const { data } = yield call(queryTask, parse(payload));
                 if (data.status == "200") {
                     yield put({
                         type: 'querySuccess',
                         payload: {
                             list: data.obj.records,
                             pagination: {
-                              showSizeChanger: true,
-                              showQuickJumper: true,
-                              showTotal: total => `共 ${total} 条`,
-                              current: data.obj.page,
-                              total: data.obj.recordCount,
-                              size: 'default'
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
                             }
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
         *saveAndMoveArticleMoveRule({
             payload
@@ -137,27 +139,27 @@ export default {
         }) {
             yield put({
                 type: 'showLoading',
-            })
-            const {data} = yield call(saveAndMoveArticleMoveRule, parse(payload));
+            });
+            const { data } = yield call(saveAndMoveArticleMoveRule, parse(payload));
             if (data.status == "200") {
-                const {data} = yield call(queryTask, parse(payload));
+                const { data } = yield call(queryTask, parse(payload));
                 if (data.status == "200") {
                     yield put({
                         type: 'querySuccess',
                         payload: {
                             list: data.obj.records,
                             pagination: {
-                              showSizeChanger: true,
-                              showQuickJumper: true,
-                              showTotal: total => `共 ${total} 条`,
-                              current: data.obj.page,
-                              total: data.obj.recordCount,
-                              size: 'default'
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
                             }
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
         *saveContainerMoveRule({
             payload
@@ -166,27 +168,27 @@ export default {
         }) {
             yield put({
                 type: 'showLoading',
-            })
-            const {data} = yield call(saveContainerMoveRule, parse(payload));
+            });
+            const { data } = yield call(saveContainerMoveRule, parse(payload));
             if (data.status == "200") {
-                const {data} = yield call(queryTask, parse(payload));
+                const { data } = yield call(queryTask, parse(payload));
                 if (data.status == "200") {
                     yield put({
                         type: 'querySuccess',
                         payload: {
                             list: data.obj.records,
                             pagination: {
-                              showSizeChanger: true,
-                              showQuickJumper: true,
-                              showTotal: total => `共 ${total} 条`,
-                              current: data.obj.page,
-                              total: data.obj.recordCount,
-                              size: 'default'
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
                             }
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
         *saveAndMoveContainerMoveRule({
             payload
@@ -196,26 +198,26 @@ export default {
             yield put({
                 type: 'showLoading',
             })
-            const {data} = yield call(saveAndMoveContainerMoveRule, parse(payload));
+            const { data } = yield call(saveAndMoveContainerMoveRule, parse(payload));
             if (data.status == "200") {
-                const {data} = yield call(queryTask, parse(payload));
+                const { data } = yield call(queryTask, parse(payload));
                 if (data.status == "200") {
                     yield put({
                         type: 'querySuccess',
                         payload: {
                             list: data.obj.records,
                             pagination: {
-                              showSizeChanger: true,
-                              showQuickJumper: true,
-                              showTotal: total => `共 ${total} 条`,
-                              current: data.obj.page,
-                              total: data.obj.recordCount,
-                              size: 'default'
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
                             }
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
         *articleMove({
             payload
@@ -224,27 +226,27 @@ export default {
         }) {
             yield put({
                 type: 'showLoading',
-            })
-            const {data} = yield call(articleMove, parse(payload));
+            });
+            const { data } = yield call(articleMove, parse(payload));
             if (data.status == "200") {
-                const {data} = yield call(queryTask, parse(payload));
+                const { data } = yield call(queryTask, parse(payload));
                 if (data.status == "200") {
                     yield put({
                         type: 'querySuccess',
                         payload: {
                             list: data.obj.records,
                             pagination: {
-                              showSizeChanger: true,
-                              showQuickJumper: true,
-                              showTotal: total => `共 ${total} 条`,
-                              current: data.obj.page,
-                              total: data.obj.recordCount,
-                              size: 'default'
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
                             }
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
         *containerMove({
             payload
@@ -254,60 +256,61 @@ export default {
             yield put({
                 type: 'showLoading',
             })
-            const {data} = yield call(containerMove, parse(payload));
+            const { data } = yield call(containerMove, parse(payload));
             if (data.status == "200") {
-                const {data} = yield call(queryTask, parse(payload));
+                const { data } = yield call(queryTask, parse(payload));
                 if (data.status == "200") {
                     yield put({
                         type: 'querySuccess',
                         payload: {
                             list: data.obj.records,
                             pagination: {
-                              showSizeChanger: true,
-                              showQuickJumper: true,
-                              showTotal: total => `共 ${total} 条`,
-                              current: data.obj.page,
-                              total: data.obj.recordCount,
-                              size: 'default'
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
                             }
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
     },
 
     reducers: {
         showLoading(state) {
-            return { ...state, loading: false }
+            return { ...state, loading: false };
         },
         querySuccess(state, action) {
-            return { ...state, ...action.payload, loading: false, articleMoveModalVisable: false, containerMoveModalVisable: false }
+            return { ...state, ...action.payload, loading: false, articleMoveModalVisable: false, containerMoveModalVisable: false };
         },
         queryStocksSuccess(state, action) {
-            return { ...state, ...action.payload, loading: false }
+            return { ...state, ...action.payload, loading: false };
         },
 
         showArticleMoveModal(state, action) {
-            return { ...state, 
-                     payload: {
-                        currentArticleItem : action.payload.currentArticleItem ? action.payload.currentArticleItem : {}
-                     }, 
-                     articleMoveModalVisable: true, 
-                     containerMoveModalVisable: false
-                   }
+            return {
+                ...state,
+                payload: {
+                    currentArticleItem: action.payload.currentArticleItem ? action.payload.currentArticleItem : {}
+                },
+                articleMoveModalVisable: true,
+                containerMoveModalVisable: false
+            };
         },
 
         showContainerMoveModal(state, action) {
-            return { ...state, ...action.payload, containerMoveModalVisable: true, articleMoveModalVisable: false }
+            return { ...state, ...action.payload, containerMoveModalVisable: true, articleMoveModalVisable: false };
         },
 
         hideMoveModal(state, action) {
-            return { ...state, ...action.payload, articleMoveModalVisable: false, containerMoveModalVisable: false }
+            return { ...state, ...action.payload, articleMoveModalVisable: false, containerMoveModalVisable: false };
         },
 
         getContainerSuccess(state, action) {
-            return { ...state, ...action.payload, loading: false }
+            return { ...state, ...action.payload, loading: false };
         }
     }
 }

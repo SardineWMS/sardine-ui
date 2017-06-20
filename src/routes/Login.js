@@ -35,11 +35,11 @@ const login = ({
   function handleOk() {
     validateFieldsAndScroll((errors, values) => {
       if (errors) {
-        return
-      }
-      onOk(values)
-    })
-  }
+        return;
+      };
+      onOk(values);
+    });
+  };
 
   // document.onkeyup = e => e.keyCode === 13 && handleOk()
 
@@ -77,14 +77,14 @@ const login = ({
         </Row>
       </form>
     </div>
-  )
-}
+  );
+};
 
 login.propTypes = {
   form: PropTypes.object,
   loginButtonLoading: PropTypes.bool,
   onOk: PropTypes.func,
   onRegister: PropTypes.func
-}
+};
 
 export default Form.create()(login);

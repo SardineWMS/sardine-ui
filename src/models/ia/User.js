@@ -41,7 +41,7 @@ export default {
 		currentSelected: [],
 		showViewResourceModal: false,
 		currentSelectedRoles: [],
-		allRoles: [],//当前组织下所有角色，用于用户搜索时角色下拉框数据源.
+		allRoles: []//当前组织下所有角色，用于用户搜索时角色下拉框数据源.
 	},
 
 	subscriptions: {
@@ -54,9 +54,9 @@ export default {
 					dispatch({
 						type: 'query',
 						payload: location.query,
-					})
-				}
-			})
+					});
+				};
+			});
 		},
 	},
 
@@ -86,31 +86,31 @@ export default {
 							showSizeChanger: true,
 							showQuickJumper: true,
 							showTotal: total => `共 ${total} 条`,
-							pageSize: data.obj.pageSize,
+							pageSize: data.obj.pageSize
 						},
-						allRoles: allRoles.data.obj,
-					},
-				})
-			}
+						allRoles: allRoles.data.obj
+					}
+				});
+			};
 		},
 
 		*create({ payload }, { call, put }) {
 			yield put({
 				type: 'showLoading'
-			})
+			});
 			const { data } = yield call(createUser, parse(payload));
 			if (data.status != 200) {
 				const message = data.obj;
 				const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
 				alert(data.message + "：" + simpleMessage);
 				return;
-			}
+			};
 			if (data) {
 				yield put({
 					type: 'query',
-					payload: {},
-				})
-			}
+					payload: {}
+				});
+			};
 		},
 
 		*update({ payload }, { call, put }) {
@@ -121,8 +121,8 @@ export default {
 			// })
 			yield put({
 				type: 'query',
-				payload: {},
-			})
+				payload: {}
+			});
 		},
 
 		*delete({ payload }, { call, put }) {
@@ -132,36 +132,36 @@ export default {
 			});
 			yield put({
 				type: 'query',
-				payload: {},
-			})
+				payload: {}
+			});
 		},
 
 		*gridOnline({ payload }, { call, put }) {
 			yield call(onlineUser, {
 				uuid: payload.uuid,
-				version: payload.version,
+				version: payload.version
 			});
 			yield put({
 				type: 'query',
-				payload: {},
-			})
+				payload: {}
+			});
 		},
 
 		*gridOffline({ payload }, { call, put }) {
 			yield call(offlineUser, {
 				uuid: payload.uuid,
-				version: payload.version,
+				version: payload.version
 			});
 			yield put({
 				type: 'query',
-				payload: {},
-			})
+				payload: {}
+			});
 		},
 
 		*online({ payload }, { call, put }) {
 			yield call(onlineUser, {
 				uuid: payload.uuid,
-				version: payload.version,
+				version: payload.version
 			});
 			// yield put({
 			// 	type: 'get',
@@ -169,8 +169,8 @@ export default {
 			// })
 			yield put({
 				type: 'query',
-				payload: {},
-			})
+				payload: {}
+			});
 		},
 
 		// *get({ payload }, { call, put }) {
@@ -192,7 +192,7 @@ export default {
 		*offline({ payload }, { call, put }) {
 			yield call(offlineUser, {
 				uuid: payload.uuid,
-				version: payload.version,
+				version: payload.version
 			});
 			// yield put({
 			// 	type: 'get',
@@ -200,8 +200,8 @@ export default {
 			// })
 			yield put({
 				type: 'query',
-				payload: {},
-			})
+				payload: {}
+			});
 		},
 
 		*assignRole({ payload }, {
@@ -217,18 +217,18 @@ export default {
 					role.label = role.name;
 					if (role.owned == true) {
 						currentSelected.push(role.value);
-					}
-				}
-			}
+					};
+				};
+			};
 
 			yield put({
 				type: 'showRoleAssignment',
 				payload: {
 					roleList: roleList,
 					currentUserUuid: payload,
-					currentSelectedRoles: currentSelected,
+					currentSelectedRoles: currentSelected
 				}
-			})
+			});
 		},
 
 		*assignResource({ payload }, {
@@ -239,18 +239,18 @@ export default {
 				resource.label = resource.name;
 				if (resource.owned && resource.children.length <= 0) {
 					currentSelected.push(resource.value);
-				}
+				};
 				if (resource.children.length > 0) {
 					for (let lowerResource of resource.children) {
 						resource.value = resource.uuid;
 						resource.label = resource.name;
 						if (lowerResource.owned && lowerResource.children.length <= 0) {
 							currentSelected.push(lowerResource.value);
-						}
+						};
 						buildResourceTree(lowerResource, currentSelected);
-					}
-				}
-			}
+					};
+				};
+			};
 
 			const { data } = yield call(queryAllResourceByUser, parse(payload));
 			let resourceListTree = [];
@@ -262,18 +262,18 @@ export default {
 					resource.label = resource.name;
 					if (resource.owned && resource.children.length <= 0) {
 						currentSelected.push(resource.value);
-					}
+					};
 					buildResourceTree(resource, currentSelected);
-				}
-			}
+				};
+			};
 			yield put({
 				type: 'showResourceAssignment',
 				payload: {
 					resourceListTree: resourceListTree,
 					currentUserUuid: payload,
-					currentSelected: currentSelected,
+					currentSelected: currentSelected
 				}
-			})
+			});
 		},
 
 		*saveResource({ payload }, {
@@ -282,11 +282,11 @@ export default {
 			yield call(saveUserResource, parse(payload));
 			yield put({
 				type: 'hideResourceAssignment',
-			})
+			});
 			yield put({
 				type: 'query',
 				payload: {}
-			})
+			});
 		},
 
 		*saveRole({ payload }, {
@@ -295,11 +295,11 @@ export default {
 			yield call(saveUserRole, parse(payload));
 			yield put({
 				type: 'hideRoleAssignment',
-			})
+			});
 			yield put({
 				type: 'query',
 				payload: {}
-			})
+			});
 		},
 		*viewResource({ payload }, {
 			call, put
@@ -310,8 +310,7 @@ export default {
 				resource.disabled = true;
 				if (resource.owned && resource.children.length <= 0) {
 					currentSelected.push(resource.value);
-
-				}
+				};
 
 				if (resource.children.length > 0) {
 					for (let lowerResource of resource.children) {
@@ -322,12 +321,11 @@ export default {
 							removeByValue(resourceListTree, lowerResource);
 						} else if (lowerResource.children.length <= 0) {
 							currentSelected.push(lowerResource.value);
-
-						}
+						};
 						buildResourceTree(lowerResource, currentSelected, resourceListTree);
-					}
-				}
-			}
+					};
+				};
+			};
 			const { data } = yield call(queryAllResourceByUser, parse(payload));
 			let resourceListTree = [];
 			let currentSelected = [];
@@ -339,18 +337,18 @@ export default {
 					resource.disabled = true;
 					if (resource.owned && resource.children.length <= 0) {
 						currentSelected.push(resource.value);
-					}
+					};
 					buildResourceTree(resource, currentSelected, resourceListTree);
-				}
-			}
+				};
+			};
 
 			yield put({
 				type: 'showViewResource',
 				payload: {
 					viewResourceListTree: resourceListTree,
-					currentSelected: currentSelected,
+					currentSelected: currentSelected
 				}
-			})
+			});
 		}
 	},
 
@@ -361,7 +359,7 @@ export default {
 			return {
 				...state,
 				loading: true
-			}
+			};
 		},
 
 		querySuccess(state, action) {
@@ -371,8 +369,8 @@ export default {
 				loading: false,
 				showCreate: false,
 				showEdit: false,
-				showView: false,
-			}
+				showView: false
+			};
 		},
 
 		showCreatePage(state) {
@@ -388,15 +386,15 @@ export default {
 				...state,
 				...action.payload,
 				showCreate: false,
-				showView: true,
-			}
+				showView: true
+			};
 		},
 
 		toggle(state, action) {
 			return {
 				...state,
-				...action.payload,
-			}
+				...action.payload
+			};
 		},
 
 		showEditPage(state, action) {
@@ -404,8 +402,8 @@ export default {
 				...state,
 				...action.payload,
 				showCreate: true,
-				showView: false,
-			}
+				showView: false
+			};
 		},
 
 		backSearch(state, action) {
@@ -414,33 +412,33 @@ export default {
 				...action.payload,
 				showCreate: false,
 				showView: false,
-				loading: false,
-			}
+				loading: false
+			};
 		},
 
 		batchDeleteUser(state, action) {
-			return { ...state, ...action.payload, batchDeleteProcessModal: true }
+			return { ...state, ...action.payload, batchDeleteProcessModal: true };
 		},
 
 		hideDeleteUserModal(state, action) {
-			return { ...state, batchDeleteProcessModal: false }
+			return { ...state, batchDeleteProcessModal: false };
 		},
 
 		batchOnlineUser(state, action) {
-			return { ...state, ...action.payload, batchOnlineProcessModal: true }
+			return { ...state, ...action.payload, batchOnlineProcessModal: true };
 		},
 
 		hideOnlineUserModal(state, action) {
-			return { ...state, batchOnlineProcessModal: false }
+			return { ...state, batchOnlineProcessModal: false };
 		},
 
 
 		batchOfflineUser(state, action) {
-			return { ...state, ...action.payload, batchOfflineProcessModal: true }
+			return { ...state, ...action.payload, batchOfflineProcessModal: true };
 		},
 
 		hideOfflineUserModal(state, action) {
-			return { ...state, batchOfflineProcessModal: false }
+			return { ...state, batchOfflineProcessModal: false };
 		},
 
 		showRoleAssignment(state, action) {
@@ -452,7 +450,7 @@ export default {
 		},
 
 		showResourceAssignment(state, action) {
-			return { ...state, ...action.payload, showResourceAssignmentModal: true }
+			return { ...state, ...action.payload, showResourceAssignmentModal: true };
 		},
 
 		hideResourceAssignment(state) {

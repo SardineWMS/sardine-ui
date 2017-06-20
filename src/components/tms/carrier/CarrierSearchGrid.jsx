@@ -8,8 +8,8 @@ class Carrier extends React.Component {
         this.state = {
             ...props,
             selectedRowKeys: [],
-            selectedRows: [],
-        }
+            selectedRows: []
+        };
         this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
         this.handleOnlineBatch = this.handleOnlineBatch.bind(this);
         this.handleOfflineBatch = this.handleOfflineBatch.bind(this);
@@ -18,7 +18,7 @@ class Carrier extends React.Component {
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: [],
+            selectedRows: []
         });
     };
     onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -32,7 +32,7 @@ class Carrier extends React.Component {
     };
     handleOfflineBatch() {
         this.state.onOfflineBatch(this.state.selectedRows);
-    }
+    };
 
 
     render() {
@@ -47,33 +47,33 @@ class Carrier extends React.Component {
         const columns = [{
             title: '代码',
             dataIndex: 'code',
-            key: 'code',
+            key: 'code'
         },
         {
             title: '名称',
             dataIndex: 'name',
-            key: 'name',
+            key: 'name'
         },
         {
             title: '状态',
             dataIndex: 'state',
             key: 'state',
-            render: text => convertState(text),
+            render: text => convertState(text)
         },
         {
             title: '联系人',
             dataIndex: 'contact',
-            key: 'contact',
+            key: 'contact'
         },
         {
             title: '联系电话',
             dataIndex: 'contactPhone',
-            key: 'contactPhone',
+            key: 'contactPhone'
         },
         {
             title: '地址',
             dataIndex: 'address',
-            key: 'address',
+            key: 'address'
         },
         {
             title: '操作',
@@ -81,12 +81,12 @@ class Carrier extends React.Component {
             render: (text, record) => (
                 <a onClick={() => this.state.onEdit(record)}>编辑</a>
             )
-        },
+        }
         ];
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            onChange: this.onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
         return (
@@ -116,7 +116,7 @@ class Carrier extends React.Component {
                 />
             </div>
         );
-    }
-}
+    };
+};
 
 export default Carrier;

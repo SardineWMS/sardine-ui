@@ -14,7 +14,7 @@ const CustomerView = ({ item = {},
     onBack,
     onRemove,
     onRecover,
-    showEdit,
+    showEdit
 }) => {
 
     const code = item.code;
@@ -23,11 +23,11 @@ const CustomerView = ({ item = {},
     if (item.state === "normal") {
         removeRight = false;
         recoverRight = true;
-    }
+    };
     if (item.state === "deleted") {
         removeRight = true;
         recoverRight = false;
-    }
+    };
 
     function convertType(text) {
         if (text == "shop")
@@ -71,7 +71,7 @@ const CustomerView = ({ item = {},
         <Button disabled={removeRight && (!PermissionUtil("customer:edit"))} >删除</Button>
     </Popconfirm>);
     toolbar.push(<Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)} key={Guid()}>
-        <Button disabled={recoverRight&&(!PermissionUtil("customer:edit"))}>恢复</Button>
+        <Button disabled={recoverRight && (!PermissionUtil("customer:edit"))}>恢复</Button>
     </Popconfirm>);
     toolbar.push(<Button onClick={() => onBack()} key={Guid()}>返回</Button>);
 
@@ -83,7 +83,7 @@ const CustomerView = ({ item = {},
                 <BaseForm items={stateFormItems} />
             </BaseCard>
             <RemarkCard remark={item.remark} />
-            </div>
-    )
+        </div>
+    );
 };
 export default CustomerView;

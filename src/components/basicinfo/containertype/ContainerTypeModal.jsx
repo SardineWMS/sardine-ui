@@ -14,32 +14,32 @@ const ContainerTypeModal = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue,
-  },
+    getFieldsValue
+  }
 }) => {
 
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
-        return
-      }
+        return;
+      };
       const data = {
         ...getFieldsValue(),
         uuid : item.uuid,
         version : item.version,
         token:localStorage.getItem("token"),
-      }
-      onOk(data)
-    })
-  }
+      };
+      onOk(data);
+    });
+  };
 
   const modalOpts = {
     title: '容器类型',
     visible,
     onOk: handleOk,
     onCancel,
-    wrapClassName: 'vertical-center-modal',
-  }
+    wrapClassName: 'vertical-center-modal'
+  };
 
   return (
     <Modal {...modalOpts}>
@@ -252,8 +252,8 @@ const ContainerTypeModal = ({
 
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
 ContainerTypeModal.propTypes = {
   visible: PropTypes.any,
@@ -261,7 +261,7 @@ ContainerTypeModal.propTypes = {
   item: PropTypes.object,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
-  showUpper : PropTypes.bool,
-}
+  showUpper : PropTypes.bool
+};
 
 export default Form.create()(ContainerTypeModal);

@@ -1,5 +1,5 @@
 import React from 'react';
-import {Row, Col } from 'antd';
+import { Row, Col } from 'antd';
 import panel from '../less/widget.css';
 
 export interface PanelProps {
@@ -11,7 +11,7 @@ export interface PanelProps {
 export default (props: PanelProps) => {
   const {
     bodyStyle,
-    title, ...others,
+    title, ...others
   } = props;
 
   let children = props.children;
@@ -21,12 +21,12 @@ export default (props: PanelProps) => {
     head = null;
   } else {
     head = (<div className={panel.panelheading}>
-                <div className={panel.paneltitle}>{title}</div>
+      <div className={panel.paneltitle}>{title}</div>
     </div>);
-  }
+  };
 
   return (
-    <div {...others} className={panel.panel+ " "+panel.paneldefault}>
+    <div {...others} className={panel.panel + " " + panel.paneldefault}>
       {head}
       <div className={panel.panelbody} style={bodyStyle}>{children}</div>
     </div>

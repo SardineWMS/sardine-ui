@@ -28,26 +28,26 @@ function DecIncCreateItem({
     suppliers,//商品供应商选择控件数据源
     refreshSupplier,
     currentItem,
-    getSupplier,
+    getSupplier
 }) {
     const columns = [
         {
             title: '行号',
             dataIndex: 'line',
             key: 'line',
-            width: 50,
+            width: 50
         }, {
             title: '货位',
             dataIndex: 'binCode',
             key: 'binCode',
             width: 100,
-            render: (text, record) => renderColumns(record, "binCode", text),
+            render: (text, record) => renderColumns(record, "binCode", text)
         }, {
             title: '容器',
             dataIndex: 'containerBarCode',
             key: 'containerBarCode',
             width: 100,
-            render: (text, record) => renderColumns(record, "containerBarCode", text),
+            render: (text, record) => renderColumns(record, "containerBarCode", text)
         }, {
             title: '商品代码',
             dataIndex: 'article.code',
@@ -65,30 +65,30 @@ function DecIncCreateItem({
             title: '商品名称',
             dataIndex: 'article.name',
             key: 'articleName',
-            width: 200,
+            width: 200
         }, {
             title: '规格',
             dataIndex: 'qpcStr',
             key: 'qpcStr',
             width: 100,
-            render: (text, record) => renderSelectColumns(record, "qpcStr", text),
+            render: (text, record) => renderSelectColumns(record, "qpcStr", text)
         }, {
             title: '供应商',
             dataIndex: 'supplier.uuid',
             key: 'supplierName',
             width: 100,
-            render: (text, record) => renderSelectColumns(record, "supplierName", text),
+            render: (text, record) => renderSelectColumns(record, "supplierName", text)
         }, {
             title: '生产日期',
             dataIndex: 'productionDate',
             key: 'productionDate',
             width: 150,
-            render: (text, record) => renderProDate(record, "productionDate", text),
+            render: (text, record) => renderProDate(record, "productionDate", text)
         }, {
             title: '库存数量',
             dataIndex: 'stockQty',
             key: 'stockQty',
-            width: 150,
+            width: 150
         }, {
             title: '单价',
             dataIndex: 'price',
@@ -110,18 +110,18 @@ function DecIncCreateItem({
             dataIndex: 'qty',
             key: 'qty',
             width: 150,
-            render: (text, record) => renderColumns(record, "qty", text),
+            render: (text, record) => renderColumns(record, "qty", text)
         }, {
             title: '损溢件数',
             dataIndex: 'caseQtyStr',
             key: 'caseQtyStr',
-            width: 150,
+            width: 150
         }, {
             title: '损溢原因',
             dataIndex: 'reason',
             key: 'reason',
             width: 150,
-            render: (text, record) => renderColumns(record, "reason", text),
+            render: (text, record) => renderColumns(record, "reason", text)
         }, {
             title: '操作',
             key: 'operation',
@@ -152,7 +152,7 @@ function DecIncCreateItem({
             autoFocus={false}
             value={record.article ? text : null}
         />);
-    }
+    };
 
 
     function renderSelectColumns(record, key, text) {
@@ -165,8 +165,8 @@ function DecIncCreateItem({
             if (record.article != null && record.qpcStrs != null) {
                 for (var qpcStr of record.qpcStrs) {
                     options.push(<Option key={qpcStr}>{qpcStr}</Option>)
-                }
-            }
+                };
+            };
 
         }
         else if (key == "supplierName") {
@@ -174,21 +174,21 @@ function DecIncCreateItem({
                 if (currentItem.type == "Inc") {
                     for (var supplier of record.suppliers) {
                         options.push(<Option key={supplier.supplierUuid}>{supplier.supplierName + "[" + supplier.supplierCode + "]"}</Option>)
-                    }
+                    };
                 } else {
                     for (var supplier of record.suppliers) {
                         options.push(<Option key={supplier.uuid}>{supplier.name + "[" + supplier.code + "]"}</Option>)
-                    }
-                }
-            }
-        }
+                    };
+                };
+            };
+        };
         return (<RowEditCellSelect
             editable={true}
             options={options}
             onChange={value => handleChange(record, value, key)}
             value={text}
-        />)
-    }
+        />);
+    };
 
     function handleChange(record, value, key) {
         if (key === "articleCode") {
@@ -196,29 +196,29 @@ function DecIncCreateItem({
                 return;
             record.article.code = value;
             getArticleInfo(record, dataSource);
-        }
+        };
         if (key === 'qpcStr') {
             record.qpcStr = value;
             if (currentItem.type == 'Dec') {
                 getSupplier(record, dataSource);
-            }
-        }
+            };
+        };
         if (key == 'binCode') {
             record.binCode = value;
-        }
+        };
         if (key == 'containerBarCode') {
             record.containerBarCode = value;
-        }
+        };
         if (key == 'productionDate') {
             record.productionDate = value;
-        }
+        };
         if (key == 'qty') {
             record.qty = value;
             calculateCaseQtyStr(record, dataSource);
-        }
+        };
         if (key == 'price') {
             record.price = value;
-        }
+        };
         if (key == 'supplierName') {
             const uuid = value;
             for (var supplier of record.suppliers) {
@@ -228,7 +228,7 @@ function DecIncCreateItem({
                         record.supplier.uuid = uuid;
                         record.supplier.code = supplier.code;
                         record.supplier.name = supplier.name;
-                    }
+                    };
                 }
                 else {
                     if (uuid == supplier.supplierUuid) {
@@ -236,23 +236,23 @@ function DecIncCreateItem({
                         record.supplier.uuid = uuid;
                         record.supplier.code = supplier.supplierCode;
                         record.supplier.name = supplier.supplierName;
-                    }
-                }
-            }
+                    };
+                };
+            };
             // refreshSupplier(record, dataSource);
             queryStockQty(record, dataSource);
 
-        }
+        };
         if (key == 'reason') {
             record.reason = value;
-        }
+        };
     };
 
     function onCellChange(index, record, value) {
         if (!value) {
             message.warn("请输入商品代码！", 2, '');
             return;
-        }
+        };
         if (dataSource[index]["article.code"] == value)
             return;
         record.article = new Object();
@@ -271,24 +271,24 @@ function DecIncCreateItem({
             if (record.article != null && record.proDates != null) {
                 for (var proDate of record.proDates) {
                     options.push(<Option key={moment(proDate).format("YYYY-MM-DD")}>{moment(proDate).format("YYYY-MM-DD")}</Option>)
-                }
-            }
+                };
+            };
 
             return (<RowEditCellSelect
                 editable={true}
                 options={options}
                 onChange={value => handleChange(record, value, key)}
                 value={text}
-            />)
+            />);
         } else {
             return (<RowEditCellDatePicker
                 editable={record.editable}
                 value={record.productionDate ? text : null}
                 status={status}
                 onChange={value => handleChange(record, value, key)}
-            />)
-        }
-    }
+            />);
+        };
+    };
 
     return (
         <div>
@@ -301,13 +301,13 @@ function DecIncCreateItem({
                 scroll={{ x: 1700, y: 300 }}
             />
         </div>
-    )
-}
+    );
+};
 
 DecIncCreateItem.propTypes = {
     dataSource: PropTypes.array,
     pagination: PropTypes.any,
-    onPageChange: PropTypes.func,
-}
+    onPageChange: PropTypes.func
+};
 
 export default DecIncCreateItem;

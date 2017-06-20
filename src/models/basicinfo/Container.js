@@ -34,7 +34,7 @@ export default {
     containerTypeModalVisible: false,
     containerTypeList: [],
     containerStockInfos: [],//容器库存信息
-    showStockInfoPage: false,
+    showStockInfoPage: false
   },
 
   subscriptions: {
@@ -47,9 +47,9 @@ export default {
           dispatch({
             type: 'query',
             payload: location.query,
-          })
-        }
-      })
+          });
+        };
+      });
     },
   },
 
@@ -62,7 +62,7 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      })
+      });
       const {
         data
       } = yield call(queryContainers, parse(payload));
@@ -74,12 +74,12 @@ export default {
             list: data.obj.records,
             pagination: {
               total: data.obj.recordCount,
-              current: data.obj.page,
+              current: data.obj.page
             },
             containerStockInfos: [],
-          },
-        })
-      }
+          }
+        });
+      };
     },
     * createContainer({
       payload
@@ -101,7 +101,7 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      })
+      });
       const {
         data
       } = yield call(queryContainerTypes, {
@@ -111,10 +111,10 @@ export default {
         yield put({
           type: 'showModal',
           payload: {
-            containerTypes: data.obj,
+            containerTypes: data.obj
           }
         });
-      }
+      };
     },
 
     *createType({ payload },
@@ -124,10 +124,10 @@ export default {
         yield put({
           type: 'showContainerTypeSuccess',
           payload: {
-            containerTypeList: data.obj.records,
+            containerTypeList: data.obj.records
           }
-        })
-      }
+        });
+      };
     },
     *addContainerTypeLine({ payload }, {
       call, put
@@ -143,7 +143,7 @@ export default {
         payload: {
           containerTypeList: containerTypeLists
         }
-      })
+      });
     },
     *deleteContainerType({ payload }, {
       call, put
@@ -155,7 +155,7 @@ export default {
       yield put({
         type: 'refreshContainerType',
         payload: {}
-      })
+      });
     },
 
     *saveNewContainerType({ payload }, {
@@ -165,7 +165,7 @@ export default {
       yield put({
         type: 'refreshContainerType',
         payload: {}
-      })
+      });
     },
 
     *saveModifyContainerType({ payload }, {
@@ -175,7 +175,7 @@ export default {
       yield put({
         type: 'refreshContainerType',
         payload: {}
-      })
+      });
     },
 
     * refreshContainerType({
@@ -186,7 +186,7 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      })
+      });
       const {
         data
       } = yield call(queryContainerType, {
@@ -196,24 +196,22 @@ export default {
         yield put({
           type: 'queryContainerTypeSuccess',
           payload: {
-            containerTypeList: data.obj.records,
+            containerTypeList: data.obj.records
           }
         });
-      }
+      };
     },
 
     *queryContainerStock({ payload }, { call, put }) {
       const { data } = yield call(queryContainerStockInfo, { containerBarcode: payload.barcode });
-      console.log("查询容器商品");
-      console.dir(data);
       if (data) {
         yield put({
           type: 'showStockInfo',
           payload: {
-            containerStockInfos: data.obj,
+            containerStockInfos: data.obj
           }
-        })
-      }
+        });
+      };
     },
 
     *toViewArticle({ payload }, { call, put }) {
@@ -221,9 +219,9 @@ export default {
         pathname: '/basicInfo/article',
         query: {
           type: 'getAndView',
-          key: payload.article.uuid,
+          key: payload.article.uuid
         }
-      }))
+      }));
     }
 
   },
@@ -233,7 +231,7 @@ export default {
       return {
         ...state,
         batchProcess: true
-      }
+      };
     },
     confirmSaveNew(state, action) {
       return {
@@ -241,14 +239,14 @@ export default {
         ...action.payload,
         modalVisible: false,
         batchProcessModal: true
-      }
+      };
     },
     querySuccess(state, action) {
       return {
         ...state,
         ...action.payload,
         showStockInfoPage: false,
-      }
+      };
     },
     showModal(state, action) {
       return {
@@ -257,48 +255,48 @@ export default {
         entitys: [],
         next: false,
         modalVisible: true,
-        batchProcessModal: false,
-      }
+        batchProcessModal: false
+      };
     },
     toggle(state, action) {
       return {
         ...state,
-        ...action.payload,
-      }
+        ...action.payload
+      };
     },
     hideModal(state) {
       return {
         ...state,
         modalVisible: false,
-        batchProcessModal: false,
-      }
+        batchProcessModal: false
+      };
     },
     hideBatchProcessModal(state) {
       return {
         ...state,
         batchProcessModal: false
-      }
+      };
     },
     executeNext(state) {
       return {
         ...state,
         next: true
-      }
+      };
     },
     queryContainerTypeSuccess(state, action) {
       return {
         ...state,
-        ...action.payload,
-      }
+        ...action.payload
+      };
     },
     showContainerTypeSuccess(state, action) {
-      return { ...state, ...action.payload, containerTypeModalVisible: true }
+      return { ...state, ...action.payload, containerTypeModalVisible: true };
     },
     hideContainerTypeModal(state) {
-      return { ...state, containerTypeModalVisible: false }
+      return { ...state, containerTypeModalVisible: false };
     },
     showStockInfo(state, action) {
-      return { ...state, ...action.payload, showStockInfoPage: true }
+      return { ...state, ...action.payload, showStockInfoPage: true };
     },
 
   },

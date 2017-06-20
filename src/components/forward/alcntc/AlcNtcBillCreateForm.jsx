@@ -21,7 +21,7 @@ const AlcNtcBillCreateForm = ({
     },
     wrhs,
     checkCustomer,
-    onSelectWrh,
+    onSelectWrh
 }) => {
     function handleCreate() {
         validateFields((errors) => {
@@ -30,8 +30,8 @@ const AlcNtcBillCreateForm = ({
             let data = {};
             data = {
                 ...getFieldsValue(),
-                ...item,
-            }
+                ...item
+            };
             handleSave(data);
         });
     };
@@ -40,7 +40,7 @@ const AlcNtcBillCreateForm = ({
         item.customer = {};
         item.customer.code = e.target.value;
         checkCustomer(e.target.value);
-    }
+    };
 
     const children = [];
     children.push(<BaseFormItem label={"客户："}>
@@ -56,8 +56,8 @@ const AlcNtcBillCreateForm = ({
     if (wrhs != null) {
         for (var wrh of wrhs) {
             options.push(<Option value={wrh.uuid}>{wrh.name + "[" + wrh.code + "]"}</Option>)
-        }
-    }
+        };
+    };
     children.push(
         <BaseFormItem label={"仓位："}>
             {getFieldDecorator("wrh", {
@@ -138,7 +138,7 @@ const AlcNtcBillCreateForm = ({
     </BaseFormItem>);
 
     const toolbar = [];
-    toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("alcNtcBill:create")}>保存</Button>)
+    toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("alcNtcBill:create")}>保存</Button>);
     toolbar.push(<Button onClick={() => onCancel(item)} key={Guid()} > 取消</Button>);
 
     return (
@@ -149,7 +149,7 @@ const AlcNtcBillCreateForm = ({
                 <BaseForm items={totalCaseQtyStrForm} />
             </BaseCard>
         </div>
-    )
-}
+    );
+};
 
 export default Form.create()(AlcNtcBillCreateForm);

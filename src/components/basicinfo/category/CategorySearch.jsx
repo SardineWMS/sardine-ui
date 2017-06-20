@@ -8,13 +8,13 @@ function CategorySearch({
   onCreateLower,
   onEditItem,
   onDeleteItem,
-  onPageChange,
+  onPageChange
 }) {
 
   function handleCreate(e) {
     e.preventDefault();
     onCreate();
-  }
+  };
 
   const columns = [{
     title: '代码',
@@ -27,7 +27,7 @@ function CategorySearch({
   }, {
     title: '备注',
     dataIndex: 'remark',
-    key: 'remark',
+    key: 'remark'
   }, {
     title: '操作',
     key: 'operation',
@@ -40,9 +40,9 @@ function CategorySearch({
           <a disabled={!PermissionUtil("category:delete")}>删除</a>
         </Popconfirm>
       </p>
-    ),
+    )
   }
-  ]
+  ];
 
   return (
     <Table size="small"
@@ -58,8 +58,8 @@ function CategorySearch({
       onChange={onPageChange}
       rowKey={record => record.uuid}
     />
-  )
-}
+  );
+};
 
 CategorySearch.propTypes = {
   dataSource: PropTypes.array,
@@ -67,8 +67,8 @@ CategorySearch.propTypes = {
   onEditItem: PropTypes.func,
   onDeleteItem: PropTypes.func,
   onPageChange: PropTypes.func,
-  onCreateLower: PropTypes.func,
-}
+  onCreateLower: PropTypes.func
+};
 
 export default CategorySearch;
 

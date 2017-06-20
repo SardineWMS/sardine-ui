@@ -35,11 +35,11 @@ const login = ({
   function handleOk() {
     validateFieldsAndScroll((errors, values) => {
       if (errors) {
-        return
-      }
-      onOk(values)
-    })
-  }
+        return;
+      };
+      onOk(values);
+    });
+  };
 
   return (
     <div className={styles.form}>
@@ -65,7 +65,7 @@ const login = ({
                 message: '请填写密码'
               }
             ]
-          })(<Input size="large" type="password" placeholder="密码" onPressEnter={() => handleOk()}/>)}
+          })(<Input size="large" type="password" placeholder="密码" onPressEnter={() => handleOk()} />)}
         </FormItem>
         <Row>
           <Link onClick={onRegister}>注册</Link>
@@ -75,14 +75,14 @@ const login = ({
         </Row>
       </form>
     </div>
-  )
-}
+  );
+};
 
 login.propTypes = {
   form: PropTypes.object,
   loginButtonLoading: PropTypes.bool,
   onOk: PropTypes.func,
   onRegister: PropTypes.func
-}
+};
 
 export default Form.create()(login);

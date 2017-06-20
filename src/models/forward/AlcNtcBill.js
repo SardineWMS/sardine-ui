@@ -29,7 +29,7 @@ export default {
         batchFinishProcessModal: false,
         finishAlcNtcBillEntitys: [],
         batchAbortProcessModal: false,
-        abortAlcNtcBillEntitys: [],
+        abortAlcNtcBillEntitys: []
     },
 
     subscriptions: {
@@ -42,9 +42,9 @@ export default {
                     dispatch({
                         type: 'query',
                         payload: location.query,
-                    })
-                }
-            })
+                    });
+                };
+            });
         }
     },
 
@@ -61,13 +61,13 @@ export default {
                         list: data.obj.records,
                         pagination: {
                             total: data.obj.recordCount,
-                            current: data.obj.page,
+                            current: data.obj.page
                         },
                         currentItem: {},
-                        billItems: [],
+                        billItems: []
                     }
-                })
-            }
+                });
+            };
         },
 
         *showCreate({ payload }, { call, put }) {
@@ -86,9 +86,9 @@ export default {
                 payload: {
                     billItems: list,
                     currentItem: currentItem,
-                    wrhs: data.obj,
+                    wrhs: data.obj
                 }
-            })
+            });
         },
 
         *getArticleInfo({ payload }, { call, put }) {
@@ -107,43 +107,43 @@ export default {
                         item.article.uuid = data.obj.uuid;
                         item.article.name = data.obj.name;
                         item.qpcs = qpcs;
-                    }
+                    };
                 };
 
                 yield put({
                     type: 'createSuccess',
                     payload: {
                         billItems: payload.dataSource,
-                        qpcs: qpcs,
+                        qpcs: qpcs
                     }
-                })
-            }
+                });
+            };
         },
 
         *refreshMunit({ payload }, { call, put }) {
             for (var qpc of payload.record.qpcs) {
                 if (qpc.qpcStr == payload.record.qpcStr) {
                     payload.record.munit = qpc.munit;
-                }
-            }
+                };
+            };
             const { data } = yield call(queryStock, {
                 articleUuid: payload.record.article.uuid,
-                qpcStr: payload.record.qpcStr,
+                qpcStr: payload.record.qpcStr
             });
 
             for (var item of payload.dataSource) {
                 if (item.line == payload.record.line) {
                     item.munit = payload.record.munit;
                     item.price = data.obj.price;
-                }
-            }
+                };
+            };
 
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    billItems: payload.dataSource,
+                    billItems: payload.dataSource
                 }
-            })
+            });
         },
 
         *calculateCaseQtyStr({ payload }, { call, put }) {
@@ -152,42 +152,41 @@ export default {
                 qty = Number.parseFloat(payload.record.qty);
             } catch (e) {
                 message.warning("数量格式错误，请正确输入数字", 2, '');
-            }
+            };
             if (payload.record.qpcStr == null || payload.record.qpcStr == '') {
                 message.warning("请选择规格！", 2, '');
                 return;
-            }
+            };
 
             const { data } = yield call(qtyToCaseQtyStr, {
                 qty: qty,
-                qpcStr: payload.record.qpcStr,
+                qpcStr: payload.record.qpcStr
             });
             for (var item of payload.dataSource) {
                 if (item.line == payload.record.line) {
                     item.caseQtyStr = data.obj;
                     item.amount = Number.parseFloat(payload.record.price) * qty;
                 };
-            }
+            };
             let totalCaseQtyStr = 0;
             let totalAmount = 0;
             if (payload.dataSource.length == 1) {
                 totalCaseQtyStr = data.obj;
                 totalAmount = payload.dataSource[0].amount;
             }
-
             else {
                 for (var item of payload.dataSource) {
                     totalAmount = Number.parseFloat(item.amount) + Number.parseFloat(totalAmount);
                     if (item.caseQtyStr == 0 || item.caseQtyStr == '')
                         continue;
                     const totalCaseQtyStrResult = yield call(caseQtyStrAdd, {
-                        addend: totalCaseQtyStr, augend: item.caseQtyStr,
+                        addend: totalCaseQtyStr, augend: item.caseQtyStr
                     });
                     totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
-                }
-            }
+                };
+            };
             const caseQtyStrResult = yield call(caseQtyStrAdd, {
-                addend: payload.currentItem.totalCaseQtyStr, augend: data.obj,
+                addend: payload.currentItem.totalCaseQtyStr, augend: data.obj
             });
             // let totalAmount = 0;
             // totalAmount = payload.record.price * payload.record.qty + payload.currentItem.totalAmount;
@@ -197,9 +196,9 @@ export default {
                 type: 'createSuccess',
                 payload: {
                     billItems: payload.dataSource,
-                    currentItem: payload.currentItem,
+                    currentItem: payload.currentItem
                 }
-            })
+            });
         },
 
         *addItem({ payload }, { call, put }) {
@@ -210,9 +209,9 @@ export default {
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    billItems: payload.dataSource,
+                    billItems: payload.dataSource
                 }
-            })
+            });
         },
 
         *removeItem({ payload }, { call, put }) {
@@ -231,9 +230,8 @@ export default {
                         const { data } = yield call(caseQtyStrSubtract, { subStr: payload.currentItem.totalCaseQtyStr, subedStr: item.caseQtyStr });
                         payload.currentItem.totalCaseQtyStr = data.obj;
                         payload.currentItem.totalAmount = Number.parseFloat(payload.currentItem.totalAmount) - Number.parseFloat(item.amount);
-                    }
-
-                }
+                    };
+                };
             };
             for (let i = 0; i < payload.dataSource.length; i++) {
                 payload.dataSource[i].line = i + 1;
@@ -241,14 +239,14 @@ export default {
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    billItems: payload.dataSource,
+                    billItems: payload.dataSource
                 }
-            })
+            });
         },
 
         *checkCustomer({ payload }, { call, put }) {
             const { data } = yield call(getCustomerInfo, {
-                customerCode: payload.value,
+                customerCode: payload.value
             });
             if (data) {
                 if (data.obj == null) {
@@ -258,7 +256,7 @@ export default {
                 else if (data.obj.state == 'deleted') {
                     message.warning("该客户已被删除，请重新输入", 2, '');
                     return;
-                }
+                };
                 payload.currentItem.customer.uuid = data.obj.uuid;
                 payload.currentItem.customer.code = data.obj.code;
                 payload.currentItem.customer.name = data.obj.name;
@@ -266,18 +264,18 @@ export default {
                 yield put({
                     type: 'createSuccess',
                     payload: {
-                        currentItem: payload.currentItem,
+                        currentItem: payload.currentItem
                     }
-                })
-            }
+                });
+            };
         },
 
         *update({ payload }, { call, put }) {
             const { data } = yield call(update, parse(payload));
             yield put({
                 type: 'viewAlcNtc',
-                payload: payload,
-            })
+                payload: payload
+            });
         },
 
         *viewAlcNtc({ payload }, { call, put }) {
@@ -287,10 +285,10 @@ export default {
                     type: 'viewSuccess',
                     payload: {
                         currentItem: data.obj,
-                        billItems: data.obj.item,
+                        billItems: data.obj.item
                     }
-                })
-            }
+                });
+            };
         },
 
         *insert({ payload }, { call, put }) {
@@ -306,10 +304,9 @@ export default {
                             currentItem: alcNtcBillResult.data.obj,
                             billItems: alcNtcBillResult.data.obj.items
                         }
-                    })
-
-                }
-            }
+                    });
+                };
+            };
         },
 
         *edit({ payload }, { call, put }) {
@@ -319,10 +316,10 @@ export default {
                     type: 'createSuccess',
                     payload: {
                         currentItem: data.obj,
-                        billItems: data.obj.items,
+                        billItems: data.obj.items
                     }
-                })
-            }
+                });
+            };
         },
 
         *gridRemove({ payload }, { call, put }) {
@@ -332,7 +329,7 @@ export default {
             });
             yield put({
                 type: 'query',
-                payload: {},
+                payload: {}
             });
         },
 
@@ -342,8 +339,8 @@ export default {
             });
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         },
 
         *gridAbort({ payload }, { call, put }) {
@@ -352,26 +349,26 @@ export default {
             });
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         }
 
     },
 
     reducers: {
         querySuccess(state, action) {
-            return { ...state, ...action.payload }
+            return { ...state, ...action.payload };
         },
         createSuccess(state, action) {
             return {
                 ...state, showPage: 'create', ...action
                     .payload
-            }
+            };
         },
         viewSuccess(state, action) {
             return {
                 ...state, showPage: 'view', ...action.payload
-            }
+            };
         },
         batchDeleteAlcNtcBill(state, action) {
             return { ...state, ...action.payload, batchDeleteProcessModal: true };
@@ -380,16 +377,16 @@ export default {
             return { ...state, ...action.payload, batchFinishProcessModal: true };
         },
         batchAbortAlcNtcBill(state, action) {
-            return { ...state, ...action.payload, batchAbortProcessModal: true }
+            return { ...state, ...action.payload, batchAbortProcessModal: true };
         },
         hideDeleteAlcNtcBillModal(state, action) {
-            return { ...state, batchDeleteProcessModal: false }
+            return { ...state, batchDeleteProcessModal: false };
         },
         hideFinishAlcNtcBillModal(state, action) {
-            return { ...state, batchFinishProcessModal: false }
+            return { ...state, batchFinishProcessModal: false };
         },
         hideAbortAlcNtcBillModal(state, action) {
-            return { ...state, batchAbortProcessModal: false }
+            return { ...state, batchAbortProcessModal: false };
         },
     }
 }

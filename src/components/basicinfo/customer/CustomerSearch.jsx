@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import {Form, Table, message, Popconfirm, Button, Row, Col, Card, Spin, Input, Select } from 'antd';
+import { Form, Table, message, Popconfirm, Button, Row, Col, Card, Spin, Input, Select } from 'antd';
 import hasPermission from '../../../utils/PermissionUtil';
 import BaseSearchForm from '../../widget/BaseSearchForm';
 import BaseGrid from '../../widget/BaseGrid';
@@ -36,60 +36,60 @@ function CustomerSearch({
       return '已删除';
   };
 
-    const children = [];
-    children.push(
-        <BaseTwoCol key={Guid()}>
-            <BaseFormItem label={"代码 类似于"} >
-                {form.getFieldDecorator("code")(
-                    <Input placeholder="请输入" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
-    children.push(
-        <BaseTwoCol key={Guid()}>
-            <BaseFormItem label={"状态 等于"}>
-                {form.getFieldDecorator("state", { initialValue: "normal" })(
-                    <Select placeholder="请选择" showSearch={false} size="large">
-                        <Option value="normal" >正常</Option>
-                        <Option value="deleted">已删除</Option>
-                    </Select>
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
-    children.push(
-        <BaseTwoCol key={Guid()}>
-            <BaseFormItem label={"名称 类似于"}>
-                {form.getFieldDecorator("name")(
-                    <Input placeholder="请输入" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
+  const children = [];
+  children.push(
+    <BaseTwoCol key={Guid()}>
+      <BaseFormItem label={"代码 类似于"} >
+        {form.getFieldDecorator("code")(
+          <Input placeholder="请输入" />
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
+  children.push(
+    <BaseTwoCol key={Guid()}>
+      <BaseFormItem label={"状态 等于"}>
+        {form.getFieldDecorator("state", { initialValue: "normal" })(
+          <Select placeholder="请选择" showSearch={false} size="large">
+            <Option value="normal" >正常</Option>
+            <Option value="deleted">已删除</Option>
+          </Select>
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
+  children.push(
+    <BaseTwoCol key={Guid()}>
+      <BaseFormItem label={"名称 类似于"}>
+        {form.getFieldDecorator("name")(
+          <Input placeholder="请输入" />
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
 
-    function handleSearch(e) {
-        onSearch(form.getFieldsValue());
-    }
+  function handleSearch(e) {
+    onSearch(form.getFieldsValue());
+  };
 
   const columns = [{
     title: '代码',
     dataIndex: 'code',
     key: 'code',
     render: (text, record) => <a onClick={() => { onViewItem(record) }}>{text}</a>,
-    sorter: true,
+    sorter: true
   },
   {
     title: '名称',
     dataIndex: 'name',
     key: 'name',
-    sorter: true,
+    sorter: true
   },
   {
     title: '状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => convertState(text),
+    render: text => convertState(text)
   },
   {
     title: '操作',
@@ -126,8 +126,8 @@ function CustomerSearch({
         rowKey={record => record.uuid}
         buttons={buttons} />
     </div>
-  )
-}
+  );
+};
 
 CustomerSearch.propTypes = {
   dataSource: PropTypes.array,
@@ -140,6 +140,6 @@ CustomerSearch.propTypes = {
   onCreate: PropTypes.func,
   onViewItem: PropTypes.func,
   onSearch: PropTypes.func
-}
+};
 
 export default Form.create()(CustomerSearch);

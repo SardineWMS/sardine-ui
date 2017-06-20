@@ -31,11 +31,11 @@ const OrderBillCreateForm=({
                 companyUuid: item.companyUuid, version: item.version ,supplier:item.supplier,wrh:item.wrh};
             onOk(data);
         });
-	}
+	};
 
     function expireDateOnSelect(value){
         item.expireDate=value;
-    }
+    };
 
     function wrhOnSelect(value){
         const wrhUcn=new Object();
@@ -43,7 +43,7 @@ const OrderBillCreateForm=({
         wrhUcn.code=value.code;
         wrhUcn.name=value.name;
         item.wrh=wrhUcn;
-    }
+    };
 
     const baseChildren = [];
     const dataChildren=[];
@@ -54,7 +54,7 @@ const OrderBillCreateForm=({
             <Option key={wrh.uuid} value={wrh} >
                 {"["+wrh.code+"]"}+{wrh.name}
             </Option>
-        )
+        );
     });
 
     baseChildren.push(
@@ -132,6 +132,6 @@ const OrderBillCreateForm=({
             </BaseCard>
         </div>
     );
-}
+};
 
 export default Form.create()(OrderBillCreateForm);

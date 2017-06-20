@@ -18,14 +18,14 @@ function SerialArch({ location, dispatch, serialArch }) {
         visible: showCreateModal,
         onCancel() {
             dispatch({
-                type: 'serialArch/hideCreateModal',
-            })
+                type: 'serialArch/hideCreateModal'
+            });
         },
         onOk(data) {
             dispatch({
                 type: 'serialArch/createSerialArch',
-                payload: data,
-            })
+                payload: data
+            });
         }
     };
     const SerialArchSearchGridProps = {
@@ -37,77 +37,77 @@ function SerialArch({ location, dispatch, serialArch }) {
                 payload: {
                     page: page.current,
                     pageSize: page.pageSize,
-                    lineCode: currentLineCode,
+                    lineCode: currentLineCode
                 }
-            })
+            });
         },
         onCreateSerialArch() {
             dispatch({
-                type: 'serialArch/showCreateSerialArch',
-            })
+                type: 'serialArch/showCreateSerialArch'
+            });
         },
         onCreateLine() {
             dispatch({
-                type: 'serialArch/showCreateLine',
-            })
+                type: 'serialArch/showCreateLine'
+            });
         },
         onAddCustomer() {
             if (currentLine == '') {
                 message.warning("请先选择运输线路", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'serialArch/showAddCustomer',
-                payload: currentLine,
-            })
+                payload: currentLine
+            });
         },
         onRemoveBatch(customers) {
             if (customers.length <= 0) {
                 message.warning("请选择要踢出该线路的客户", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'serialArch/batchRemoveFromLine',
                 payload: {
-                    removeCustomerEntitys: customers,
+                    removeCustomerEntitys: customers
                 }
-            })
+            });
         },
         onUp(record) {
             dispatch({
                 type: 'serialArch/upOrder',
-                payload: { record, lineCode: currentLineCode },
-            })
+                payload: { record, lineCode: currentLineCode }
+            });
         },
         onDown(record) {
             dispatch({
                 type: 'serialArch/onDown',
-                payload: { record, lineCode: currentLineCode },
-            })
+                payload: { record, lineCode: currentLineCode }
+            });
         },
         onPostponeBatch(customers) {
             if (customers.length <= 0) {
                 message.warning("请选择要该线路要置后的客户", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'serialArch/batchPostpone',
                 payload: {
-                    postponeCustomerEntitys: customers,
+                    postponeCustomerEntitys: customers
                 }
-            })
+            });
         },
         onStickBatch(customers) {
             if (customers.length <= 0) {
                 message.warning("请选择要该线路要置后的客户", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'serialArch/batchStick',
                 payload: {
                     stickCustomerEntitys: customers
                 }
-            })
+            });
         }
     };
     const serialArchTreeProps = {
@@ -119,7 +119,7 @@ function SerialArch({ location, dispatch, serialArch }) {
                 dispatch({
                     type: 'serialArch/getLine',
                     payload: { lineCode: code }
-                })
+                });
         }
     };
 
@@ -127,16 +127,16 @@ function SerialArch({ location, dispatch, serialArch }) {
         visible: showCreateLineModal,
         onCancel() {
             dispatch({
-                type: 'serialArch/hideCreateLineModal',
-            })
+                type: 'serialArch/hideCreateLineModal'
+            });
         },
         onOk(data) {
             data.serialArch = {};
             data.serialArch.code = data.serialArchCode;
             dispatch({
                 type: 'serialArch/createLine',
-                payload: data,
-            })
+                payload: data
+            });
         }
     };
 
@@ -145,8 +145,8 @@ function SerialArch({ location, dispatch, serialArch }) {
         dataSource: customers,
         onCancel() {
             dispatch({
-                type: 'serialArch/hideAddCustomer',
-            })
+                type: 'serialArch/hideAddCustomer'
+            });
         },
         onOk(selectedRowKeys) {
             if (!selectedRowKeys || selectedRowKeys.length <= 0)
@@ -154,14 +154,14 @@ function SerialArch({ location, dispatch, serialArch }) {
             const uuids = [];
             for (var customer of selectedRowKeys) {
                 uuids.push(customer.uuid);
-            }
+            };
             const data = {};
             data.lineUuid = currentLine;
             data.customers = uuids;
             dispatch({
                 type: 'serialArch/addCustomer',
-                payload: data,
-            })
+                payload: data
+            });
         }
     };
 
@@ -177,22 +177,22 @@ function SerialArch({ location, dispatch, serialArch }) {
                 payload: {
                     customerUuid: entity.customer.uuid,
                     lineUuid: currentLine,
-                    lineCode: currentLineCode,
+                    lineCode: currentLineCode
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'serialArch/hideRemoveCustomerModal',
-            })
+                type: 'serialArch/hideRemoveCustomerModal'
+            });
         },
         refreshGrid() {
             dispatch({
                 type: 'serialArch/getLine',
                 payload: {
-                    lineCode: currentLineCode,
+                    lineCode: currentLineCode
                 }
-            })
+            });
         }
     };
     const batchProcessStickCustomerProps = {
@@ -208,22 +208,22 @@ function SerialArch({ location, dispatch, serialArch }) {
                     customerUuid: entity.customer.uuid,
                     lineUuid: currentLine,
                     order: entity.order,
-                    lineCode: currentLineCode,
+                    lineCode: currentLineCode
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'serialArch/hideStickCustomerModal',
-            })
+                type: 'serialArch/hideStickCustomerModal'
+            });
         },
         refreshGrid() {
             dispatch({
                 type: 'serialArch/getLine',
                 payload: {
-                    lineCode: currentLineCode,
+                    lineCode: currentLineCode
                 }
-            })
+            });
         }
     };
     const batchProcessPostponeCustomerProps = {
@@ -239,14 +239,14 @@ function SerialArch({ location, dispatch, serialArch }) {
                     customerUuid: entity.customer.uuid,
                     lineUuid: currentLine,
                     order: entity.order,
-                    lineCode: currentLineCode,
+                    lineCode: currentLineCode
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'serialArch/hidePostponeCustomerModal',
-            })
+                type: 'serialArch/hidePostponeCustomerModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -254,7 +254,7 @@ function SerialArch({ location, dispatch, serialArch }) {
                 payload: {
                     lineCode: currentLineCode,
                 }
-            })
+            });
         }
     };
     return (
@@ -274,15 +274,15 @@ function SerialArch({ location, dispatch, serialArch }) {
                 </Content>
             </Layout>
         </div>
-    )
-}
+    );
+};
 
 SerialArch.propTypes = {
-    SerialArch: PropTypes.object,
-}
+    SerialArch: PropTypes.object
+};
 
 function mapStateToProps({ serialArch }) {
     return { serialArch }
-}
+};
 
 export default connect(mapStateToProps)(SerialArch);

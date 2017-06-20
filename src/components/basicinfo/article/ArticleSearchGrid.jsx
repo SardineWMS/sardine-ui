@@ -17,9 +17,9 @@ function ArticleSearch({
   function handleCreate(e) {
     e.preventDefault();
     onCreate();
-  }
+  };
 
-  function handleSetFixedPickBinBatch(){
+  function handleSetFixedPickBinBatch() {
     onSetFixedPickBinBatch(selectedRowKeys);
   };
 
@@ -28,12 +28,12 @@ function ArticleSearch({
     dataIndex: 'code',
     key: 'code',
     render: (text, record) => <a onClick={() => onView(record)} disabled={!PermissionUtil("article:view")}>{text}</a>,
-    sorter: true,
+    sorter: true
   }, {
     title: '名称',
     dataIndex: 'name',
     key: 'name',
-    sorter: true,
+    sorter: true
   }, {
     title: '规格',
     dataIndex: 'spec',
@@ -42,17 +42,17 @@ function ArticleSearch({
     title: '类别',
     dataIndex: 'category',
     key: 'category',
-    render: (text, record) => (text ? (<a href=""> {"[" + record.category.code + "]" + record.category.name} </a>) : ""),
+    render: (text, record) => (text ? (<a href=""> {"[" + record.category.code + "]" + record.category.name} </a>) : "")
   }, {
     title: '状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => (text == "normal" ? '正常' : text),
+    render: text => (text == "normal" ? '正常' : text)
   }, {
     title: '保质期天数',
     dataIndex: 'expDays',
-    key: 'expDays',
-  }]
+    key: 'expDays'
+  }];
 
   const menu = (
     <Menu>
@@ -66,14 +66,14 @@ function ArticleSearch({
     onChange: (selectedRowKeys, selectedRows) => {
     },
     onSelect: (record, selected, selectedRows) => {
-      selectedRowKeys=selectedRows;
-      },
+      selectedRowKeys = selectedRows;
+    },
     onSelectAll: (selected, selectedRows, changeRows) => {
-      selectedRowKeys=selectedRows;
+      selectedRowKeys = selectedRows;
     },
     getCheckboxProps: record => ({
-       disabled: record.name === 'Disabled User',
-    }),
+      disabled: record.name === 'Disabled User',
+    })
   };
 
   return (
@@ -98,8 +98,8 @@ function ArticleSearch({
         rowKey={record => record.uuid}
       />
     </div>
-  )
-}
+  );
+};
 
 ArticleSearch.propTypes = {
   dataSource: PropTypes.array,
@@ -107,8 +107,8 @@ ArticleSearch.propTypes = {
   onView: PropTypes.func,
   onEdit: PropTypes.func,
   pagination: PropTypes.any,
-  onPageChange: PropTypes.func,
-}
+  onPageChange: PropTypes.func
+};
 
 export default ArticleSearch;
 

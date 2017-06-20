@@ -9,28 +9,28 @@ const CreateWrhModal = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue,
-  },
+    getFieldsValue
+  }
 }) => {
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
-        return
-      }
+        return;
+      };
       const data = {
         ...getFieldsValue()
-      }
-      onOk(data)
-    })
-  }
+      };
+      onOk(data);
+    });
+  };
 
   const modalOpts = {
     title: '仓位新建',
     visible,
     onOk: handleOk,
     onCancel,
-    wrapClassName: 'vertical-center-modal',
-  }
+    wrapClassName: 'vertical-center-modal'
+  };
 
   return (
     <Modal {...modalOpts}>
@@ -61,14 +61,14 @@ const CreateWrhModal = ({
         </BaseFormItem>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
 CreateWrhModal.propTypes = {
   visible: PropTypes.any,
   form: PropTypes.object,
   onOk: PropTypes.func,
-  onCancel: PropTypes.func,
-}
+  onCancel: PropTypes.func
+};
 
 export default Form.create()(CreateWrhModal);

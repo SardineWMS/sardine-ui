@@ -13,7 +13,7 @@ const DecIncCreateItem = ({
     pagination,
     onPageChange,
     getArticleInfo,
-    qpcStrs,
+    qpcStrs
 }) => {
     const columns = [];
 
@@ -21,7 +21,7 @@ const DecIncCreateItem = ({
         title: '行号',
         dataIndex: 'line',
         key: 'line',
-        width: 50,
+        width: 50
     });
 
     columns.push({
@@ -29,7 +29,7 @@ const DecIncCreateItem = ({
         dataIndex: 'bincode',
         key: 'bincode',
         width: 100,
-        render: (text, record, index) => renderColumns(index, "bincode", text),
+        render: (text, record, index) => renderColumns(index, "bincode", text)
     });
 
     columns.push({
@@ -37,14 +37,14 @@ const DecIncCreateItem = ({
         dataIndex: 'container',
         key: 'container',
         width: 100,
-        render: (text, record, index) => renderColumns(index, "container", text),
+        render: (text, record, index) => renderColumns(index, "container", text)
     });
 
     columns.push({
         title: '商品代码',
         dataIndex: 'article.code',
         key: 'articleCode',
-        width: 100,
+        width: 100
         /*render: (text, record, index) => {
             return (<RowEditCell editable={record.editable}
                 value={text}
@@ -59,7 +59,7 @@ const DecIncCreateItem = ({
         title: '商品名称',
         dataIndex: 'article.name',
         key: 'articleName',
-        width: 200,
+        width: 200
     });
 
     columns.push({
@@ -67,21 +67,21 @@ const DecIncCreateItem = ({
         dataIndex: 'qpcStr',
         key: 'qpcStr',
         width: 100,
-        render: (text, record) => renderSelectColumns(record, "qpcStr", text),
+        render: (text, record) => renderSelectColumns(record, "qpcStr", text)
     });
 
     columns.push({
         title: '生产日期',
         dataIndex: 'produceDate',
         key: 'produceDate',
-        width: 150,
+        width: 150
     });
 
     columns.push({
         title: '库存数量',
         dataIndex: 'stockQty',
         key: 'stockQty',
-        width: 150,
+        width: 150
     });
 
 
@@ -90,21 +90,21 @@ const DecIncCreateItem = ({
         title: '单价',
         dataIndex: 'price',
         key: 'price',
-        width: 100,
+        width: 100
     });
 
     columns.push({
         title: '损溢数量',
         dataIndex: 'qty',
         key: 'qty',
-        width: 150,
+        width: 150
     });
 
     columns.push({
         title: '损溢件数',
         dataIndex: 'caseQtyStr',
         key: 'caseQtyStr',
-        width: 150,
+        width: 150
     });
 
 
@@ -142,7 +142,7 @@ const DecIncCreateItem = ({
             onBlur={value => handleChange(index, value, key)}
             autoFocus={key == "bincode" ? true : false}
         />);
-    }
+    };
 
     function handleChange(index, value, key) {
         if (key === "articleCode") {
@@ -150,11 +150,11 @@ const DecIncCreateItem = ({
                 return;
             record.article.code = value;
             getArticleInfo(record, dataSource);
-        }
+        };
         if (key === 'qpcStr') {
             record.qpcStr = value;
-        }
-    }
+        };
+    };
 
     function renderSelectColumns(record, key, text) {
         if (typeof record.editable === undefined)
@@ -164,17 +164,17 @@ const DecIncCreateItem = ({
 
         if (record.article != null && qpcStrs != null) {
             for (var qpcStr of qpcStrs) {
-                options.push(<Option key={qpcStr}>{qpcStr}</Option>)
-            }
-        }
+                options.push(<Option key={qpcStr}>{qpcStr}</Option>);
+            };
+        };
 
         return (<RowEditCellSelect
             editable={true}
             options={options}
             onChange={value => handleChange(record, value, key)}
             value={text}
-        />)
-    }
+        />);
+    };
 
 
 

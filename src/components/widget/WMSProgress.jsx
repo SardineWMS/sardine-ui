@@ -3,8 +3,6 @@ import { Modal, Progress, Button } from 'antd';
 
 class WMSProgress extends React.Component {
   constructor(props) {
-    console.log("constructor...");
-    console.dir(props);
     super(props);
     this.state = {
       showProgressModal: false,
@@ -19,32 +17,30 @@ class WMSProgress extends React.Component {
         total: 0,
         success: 0,
         failure: 0,
-        skipped: 0,
+        skipped: 0
       }
     };
     this.handleOk = this.handleOk.bind(this);
     this.handleCancel = this.handleCancel.bind(this);
     this.start = this.start.bind(this);
     this.abort = this.abort.bind(this);
-  }
+  };
 
   componentWillReceiveProps(newProps) {
-    console.log("componentWillReceiveProps...");
-    console.dir(newProps);
     this.setState({
       records: newProps.records,
-      showConfirmModal: newProps.showConfirmModal,
+      showConfirmModal: newProps.showConfirmModal
     });
-  }
+  };
 
   handleOk() {
     this.setState({
       showConfirmModal: false,
-      showProgressModal: true,
+      showProgressModal: true
     }, function () {
       this.start();
     });
-  }
+  };
 
   handleCancel() {
     this.setState({
@@ -53,16 +49,14 @@ class WMSProgress extends React.Component {
       processing: false,
       percent: 0,
       records: [],
-      recordIndex: 0,
+      recordIndex: 0
     }, function () {
       this.props.hideConfirmModal();
       this.props.refreshGrid();
     });
-  }
+  };
 
   start() {
-    console.log("start...");
-    console.dir(this.state);
     if (this.state.records == null || this.state.records.length == 0)
       return;
 
@@ -72,12 +66,12 @@ class WMSProgress extends React.Component {
 
     if (this.state.recordIndex + 1 > this.props.records.length) {
       return;
-    }
+    };
 
     if (percent >= 100) {
       percent = 100;
       processing = false;
-    }
+    };
 
     var index = this.state.recordIndex;
     this.props.batchProcess(this.state.records[index]);
@@ -85,21 +79,21 @@ class WMSProgress extends React.Component {
     this.setState({
       processing: processing,
       percent,
-      recordIndex: this.state.recordIndex + 1,
+      recordIndex: this.state.recordIndex + 1
     }, function () {
       this.start();
     });
-  }
+  };
 
   abort() {
     if (this.state.processing == false) {
       return;
-    }
+    };
 
     this.setState({
-      processing: false,
-    })
-  }
+      processing: false
+    });
+  };
 
   render() {
     return (
@@ -120,8 +114,8 @@ class WMSProgress extends React.Component {
         </Modal>
       </div>
     );
-  }
-}
+  };
+};
 
 
 export default WMSProgress;

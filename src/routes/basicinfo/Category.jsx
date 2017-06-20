@@ -6,7 +6,7 @@ import CategoryModal from '../../components/BasicInfo/Category/CategoryModal';
 
 function Category({ location, dispatch, category }) {
   const {
-    list, total, current, currentItem, modalVisible, modalType, modalShowUpper, pagination,
+    list, total, current, currentItem, modalVisible, modalType, modalShowUpper, pagination
     } = category;
 
   const categoryModalProps = {
@@ -18,22 +18,22 @@ function Category({ location, dispatch, category }) {
       data.token = localStorage.getItem("token");
       dispatch({
         type: `category/${modalType}`,
-        payload: data,
-      })
+        payload: data
+      });
     },
     onCancel() {
       dispatch({
-        type: 'category/hideModal',
-      })
-    },
-  }
+        type: 'category/hideModal'
+      });
+    }
+  };
 
   const categorySearchProps = {
     dataSource: list,
     onPageChange(page) {
       dispatch(routerRedux.push({
         pathname: '/wms/basicInfo/category',
-      }))
+      }));
     },
     onCreate() {
       dispatch({
@@ -41,9 +41,9 @@ function Category({ location, dispatch, category }) {
         payload: {
           modalType: 'createRoot',
           showUpper: false,
-          upperCategory: '',
-        },
-      })
+          upperCategory: ''
+        }
+      });
     },
     onCreateLower(item) {
       item.token = localStorage.getItem("token");
@@ -51,9 +51,9 @@ function Category({ location, dispatch, category }) {
         type: 'category/showModal',
         payload: {
           modalType: 'create',
-          currentItem: item,
-        },
-      })
+          currentItem: item
+        }
+      });
     },
     onDeleteItem(item) {
       let token = localStorage.getItem("token");
@@ -62,42 +62,42 @@ function Category({ location, dispatch, category }) {
         payload: {
           uuid: item.uuid,
           version: item.version,
-          token: token,
-        },
-      })
+          token: token
+        }
+      });
     },
     onEditItem(item) {
       dispatch({
         type: 'category/showModal',
         payload: {
           modalType: 'update',
-          currentItem: item,
-        },
-      })
-    },
-  }
+          currentItem: item
+        }
+      });
+    }
+  };
 
   const CategoryModalGen = () =>
-    <CategoryModal {...categoryModalProps} />
+    <CategoryModal {...categoryModalProps} />;
 
   return (
     <div className="content-inner">
       <CategorySearch {...categorySearchProps} />
       <CategoryModalGen />
     </div>
-  )
-}
+  );
+};
 
 Category.propTypes = {
   category: PropTypes.object,
   location: PropTypes.object,
-  dispatch: PropTypes.func,
-}
+  dispatch: PropTypes.func
+};
 
 function mapStateToProps({ category }) {
   return {
-    category,
+    category
   };
-}
+};
 
-export default connect(mapStateToProps)(Category)
+export default connect(mapStateToProps)(Category);

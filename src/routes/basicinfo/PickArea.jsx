@@ -20,16 +20,15 @@ function PickArea({ location, dispatch, pickArea }) {
             if (currentItem.uuid) {
                 dispatch({
                     type: 'pickArea/update',
-                    payload: result,
-                })
+                    payload: result
+                });
             } else {
                 dispatch({
                     type: 'pickArea/insert',
-                    payload: result,
-                })
-            }
-
-        },
+                    payload: result
+                });
+            };
+        }
     };
 
     const pickAreaSearchGridProps = {
@@ -37,33 +36,33 @@ function PickArea({ location, dispatch, pickArea }) {
         pagination: pagination,
         onCreate() {
             dispatch({
-                type: 'pickArea/createSuccess',
-            })
+                type: 'pickArea/createSuccess'
+            });
         },
 
         onCancel() {
             dispatch({
                 type: 'pickArea/query',
                 payload: {}
-            })
+            });
         },
         onViewItem(item) {
             dispatch({
                 type: 'pickArea/onViewItem',
                 payload: { currentItem: item }
-            })
+            });
         },
         onRemoveBatch(pickAreas) {
             if (pickAreas.length <= 0) {
                 message.warning("请选择要删除的拣货分区", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'pickArea/batchRemovePickArea',
                 payload: {
                     removePickAreaEntitys: pickAreas
                 }
-            })
+            });
         },
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
@@ -74,7 +73,7 @@ function PickArea({ location, dispatch, pickArea }) {
                     sort: sorter.columnKey,
                     order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
                 }
-            }))
+            }));
         },
     };
 
@@ -84,21 +83,21 @@ function PickArea({ location, dispatch, pickArea }) {
             dispatch({
                 type: 'pickArea/backSuccess',
                 payload: {
-                    currentItem: {},
+                    currentItem: {}
                 }
-            })
+            });
         },
         showEdit(item) {
             dispatch({
                 type: 'pickArea/itemEditSuccess',
-                payload: item,
-            })
+                payload: item
+            });
         },
         onRemove(item) {
             dispatch({
                 type: 'pickArea/remove',
-                payload: item,
-            })
+                payload: item
+            });
         }
     };
 
@@ -106,8 +105,8 @@ function PickArea({ location, dispatch, pickArea }) {
         onSearch(fieldsValue) {
             dispatch({
                 type: 'pickArea/query',
-                payload: fieldsValue,
-            })
+                payload: fieldsValue
+            });
         }
     };
 
@@ -123,14 +122,14 @@ function PickArea({ location, dispatch, pickArea }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'pickArea/hideRemovePickAreaModal',
-            })
+                type: 'pickArea/hideRemovePickAreaModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -138,7 +137,7 @@ function PickArea({ location, dispatch, pickArea }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
@@ -166,17 +165,17 @@ function PickArea({ location, dispatch, pickArea }) {
                 })()
             }
         </div>
-    )
-}
+    );
+};
 
 PickArea.propType = {
-    pickArea: PropTypes.object,
-}
+    pickArea: PropTypes.object
+};
 
 function mapStateToProps({ pickArea }) {
     return {
-        pickArea,
+        pickArea
     };
-}
+};
 
 export default connect(mapStateToProps)(PickArea);

@@ -12,31 +12,31 @@ const DemoCreateForm = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue,
-  },
+    getFieldsValue
+  }
 }) => {
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
         return;
-      }
+      };
       const data = { ...getFieldsValue(), key: item.key, uuid: item.uuid, version: item.version };
       onOk(data);
     });
-  }
+  };
 
   function checkNumber(rule, value, callback) {
     if (!value) {
       callback(new Error('年龄未填写'));
-    }
+    };
     if (!/^[\d]{1,2}$/.test(value)) {
       callback(new Error('年龄不合法'));
     } else {
       callback();
-    }
-  }
+    };
+  };
 
-  const children=[];
+  const children = [];
   children.push(
     <BaseFormItem label="代码 :" >
       {getFieldDecorator('code', {
@@ -52,34 +52,34 @@ const DemoCreateForm = ({
 
   children.push(
     <BaseFormItem label="姓名 :" >
-        {getFieldDecorator('name', {
-                  initialValue: item.name,
-                  rules: [{ required: true, message: '名称未填写' },],
-                })(
-                  <Input type="text"></Input>
-                  )}
+      {getFieldDecorator('name', {
+        initialValue: item.name,
+        rules: [{ required: true, message: '名称未填写' },],
+      })(
+        <Input type="text"></Input>
+        )}
     </BaseFormItem>
   );
 
   children.push(
     <BaseFormItem label="联系方式 :" >
-        {getFieldDecorator('phone', {
-            initialValue: item.phone,
-          })(
-            <Input type="text"></Input>
-            )}
+      {getFieldDecorator('phone', {
+        initialValue: item.phone,
+      })(
+        <Input type="text"></Input>
+        )}
     </BaseFormItem>
   );
 
-  const toolbar=[];
+  const toolbar = [];
   toolbar.push(<Button onClick={handleOk}> 保存</Button>);
   toolbar.push(<Button style={{ marginLeft: 8 }} onClick={() => onCancel()}> 取消</Button>);
   return (
     <div>
-       <ToolbarPanel children={toolbar} />
-        <BaseCard title="基本信息" single={true}>
-          <BaseForm items={children} />
-        </BaseCard>
+      <ToolbarPanel children={toolbar} />
+      <BaseCard title="基本信息" single={true}>
+        <BaseForm items={children} />
+      </BaseCard>
     </div>
   );
 };
@@ -88,7 +88,7 @@ DemoCreateForm.propTypes = {
   form: PropTypes.object,
   item: PropTypes.object,
   onOk: PropTypes.func,
-  onCancel: PropTypes.func,
+  onCancel: PropTypes.func
 };
 
 export default Form.create()(DemoCreateForm);

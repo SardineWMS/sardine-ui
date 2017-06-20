@@ -17,19 +17,19 @@ export default {
             size: 'default'
         },
         modalVisible: false,
-        modalType: 'create',
+        modalType: 'create'
     },
 
     subscriptions: {
-        setup({dispatch, history}) {
+        setup({ dispatch, history }) {
             history.listen(location => {
                 if (location.pathname === '/basicInfo/binType') {
                     dispatch({
                         type: 'query',
                         payload: location.query,
-                    })
-                }
-            })
+                    });
+                };
+            });
         }
     },
 
@@ -39,25 +39,19 @@ export default {
         }, {
             call, put
         }) {
-            console.log("调用异步方法");
-            console.dir(payload);
-            yield put({
-                type: 'showLoading',
-            })
-            const {data} = yield call(queryBinType, parse(payload));
+            const { data } = yield call(queryBinType, parse(payload));
             if (data) {
-                console.dir(data);
                 yield put({
                     type: 'querySuccess',
                     payload: {
                         list: data.obj.records,
                         pagination: {
                             total: data.obj.recordCount,
-                            current: data.obj.page,
+                            current: data.obj.page
                         }
                     }
-                })
-            }
+                });
+            };
         },
 
         *create({
@@ -67,18 +61,18 @@ export default {
         }) {
             yield put({
                 type: 'hideModal'
-            })
+            });
             yield put({
                 type: 'showLoading'
-            })
+            });
             yield call(create, payload);
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         },
 
-        *update({payload}, {
+        *update({ payload }, {
             call,
             put
         }) {
@@ -87,16 +81,16 @@ export default {
                 payload: {
                     currentItem: {}
                 }
-            })
-            yield put({ type: 'showLoading' })
+            });
+            yield put({ type: 'showLoading' });
             yield call(update, payload);
             yield put({
                 type: 'query',
                 payload: {}
-            })
+            });
         },
 
-        *remove({payload}, {
+        *remove({ payload }, {
             call, put
         }) {
             yield put({
@@ -104,29 +98,29 @@ export default {
             });
             yield call(deleteBinType, {
                 uuid: payload.uuid,
-                version: payload.version,
+                version: payload.version
             });
             yield put({
                 type: 'query',
                 payload: {}
-            })
+            });
         }
     },
 
     reducers: {
         showLoading(state) {
-            return { ...state, loading: false }
+            return { ...state, loading: false };
         },
         querySuccess(state, action) {
-            return { ...state, ...action.payload, loading: false }
+            return { ...state, ...action.payload, loading: false };
         },
 
         showModal(state, action) {
-            return { ...state, ...action.payload, modalVisible: true }
+            return { ...state, ...action.payload, modalVisible: true };
         },
 
         hideModal(state, action) {
-            return { ...state, modalVisible: false, ...action.payload }
+            return { ...state, modalVisible: false, ...action.payload };
         },
     }
 }

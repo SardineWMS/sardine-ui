@@ -4,21 +4,18 @@ const SHOW_PARENT = TreeSelect.SHOW_PARENT;
 
 class RoleAssignTree extends React.Component {
     constructor(props) {
-        console.log("props", props.treeData);
-        console.dir(props.treeData);
         super(props);
         const values = [];
         for (var data of props.treeData) {
             values.push(data.value);
-        }
+        };
 
         this.state = {
             ...props,
-            value: values,
-        }
+            value: values
+        };
     }
     onChange = (value, label, extra) => {
-        console.log('onChange ', value, label, extra);
         this.setState({ value: value });
     };
     // onSelect = (value, node) => {
@@ -29,7 +26,7 @@ class RoleAssignTree extends React.Component {
         const values = [];
         for (var data of newProps.treeData) {
             values.push(data.value);
-        }
+        };
         this.setState({
             ...newProps,
             value: values
@@ -46,11 +43,11 @@ class RoleAssignTree extends React.Component {
             showCheckedStrategy: SHOW_PARENT,
             searchPlaceholder: 'Please select',
             style: {
-                width: 300,
-            },
+                width: 300
+            }
         };
         return (<TreeSelect {...tProps} />);
-    }
-}
+    };
+};
 
 export default RoleAssignTree;

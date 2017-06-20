@@ -1,5 +1,5 @@
 import {
-   create
+	create
 } from '../../services/system/System';
 
 import {
@@ -10,22 +10,21 @@ export default {
 	namespace: 'system',
 
 	state: {
-		loading: false,
-		
+		loading: false
 	},
 
 	effects: {
 		*create({ payload }, { call, put }) {
 			yield put({
 				type: 'showLoading'
-			})
+			});
 			const { data } = yield call(create, parse(payload));
 			if (data.status != 200) {
 				const message = data.obj;
 				const simpleMessage = message.substring(message.indexOf("errorMsg='") + 10, message.indexOf("', field"));
 				alert(data.message + "：" + simpleMessage);
 				return;
-			}
+			};
 		}
 	},
 
@@ -34,7 +33,7 @@ export default {
 			return {
 				...state,
 				loading: true
-			}
+			};
 		}
 	}
 }

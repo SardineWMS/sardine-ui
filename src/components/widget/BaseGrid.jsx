@@ -22,7 +22,7 @@ function BaseGrid({
     },
     getCheckboxProps: record => ({
 
-    }),
+    })
   };
 
   return (
@@ -31,7 +31,7 @@ function BaseGrid({
         size="small"
         bordered
         columns={columns}
-        rowSelection={rowSelectioned ? rowSelection : null} 
+        rowSelection={rowSelectioned ? rowSelection : null}
         dataSource={dataSource}
         onChange={onPageChange}
         rowKey={rowkey}
@@ -42,7 +42,7 @@ function BaseGrid({
             </Row>
           </div>} />
     </div>
-  )
-}
+  );
+};
 
 export default BaseGrid;

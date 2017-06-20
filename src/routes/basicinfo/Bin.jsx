@@ -18,7 +18,7 @@ function Bin({ location, dispatch, bin }) {
   const { list, wrhModalVisible, zoneModalVisible, shelfModalVisible, pathModalVisible, binModalVisible, treeData,
     wrhs, zones, batchCreatePathProcessModal, batchCreateShelfProcessModal, batchCreateBinProcessModal, pathNext,
     shelfNext, binNext, pathEntitys, shelfEntitys, binEntitys, binTypes, deleteBinEntitys, batchDeleteBinProcessModal, binTypeList,
-    binTypeModalVisible,
+    binTypeModalVisible
     } = bin;
 
   const { field, keyword } = location.query
@@ -31,16 +31,16 @@ function Bin({ location, dispatch, bin }) {
         payload: {
           code: data.code,
           name: data.name,
-          note: data.remark,
+          note: data.remark
         }
-      })
+      });
     },
     onCancel() {
       dispatch({
-        type: 'bin/hideWrhModal',
-      })
+        type: 'bin/hideWrhModal'
+      });
     },
-  }
+  };
 
   const CreateZoneModalProps = {
     visible: zoneModalVisible,
@@ -52,16 +52,16 @@ function Bin({ location, dispatch, bin }) {
           code: data.code,
           name: data.name,
           note: data.remark,
-          wrhUuid: data.wrh,
+          wrhUuid: data.wrh
         }
-      })
+      });
     },
     onCancel() {
       dispatch({
-        type: 'bin/hideZoneModal',
-      })
+        type: 'bin/hideZoneModal'
+      });
     },
-  }
+  };
 
   const CreatePathModalProps = {
     visible: pathModalVisible,
@@ -72,14 +72,14 @@ function Bin({ location, dispatch, bin }) {
         payload: {
           pathEntitys: data
         }
-      })
+      });
     },
     onCancel() {
       dispatch({
-        type: 'bin/hidePathModal',
-      })
+        type: 'bin/hidePathModal'
+      });
     },
-  }
+  };
 
   const CreateShelfModalProps = {
     visible: shelfModalVisible,
@@ -90,14 +90,14 @@ function Bin({ location, dispatch, bin }) {
         payload: {
           shelfEntitys: data
         }
-      })
+      });
     },
     onCancel() {
       dispatch({
-        type: 'bin/hideShelfModal',
-      })
+        type: 'bin/hideShelfModal'
+      });
     },
-  }
+  };
 
   const CreateBinModalProps = {
     visible: binModalVisible,
@@ -109,14 +109,14 @@ function Bin({ location, dispatch, bin }) {
         payload: {
           binEntitys: data
         }
-      })
+      });
     },
     onCancel() {
       dispatch({
-        type: 'bin/hideBinModal',
-      })
+        type: 'bin/hideBinModal'
+      });
     },
-  }
+  };
 
   const batchProcessPathModalProps = {
     showConfirmModal: batchCreatePathProcessModal,
@@ -128,21 +128,21 @@ function Bin({ location, dispatch, bin }) {
       dispatch({
         type: 'bin/createPath',
         payload: {
-          zoneUuid: entity,
+          zoneUuid: entity
         }
-      })
+      });
     },
     hideConfirmModal() {
       dispatch({
-        type: 'bin/hidePathModal',
-      })
+        type: 'bin/hidePathModal'
+      });
     },
     refreshGrid() {
       dispatch({
-        type: 'bin/queryBin',
-      })
+        type: 'bin/queryBin'
+      });
     },
-  }
+  };
 
   const batchProcessShelfModalProps = {
     showConfirmModal: batchCreateShelfProcessModal,
@@ -154,21 +154,21 @@ function Bin({ location, dispatch, bin }) {
       dispatch({
         type: 'bin/createShelf',
         payload: {
-          pathCode: entity,
+          pathCode: entity
         }
-      })
+      });
     },
     hideConfirmModal() {
       dispatch({
-        type: 'bin/hideShelfModal',
-      })
+        type: 'bin/hideShelfModal'
+      });
     },
     refreshGrid() {
       dispatch({
         type: 'bin/queryBin',
-      })
+      });
     },
-  }
+  };
 
   const batchProcessBinModalProps = {
     showConfirmModal: batchCreateBinProcessModal,
@@ -182,21 +182,21 @@ function Bin({ location, dispatch, bin }) {
         payload: {
           binTypeUuid: entity.binTypeUuid,
           binUsage: entity.usage,
-          code: entity.code,
+          code: entity.code
         }
-      })
+      });
     },
     hideConfirmModal() {
       dispatch({
-        type: 'bin/hideBinModal',
-      })
+        type: 'bin/hideBinModal'
+      });
     },
     refreshGrid() {
       dispatch({
-        type: 'bin/queryBin',
-      })
+        type: 'bin/queryBin'
+      });
     },
-  }
+  };
 
   const batchProcessDeleteBinModalProps = {
     showConfirmModal: batchDeleteBinProcessModal,
@@ -209,21 +209,21 @@ function Bin({ location, dispatch, bin }) {
         type: 'bin/deleteBin',
         payload: {
           uuid: entity.uuid,
-          version: entity.version,
+          version: entity.version
         }
-      })
+      });
     },
     hideConfirmModal() {
       dispatch({
-        type: 'bin/hideDeleteBinModal',
-      })
+        type: 'bin/hideDeleteBinModal'
+      });
     },
     refreshGrid() {
       dispatch({
-        type: 'bin/queryBin',
-      })
+        type: 'bin/queryBin'
+      });
     },
-  }
+  };
 
   const binSearchFormProps = {
     list: list,
@@ -235,11 +235,11 @@ function Bin({ location, dispatch, bin }) {
         payload: {
           code: fieldsValue.code,
           usage: fieldsValue.usage,
-          state: fieldsValue.state,
+          state: fieldsValue.state
         }
-      })
+      });
     },
-  }
+  };
 
   const binTreeProps = {
     data: treeData,
@@ -253,7 +253,7 @@ function Bin({ location, dispatch, bin }) {
         pathUuid = e.node.props.nodeValue;
       } else if (e.node.props.wrhType == 'shelf') {
         shelfUuid = e.node.props.nodeValue;
-      }
+      };
       dispatch({
         type: 'bin/queryBin',
         payload: {
@@ -262,9 +262,9 @@ function Bin({ location, dispatch, bin }) {
           pathUuid: pathUuid,
           shelfUuid: shelfUuid
         }
-      })
+      });
     }
-  }
+  };
 
   const binSearchProps = {
     dataSource: list,
@@ -275,32 +275,32 @@ function Bin({ location, dispatch, bin }) {
           sort: sorter.columnKey,
           order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
         }
-      })
+      });
     },
     onCreateWrh() {
       dispatch({
-        type: 'bin/showWrhModal',
-      })
+        type: 'bin/showWrhModal'
+      });
     },
     onCreateZone() {
       dispatch({
-        type: 'bin/queryWrhsAndShowZoneModal',
-      })
+        type: 'bin/queryWrhsAndShowZoneModal'
+      });
     },
     onCreateShelf() {
       dispatch({
-        type: 'bin/showShelfModal',
-      })
+        type: 'bin/showShelfModal'
+      });
     },
     onCreatePath() {
       dispatch({
-        type: 'bin/queryZonesAndShowPathModal',
-      })
+        type: 'bin/queryZonesAndShowPathModal'
+      });
     },
     onCreateBin() {
       dispatch({
-        type: 'bin/queryBinTypesAndShowBinModal',
-      })
+        type: 'bin/queryBinTypesAndShowBinModal'
+      });
     },
     onDeleteBin(data) {
       dispatch({
@@ -308,7 +308,7 @@ function Bin({ location, dispatch, bin }) {
         payload: {
           deleteBinEntitys: data
         }
-      })
+      });
     },
     onCreateBinType() {
       dispatch({
@@ -316,79 +316,79 @@ function Bin({ location, dispatch, bin }) {
         payload: {
 
         }
-      })
+      });
     }
-  }
+  };
 
   const binTypeModalProps = {
     dataSource: binTypeList,
     visible: binTypeModalVisible,
     onCancel() {
       dispatch({
-        type: 'bin/hideBinTypeModal',
-      })
+        type: 'bin/hideBinTypeModal'
+      });
     },
     onEdit(record) {
       record.editable = true;
       dispatch({
         type: 'bin/queryBinTypeSuccess',
-        payload: record,
-      })
+        payload: record
+      });
     },
     onCancelEdit(record) {
       record.editable = false;
       if (!record.uuid) {
         dispatch({
-          type: 'bin/queryBinType',
-        })
+          type: 'bin/queryBinType'
+        });
       }
       else {
         dispatch({
           type: 'bin/queryBinTypeSuccess',
-          payload: record,
-        })
-      }
+          payload: record
+        });
+      };
     },
     onAdd() {
       dispatch({
-        type: 'bin/addBinTypeLine',
-      })
+        type: 'bin/addBinTypeLine'
+      });
     },
     onDelete(record) {
       if (record.uuid === undefined)
         dispatch({
-          type: 'bin/queryBinType',
-        })
+          type: 'bin/queryBinType'
+        });
       else
         dispatch({
           type: 'bin/deleteBinType',
-          payload: record,
-        })
+          payload: record
+        });
     },
     onSave(record) {
       if (record.uuid === undefined)
         dispatch({
           type: 'bin/saveNewBinType',
-          payload: record,
-        })
+          payload: record
+        });
       else
         dispatch({
           type: 'bin/saveModifyBinType',
-          payload: record,
-        })
+          payload: record
+        });
     }
-  }
+  };
 
   const CreateWrhModalGen = () =>
-    <CreateWrhModal {...CreateWrhModalProps} />
+    <CreateWrhModal {...CreateWrhModalProps} />;
   const CreateZoneModalGen = () =>
-    <CreateZoneModal {...CreateZoneModalProps} />
+    <CreateZoneModal {...CreateZoneModalProps} />;
   const CreateShelfModalGen = () =>
-    <CreateShelfModal {...CreateShelfModalProps} />
+    <CreateShelfModal {...CreateShelfModalProps} />;
   const CreatePathModalGen = () =>
-    <CreatePathModal {...CreatePathModalProps} />
+    <CreatePathModal {...CreatePathModalProps} />;
   const CreateBinModalGen = () =>
-    <CreateBinModal {...CreateBinModalProps} />
+    <CreateBinModal {...CreateBinModalProps} />;
 
   return (
     <div className="content-inner">
@@ -412,17 +412,17 @@ function Bin({ location, dispatch, bin }) {
         </Content>
       </Layout>
     </div>
-  )
-}
+  );
+};
 
 Bin.propTypes = {
   bin: PropTypes.object,
   location: PropTypes.object,
-  dispatch: PropTypes.func,
-}
+  dispatch: PropTypes.func
+};
 
 function mapStateToProps({ bin }) {
-  return { bin }
-}
+  return { bin };
+};
 
 export default connect(mapStateToProps)(Bin);

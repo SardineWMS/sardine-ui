@@ -11,26 +11,26 @@ const SerialArchCreateModal = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue,
-    },
+        getFieldsValue
+    }
 }) => {
     function handleOk() {
         validateFields((errors) => {
             if (errors) {
-                return
-            }
+                return;
+            };
             const data = {
-                ...getFieldsValue(),
-            }
-            onOk(data)
-        })
-    }
+                ...getFieldsValue()
+            };
+            onOk(data);
+        });
+    };
     const modalOpts = {
         title: '线路体系',
         visible,
         onOk: handleOk,
         onCancel,
-        wrapClassName: 'vertical-center-modal',
+        wrapClassName: 'vertical-center-modal'
     };
 
     return (
@@ -56,7 +56,7 @@ const SerialArchCreateModal = ({
                 </BaseFormItem>
             </Form>
         </Modal>
-    )
-}
+    );
+};
 
 export default Form.create()(SerialArchCreateModal);

@@ -13,7 +13,7 @@ const VehicleView = ({
     onBack,
     onOnline,
     onOffline,
-    showEdit,
+    showEdit
 }) => {
     function convertState(text) {
         if (text == "free")
@@ -46,7 +46,7 @@ const VehicleView = ({
     </BaseFormItem>);
 
     let extendFormItems = [];
-    extendFormItems.push(<BaseFormItem label="状态：" key={Guid()}><span>{convertState(item.state)}</span></BaseFormItem>)
+    extendFormItems.push(<BaseFormItem label="状态：" key={Guid()}><span>{convertState(item.state)}</span></BaseFormItem>);
 
     let toolbar = [];
     toolbar.push(<Button onClick={() => showEdit(item)} key={Guid()} disabled={!item.state == 'free' ? true : !PermissionUtil("vehicle:edit")}>编辑</Button>);
@@ -68,7 +68,7 @@ const VehicleView = ({
             </BaseCard>
             <RemarkCard remark={item.remark} />
         </div>
-    )
+    );
 };
 
 export default VehicleView;

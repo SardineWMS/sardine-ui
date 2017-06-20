@@ -8,7 +8,7 @@ moment.locale('zh-cn');
 
 const ContainerStockInfo = ({
     dataSource,
-    onViewArticle,
+    onViewArticle
  }) => {
     const columns = [{
         title: '商品代码',
@@ -18,47 +18,47 @@ const ContainerStockInfo = ({
     }, {
         title: '商品名称',
         dataIndex: 'article.name',
-        key: 'articleName',
+        key: 'articleName'
     }, {
         title: '包装规格',
         dataIndex: 'qpcStr',
-        key: 'qpcStr',
+        key: 'qpcStr'
     }, {
         title: '供应商',
         dataIndex: 'supplier',
         key: 'supplier',
-        render: (text, record) => record.supplier ? record.supplier.name + "[" + record.supplier.code + "]" : '',
+        render: (text, record) => record.supplier ? record.supplier.name + "[" + record.supplier.code + "]" : ''
     }, {
         title: '货位',
         dataIndex: 'binCode',
-        key: 'binCode',
+        key: 'binCode'
     }, {
         title: '生产日期',
         dataIndex: 'productionDate',
         key: 'productionDate',
-        render: (text) => moment(text).format("YYYY-MM-DD"),
+        render: (text) => moment(text).format("YYYY-MM-DD")
     }, {
         title: '到效日期',
         dataIndex: 'validDate',
         key: 'validDate',
-        render: (text) => moment(text).format("YYYY-MM-DD"),
+        render: (text) => moment(text).format("YYYY-MM-DD")
     }, {
         title: '批次',
         dataIndex: 'stockBatch',
-        key: 'stockBatch',
+        key: 'stockBatch'
     }, {
         title: '数量',
         dataIndex: 'qty',
-        key: 'qty',
+        key: 'qty'
     }, {
         title: '单价',
         dataIndex: 'price',
-        key: 'price',
+        key: 'price'
     }, {
         title: '金额',
         dataIndex: 'amount',
         key: 'amount',
-        render: (text, record) => Number.parseFloat(record.qty) * Number.parseFloat(record.price),
+        render: (text, record) => Number.parseFloat(record.qty) * Number.parseFloat(record.price)
     }];
 
     return (
@@ -69,7 +69,7 @@ const ContainerStockInfo = ({
                 </Collapse.Panel>
             </Collapse>
         </div>
-    )
-}
+    );
+};
 
 export default ContainerStockInfo;

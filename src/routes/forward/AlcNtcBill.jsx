@@ -23,7 +23,7 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
         batchDeleteProcessModal,
         batchFinishProcessModal,
         batchAbortProcessModal,
-        alcNtcBillNext,
+        alcNtcBillNext
  } = alcNtc;
 
     const alcNtcBillSearchGridProps = {
@@ -31,52 +31,51 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
         pagination: pagination,
         onCreate() {
             dispatch({
-                type: 'alcNtc/showCreate',
-            })
+                type: 'alcNtc/showCreate'
+            });
         },
         onViewItem(item) {
             dispatch({
                 type: 'alcNtc/viewAlcNtc',
-                payload: item,
-            })
+                payload: item
+            });
         },
         onRemoveBatch(alcNtcBills) {
             if (alcNtcBills.length <= 0) {
                 message.warning("请选择要删除的配单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'alcNtc/batchDeleteAlcNtcBill',
                 payload: {
-                    deleteAlcNtcBillEntitys: alcNtcBills,
+                    deleteAlcNtcBillEntitys: alcNtcBills
                 }
-            })
+            });
         },
         onFinishBatch(alcNtcBills) {
             if (alcNtcBills.length <= 0) {
                 message.error("请选择要审核的配单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'alcNtc/batchAuditAlcNtcBill',
                 payload: {
-                    finishAlcNtcBillEntitys: alcNtcBills,
+                    finishAlcNtcBillEntitys: alcNtcBills
                 }
-            })
+            });
         },
         onAbortBatch(alcNtcBills) {
             if (alcNtcBills.length <= 0) {
                 message.error("请选择要作废的配单！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'alcNtc/batchAbortAlcNtcBill',
                 payload: {
-                    abortAlcNtcBillEntitys: alcNtcBills,
+                    abortAlcNtcBillEntitys: alcNtcBills
                 }
-            })
-        },
-
+            });
+        }
     };
 
     const alcNtcBillSearchFormProps = {
@@ -84,8 +83,8 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
             dispatch({
                 type: 'alcNtc/query',
                 payload: fieldsValue
-            })
-        },
+            });
+        }
     };
 
     const alcNtcBillCreateFormProps = {
@@ -95,9 +94,9 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
             dispatch({
                 type: 'alcNtc/checkCustomer',
                 payload: {
-                    value, currentItem,
-                },
-            })
+                    value, currentItem
+                }
+            });
         },
         onSelectWrh() { },
         handleSave(data) {
@@ -107,48 +106,48 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 for (var wrh of wrhs) {
                     if (wrh.uuid == data.wrh)
                         data.wrh = wrh;
-                }
-            }
+                };
+            };
             data.items = billItems;
             if (data.items.length > 1) {
                 for (let i = 0; i < data.items.length; i++) {
                     if (data.items[i].article == null) {
                         message.error("第" + parseInt(i + 1) + "行明细中，商品不能为空", 2, '');
                         return;
-                    }
+                    };
                     if (data.items[i].qty == null) {
                         message.error("第" + parseInt(i + 1) + "行明细中，数量不能为空", 2, '');
                         return;
-                    }
+                    };
                     for (let j = i + 1; j < data.items.length; j++) {
                         if (data.items[j].article == null) {
                             message.error("第" + parseInt(j + 1) + "行明细中，商品不能为空", 2, '');
                             return;
-                        }
+                        };
                         if (data.items[i].article.code == data.items[j].article.code && data.items[i].qpcStr == data.items[j].qpcStr) {
                             message.warning("商品明细中商品：" + data.items[i].article.code + "规格：" + data.items[j].qpcStr + "不能重复", 2, '');
                             return;
-                        }
-                    }
-                }
-            }
+                        };
+                    };
+                };
+            };
             if (data.uuid) {
                 dispatch({
                     type: 'alcNtc/update',
-                    payload: data,
-                })
+                    payload: data
+                });
             } else {
                 dispatch({
                     type: 'alcNtc/insert',
-                    payload: data,
-                })
+                    payload: data
+                });
             };
         },
         onCancel() {
             dispatch({
                 type: 'alcNtc/query',
-                payload: {},
-            })
+                payload: {}
+            });
         }
     };
 
@@ -160,7 +159,7 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 payload: {
                     record, dataSource
                 }
-            })
+            });
         },
         refreshMunit(record, dataSource) {
             dispatch({
@@ -168,23 +167,23 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 payload: {
                     record, dataSource
                 }
-            })
+            });
         },
         calculateCaseQtyStr(record, dataSource) {
             dispatch({
                 type: 'alcNtc/calculateCaseQtyStr',
                 payload: {
-                    record, dataSource, currentItem,
+                    record, dataSource, currentItem
                 }
-            })
+            });
         },
         onAddItem() {
             dispatch({
                 type: 'alcNtc/addItem',
                 payload: {
-                    dataSource: billItems,
+                    dataSource: billItems
                 }
-            })
+            });
         },
         onRemoveItem(record, dataSource) {
             dispatch({
@@ -192,7 +191,7 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 payload: {
                     record, dataSource, currentItem
                 }
-            })
+            });
         }
     };
 
@@ -201,25 +200,25 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
         onEdit(item) {
             dispatch({
                 type: 'alcNtc/edit',
-                payload: item,
-            })
+                payload: item
+            });
         },
         onDelete(item) {
             dispatch({
                 type: 'alcNtc/gridRemove',
-                payload: item,
-            })
+                payload: item
+            });
         },
         onAudit(item) {
             dispatch({
                 type: 'alcNtc/gridAudit',
-                payload: item,
-            })
-        },
+                payload: item
+            });
+        }
     };
 
     const alcNtcBillViewItemProps = {
-        dataSource: billItems,
+        dataSource: billItems
     };
 
     const batchProcessDeleteAlcNtcBillProps = {
@@ -236,12 +235,12 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                     version: entity.version,
                     token: localStorage.getItem("token"),
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'alcNtc/hideDeleteAlcNtcBillModal',
-            })
+                type: 'alcNtc/hideDeleteAlcNtcBillModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -249,7 +248,7 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
@@ -265,14 +264,14 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'alcNtc/hideFinishAlcNtcBillModal',
-            })
+                type: 'alcNtc/hideFinishAlcNtcBillModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -280,7 +279,7 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
@@ -296,14 +295,14 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'alcNtc/hideAbortAlcNtcBillModal',
-            })
+                type: 'alcNtc/hideAbortAlcNtcBillModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -311,7 +310,7 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
@@ -342,18 +341,17 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
 
             }
         </div>
-    )
-
-}
+    );
+};
 
 AlcNtcBill.propType = {
-    alcNtc: PropTypes.object,
-}
+    alcNtc: PropTypes.object
+};
 
 function mapStateToProps({ alcNtc }) {
     return {
-        alcNtc,
+        alcNtc
     };
-}
+};
 
 export default connect(mapStateToProps)(AlcNtcBill);

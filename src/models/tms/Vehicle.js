@@ -23,7 +23,7 @@ export default {
         batchOnlineProcessModal: false,
         batchOfflineProcessModal: false,
         onlineVehicleEntitys: [],
-        offlineVehicleEntitys: [],
+        offlineVehicleEntitys: []
     },
 
     subscriptions: {
@@ -36,9 +36,9 @@ export default {
                     dispatch({
                         type: 'query',
                         payload: location.query,
-                    })
-                }
-            })
+                    });
+                };
+            });
         }
     },
 
@@ -60,9 +60,9 @@ export default {
                             total: data.obj.recordCount,
                             size: 'default'
                         }
-                    },
-                })
-            }
+                    }
+                });
+            };
         },
 
         *queryVehicleType({ payload }, { call, put }) {
@@ -71,10 +71,10 @@ export default {
                 yield put({
                     type: 'queryVehicleTypeSuccess',
                     payload: {
-                        vehicleTypeList: data.obj.records,
+                        vehicleTypeList: data.obj.records
                     }
-                })
-            }
+                });
+            };
         },
 
         *addVehicleTypeLine({ payload }, { call, put }) {
@@ -87,9 +87,9 @@ export default {
             yield put({
                 type: 'queryVehicleTypeSuccess',
                 payload: {
-                    vehicleTypeList: vehicleTypeList,
+                    vehicleTypeList: vehicleTypeList
                 }
-            })
+            });
         },
 
         *insertVehicleType({ payload }, { call, put }) {
@@ -97,7 +97,7 @@ export default {
             yield put({
                 type: 'queryVehicleType',
                 payload: {}
-            })
+            });
         },
 
         *updateVehicleType({ payload }, { call, put }) {
@@ -105,18 +105,18 @@ export default {
             yield put({
                 type: 'queryVehicleType',
                 payload: {}
-            })
+            });
         },
 
         *deleteVehicleType({ payload }, { call, put }) {
             yield call(deleteVehicleType, {
                 uuid: payload.uuid,
-                version: payload.version,
+                version: payload.version
             });
             yield put({
                 type: 'queryVehicleType',
                 payload: {}
-            })
+            });
         },
 
         *insert({ payload }, { call, put }) {
@@ -127,11 +127,11 @@ export default {
                     yield put({
                         type: 'onViewItem',
                         payload: {
-                            currentItem: getData.data.obj,
+                            currentItem: getData.data.obj
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
 
         *update({ payload }, { call, put }) {
@@ -142,11 +142,11 @@ export default {
                     yield put({
                         type: 'onViewItem',
                         payload: {
-                            currentItem: getData.data.obj,
+                            currentItem: getData.data.obj
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
 
         *showCreate({ payload }, { call, put }) {
@@ -157,10 +157,10 @@ export default {
                     type: 'createSuccess',
                     payload: {
                         carrierList: carrierResult.data.obj.records,
-                        vehicleTypeList: data.obj.records,
+                        vehicleTypeList: data.obj.records
                     }
-                })
-            }
+                });
+            };
         },
 
         *showEdit({ payload }, { call, put }) {
@@ -172,10 +172,10 @@ export default {
                     payload: {
                         carrierList: carrierResult.data.obj.records,
                         vehicleTypeList: data.obj.records,
-                        currentItem: payload,
+                        currentItem: payload
                     }
-                })
-            }
+                });
+            };
         },
 
         *online({ payload }, { call, put }) {
@@ -185,18 +185,18 @@ export default {
             });
             yield put({
                 type: 'get',
-                payload: payload,
+                payload: payload
             });
         },
 
         *offline({ payload }, { call, put }) {
             yield call(offline, {
                 uuid: payload.uuid,
-                version: payload.version,
+                version: payload.version
             });
             yield put({
                 type: 'get',
-                payload: payload,
+                payload: payload
             });
         },
 
@@ -208,10 +208,10 @@ export default {
                 yield put({
                     type: 'onViewItem',
                     payload: {
-                        currentItem: data.obj,
+                        currentItem: data.obj
                     }
-                })
-            }
+                });
+            };
         },
 
         *gridOnline({ payload }, { call, put }) {
@@ -239,37 +239,37 @@ export default {
 
     reducers: {
         querySuccess(state, action) {
-            return { ...state, ...action.payload, showPage: '' }
+            return { ...state, ...action.payload, showPage: '' };
         },
         queryVehicleTypeSuccess(state, action) {
-            return { ...state, ...action.payload, vehicleTypeModalVisible: true }
+            return { ...state, ...action.payload, vehicleTypeModalVisible: true };
         },
         hideVehicleTypeModal(state, action) {
-            return { ...state, vehicleTypeModalVisible: false }
+            return { ...state, vehicleTypeModalVisible: false };
         },
         createSuccess(state, action) {
-            return { ...state, ...action.payload, showPage: 'create' }
+            return { ...state, ...action.payload, showPage: 'create' };
         },
         onViewItem(state, action) {
-            return { ...state, ...action.payload, showPage: 'view' }
+            return { ...state, ...action.payload, showPage: 'view' };
         },
         backSuccess(state, action) {
-            return { ...state, showPage: '' }
+            return { ...state, showPage: '' };
         },
         itemEditSuccess(state, action) {
-            return { ...state, ...action.payload, showPage: 'create' }
+            return { ...state, ...action.payload, showPage: 'create' };
         },
         batchOnlineVehicle(state, action) {
-            return { ...state, ...action.payload, batchOnlineProcessModal: true }
+            return { ...state, ...action.payload, batchOnlineProcessModal: true };
         },
         batchOfflineVehicle(state, action) {
-            return { ...state, ...action.payload, batchOfflineProcessModal: true }
+            return { ...state, ...action.payload, batchOfflineProcessModal: true };
         },
         hideOnlineVehicleModal(state, action) {
-            return { ...state, batchOnlineProcessModal: false }
+            return { ...state, batchOnlineProcessModal: false };
         },
         hideOfflineVehicleModal(state, action) {
-            return { ...state, batchOfflineProcessModal: false }
+            return { ...state, batchOfflineProcessModal: false };
         }
     },
 }

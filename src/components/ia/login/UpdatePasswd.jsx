@@ -4,12 +4,12 @@ const FormItem = Form.Item
 
 const formItemLayout = {
   labelCol: {
-    span: 6,
+    span: 6
   },
   wrapperCol: {
-    span: 14,
-  },
-}
+    span: 14
+  }
+};
 
 const UpdatePasswd = ({
   visible,
@@ -18,32 +18,32 @@ const UpdatePasswd = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue,
-  },
+    getFieldsValue
+  }
 }) => {
-    function handleOk() {
+  function handleOk() {
     validateFields((errors) => {
       if (errors) {
-        return
-      }
+        return;
+      };
 
-      const data={...getFieldsValue()}
-      data.token=localStorage.getItem("token");
-      if(data.newPasswd!=data.confirmPasswd){
+      const data = { ...getFieldsValue() };
+      data.token = localStorage.getItem("token");
+      if (data.newPasswd != data.confirmPasswd) {
         alert("新密码与确认密码不一致");
         return;
-      }
+      };
       onOk(data)
-    })
-  }
+    });
+  };
 
   const modalOpts = {
     title: '修改密码',
     visible,
     onOk: handleOk,
     onCancel,
-    wrapClassName: 'vertical-center-modal',
-  }
+    wrapClassName: 'vertical-center-modal'
+  };
 
   return (
     <Modal {...modalOpts}>
@@ -68,7 +68,7 @@ const UpdatePasswd = ({
             ],
           })(<Input />)}
         </FormItem>
-       <FormItem label="确认密码" hasFeedback {...formItemLayout}>
+        <FormItem label="确认密码" hasFeedback {...formItemLayout}>
           {getFieldDecorator('confirmPasswd', {
             rules: [
               {
@@ -80,11 +80,11 @@ const UpdatePasswd = ({
         </FormItem>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
 UpdatePasswd.propTypes = {
-  
-}
+
+};
 
 export default Form.create()(UpdatePasswd);

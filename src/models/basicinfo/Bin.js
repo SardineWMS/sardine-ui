@@ -30,7 +30,7 @@ export default {
     shelfModalVisible: false,
     binModalVisible: false,
     binTypeList: [],
-    binTypeModalVisible: false,
+    binTypeModalVisible: false
   },
 
   subscriptions: {
@@ -48,9 +48,9 @@ export default {
               fieldsvalue
             },
 
-          })
-        }
-      })
+          });
+        };
+      });
     },
   },
 
@@ -63,10 +63,10 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      })
+      });
       const {
         data
-      } = yield call(queryBin, parse(payload))
+      } = yield call(queryBin, parse(payload));
       if (data) {
         yield put({
           type: 'querySuccess',
@@ -75,11 +75,11 @@ export default {
             treeData: data.obj.treeData,
             pagination: {
               total: data.obj.pageData.recordCount,
-              current: data.obj.pageData.page,
+              current: data.obj.pageData.page
             }
           },
-        })
-      }
+        });
+      };
     },
     * queryWrhsAndShowZoneModal({
       payload
@@ -89,18 +89,18 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      })
+      });
       const {
         data
-      } = yield call(queryWrhs, parse(payload))
+      } = yield call(queryWrhs, parse(payload));
       if (data) {
         yield put({
           type: 'showZoneModal',
           payload: {
-            wrhs: data.obj,
-          },
-        })
-      }
+            wrhs: data.obj
+          }
+        });
+      };
     },
     * queryZonesAndShowPathModal({
       payload
@@ -110,18 +110,18 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      })
+      });
       const {
         data
-      } = yield call(queryZones, parse(payload))
+      } = yield call(queryZones, parse(payload));
       if (data) {
         yield put({
           type: 'showPathModal',
           payload: {
-            zones: data.obj,
-          },
-        })
-      }
+            zones: data.obj
+          }
+        });
+      };
     },
     * queryBinTypesAndShowBinModal({
       payload
@@ -131,18 +131,18 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      })
+      });
       const {
         data
-      } = yield call(queryBinTypes, parse(payload))
+      } = yield call(queryBinTypes, parse(payload));
       if (data) {
         yield put({
           type: 'showBinModal',
           payload: {
-            binTypes: data.obj,
-          },
-        })
-      }
+            binTypes: data.obj
+          }
+        });
+      };
     },
     * createWrh({
       payload
@@ -152,10 +152,10 @@ export default {
     }) {
       yield put({
         type: 'hideWrhModal'
-      })
+      });
       yield put({
         type: 'showLoading'
-      })
+      });
       yield call(createWrh, payload);
       const {
         data
@@ -171,11 +171,11 @@ export default {
             treeData: data.obj.treeData,
             pagination: {
               total: data.obj.pageData.recordCount,
-              current: data.obj.pageData.page,
+              current: data.obj.pageData.page
             }
-          },
-        })
-      }
+          }
+        });
+      };
     },
 
     * createZone({
@@ -186,10 +186,10 @@ export default {
     }) {
       yield put({
         type: 'hideZoneModal'
-      })
+      });
       yield put({
         type: 'showLoading'
-      })
+      });
       yield call(createZone, payload);
       const {
         data
@@ -205,11 +205,11 @@ export default {
             treeData: data.obj.treeData,
             pagination: {
               total: data.obj.pageData.recordCount,
-              current: data.obj.pageData.page,
+              current: data.obj.pageData.page
             }
-          },
-        })
-      }
+          }
+        });
+      };
     },
 
     * createPath({
@@ -220,10 +220,10 @@ export default {
     }) {
       yield put({
         type: 'hidePathModal'
-      })
+      });
       yield put({
         type: 'showLoading'
-      })
+      });
       yield call(createPath, payload);
       yield put({
         type: 'executeNext'
@@ -238,10 +238,10 @@ export default {
     }) {
       yield put({
         type: 'hideShelfModal'
-      })
+      });
       yield put({
         type: 'showLoading'
-      })
+      });
       yield call(createShelf, payload);
       yield put({
         type: 'executeNext'
@@ -256,10 +256,10 @@ export default {
     }) {
       yield put({
         type: 'hideBinModal'
-      })
+      });
       yield put({
         type: 'showLoading'
-      })
+      });
       yield call(createBin, payload);
       yield put({
         type: 'executeNext'
@@ -294,24 +294,23 @@ export default {
       yield put({
         type: 'queryBinTypeSuccess',
         payload: {
-          binTypeList: binTypeLists,
+          binTypeList: binTypeLists
         }
-      })
+      });
     },
 
     *queryBinType({ payload }, {
       call, put
     }) {
-      console.log("queryBinType...");
       const { data } = yield call(queryBinType, parse(payload));
       if (data) {
         yield put({
           type: 'queryBinTypeSuccess',
           payload: {
-            binTypeList: data.obj.records,
+            binTypeList: data.obj.records
           }
-        })
-      }
+        });
+      };
     },
 
     *deleteBinType({ payload }, { call, put }) {
@@ -322,7 +321,7 @@ export default {
       yield put({
         type: 'queryBinType',
         payload: {}
-      })
+      });
     },
 
     *saveNewBinType({ payload }, { call, put }) {
@@ -330,7 +329,7 @@ export default {
       yield put({
         type: 'queryBinType',
         payload: {}
-      })
+      });
     },
 
     *saveModifyBinType({ payload }, {
@@ -340,7 +339,7 @@ export default {
       yield put({
         type: 'queryBinType',
         payload: {}
-      })
+      });
     }
   },
 
@@ -349,40 +348,40 @@ export default {
       return {
         ...state,
         loading: true
-      }
+      };
     },
     querySuccess(state, action) {
       return {
         ...state,
         ...action.payload,
         loading: false
-      }
+      };
     },
     showWrhModal(state, action) {
       return {
         ...state,
         ...action.payload,
         wrhModalVisible: true
-      }
+      };
     },
     hideWrhModal(state) {
       return {
         ...state,
         wrhModalVisible: false
-      }
+      };
     },
     showZoneModal(state, action) {
       return {
         ...state,
         ...action.payload,
         zoneModalVisible: true
-      }
+      };
     },
     hideZoneModal(state) {
       return {
         ...state,
         zoneModalVisible: false
-      }
+      };
     },
     showPathModal(state, action) {
       return {
@@ -391,15 +390,15 @@ export default {
         pathModalVisible: true,
         batchCreatePathProcessModal: false,
         pathEntitys: [],
-        pathNext: false,
-      }
+        pathNext: false
+      };
     },
     hidePathModal(state) {
       return {
         ...state,
         pathModalVisible: false,
-        batchCreatePathProcessModal: false,
-      }
+        batchCreatePathProcessModal: false
+      };
     },
     showShelfModal(state, action) {
       return {
@@ -408,15 +407,15 @@ export default {
         shelfModalVisible: true,
         batchCreateShelfProcessModal: false,
         shelfEntitys: [],
-        shelfNext: false,
-      }
+        shelfNext: false
+      };
     },
     hideShelfModal(state) {
       return {
         ...state,
         shelfModalVisible: false,
-        batchCreateShelfProcessModal: false,
-      }
+        batchCreateShelfProcessModal: false
+      };
     },
     showBinModal(state, action) {
       return {
@@ -425,21 +424,21 @@ export default {
         binModalVisible: true,
         batchCreateBinProcessModal: false,
         binEntitys: [],
-        binNext: false,
-      }
+        binNext: false
+      };
     },
     hideBinModal(state) {
       return {
         ...state,
         binModalVisible: false,
-        batchCreateBinProcessModal: false,
-      }
+        batchCreateBinProcessModal: false
+      };
     },
     hideDeleteBinModal(state) {
       return {
         ...state,
-        batchDeleteBinProcessModal: false,
-      }
+        batchDeleteBinProcessModal: false
+      };
     },
     batchSavePath(state, action) {
       return {
@@ -447,7 +446,7 @@ export default {
         ...action.payload,
         pathModalVisible: false,
         batchCreatePathProcessModal: true
-      }
+      };
     },
     batchSaveShelf(state, action) {
       return {
@@ -455,7 +454,7 @@ export default {
         ...action.payload,
         shelfModalVisible: false,
         batchCreateShelfProcessModal: true
-      }
+      };
     },
     batchSaveBin(state, action) {
       return {
@@ -463,26 +462,26 @@ export default {
         ...action.payload,
         binModalVisible: false,
         batchCreateBinProcessModal: true
-      }
+      };
     },
     batchDeleteBin(state, action) {
       return {
         ...state,
         ...action.payload,
         batchDeleteBinProcessModal: true
-      }
+      };
     },
     executeNext(state) {
       return {
         ...state,
         next: true
-      }
+      };
     },
     queryBinTypeSuccess(state, action) {
-      return { ...state, ...action.payload, binTypeModalVisible: true }
+      return { ...state, ...action.payload, binTypeModalVisible: true };
     },
     hideBinTypeModal(state) {
-      return { ...state, binTypeModalVisible: false }
+      return { ...state, binTypeModalVisible: false };
     },
   },
 }

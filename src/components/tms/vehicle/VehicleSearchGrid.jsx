@@ -8,8 +8,8 @@ class VehicleSearchGrid extends React.Component {
         this.state = {
             ...props,
             selectedRowKeys: [],
-            selectedRows: [],
-        }
+            selectedRows: []
+        };
         this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
         this.handleOnlineBatch = this.handleOnlineBatch.bind(this);
         this.handleOfflineBatch = this.handleOfflineBatch.bind(this);
@@ -18,7 +18,7 @@ class VehicleSearchGrid extends React.Component {
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: [],
+            selectedRows: []
         });
     };
     onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -32,7 +32,7 @@ class VehicleSearchGrid extends React.Component {
     };
     handleOfflineBatch() {
         this.state.onOfflineBatch(this.state.selectedRows);
-    }
+    };
 
 
     render() {
@@ -63,13 +63,13 @@ class VehicleSearchGrid extends React.Component {
         {
             title: '车牌号',
             dataIndex: 'vehicleNo',
-            key: 'vehicleNo',
+            key: 'vehicleNo'
         },
         {
             title: '状态',
             dataIndex: 'state',
             key: 'state',
-            render: text => convertState(text),
+            render: text => convertState(text)
         },
         {
             title: '车型',
@@ -87,7 +87,7 @@ class VehicleSearchGrid extends React.Component {
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            onChange: this.onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
         return (
@@ -117,7 +117,7 @@ class VehicleSearchGrid extends React.Component {
                 />
             </div>
         );
-    }
-}
+    };
+};
 
 export default VehicleSearchGrid;

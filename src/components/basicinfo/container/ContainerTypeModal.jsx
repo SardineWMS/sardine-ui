@@ -10,33 +10,33 @@ const ContainerTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdi
             title: '前缀',
             dataIndex: 'barCodePrefix',
             key: 'barCodePrefix',
-            render: (text, record) => renderColumns(record, "barCodePrefix", text),
+            render: (text, record) => renderColumns(record, "barCodePrefix", text)
         },
         {
             title: '长度',
             dataIndex: 'barCodeLength',
             key: 'barCodeLength',
-            render: (text, record) => renderColumns(record, "barCodeLength", text),
+            render: (text, record) => renderColumns(record, "barCodeLength", text)
         },
         {
             title: '代码',
             dataIndex: 'code',
-            render: (text, record) => renderColumns(record, "code", text),
+            render: (text, record) => renderColumns(record, "code", text)
         },
         {
             title: '名称',
             dataIndex: 'name',
-            render: (text, record) => renderColumns(record, "name", text),
+            render: (text, record) => renderColumns(record, "name", text)
         },
         {
             title: '自重',
             dataIndex: 'weight',
-            render: (text, record) => renderColumns(record, "weight", text),
+            render: (text, record) => renderColumns(record, "weight", text)
         },
         {
             title: '承重',
             dataIndex: 'bearingWeight',
-            render: (text, record) => renderColumns(record, "bearingWeight", text),
+            render: (text, record) => renderColumns(record, "bearingWeight", text)
         }, {
             title: '操作',
             dataIndex: 'operation',
@@ -73,8 +73,8 @@ const ContainerTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdi
             value={text}
             status={status}
             onChange={value => handleChange(record, value, key)}
-        />)
-    }
+        />);
+    };
 
     function handleChange(record, value, key) {
         if ("code" == key)
@@ -89,7 +89,7 @@ const ContainerTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdi
             record.barCodePrefix = value;
         if ("barCodeLength" == key)
             record.barCodeLength = value;
-    }
+    };
 
     const modalOpts = {
         title: '容器类型',
@@ -100,14 +100,14 @@ const ContainerTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdi
         footer: [
             <Button key="return" type="primary" onClick={onCancel}>返回</Button>
         ]
-    }
+    };
 
     return (<Modal {...modalOpts}>
         <div>
             <Button type="ghost" onClick={() => onAdd()} disabled={!PermissionUtil("containertype:create")}>增加</Button>
         </div>
         <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false}></Table>
-    </Modal>)
-}
+    </Modal>);
+};
 
 export default ContainerTypeModal;

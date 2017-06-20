@@ -1,17 +1,17 @@
 import React from 'react';
 import styles from '../less/common.less';
-import {Button, Col } from 'antd';
+import { Button, Col } from 'antd';
 import panel from '../less/widget.css';
 
-class ToolbarPanel extends React.Component{
+class ToolbarPanel extends React.Component {
 
-  render(){
+  render() {
     return (
-       <div className={panel.toolbar}>
-         {this.props.children}
-       </div>
-      );
-  }
-}
+      <div className={panel.toolbar}>
+        {this.props.children}
+      </div>
+    );
+  };
+};
 
 export default ToolbarPanel;

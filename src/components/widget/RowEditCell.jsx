@@ -8,22 +8,22 @@ class RowEditCell extends React.Component {
     super(props);
     this.state = {
       value: this.props.value,
-      editable: this.props.editable,
-    }
-  }
+      editable: this.props.editable
+    };
+  };
   handleChange(e) {
     let newValue = e.target.value;
     this.setState({ value: newValue });
     if (this.props.onChange) {
       this.props.onChange(e.target.value);
-    }
-  }
+    };
+  };
   handleBlur(e) {
     e.preventDefault();
     this.setState({ value: e.target.value });
     if (this.props.onBlur)
       this.props.onBlur(e.target.value);
-  }
+  };
   render() {
     const { value, editable } = this.state;
     return (<div>
@@ -42,7 +42,7 @@ class RowEditCell extends React.Component {
           </div>
       }
     </div>);
-  }
-}
+  };
+};
 
 export default RowEditCell;

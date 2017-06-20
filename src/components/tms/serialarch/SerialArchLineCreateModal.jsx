@@ -11,44 +11,44 @@ const SerialArchLineCreateModal = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue,
-    },
+        getFieldsValue
+    }
 }) => {
     function handleOk() {
         validateFields((errors) => {
             if (errors) {
-                return
-            }
+                return;
+            };
             const data = {
-                ...getFieldsValue(),
-            }
-            onOk(data)
-        })
-    }
+                ...getFieldsValue()
+            };
+            onOk(data);
+        });
+    };
     const modalOpts = {
         title: '运输线路',
         visible,
         onOk: handleOk,
         onCancel,
-        wrapClassName: 'vertical-center-modal',
+        wrapClassName: 'vertical-center-modal'
     };
 
 
     const columns = [{
         title: '序号',
         dataIndex: 'order',
-        key: 'order',
+        key: 'order'
     },
     {
         title: '客户代码',
         dataIndex: 'customer.code',
-        key: 'customer.code',
+        key: 'customer.code'
     },
     {
         title: '客户名称',
         dataIndex: 'customer.name',
         key: 'customer.name',
-        render: text => convertState(text),
+        render: text => convertState(text)
     }];
 
     return (
@@ -83,7 +83,7 @@ const SerialArchLineCreateModal = ({
                 </BaseFormItem>
             </Form>
         </Modal>
-    )
-}
+    );
+};
 
 export default Form.create()(SerialArchLineCreateModal);

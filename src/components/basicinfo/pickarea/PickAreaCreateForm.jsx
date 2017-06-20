@@ -17,33 +17,31 @@ const PickAreaCreateForm = ({
         getFieldDecorator,
         validateFields,
         getFieldsValue
-    },
+    }
 }) => {
     function handleCreate() {
         validateFields((errors) => {
             if (errors) {
                 return;
-            }
+            };
             const data = {
-                ...getFieldsValue(),
+                ...getFieldsValue()
             };
             handleSave(data);
-
-
         });
-    }
+    };
 
     function validate(rule, value, callback) {
         if (rule.required == false) {
             callback();
             return;
-        }
+        };
         var pattern = /^\d{2,8}(\((\d\/)*\d\))*$|^\d{2,8}\-\d{2,8}(\((\d\/)*\d\))*$/
         if (!pattern.test(value)) {
             callback("输入不匹配，请重新输入");
-        }
+        };
         callback();
-    }
+    };
 
     const basic = [];
     basic.push(
@@ -137,6 +135,6 @@ const PickAreaCreateForm = ({
             </Panel>
         </div>
     );
-}
+};
 
 export default Form.create()(PickAreaCreateForm);

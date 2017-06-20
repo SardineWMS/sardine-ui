@@ -20,7 +20,7 @@ export default {
         batchOnlineProcessModal: false,
         onlineCarrierEntitys: [],
         batchOfflineProcessModal: false,
-        offlineCarrierEntitys: [],
+        offlineCarrierEntitys: []
     },
 
     subscriptions: {
@@ -33,9 +33,9 @@ export default {
                     dispatch({
                         type: 'query',
                         payload: location.query,
-                    })
-                }
-            })
+                    });
+                };
+            });
         }
     },
 
@@ -55,10 +55,10 @@ export default {
                             showTotal: total => `共${total}条`,
                             size: 'default'
                         },
-                        currentItem: {},
+                        currentItem: {}
                     }
-                })
-            }
+                });
+            };
         },
 
         *create({ payload }, { call, put }) {
@@ -68,8 +68,8 @@ export default {
             yield call(create, payload);
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         },
 
         *update({ payload }, { call, put }) {
@@ -83,7 +83,7 @@ export default {
             yield put({
                 type: 'query',
                 payload: {}
-            })
+            });
         },
 
         *gridRemove({ payload }, { call, put }) {
@@ -93,16 +93,16 @@ export default {
             });
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         },
 
         *gridOnline({ payload }, { call, put }) {
             yield call(online, { uuid: payload.uuid, version: payload.version });
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         },
 
         *gridOffline({ payload }, { call, put }) {
@@ -112,20 +112,20 @@ export default {
             });
             yield put({
                 type: 'query',
-                payload: {},
-            })
+                payload: {}
+            });
         }
     },
 
     reducers: {
         querySuccess(state, action) {
-            return { ...state, ...action.payload }
+            return { ...state, ...action.payload };
         },
         showModal(state, action) {
-            return { ...state, ...action.payload, modalVisible: true }
+            return { ...state, ...action.payload, modalVisible: true };
         },
         hideModal(state, action) {
-            return { ...state, modalVisible: false, ...action.payload }
+            return { ...state, modalVisible: false, ...action.payload };
         },
         batchDeleteCarrier(state, action) {
             return { ...state, ...action.payload, batchDeleteProcessModal: true };
@@ -137,13 +137,13 @@ export default {
             return { ...state, ...action.payload, batchOfflineProcessModal: true };
         },
         hideDeleteCarrierModal(state, action) {
-            return { ...state, batchDeleteProcessModal: false }
+            return { ...state, batchDeleteProcessModal: false };
         },
         hideOnlineCarrierModal(state, action) {
-            return { ...state, batchOnlineProcessModal: false }
+            return { ...state, batchOnlineProcessModal: false };
         },
         hideOfflineCarrierModal(state, action) {
-            return { ...state, batchOfflineProcessModal: false }
+            return { ...state, batchOfflineProcessModal: false };
         },
     }
 }

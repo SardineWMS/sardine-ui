@@ -10,38 +10,38 @@ const CreateZoneModal = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue,
-  },
+    getFieldsValue
+  }
 }) => {
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
-        return
+        return;
       }
       const data = {
         ...getFieldsValue()
-      }
-      onOk(data)
-    })
-  }
+      };
+      onOk(data);
+    });
+  };
 
   const wrhOptions = [];
-  if(wrhs) {
-  for (let i = 0; i < wrhs.length; i++) {
-    let option = wrhs[i];
-    wrhOptions.push(
-      <Option key={option.uuid}>{"[" + option.code + "]" + option.name}</Option>
-    );
-  }
-}
+  if (wrhs) {
+    for (let i = 0; i < wrhs.length; i++) {
+      let option = wrhs[i];
+      wrhOptions.push(
+        <Option key={option.uuid}>{"[" + option.code + "]" + option.name}</Option>
+      );
+    };
+  };
 
   const modalOpts = {
     title: '货区新建',
     visible,
     onOk: handleOk,
     onCancel,
-    wrapClassName: 'vertical-center-modal',
-  }
+    wrapClassName: 'vertical-center-modal'
+  };
 
   return (
     <Modal {...modalOpts}>
@@ -67,13 +67,13 @@ const CreateZoneModal = ({
           })(<Input />)}
         </BaseFormItem>
         <BaseFormItem label="仓位：" >
-            {getFieldDecorator('wrh' ,{
+          {getFieldDecorator('wrh', {
             rules: [{ required: true, message: '仓位不能为空' },],
-        })(
-        <Select>
-                    {wrhOptions}
-        </Select>
-        )}
+          })(
+            <Select>
+              {wrhOptions}
+            </Select>
+            )}
         </BaseFormItem>
         <BaseFormItem label="备注：">
           {getFieldDecorator('remark', {
@@ -81,15 +81,15 @@ const CreateZoneModal = ({
         </BaseFormItem>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
 CreateZoneModal.propTypes = {
   visible: PropTypes.any,
   form: PropTypes.object,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
-  wrhs: PropTypes.array,
-}
+  wrhs: PropTypes.array
+};
 
 export default Form.create()(CreateZoneModal);

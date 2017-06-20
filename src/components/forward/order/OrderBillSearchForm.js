@@ -15,19 +15,19 @@ const OrderBillSearchForm = ({
         getFieldDecorator,
         validateFields,
         getFieldsValue,
-        resetFields,
+        resetFields
     }
 })=>{
 
     function handleReset(e) {
         e.preventDefault();
         resetFields();
-    }
+    };
 
     function handleSearch(e) {
         e.preventDefault();
         onSearch(getFieldsValue());
-    }
+    };
     
     const children = [];
     children.push(
@@ -89,7 +89,7 @@ OrderBillSearchForm.propTypes = {
   onSearch: PropTypes.func,
   field: PropTypes.string,
   onToggle: PropTypes.func,
-  keyword: PropTypes.string,
+  keyword: PropTypes.string
 };
 
 export default Form.create()(OrderBillSearchForm);

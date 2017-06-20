@@ -20,33 +20,33 @@ function SupplierSerachGrid({
 	function handleCreate(e) {
 		e.preventDefault();
 		onCreate();
-	}
+	};
 
 	function handleRemoveBatch() {
 		onRemoveBatch(suppliers);
-	}
+	};
 
 	function handleRecoverBatch() {
 		onRecoverBatch(suppliers);
-	}
+	};
 
 	const columns = [
 		{
 			title: '代码',
 			dataIndex: 'code',
 			key: 'code',
-			render: (text, record) => <p><a onClick={() => onViewItem(record)} disabled={!PermissionUtil("supplier:view")}>{text}</a></p>,
+			render: (text, record) => <p><a onClick={() => onViewItem(record)} disabled={!PermissionUtil("supplier:view")}>{text}</a></p>
 		},
 		{
 			title: '姓名',
 			dataIndex: 'name',
-			key: 'name',
+			key: 'name'
 		},
 		{
 			title: '状态',
 			dataIndex: 'state',
 			key: 'state',
-			render: (text) => text == "normal" ? "正常" : "已删除",
+			render: (text) => text == "normal" ? "正常" : "已删除"
 		},
 		{
 			title: '操作',
@@ -55,7 +55,7 @@ function SupplierSerachGrid({
 				<p>
 					<Popconfirm titldocke="确定要恢复吗？" onConfirm={() => onRecoverItem(record)}>
 						<a disabled={(record.state === "normal") || (!PermissionUtil("supplier:edit"))}>恢复</a>
-					</Popconfirm> 
+					</Popconfirm>
 					&nbsp;&nbsp;&nbsp;
     			<a onClick={() => onEditItem(record)} disabled={(record.state === "deleted") || !PermissionUtil("supplier:edit")}> 编辑</a>
 					&nbsp;&nbsp;&nbsp;
@@ -63,9 +63,9 @@ function SupplierSerachGrid({
 						<a disabled={(record.state === "deleted") || (!PermissionUtil("supplier:delete"))}>删除</a>
 					</Popconfirm>
 				</p>
-			),
+			)
 		}
-	]
+	];
 
 	const rowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
@@ -101,8 +101,8 @@ function SupplierSerachGrid({
 				rowKey={record => record.uuid}
 			/>
 		</div>
-	)
-}
+	);
+};
 
 SupplierSerachGrid.propTypes = {
 	onPageChange: PropTypes.func,
@@ -114,7 +114,7 @@ SupplierSerachGrid.propTypes = {
 	onRemoveBatch: PropTypes.func,
 	onViewItem: PropTypes.func,
 	onEditItem: PropTypes.func,
-	onRemoveItem: PropTypes.func,
-}
+	onRemoveItem: PropTypes.func
+};
 
 export default SupplierSerachGrid;

@@ -12,30 +12,30 @@ const CategoryModal = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue,
-  },
+    getFieldsValue
+  }
 }) => {
   function handleOk() {
     validateFields((errors) => {
       if (errors) {
-        return
-      }
+        return;
+      };
       const data = {
         ...item,
         ...getFieldsValue(),
-        upperCategory: upperCategory.uuid,
-      }
-      onOk(data)
-    })
-  }
+        upperCategory: upperCategory.uuid
+      };
+      onOk(data);
+    });
+  };
 
   const modalOpts = {
     title: '商品类别',
     visible,
     onOk: handleOk,
     onCancel,
-    wrapClassName: 'vertical-center-modal',
-  }
+    wrapClassName: 'vertical-center-modal'
+  };
 
   return (
     <Modal {...modalOpts}>
@@ -74,8 +74,8 @@ const CategoryModal = ({
         </BaseFormItem>
       </Form>
     </Modal>
-  )
-}
+  );
+};
 
 CategoryModal.propTypes = {
   visible: PropTypes.any,
@@ -84,7 +84,7 @@ CategoryModal.propTypes = {
   upperCategory: PropTypes.object,
   onOk: PropTypes.func,
   onCancel: PropTypes.func,
-  showUpper: PropTypes.bool,
-}
+  showUpper: PropTypes.bool
+};
 
 export default Form.create()(CategoryModal);

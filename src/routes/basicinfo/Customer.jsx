@@ -13,7 +13,7 @@ function Customer({ location, dispatch, customer }) {
         list, showCreatePage, pagination, showViewPage, currentItem, current,
         showEditPage, searchExpand, batchDeleteProcessModal, deleteCustomerEntitys,
         customerNext,
-        batchRecoverProcessModal, recoverCustomerEntitys,
+        batchRecoverProcessModal, recoverCustomerEntitys
     } = customer;
 
     const { field, keyword } = location.query
@@ -31,7 +31,7 @@ function Customer({ location, dispatch, customer }) {
                     sort: sorter.columnKey,
                     order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
                 }
-            }))
+            }));
         },
         onSearch() {
             dispatch({
@@ -39,26 +39,26 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
 
                 }
-            })
+            });
         },
         onCreate() {
             dispatch({
                 type: 'customer/createSuccess',
-            })
+            });
         },
         onViewItem(item) {
             dispatch({
                 type: 'customer/onViewItem',
                 payload: {
-                    currentItem: item,
+                    currentItem: item
                 }
-            })
+            });
         },
         onEdit(item) {
             dispatch({
                 type: 'customer/gridEditSuccess',
-                payload: { currentItem: item, },
-            })
+                payload: { currentItem: item }
+            });
         },
         onDelete(customer) {
             let token = localStorage.getItem("token");
@@ -67,9 +67,9 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
                     uuid: customer.uuid,
                     version: customer.version,
-                    token: token,
-                },
-            })
+                    token: token
+                }
+            });
         },
         onRecover(customer) {
             let token = localStorage.getItem("token");
@@ -78,35 +78,35 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
                     uuid: customer.uuid,
                     version: customer.version,
-                    token: token,
-                },
-            })
+                    token: token
+                }
+            });
         },
         onRemoveBatch(customers) {
             if (customers.length <= 0) {
                 message.warning("请选择要删除的客户！", 2, '');//延时2秒
                 return;
-            }
+            };
             dispatch({
                 type: 'customer/batchDeleteCustomer',
                 payload: {
                     deleteCustomerEntitys: customers
                 }
-            })
+            });
         },
         onRecoverBatch(customers) {
             if (customers.length <= 0) {
                 message.warning("请选择要恢复的客户！", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'customer/batchRecoverCustomer',
                 payload: {
                     recoverCustomerEntitys: customers
                 }
-            })
+            });
         },
-    }
+    };
 
     const customerSearchProps = {
         field,
@@ -115,8 +115,8 @@ function Customer({ location, dispatch, customer }) {
         onSearch(fieldsValue) {
             dispatch({
                 type: 'customer/query',
-                payload: fieldsValue,
-            })
+                payload: fieldsValue
+            });
         },
         onToggle(expand) {
             dispatch({
@@ -124,47 +124,47 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
                     searchExpand: !expand,
                 }
-            })
+            });
         }
-    }
+    };
 
     const customerAddProps = {
         item: currentItem,
         onCancel(data) {
             if (!data) {
                 dispatch({
-                    type: 'customer/cancelShoWItemSuccess',
-                })
+                    type: 'customer/cancelShoWItemSuccess'
+                });
             } else {
                 if (showViewPage) {
                     dispatch({
-                        type: 'customer/cancelShoWItemSuccess',
-                    })
+                        type: 'customer/cancelShoWItemSuccess'
+                    });
                 } else {
                     dispatch({
                         type: 'customer/cancelSuccess',
                         payload: {
-                            currentItem: {},
+                            currentItem: {}
                         }
-                    })
-                }
-            }
+                    });
+                };
+            };
         },
 
         handleSave(data) {
             if (data.uuid) {
                 dispatch({
                     type: 'customer/update',
-                    payload: data,
-                })
+                    payload: data
+                });
             } else {
                 dispatch({
                     type: 'customer/create',
-                    payload: data,
-                })
-            }
+                    payload: data
+                });
+            };
         }
-    }
+    };
 
     const customerViewProps = {
         item: currentItem,
@@ -172,9 +172,9 @@ function Customer({ location, dispatch, customer }) {
             dispatch({
                 type: 'customer/backSuccess',
                 payload: {
-                    currentItem: {},
+                    currentItem: {}
                 }
-            })
+            });
         },
         backAndRefreshPage() { },
         onRemove(customer) {
@@ -184,9 +184,9 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
                     uuid: customer.uuid,
                     version: customer.version,
-                    token: token,
-                },
-            })
+                    token: token
+                }
+            });
         },
         onRecover(customer) {
             let token = localStorage.getItem("token");
@@ -195,19 +195,18 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
                     uuid: customer.uuid,
                     version: customer.version,
-                    token: token,
-                },
-            })
+                    token: token
+                }
+            });
         },
 
         showEdit(item) {
             dispatch({
                 type: 'customer/itemEditSuccess',
-                payload: item,
-            })
+                payload: item
+            });
         },
-
-    }
+    };
 
     const batchProcessDeleteCustomerProps = {
         showConfirmModal: batchDeleteProcessModal,
@@ -221,14 +220,14 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'customer/hideDeleteCustomerModal',
-            })
+                type: 'customer/hideDeleteCustomerModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -236,9 +235,9 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
-    }
+    };
 
     const batchProcessRecoverCustomerProps = {
         showConfirmModal: batchRecoverProcessModal,
@@ -252,14 +251,14 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'customer/hideRecoverCustomerModal',
-            })
+                type: 'customer/hideRecoverCustomerModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -267,29 +266,29 @@ function Customer({ location, dispatch, customer }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
-    }
+    };
     const CustomerAddGen = () => <CustomerAdd {...customerAddProps} />;
 
     function RefreshWidget() {
         if (showCreatePage) {
             return (
                 <CustomerAddGen />
-            )
+            );
         } else {
             if (showViewPage) {
                 if (showEditPage) {
-                    return (<CustomerAddGen />)
+                    return (<CustomerAddGen />);
                 } else {
                     return (
                         <div><CustomerView {...customerViewProps}></CustomerView></div>
-                    )
-                }
+                    );
+                };
             }
             else {
                 if (showEditPage) {
-                    return (<CustomerAddGen />)
+                    return (<CustomerAddGen />);
                 }
                 else {
                     return (
@@ -299,25 +298,25 @@ function Customer({ location, dispatch, customer }) {
                             <WMSProgress {...batchProcessDeleteCustomerProps} />
                             <WMSProgress {...batchProcessRecoverCustomerProps} />
                         </div>
-                    )
-                }
-            }
-        }
-    }
+                    );
+                };
+            };
+        };
+    };
 
     return (
         <div className="content-inner">{RefreshWidget()}</div>
-    )
-}
+    );
+};
 
 Customer.propTypes = {
-    customer: PropTypes.object,
-}
+    customer: PropTypes.object
+};
 
 function mapStateToProps({ customer }) {
     return {
-        customer,
+        customer
     };
-}
+};
 
 export default connect(mapStateToProps)(Customer);

@@ -22,8 +22,8 @@ const ArticleEditableSupplier = ({
       if (dataSource[index]["supplierCode"] == value)
         return;
       onSaveSupplier(articleUuid, dataSource[index]["uuid"], value);
-    }
-  }
+    };
+  };
 
   const columns = [{
     title: '供应商代码',
@@ -36,15 +36,15 @@ const ArticleEditableSupplier = ({
           onChange={onCellChange(index)}
           editable={record.supplierUuid ? false : true}
         />
-      )
-    },
+      );
+    }
   }, {
     title: '供应商名称',
-    dataIndex: 'supplierName',
+    dataIndex: 'supplierName'
   }, {
     title: '默认供应商',
     dataIndex: 'default_',
-    render: text => (text ? "是" : "否"),
+    render: text => (text ? "是" : "否")
   }, {
     title: '操作',
     dataIndex: 'operation',
@@ -61,7 +61,7 @@ const ArticleEditableSupplier = ({
           </Popconfirm>
         </p>
       );
-    },
+    }
   }];
 
   return (<div>

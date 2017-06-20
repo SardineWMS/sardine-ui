@@ -34,21 +34,21 @@ function Container({ location, dispatch, container }) {
       let array = new Array();
       for (let i = 0; i < data.count; i++) {
         array[i] = i;
-      }
+      };
       dispatch({
         type: 'container/confirmSaveNew',
         payload: {
           entitys: array,
-          containerTypeUuid: data.containerType,
+          containerTypeUuid: data.containerType
         }
-      })
+      });
     },
     onCancel() {
       dispatch({
-        type: 'container/hideModal',
-      })
+        type: 'container/hideModal'
+      });
     },
-  }
+  };
 
   const containerSearchProps = {
     dataSource: list,
@@ -60,44 +60,44 @@ function Container({ location, dispatch, container }) {
         query: {
           page: page.current,
           pageSize: page.pageSize
-        },
-      }))
+        }
+      }));
     },
     onCreate() {
       dispatch({
         type: 'container/queryContainerType',
         payload: {
-          modalType: 'create',
-        },
-      })
+          modalType: 'create'
+        }
+      });
     },
     onSearch(fieldsValue) {
       dispatch({
         type: 'container/query',
-        payload: fieldsValue,
-      })
+        payload: fieldsValue
+      });
     },
     onToggle(expand) {
       dispatch({
         type: 'container/toggle',
         payload: {
-          searchExpand: !expand,
+          searchExpand: !expand
         }
-      })
+      });
     },
     onCreateContainerType() {
       dispatch({
         type: 'container/createType',
         payload: {}
-      })
+      });
     },
     onQueryStock(record) {
       dispatch({
         type: 'container/queryContainerStock',
-        payload: record,
-      })
-    },
-  }
+        payload: record
+      });
+    }
+  };
 
   const batchProcessModalProps = {
     showConfirmModal: batchProcessModal,
@@ -110,70 +110,70 @@ function Container({ location, dispatch, container }) {
           containerTypeUuid: containerTypeUuid,
           token: localStorage.getItem("token")
         }
-      })
+      });
     },
     refreshGrid() {
       dispatch({
         type: 'container/query',
-      })
-    },
-  }
+      });
+    }
+  };
 
   const containerTypeModalProps = {
     dataSource: containerTypeList,
     visible: containerTypeModalVisible,
     onCancel() {
       dispatch({
-        type: 'container/hideContainerTypeModal',
-      })
+        type: 'container/hideContainerTypeModal'
+      });
     },
     onEdit(record) {
       record.editable = true;
       dispatch({
         type: 'container/showContainerTypeSuccess',
-        payload: record,
-      })
+        payload: record
+      });
     },
     onCancelEdit(record) {
       record.editable = false;
       if (!record.uuid) {
         dispatch({
           type: 'container/queryContainerType'
-        })
+        });
       } else {
         dispatch({
           type: 'container/showContainerTypeSuccess',
-          payload: record,
-        })
-      }
+          payload: record
+        });
+      };
     },
     onAdd() {
       dispatch({
-        type: 'container/addContainerTypeLine',
-      })
+        type: 'container/addContainerTypeLine'
+      });
     },
     onDelete(record) {
       if (record.uuid === undefined)
         dispatch({
-          type: 'container/queryContainerType',
-        })
+          type: 'container/queryContainerType'
+        });
       else
         dispatch({
           type: 'container/deleteContainerType',
-          payload: record,
-        })
+          payload: record
+        });
     },
     onSave(record) {
       if (record.uuid === undefined)
         dispatch({
           type: 'container/saveNewContainerType',
-          payload: record,
-        })
+          payload: record
+        });
       else
         dispatch({
           type: 'container/saveModifyContainerType',
-          payload: record,
-        })
+          payload: record
+        });
     }
   };
 
@@ -182,13 +182,13 @@ function Container({ location, dispatch, container }) {
     onViewArticle(record) {
       dispatch({
         type: 'container/toViewArticle',
-        payload: record,
-      })
+        payload: record
+      });
     }
   };
 
   const ContainerModalGen = () =>
-    <ContainerModal {...containerModalProps} />
+    <ContainerModal {...containerModalProps} />;
   if (showStockInfoPage == false)
     return (
       <div className="content-inner">
@@ -199,24 +199,24 @@ function Container({ location, dispatch, container }) {
 
 
       </div>
-    )
+    );
   else return (
     <div>
       <ContainerStockInfo {...containerStockInfoProps} />
     </div>
-  )
-}
+  );
+};
 
 Container.propTypes = {
   container: PropTypes.object,
   location: PropTypes.object,
-  dispatch: PropTypes.func,
-}
+  dispatch: PropTypes.func
+};
 
 function mapStateToProps({ container }) {
   return {
-    container,
+    container
   };
-}
+};
 
-export default connect(mapStateToProps)(Container)
+export default connect(mapStateToProps)(Container);

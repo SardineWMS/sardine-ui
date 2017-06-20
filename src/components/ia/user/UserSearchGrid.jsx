@@ -12,8 +12,8 @@ class UserGrid extends React.Component {
     this.state = {
       ...props,
       selectedRowKeys: [],
-      selectedRows: [],
-    }
+      selectedRows: []
+    };
     this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
     this.handleOnlineBatch = this.handleOnlineBatch.bind(this);
     this.handleOfflineBatch = this.handleOfflineBatch.bind(this);
@@ -24,7 +24,7 @@ class UserGrid extends React.Component {
     this.setState({
       ...newProps,
       selectedRowKeys: [],
-      selectedRows: [],
+      selectedRows: []
     });
   };
   onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -62,7 +62,7 @@ class UserGrid extends React.Component {
         return '否';
       if (text == true)
         return '是';
-    }
+    };
 
     const columns = [
       {
@@ -75,21 +75,21 @@ class UserGrid extends React.Component {
         title: '姓名',
         dataIndex: 'name',
         key: 'name',
-        render: (text, record) => <a onClick={() => this.state.onViewItem(record)}>{text}</a>,
+        render: (text, record) => <a onClick={() => this.state.onViewItem(record)}>{text}</a>
       }, {
         title: '联系方式',
         dataIndex: 'phone',
-        key: 'phone',
+        key: 'phone'
       }, {
         title: '是否为管理员',
         dataIndex: 'administrator',
         key: 'administrator',
-        render: text => convertAdmin(text),
+        render: text => convertAdmin(text)
       }, {
         title: '用户状态',
         dataIndex: 'userState',
         key: 'userState',
-        render: text => convertState(text),
+        render: text => convertState(text)
       }, {
         title: '操作',
         key: 'operation',
@@ -107,7 +107,7 @@ class UserGrid extends React.Component {
             &nbsp;
             <a onClick={() => this.state.onAssignRole(record)} disabled={record.userState == 'offline' || !PermissionUtil("user:edit")}>分配角色</a>
             &nbsp;
-            <a onClick={() => this.state.onAssignResource(record)} disabled={record.userState == 'offline' ||  !PermissionUtil("user:edit")}>分配权限</a>
+            <a onClick={() => this.state.onAssignResource(record)} disabled={record.userState == 'offline' || !PermissionUtil("user:edit")}>分配权限</a>
           </p>
         )
       }
@@ -117,39 +117,39 @@ class UserGrid extends React.Component {
 
       if (!record.editable) {
         return (<a onClick={() => { this.state.onViewItem(record) }}>{text}</a>);
-      }
+      };
 
       return (<RowEditCell
         editable={record.editable}
         value={text}
         status={status}
         onChange={value => handleChange(record, value, key)}
-      />)
-    }
+      />);
+    };
 
     function renderNameColumns(record, key, text) {
       if (typeof record.editable === undefined)
-        return text
+        return text;
 
       return (<RowEditCell
         editable={record.editable}
         value={text}
         status={status}
         onChange={value => handleChange(record, value, key)}
-      />)
-    }
+      />);
+    };
 
     function handleChange(record, value, key) {
       if ("code" == key)
         record.code = value;
       if ("name" == key)
         record.name = value;
-    }
+    };
 
     const { selectedRowKeys } = this.state;
     const rowSelection = {
       selectedRowKeys,
-      onChange: this.onSelectChange,
+      onChange: this.onSelectChange
     };
     const hasSelected = selectedRowKeys.length > 0;
     return (
@@ -179,8 +179,8 @@ class UserGrid extends React.Component {
         />
       </div>
     );
-  }
-}
+  };
+};
 
 export default UserGrid;
 

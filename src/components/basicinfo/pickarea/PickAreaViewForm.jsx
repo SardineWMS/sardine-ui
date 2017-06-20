@@ -13,7 +13,7 @@ import PermissionUtil from '../../../utils/PermissionUtil';
 const PickAreaViewForm = ({ item = {},
     onBack,
     onRemove,
-    showEdit,
+    showEdit
 }) => {
 
     function convertOperateMode(text) {
@@ -28,7 +28,7 @@ const PickAreaViewForm = ({ item = {},
             return '够出货量';
         if (text == 'highestStock')
             return '最高库存';
-    }
+    };
 
     let basicFormItems = [];
     basicFormItems.push(<BaseFormItem label="代码：" key={Guid()}>
@@ -77,6 +77,6 @@ const PickAreaViewForm = ({ item = {},
             </BaseCard>
             <RemarkCard remark={item.remark} />
         </div>
-    )
+    );
 };
 export default PickAreaViewForm;

@@ -11,7 +11,7 @@ class ContainerMove extends React.Component {
             selectedRows: [],
             containerMoveItems: [],
             currentContainerItem
-        }
+        };
         this.saveAndMove = this.saveAndMove.bind(this);
         this.cancel = this.cancel.bind(this);
     };
@@ -20,7 +20,7 @@ class ContainerMove extends React.Component {
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: [],
+            selectedRows: []
         });
     };
 
@@ -95,7 +95,7 @@ class ContainerMove extends React.Component {
             title: '行号',
             dataIndex: 'line',
             key: 'line',
-            width: 50,
+            width: 50
         }, {
             title: '来源货位',
             dataIndex: 'fromBinCode',
@@ -125,12 +125,12 @@ class ContainerMove extends React.Component {
         const toolbar = [];
         toolbar.push(<Button onClick={() => onCancel(item)} key={Guid()} > 取消</Button>);
         toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("receiveBill:create")}>保存</Button>);
-        toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("receiveBill:create")}>保存并移库</Button>)
+        toolbar.push(<Button key={Guid()} onClick={handleCreate} disabled={!PermissionUtil("receiveBill:create")}>保存并移库</Button>);
 
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            onChange: this.onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
 
@@ -153,10 +153,9 @@ class ContainerMove extends React.Component {
                     </div>}
                 />
             </div>
-        )
-    }
-
-}
+        );
+    };
+};
 
 export default ContainerMove;
 

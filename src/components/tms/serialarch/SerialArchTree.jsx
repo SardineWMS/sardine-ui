@@ -19,11 +19,11 @@ const generateData = (_level, _preKey, _tns) => {
         tns.push({ title: key, key });
         if (i < y) {
             children.push(key);
-        }
-    }
+        };
+    };
     if (_level < 0) {
         return tns;
-    }
+    };
     const level = _level - 1;
     children.forEach((key, index) => {
         tns[index].children = [];
@@ -40,8 +40,8 @@ const generateList = (data) => {
         dataList.push({ key, title: key });
         if (node.children) {
             generateList(node.children, node.key);
-        }
-    }
+        };
+    };
 };
 generateList(gData);
 
@@ -54,9 +54,9 @@ const getParentKey = (key, tree) => {
                 parentKey = node.key;
             } else if (getParentKey(key, node.children)) {
                 parentKey = getParentKey(key, node.children);
-            }
-        }
-    }
+            };
+        };
+    };
     return parentKey;
 };
 
@@ -69,7 +69,7 @@ class SerialArchTree extends React.Component {
             autoExpandParent: true,
             data: this.props.data,
             onSelect: this.props.onSelect
-        }
+        };
     };
 
     componentWillReceiveProps(newProps) {
@@ -80,23 +80,23 @@ class SerialArchTree extends React.Component {
     onExpand = (expandedKeys) => {
         this.setState({
             expandedKeys,
-            autoExpandParent: false,
+            autoExpandParent: false
         });
-    }
+    };
     onChange = (e) => {
         const value = e.target.value;
         const expandedKeys = dataList.map((item) => {
             if (item.key.indexOf(value) > -1) {
                 return getParentKey(item.key, gData);
-            }
+            };
             return null;
         }).filter((item, i, self) => item && self.indexOf(item) === i);
         this.setState({
             expandedKeys,
             searchValue: value,
-            autoExpandParent: true,
+            autoExpandParent: true
         });
-    }
+    };
     render() {
         const { searchValue, expandedKeys, autoExpandParent, data } = this.state;
         const loop = data => data.map((item) => {
@@ -116,7 +116,7 @@ class SerialArchTree extends React.Component {
                         {loop(item.children)}
                     </TreeNode>
                 );
-            }
+            };
             return <TreeNode key={item.key} title={title} />;
         });
         return (
@@ -132,7 +132,7 @@ class SerialArchTree extends React.Component {
                 </Tree>
             </div>
         );
-    }
-}
+    };
+};
 
 export default SerialArchTree;

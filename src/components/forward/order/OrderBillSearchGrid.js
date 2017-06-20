@@ -68,13 +68,13 @@ function OrderBillSearchGrid({
 	        dataIndex: 'billNumber',
 	        key: 'billNumber',
 	        render: (text, record) => <a onClick={() => { onViewItem(record) }}>{text}</a>,
-	        sorter: true,
+	        sorter: true
 		},
 	    {
             title: '供应商',
             dataIndex: 'supplier',
             key: 'supplier',
-  			render: text => ("["+text.code+"]"+text.name),
+  			render: text => ("["+text.code+"]"+text.name)
         },
      	{  
      		title: '来源单据',
@@ -129,9 +129,9 @@ function OrderBillSearchGrid({
 	    				<a disabled={record.state != "Initial"}>删除</a>
 	    			</Popconfirm>
 	    		</p>
-	    	),
+	    	)
     	}
-	]
+	];
 
 	const rowSelection = {
 	  onChange: (selectedRowKeys, selectedRows) => {
@@ -144,7 +144,7 @@ function OrderBillSearchGrid({
 	  },
 	  getCheckboxProps: record => ({
 	     disabled: record.name === 'Disabled User',
-	  }),
+	  })
 	};
 
 	return(
@@ -169,8 +169,8 @@ function OrderBillSearchGrid({
 				rowKey={record => record.uuid}
 			/>
 		</div>
-	)
-}
+	);
+};
 
 OrderBillSearchGrid
 OrderBillSearchGrid.propTypes={
@@ -190,6 +190,6 @@ OrderBillSearchGrid.propTypes={
 	onFinishBatch : PropTypes.func,
 	onAbortBatch : PropTypes.func,
 	onDeleteBatch : PropTypes.func
-}
+};
 
 export default OrderBillSearchGrid;

@@ -12,31 +12,31 @@ const DemoSearchForm = ({
     getFieldDecorator,
     validateFields,
     getFieldsValue,
-    resetFields,
+    resetFields
   },
-  allRoles,
+  allRoles
 }) => {
   function handleSearch(e) {
     e.preventDefault();
     onSearch(getFieldsValue());
-  }
+  };
 
   function handleReset(e) {
     e.preventDefault();
     resetFields();
-  }
+  };
 
   const formItemLayout = {
     labelCol: { span: 8 },
-    wrapperCol: { span: 15 },
+    wrapperCol: { span: 15 }
   };
 
   const options = [];
   if (allRoles) {
     for (var role of allRoles) {
       options.push(<Option key={role.uuid}>{role.name}</Option>)
-    }
-  }
+    };
+  };
 
   const children = [];
   children.push(<Col span={12} key='code'>
@@ -103,7 +103,7 @@ DemoSearchForm.propTypes = {
   form: PropTypes.object.isRequired,
   onSearch: PropTypes.func,
   onToggle: PropTypes.func,
-  searchExpand: PropTypes.bool,
+  searchExpand: PropTypes.bool
 };
 
 export default Form.create()(DemoSearchForm);

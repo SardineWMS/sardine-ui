@@ -14,35 +14,35 @@ const UserViewForm = ({
     onCreate,
     onBack,
     onOnline,
-    onOffline,
+    onOffline
 }) => {
-    const children=[];
+    const children = [];
     children.push(
-         <BaseFormItem label="代码：" >
+        <BaseFormItem label="代码：" >
             <span> {item.code} </span>
         </BaseFormItem>
     );
     children.push(
-         <BaseFormItem label="名称：" >
+        <BaseFormItem label="名称：" >
             <span> {item.name} </span>
         </BaseFormItem>
     );
     children.push(
-         <BaseFormItem label="电话：" >
+        <BaseFormItem label="电话：" >
             <span> {item.phone} </span>
         </BaseFormItem>
     );
 
-    const toolbar=[];
+    const toolbar = [];
     toolbar.push(<Button onClick={() => onCreate()}> 新建</Button>);
     toolbar.push(<Button onClick={() => onEdit(item)}> 编辑</Button>);
     toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
     toolbar.push(<Popconfirm title="确定要启用吗？" onConfirm={() => onOnline(item)}>
-                    <Button disabled={item.userState === '已启用'}>启用</Button>
-                </Popconfirm>);
+        <Button disabled={item.userState === '已启用'}>启用</Button>
+    </Popconfirm>);
     toolbar.push(<Popconfirm title="确定要停用吗？" onConfirm={() => onOffline(item)}>
-                    <Button disabled={item.userState === '已停用'}>停用</Button>
-                </Popconfirm>);
+        <Button disabled={item.userState === '已停用'}>停用</Button>
+    </Popconfirm>);
 
     return (
         <div>
@@ -60,7 +60,7 @@ UserViewForm.propTypes = {
     onEdit: PropTypes.func,
     onDelete: PropTypes.func,
     onCreate: PropTypes.func,
-    onBack: PropTypes.func,
+    onBack: PropTypes.func
 };
 
 export default UserViewForm;

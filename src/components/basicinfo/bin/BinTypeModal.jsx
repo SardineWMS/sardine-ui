@@ -9,17 +9,17 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
         {
             title: '代码',
             dataIndex: 'code',
-            render: (text, record) => renderColumns(record, "binTypeCode", text),
+            render: (text, record) => renderColumns(record, "binTypeCode", text)
         },
         {
             title: '名称',
             dataIndex: 'name',
-            render: (text, record) => renderColumns(record, "binTypeName", text),
+            render: (text, record) => renderColumns(record, "binTypeName", text)
         },
         {
             title: '承重',
             dataIndex: 'bearing',
-            render: (text, record) => renderColumns(record, "bearing", text),
+            render: (text, record) => renderColumns(record, "bearing", text)
         }, {
             title: '操作',
             dataIndex: 'operation',
@@ -42,7 +42,7 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
                             </span>
                         }
                     </div>
-                )
+                );
             }
         }
     ];
@@ -57,8 +57,8 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
             status={status}
             onChange={value => handleChange(record, value, key)}
             onBlur={() => { }}
-        />)
-    }
+        />);
+    };
 
     function handleChange(record, value, key) {
         if ("binTypeCode" == key)
@@ -67,7 +67,7 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
             record.name = value;
         if ("bearing" == key)
             record.bearing = value;
-    }
+    };
 
     const modalOpts = {
         title: '货位类型',
@@ -85,7 +85,7 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
             <Button type="ghost" onClick={() => onAdd()}>增加</Button>
         </div>
         <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false}></Table>
-    </Modal>)
-}
+    </Modal>);
+};
 
 export default BinTypeModal;

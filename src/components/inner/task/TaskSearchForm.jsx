@@ -13,18 +13,18 @@ const TaskSearchForm = ({
     getFieldDecorator,
     validateFields,
     getFieldsValue,
-    resetFields,
-  },
+    resetFields
+  }
 }) => {
   function handleSearch(e) {
     e.preventDefault();
     onSearch(getFieldsValue());
-  }
+  };
 
   function handleReset(e) {
     e.preventDefault();
     resetFields();
-  }
+  };
 
   const children = [];
   children.push(
@@ -78,7 +78,7 @@ TaskSearchForm.propTypes = {
   form: PropTypes.object.isRequired,
   onSearch: PropTypes.func,
   field: PropTypes.string,
-  keyword: PropTypes.string,
+  keyword: PropTypes.string
 };
 
 export default Form.create()(TaskSearchForm);

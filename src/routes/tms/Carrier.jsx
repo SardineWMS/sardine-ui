@@ -16,7 +16,7 @@ function Carrier({ location, dispatch, carrier }) {
         batchDeleteProcessModal,
         batchOnlineProcessModal,
         batchOfflineProcessModal,
-        carrierNext,
+        carrierNext
 } = carrier;
 
     const carrierSearchFormProps = {
@@ -24,8 +24,8 @@ function Carrier({ location, dispatch, carrier }) {
             dispatch({
                 type: 'carrier/query',
                 payload: fieldsValue
-            })
-        },
+            });
+        }
     };
 
     const carrierSearchGridProps = {
@@ -35,18 +35,18 @@ function Carrier({ location, dispatch, carrier }) {
             dispatch({
                 type: 'carrier/showModal',
                 payload: {
-                    modalType: 'create',
-                },
-            })
+                    modalType: 'create'
+                }
+            });
         },
         onEdit(item) {
             dispatch({
                 type: 'carrier/showModal',
                 payload: {
                     modalType: 'update',
-                    currentItem: item,
+                    currentItem: item
                 }
-            })
+            });
         },
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
@@ -57,43 +57,43 @@ function Carrier({ location, dispatch, carrier }) {
                     sort: sorter.columnKey,
                     order: sorter.columnKey == undefined ? '' : (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
                 }
-            }))
+            }));
         },
         onRemoveBatch(carriers) {
             if (carriers.length <= 0) {
                 message.warning("请选择要删除的承运商", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'carrier/batchDeleteCarrier',
                 payload: {
-                    deleteCarrierEntitys: carriers,
+                    deleteCarrierEntitys: carriers
                 }
-            })
+            });
         },
         onOnlineBatch(carriers) {
             if (carriers.length <= 0) {
                 message.warning("请选择要启用的承运商", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'carrier/batchOnlineCarrier',
                 payload: {
-                    onlineCarrierEntitys: carriers,
+                    onlineCarrierEntitys: carriers
                 }
-            })
+            });
         },
         onOfflineBatch(carriers) {
             if (carriers.length <= 0) {
                 message.warning("请选择要停用的承运商", 2, '');
                 return;
-            }
+            };
             dispatch({
                 type: 'carrier/batchOfflineCarrier',
                 payload: {
-                    offlineCarrierEntitys: carriers,
+                    offlineCarrierEntitys: carriers
                 }
-            })
+            });
         }
     };
 
@@ -103,14 +103,14 @@ function Carrier({ location, dispatch, carrier }) {
         onOk(data) {
             dispatch({
                 type: `carrier/${modalType}`,
-                payload: data,
-            })
+                payload: data
+            });
         },
         onCancel() {
             dispatch({
                 type: 'carrier/hideModal'
-            })
-        },
+            });
+        }
     };
 
     const batchProcessDeleteCarrierProps = {
@@ -127,12 +127,12 @@ function Carrier({ location, dispatch, carrier }) {
                     version: entity.version,
                     token: localStorage.getItem("token"),
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
                 type: 'carrier/hideDeleteCarrierModal',
-            })
+            });
         },
         refreshGrid() {
             dispatch({
@@ -140,7 +140,7 @@ function Carrier({ location, dispatch, carrier }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
@@ -156,14 +156,14 @@ function Carrier({ location, dispatch, carrier }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'carrier/hideOnlineCarrierModal',
-            })
+                type: 'carrier/hideOnlineCarrierModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -171,7 +171,7 @@ function Carrier({ location, dispatch, carrier }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
@@ -187,14 +187,14 @@ function Carrier({ location, dispatch, carrier }) {
                 payload: {
                     uuid: entity.uuid,
                     version: entity.version,
-                    token: localStorage.getItem("token"),
+                    token: localStorage.getItem("token")
                 }
-            })
+            });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'carrier/hideOfflineCarrierModal',
-            })
+                type: 'carrier/hideOfflineCarrierModal'
+            });
         },
         refreshGrid() {
             dispatch({
@@ -202,11 +202,11 @@ function Carrier({ location, dispatch, carrier }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            })
+            });
         }
     };
 
-    const CarrierCreateModalGen = () => <CarrierCreateModal {...carrierCreateModalProps} />
+    const CarrierCreateModalGen = () => <CarrierCreateModal {...carrierCreateModalProps} />;
 
     return (
         <div>
@@ -218,16 +218,16 @@ function Carrier({ location, dispatch, carrier }) {
             <WMSProgress {...batchProcessOnlineCarrierProps} />
         </div>
     );
-}
+};
 
 Carrier.propType = {
-    carrier: PropTypes.object,
-}
+    carrier: PropTypes.object
+};
 
 function mapStateToProps({ carrier }) {
     return {
-        carrier,
+        carrier
     };
-}
+};
 
 export default connect(mapStateToProps)(Carrier);

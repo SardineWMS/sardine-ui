@@ -20,37 +20,37 @@ const ArticleEditableQpcStr = ({
     title: '规格',
     dataIndex: 'qpcStr',
     width: '12%',
-    render: (text, record, index) => renderColumns(dataSource, index, "qpcStr", text),
+    render: (text, record, index) => renderColumns(dataSource, index, "qpcStr", text)
   }, {
     title: '单位',
     dataIndex: 'munit',
     width: '12%',
-    render: (text, record, index) => renderColumns(dataSource, index, "munit", text),
+    render: (text, record, index) => renderColumns(dataSource, index, "munit", text)
   }, {
     title: '长（cm）',
     dataIndex: 'length',
     width: '12%',
-    render: (text, record, index) => renderColumns(dataSource, index, "length", text),
+    render: (text, record, index) => renderColumns(dataSource, index, "length", text)
   }, {
     title: '宽（cm）',
     dataIndex: 'width',
     width: '12%',
-    render: (text, record, index) => renderColumns(dataSource, index, "width", text),
+    render: (text, record, index) => renderColumns(dataSource, index, "width", text)
   }, {
     title: '高（cm）',
     dataIndex: 'height',
     width: '12%',
-    render: (text, record, index) => renderColumns(dataSource, index, "height", text),
+    render: (text, record, index) => renderColumns(dataSource, index, "height", text)
   }, {
     title: '重量（g）',
     dataIndex: 'weight',
     width: '12%',
-    render: (text, record, index) => renderColumns(dataSource, index, "weight", text),
+    render: (text, record, index) => renderColumns(dataSource, index, "weight", text)
   }, {
     title: '默认',
     dataIndex: 'default_',
     width: '10%',
-    render: text => (text ? "是" : "否"),
+    render: text => (text ? "是" : "否")
   }, {
     title: '操作',
     dataIndex: 'operation',
@@ -76,13 +76,13 @@ const ArticleEditableQpcStr = ({
             </span>
         }
       </div>);
-    },
+    }
   }];
 
   function renderColumns(dataSource, index, key, text) {
     if (typeof dataSource[index]["editable"] === 'undefined' || !dataSource[index]["editable"]) {
       return text;
-    }
+    };
     return (<RowEditableCell
       editable={dataSource[index]["editable"]}
       value={text}
@@ -90,11 +90,11 @@ const ArticleEditableQpcStr = ({
       autoFocus={key == "qpcStr" ? true : false}
       status={status}
     />);
-  }
+  };
 
   function handleChange(key, dataSource, index, value) {
     dataSource[index]["new" + key] = value;
-  }
+  };
 
   return (
     <div>
@@ -103,7 +103,7 @@ const ArticleEditableQpcStr = ({
       </div>
       <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false} />
     </div>);
-}
+};
 
 ArticleEditableQpcStr.propTypes = {
   dataSource: PropTypes.array,

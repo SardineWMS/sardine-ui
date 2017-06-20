@@ -20,16 +20,16 @@ const VehicleCreate = ({
         getFieldsValue
     },
     carrierList,
-    vehicleTypeList,
+    vehicleTypeList
 }) => {
     function handleCreate() {
         validateFields((errors) => {
             if (errors) {
                 return;
-            }
+            };
             const data = { ...getFieldsValue() };
             handleSave(data);
-        })
+        });
     };
 
     const children = [];
@@ -51,9 +51,9 @@ const VehicleCreate = ({
     const options = [];
     if (vehicleTypeList != null) {
         for (var vehicleType of vehicleTypeList) {
-            options.push(<Option value={vehicleType.uuid} >{vehicleType.name + "[" + vehicleType.code + "]"}</Option>)
-        }
-    }
+            options.push(<Option value={vehicleType.uuid} >{vehicleType.name + "[" + vehicleType.code + "]"}</Option>);
+        };
+    };
     children.push(
         <BaseFormItem label={"车型"} key="vehicleType">
             {getFieldDecorator("vehicleType", { rules: [{ required: true, message: '请选择车型' }], initialValue: item.vehicleType == null ? null : item.vehicleType.uuid })(
@@ -70,8 +70,8 @@ const VehicleCreate = ({
             carrierOptions.push(
                 <Option value={carrier.uuid}>{
                     carrier.name + "[" + carrier.code + "]"}</Option>
-            )
-        }
+            );
+        };
     };
 
     children.push(<BaseFormItem label={"承运商"} key="carrier">
@@ -101,6 +101,6 @@ const VehicleCreate = ({
             </Panel>
         </div>
     );
-}
+};
 
 export default Form.create()(VehicleCreate);

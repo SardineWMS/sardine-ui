@@ -39,7 +39,7 @@ export default {
         batchDeleteProcessModal: false,
         deleteDecIncBillEntitys: [],
         batchAuditProcessModal: false,
-        auditDecIncBillEntitys: [],
+        auditDecIncBillEntitys: []
     },
 
     subscriptions: {
@@ -49,9 +49,9 @@ export default {
                     dispatch({
                         type: 'query',
                         payload: location.query,
-                    })
-                }
-            })
+                    });
+                };
+            });
         }
     },
 
@@ -72,10 +72,10 @@ export default {
                             size: 'default'
                         },
                         currentItem: {},
-                        decIncItem: [],
+                        decIncItem: []
                     }
-                })
-            }
+                });
+            };
         },
 
         *create({ payload }, { call, put }) {
@@ -85,7 +85,7 @@ export default {
                 payload: {
 
                 }
-            })
+            });
         },
 
         *onSelectType({ payload }, { call, put }) {
@@ -100,23 +100,22 @@ export default {
                 nullObj.line = 1;
                 nullObj.editable = true;
                 decIncItem.push(nullObj);
-            }
+            };
             yield put({
                 type: 'createSuccess',
                 payload: {
                     wrhs: data.obj,
                     decIncItem: decIncItem,
                     billType: payload,
-                    currentItem: currentItem,
+                    currentItem: currentItem
                 }
-
-            })
+            });
         },
 
         *getArticleInfo({ payload }, { call, put }) {
             const { data } = yield call(getArticleInfo, {
                 articleCode: payload.record.article.code,
-            })
+            });
             if (data) {
                 payload.record.article.uuid = data.obj.uuid;
                 payload.record.article.name = data.obj.name;
@@ -132,30 +131,29 @@ export default {
                 else {
                     for (var qpc of data.obj.qpcs) {
                         qpcStrs.push(qpc.qpcStr);
-                    }
-                }
+                    };
+                };
                 const suppliers = [];
                 for (var supplier of data.obj.articleSuppliers) {
                     suppliers.push(supplier);
-                }
+                };
                 for (var item of payload.dataSource) {
                     if (item.line == payload.record.line) {
                         item.article.uuid = data.obj.uuid;
                         item.article.name = data.obj.name;
                         item.qpcStrs = qpcStrs;
                         item.suppliers = suppliers;
-                    }
-                }
-
+                    };
+                };
                 yield put({
                     type: 'createSuccess',
                     payload: {
                         decIncItem: payload.dataSource,
                         qpcStrs: qpcStrs,
-                        suppliers: suppliers,
+                        suppliers: suppliers
                     }
-                })
-            }
+                });
+            };
         },
 
         // *verifyBin({ payload }, { call, put }) {
@@ -172,28 +170,27 @@ export default {
             const { data } = yield call(queryStock, {
                 articleUuid: payload.record.article.uuid,
                 qpcStr: payload.record.qpcStr,
-                supplierUuid: payload.record.supplier.uuid,
+                supplierUuid: payload.record.supplier.uuid
             });
             if (data) {
                 if (data.obj.totalQty == 0 && payload.billType == 'dec') {
                     message.warning("该商品不存在库存，不能新建类型为损耗的损溢单", 2, '');
                     return;
-                }
+                };
                 for (var item of payload.dataSource) {
                     if (item.article.uuid == payload.record.article.uuid && item.qpcStr == payload.record.qpcStr) {
                         item.stockQty = data.obj.totalQty;
                         item.price = data.obj.price;
                         item.proDates = data.obj.productionDates;
-                    }
-                }
+                    };
+                };
                 yield put({
                     type: 'createSuccess',
                     payload: {
-                        decIncItem: payload.dataSource,
+                        decIncItem: payload.dataSource
                     }
-                })
-            }
-
+                });
+            };
         },
 
         *calculateCaseQtyStr({ payload }, { call, put }) {
@@ -205,7 +202,7 @@ export default {
                 if (item.line == payload.record.line) {
                     item.caseQtyStr = data.obj;
                 };
-            }
+            };
             // const caseQtyStrResult = yield call(caseQtyStrAdd, {
             //     addend: payload.currentItem.totalCaseQtyStr, augend: data.obj,
             // });
@@ -222,8 +219,8 @@ export default {
                         continue;
                     const totalCaseQtyStrResult = yield call(caseQtyStrAdd, { addend: totalCaseQtyStr, augend: item.caseQtyStr, });
                     totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
-                }
-            }
+                };
+            };
             // totalAmount = payload.record.price * payload.record.qty + payload.currentItem.totalAmount;
             // 
             payload.currentItem.totalCaseQtyStr = totalCaseQtyStr;
@@ -232,16 +229,16 @@ export default {
                 type: 'createSuccess',
                 payload: {
                     decIncItem: payload.dataSource,
-                    currentItem: payload.currentItem,
+                    currentItem: payload.currentItem
                 }
-            })
+            });
         },
 
         *removeItem({ payload }, { call, put }) {
             for (var item of payload.dataSource) {
                 if (payload.record.line == item.line) {
                     removeByValue(payload.dataSource, item);
-                }
+                };
             };
             if (payload.dataSource.length == 0) {
                 const nullObj = new Object();
@@ -251,13 +248,13 @@ export default {
             };
             for (let i = 0; i < payload.dataSource.length; i++) {
                 payload.dataSource[i].line = i + 1;
-            }
+            };
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    decIncItem: payload.dataSource,
+                    decIncItem: payload.dataSource
                 }
-            })
+            });
         },
 
         *addItem({ payload }, { call, put }) {
@@ -268,9 +265,9 @@ export default {
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    decIncItem: payload.dataSource,
+                    decIncItem: payload.dataSource
                 }
-            })
+            });
         },
 
         *onView({ payload }, { call, put }) {
@@ -280,9 +277,9 @@ export default {
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    decIncItem: data.obj.items,
+                    decIncItem: data.obj.items
                 }
-            })
+            });
         },
 
         *insert({ payload }, { call, put }) {
@@ -309,32 +306,31 @@ export default {
                             currentItem: decIncBill.data.obj,
                             decIncItem: decIncBill.data.obj.items,
                         }
-                    })
-                }
-            }
-
+                    });
+                };
+            };
         },
 
         *update({ payload }, { call, put }) {
             yield call(update, parse(payload));
             yield put({
                 type: 'viewDecInc',
-                payload: payload,
-            })
+                payload: payload
+            });
         },
 
         *refreshSupplier({ payload }, { call, put }) {
             for (var item of payload.dataSource) {
                 if (item.line == payload.record.line) {
                     item.supplier = payload.record.supplier;
-                }
-            }
+                };
+            };
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    decIncItem: payload.dataSource,
+                    decIncItem: payload.dataSource
                 }
-            })
+            });
         },
 
         *viewDecInc({ payload }, { call, put }) {
@@ -348,11 +344,10 @@ export default {
                     payload: {
                         decIncItem: data.obj.item,
                         wrhs: wrhs.data.obj,
-                        currentItem: data.obj,
+                        currentItem: data.obj
                     }
-                })
-
-            }
+                });
+            };
         },
 
         *edit({ payload }, { call, put }) {
@@ -372,7 +367,7 @@ export default {
                         if (stocks.data.obj.totalQty == 0 && item.type == 'dec') {
                             message.warning("该商品不存在库存，不能新建类型为损耗的损溢单", 2, '');
                             return;
-                        }
+                        };
                         const proDates = [];
                         // for (var item of payload.dataSource) {
                         // if (item.article.uuid == payload.record.article.uuid && item.qpcStr == payload.record.qpcStr) {
@@ -380,35 +375,35 @@ export default {
                         proDates.push(stocks.data.obj.productionDate);
 
                         item.proDates = proDates;
-                    }
+                    };
                     // }
 
                     const article = yield call(getArticleInfo, {
                         articleCode: item.article.code,
-                    })
+                    });
                     if (article.data) {
                         const qpcStrs = [];
                         for (var qpc of article.data.obj.qpcs) {
                             qpcStrs.push(qpc.qpcStr);
-                        }
+                        };
 
                         const suppliers = [];
                         for (var supplier of article.data.obj.articleSuppliers) {
                             suppliers.push(supplier);
-                        }
+                        };
                         item.qpcStrs = qpcStrs;
                         item.suppliers = suppliers;
-                    }
-                }
+                    };
+                };
                 yield put({
                     type: 'createSuccess',
                     payload: {
                         decIncItem: data.obj.items,
                         wrhs: wrhs.data.obj,
-                        currentItem: data.obj,
+                        currentItem: data.obj
                     }
-                })
-            }
+                });
+            };
 
         },
 
@@ -417,7 +412,7 @@ export default {
             yield put({
                 type: 'query',
                 payload: {}
-            })
+            });
         },
 
         *gridAudit({ payload }, { call, put }) {
@@ -427,7 +422,7 @@ export default {
             yield put({
                 type: 'query',
                 payload: {}
-            })
+            });
         },
 
         *getSupplier({ payload }, { call, put }) {
@@ -441,44 +436,41 @@ export default {
                 for (var item of payload.dataSource) {
                     if (item.line == payload.record.line) {
                         item.suppliers = data.obj;
-                    }
-                }
+                    };
+                };
                 yield put({
                     type: 'createSuccess',
                     payload: {
-                        decIncItem: payload.dataSource,
+                        decIncItem: payload.dataSource
                     }
-                })
-            }
+                });
+            };
         }
-
-
     },
 
     reducers: {
         querySuccess(state, action) {
-
-            return { ...state, ...action.payload, showCreatePage: false, showViewPage: false }
+            return { ...state, ...action.payload, showCreatePage: false, showViewPage: false };
         },
         createSuccess(state, action) {
-            return { ...state, ...action.payload, showCreatePage: true, showViewPage: false }
+            return { ...state, ...action.payload, showCreatePage: true, showViewPage: false };
         },
         viewSuccess(state, action) {
-            return { ...state, ...action.payload, showViewPage: true, showCreatePage: false }
+            return { ...state, ...action.payload, showViewPage: true, showCreatePage: false };
         },
         batchDeleteDecIncBill(state, action) {
-            return { ...state, ...action.payload, batchDeleteProcessModal: true }
+            return { ...state, ...action.payload, batchDeleteProcessModal: true };
         },
         batchAuditDecIncBill(state, action) {
-            return { ...state, ...action.payload, batchAuditProcessModal: true }
+            return { ...state, ...action.payload, batchAuditProcessModal: true };
         },
         hideDeleteDecIncBillModal(state, action) {
             return {
                 ...state, ...action.payload, batchDeleteProcessModal: false
-            }
+            };
         },
         hideAuditDecIncBillModal(state, action) {
-            return { ...state, batchAuditProcessModal: false }
+            return { ...state, batchAuditProcessModal: false };
         }
     }
 }

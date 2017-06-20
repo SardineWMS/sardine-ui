@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Button, Input, Form, Select, Card, Icon,Col } from 'antd';
+import { Button, Input, Form, Select, Card, Icon, Col } from 'antd';
 import BaseCard from '../../Widget/BaseCard';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
@@ -15,7 +15,7 @@ const AcceptanceBillCreateForm = ({
     onSave,
     queryWrhs,
     queryCustomers,
-    wrhs=[],
+    wrhs = [],
     form: {
         getFieldDecorator,
         validateFields,
@@ -30,55 +30,55 @@ const AcceptanceBillCreateForm = ({
             data = {
                 ...acceptanceBill,
                 ...getFieldsValue(),
-                customer:acceptanceBill.customer,
-                wrh:acceptanceBill.wrh
-            }
+                customer: acceptanceBill.customer,
+                wrh: acceptanceBill.wrh
+            };
             onSave(data);
         });
     };
 
-    function wrhOnSelect(value){
-        const wrhUcn=new Object();
-        wrhUcn.uuid=value.uuid;
-        wrhUcn.code=value.code;
-        wrhUcn.name=value.name;
-        acceptanceBill.wrh=wrhUcn;
-    }
+    function wrhOnSelect(value) {
+        const wrhUcn = new Object();
+        wrhUcn.uuid = value.uuid;
+        wrhUcn.code = value.code;
+        wrhUcn.name = value.name;
+        acceptanceBill.wrh = wrhUcn;
+    };
 
-    function onSelectDeliverySystem(value){
-        if("tradition"===value)
-            acceptanceBill.deliveryType="仓库送";
-    }
+    function onSelectDeliverySystem(value) {
+        if ("tradition" === value)
+            acceptanceBill.deliveryType = "仓库送";
+    };
 
     const baseChildren = [];
-    const compositiveChildren=[];
+    const compositiveChildren = [];
 
     const wrhOptions = [];
-    if (typeof wrhs !='undefined') {
-        wrhs.map(function(wrh){
+    if (typeof wrhs != 'undefined') {
+        wrhs.map(function (wrh) {
             wrhOptions.push(
-                <Option key={wrh.uuid}  value={wrh}>
-                    {"["+wrh.code+"]"}+{wrh.name}
+                <Option key={wrh.uuid} value={wrh}>
+                    {"[" + wrh.code + "]"}+{wrh.name}
                 </Option>
-            )
+            );
         });
-    }
- 
+    };
+
 
     baseChildren.push(
         <BaseFormItem label={"客户："}>
             {getFieldDecorator("customer", { rules: [{ required: true }], initialValue: acceptanceBill.customer ? acceptanceBill.customer.code : null })(
-                <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => queryCustomers()} onBlur={queryWrhs}/>}  />
+                <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => queryCustomers()} onBlur={queryWrhs} />} />
             )}
         </BaseFormItem>
     );
 
     baseChildren.push(
         <BaseFormItem label={"仓位"} >
-            {getFieldDecorator("wrh", { rules: [{ required: true }], initialValue:acceptanceBill.wrh ? acceptanceBill.wrh.code: null })(
-                <Select size="large"  onSelect={wrhOnSelect}>
-                  {wrhOptions}
-                </Select>            
+            {getFieldDecorator("wrh", { rules: [{ required: true }], initialValue: acceptanceBill.wrh ? acceptanceBill.wrh.code : null })(
+                <Select size="large" onSelect={wrhOnSelect}>
+                    {wrhOptions}
+                </Select>
             )}
         </BaseFormItem>
     );
@@ -141,16 +141,16 @@ const AcceptanceBillCreateForm = ({
     </BaseFormItem>);
 
 
-    const colChildren=[];
+    const colChildren = [];
     colChildren.push(
         <Col span={12} key='col1'>
-         {baseChildren}
-       </Col>
+            {baseChildren}
+        </Col>
     );
     colChildren.push(
         <Col span={12} key='col2'>
-         {compositiveChildren}
-       </Col>
+            {compositiveChildren}
+        </Col>
     );
 
     const toolbar = [];
@@ -161,10 +161,10 @@ const AcceptanceBillCreateForm = ({
         <div>
             <ToolbarPanel children={toolbar} />
             <BaseCard title="基本信息" single={true}>
-              <BaseForm items={colChildren} />
+                <BaseForm items={colChildren} />
             </BaseCard>
         </div>
     );
-}
+};
 
 export default Form.create()(AcceptanceBillCreateForm);

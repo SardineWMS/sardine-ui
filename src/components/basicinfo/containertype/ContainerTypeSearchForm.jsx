@@ -10,17 +10,17 @@ const ContainerTypeSearchForm = ({
     getFieldDecorator,
     getFieldsValue,
     resetFields
-    },
+    }
   }) => {
   function handleSearch(e) {
     e.preventDefault();
     onSearch(getFieldsValue());
-  }
+  };
 
   function handleReset(e) {
     e.preventDefault();
     resetFields();
-  }
+  };
 
   const children = [];
   children.push(
@@ -48,7 +48,7 @@ const ContainerTypeSearchForm = ({
 
 ContainerTypeSearchForm.propTypes = {
   form: PropTypes.object.isRequired,
-  onSearch: PropTypes.func,
+  onSearch: PropTypes.func
 };
 
 export default Form.create()(ContainerTypeSearchForm);

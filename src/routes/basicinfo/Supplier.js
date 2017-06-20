@@ -40,8 +40,8 @@ function Supplier({dispatch, supplier, location}) {
         query: {
           page: page.current,
           pageSize: page.pageSize
-        },
-      }))
+        }
+      }));
     },
 
     onCreate() {
@@ -50,7 +50,7 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           currentItem: {}
         }
-      })
+      });
     },
 
     onRemoveBatch(suppliers) {
@@ -59,7 +59,7 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           removeSupplierEntitys: suppliers
         }
-      })
+      });
     },
 
     onRecoverBatch(suppliers) {
@@ -68,7 +68,7 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           recoverSupplierEntitys: suppliers
         }
-      })
+      });
     },
 
     onViewItem(item) {
@@ -77,7 +77,7 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           currentItem: item
         }
-      })
+      });
     },
 
     onRemoveItem(supplier) {
@@ -86,8 +86,8 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           uuid: supplier.uuid,
           version: supplier.version,
-          token: token,
-        },
+          token: token
+        }
       });
     },
 
@@ -97,7 +97,7 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           currentItem: item
         }
-      })
+      });
     },
 
     onRecoverItem(supplier) {
@@ -106,12 +106,11 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           uuid: supplier.uuid,
           version: supplier.version,
-          token: token,
-        },
+          token: token
+        }
       });
     },
-
-  }
+  };
 
   const supplierSearchFormProps = {
     field,
@@ -121,16 +120,16 @@ function Supplier({dispatch, supplier, location}) {
       dispatch({
         type: 'supplier/query',  //根据这个路径 找modes的effects中对应的方法
         payload: fieldsValue
-      })
-    },
-  }
+      });
+    }
+  };
 
   const viewFormProps = {
     item: currentItem,
     onRecover(item) {
       dispatch({
         type: 'supplier/recover',
-        payload: item,
+        payload: item
       });
     },
     onEdit(item) {
@@ -139,7 +138,7 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           currentItem: item
         }
-      })
+      });
     },
     onBack() {
       dispatch({
@@ -158,9 +157,9 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           uuid: item.uuid
         }
-      })
-    },
-  }
+      });
+    }
+  };
 
   const createFormProps = {
     item: currentItem,
@@ -169,21 +168,21 @@ function Supplier({dispatch, supplier, location}) {
       if (data.uuid) {
         dispatch({
           type: 'supplier/edit',
-          payload: data,
+          payload: data
         });
       } else {
         dispatch({
           type: 'supplier/create',
-          payload: data,
+          payload: data
         });
-      }
+      };
     },
     onCancel() {
       dispatch({
-        type: 'supplier/backSearch',
+        type: 'supplier/backSearch'
       });
-    },
-  }
+    }
+  };
 
   const batchProcessRemoveSupplierProps = {
     showConfirmModal: batchRemoveProcessModal,
@@ -197,14 +196,14 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           uuid: entity.uuid,
           version: entity.version,
-          token: localStorage.getItem("token"),
+          token: localStorage.getItem("token")
         }
-      })
+      });
     },
     hideConfirmModal() {
       dispatch({
-        type: 'supplier/hideRemoveSupplierModal',
-      })
+        type: 'supplier/hideRemoveSupplierModal'
+      });
     },
     refreshGrid() {
       dispatch({
@@ -212,9 +211,9 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           token: localStorage.getItem("token")
         }
-      })
+      });
     }
-  }
+  };
 
   const batchProcessRecoverSupplierProps = {
     showConfirmModal: batchRecoverProcessModal,
@@ -228,14 +227,14 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           uuid: entity.uuid,
           version: entity.version,
-          token: localStorage.getItem("token"),
+          token: localStorage.getItem("token")
         }
-      })
+      });
     },
     hideConfirmModal() {
       dispatch({
-        type: 'supplier/hideRecoverSupplierModal',
-      })
+        type: 'supplier/hideRecoverSupplierModal'
+      });
     },
     refreshGrid() {
       dispatch({
@@ -243,9 +242,9 @@ function Supplier({dispatch, supplier, location}) {
         payload: {
           token: localStorage.getItem("token")
         }
-      })
+      });
     }
-  }
+  };
 
    const logGridProps = {
       dataSource:logList,
@@ -256,15 +255,15 @@ function Supplier({dispatch, supplier, location}) {
         payload:{  
           entityUuid:currentItem.uuid
         }
-      })
+      });
       },
 
      onBack(){
       dispatch({
-        type: 'supplier/showViewPage',
-      })
+        type: 'supplier/showViewPage'
+      });
     }
-  }
+  };
 
 
   function refreshWidget() {
@@ -283,27 +282,27 @@ function Supplier({dispatch, supplier, location}) {
           <WMSProgress {...batchProcessRecoverSupplierProps} />
         </div>
       );
-    }
-  }
+    };
+  };
 
   return (
     <div className="content-inner">
       {refreshWidget()}
     </div>
-  )
+  );
 
-}
+};
 
 Supplier.propTypes = {
   supplier: PropTypes.object,
   location: PropTypes.object,
   dispatch: PropTypes.func,
   showCreate: PropTypes.bool,
-  showView: PropTypes.bool,
-}
+  showView: PropTypes.bool
+};
 
 function mapStateToProps({supplier}) {
   return { supplier };
-}
+};
 export default connect(mapStateToProps)(Supplier);
 

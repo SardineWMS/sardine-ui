@@ -9,8 +9,8 @@ class SerialArchSearchGrid extends React.Component {
         this.state = {
             ...props,
             selectedRowKeys: [],
-            selectedRows: [],
-        }
+            selectedRows: []
+        };
         this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
         this.handleStickBatch = this.handleStickBatch.bind(this);
         this.handlePostponeBatch = this.handlePostponeBatch.bind(this);
@@ -20,7 +20,7 @@ class SerialArchSearchGrid extends React.Component {
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: [],
+            selectedRows: []
         });
     };
     onSelectChange = (selectedRowKeys, selectedRows) => {
@@ -42,7 +42,7 @@ class SerialArchSearchGrid extends React.Component {
             this.state.onCreateLine();
         else if (key == 3)
             this.state.onAddCustomer();
-    }
+    };
 
 
     render() {
@@ -50,7 +50,7 @@ class SerialArchSearchGrid extends React.Component {
         const columns = [{
             title: '序号',
             dataIndex: 'order',
-            key: 'order',
+            key: 'order'
         },
         {
             title: '客户代码',
@@ -62,7 +62,7 @@ class SerialArchSearchGrid extends React.Component {
             title: '客户名称',
             dataIndex: 'customer',
             key: 'customerName',
-            render: text => text.name,
+            render: text => text.name
         },
         {
             title: '操作',
@@ -71,12 +71,12 @@ class SerialArchSearchGrid extends React.Component {
                 <a onClick={() => this.state.onUp(record)}><Icon type="caret-up" style={{ fontSize: 16, color: '#08c' }} /></a>
                 <a onClick={() => this.state.onDown(record)}><Icon type="caret-down" style={{ fontSize: 16, color: '#08c' }} /></a>
             </div>
-        },
+        }
         ];
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange,
+            onChange: this.onSelectChange
         };
         const hasSelected = selectedRowKeys.length > 0;
 
@@ -115,7 +115,7 @@ class SerialArchSearchGrid extends React.Component {
                 />
             </div>
         );
-    }
-}
+    };
+};
 
 export default SerialArchSearchGrid;
