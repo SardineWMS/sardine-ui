@@ -29,6 +29,7 @@ import AcceptanceBill from './routes/forward/AcceptanceBill';
 import Carrier from './routes/tms/Carrier';
 import Vehicle from './routes/tms/Vehicle';
 import PickArea from './routes/basicinfo/PickArea';
+import SerialArch from './routes/tms/SerialArch';
 
 
 export default function ({
@@ -63,6 +64,7 @@ export default function ({
         <Route path="/tms/vehicle" component={Vehicle} />
         <Route path="/basicInfo/pickArea" component={PickArea} />
         <Route path="/forward/acceptanceBill" component={AcceptanceBill} />
+        <Route path="/tms/serialArch" component={SerialArch} />
       </Route>
     </Router>
   );

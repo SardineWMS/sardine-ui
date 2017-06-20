@@ -38,6 +38,7 @@ app.model(require('./models/forward/AcceptanceBill'));
 app.model(require('./models/tms/Carrier'));
 app.model(require('./models/tms/Vehicle'));
 app.model(require('./models/basicinfo/PickArea'));
+app.model(require('./models/tms/SerialArch'));
 
 app.router(require('./router'));
 
