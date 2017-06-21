@@ -33,7 +33,7 @@ const ArticleViewForm = ({
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label="规格：" key="spec">
+        <BaseFormItem label="包装：" key="spec">
             <span>{article.spec} </span>
         </BaseFormItem>
     );
