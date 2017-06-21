@@ -43,8 +43,9 @@ const ArticleViewForm = ({
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label="质量管理：" key="firstInFirstOut">
-            <span>{article.firstInFirstOut ? "是" : "否"} </span>
+        <BaseFormItem label="保质期类型：" key="expflag">
+            <span>{article.expflag == "produceDate" ? "按生产日期" : (
+                article.expflag == "expireDate" ? "按到效期" : "不管理保质期")} </span>
         </BaseFormItem>
     );
     children.push(
