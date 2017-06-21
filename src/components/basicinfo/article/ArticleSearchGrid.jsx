@@ -84,12 +84,12 @@ function ArticleSearch({
         rowSelection={rowSelection}
         title={() =>
           <div>
-            <Button onClick={handleCreate} disabled={!PermissionUtil("article:create")}>新增</Button>
             <Dropdown overlay={menu}>
               <Button type="ghost" style={{ marginLeft: 8 }}>
                 更多操作 <Icon type="down" />
               </Button>
             </Dropdown>
+            <Button onClick={handleCreate} disabled={!PermissionUtil("article:create")}>新增</Button>
           </div>
         }
         dataSource={dataSource}
