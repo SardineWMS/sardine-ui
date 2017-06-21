@@ -21,7 +21,7 @@ const ArticleCreateForm = ({
   form: {
     getFieldDecorator,
     validateFields,
-    getFieldsValue
+    getFieldsValue,
   },
   onCategorySelect,
   category,
@@ -34,33 +34,37 @@ const ArticleCreateForm = ({
     validateFields((errors) => {
       if (errors) {
         return;
-      };
+      }
       const data = { ...getFieldsValue(), uuid: article.uuid, version: article.version, category: category };
       onOk(data);
     });
-  };
+  }
 
   function selectCategory(){
     let data = { ...getFieldsValue()};
     if (article.uuid) {
       data.uuid = article.uuid;
       data.version = article.version;
-    };
+    }
     onCategorySelect(data);
-  };
+  }
 
   function handleEnterPress() {
+    if (category && ("[" + category.code + "]" + category.name) == getFieldsValue().category)
+      return;
+    if (!getFieldsValue().category) 
+      return;
     let data = { ...getFieldsValue()};
     if (article.uuid) {
       data.uuid = article.uuid;
       data.version = article.version;
-    };
+    }
     onEnterCategory(data, getFieldsValue().category);
-  };
+  }
 
   function firstInFirstOutChange(e){
     onFirstInFirstOutChange(e.target.value);
-  };
+  }
 
   const basicChildren = [];
   const businessChildren = [];
@@ -69,7 +73,7 @@ const ArticleCreateForm = ({
       {getFieldDecorator('code', {
         initialValue: article ? article.code : null,
         rules: [
-          { required: true, message: '代码未填写' },
+          { required: true, message: '商品代码不能为空！' },
         ],
       })(
         <Input type="text" />
@@ -82,7 +86,7 @@ const ArticleCreateForm = ({
       {getFieldDecorator('name', {
         initialValue: article ? article.name : null,
         rules: [
-          { required: true, message: '名称未填写' },
+          { required: true, message: '商品名称不能为空！' },
         ],
       })(
         <Input type="text" />
@@ -91,11 +95,11 @@ const ArticleCreateForm = ({
   );
 
   basicChildren.push(
-    <BaseFormItem label="规格 :" key="spec">
+    <BaseFormItem label="包装 :" key="spec">
       {getFieldDecorator('spec', {
         initialValue: article ? article.spec : null,
         rules: [
-          { required: true, message: '规格未填写' },
+          { required: true, message: '包装不能为空！' },
         ],
       })(
         <Input type="text" />
@@ -104,8 +108,8 @@ const ArticleCreateForm = ({
   );
 
   basicChildren.push(<BaseFormItem label={"商品类别："} key="category">
-        {getFieldDecorator("category", { rules: [{ required: true }], initialValue: category ? "[" + category.code + "]" + category.name : null })(
-            <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => selectCategory()} />} onBlur={handleEnterPress} />
+        {getFieldDecorator("category", { rules: [{ required: true, message: '商品类别不能为空！' }], initialValue: (category && category.uuid) ? "[" + category.code + "]" + category.name : null })(
+            <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => selectCategory()} />} onBlur={handleEnterPress} onPressEnter={handleEnterPress} />
         )}
     </BaseFormItem>);
 
@@ -126,7 +130,7 @@ const ArticleCreateForm = ({
     <BaseFormItem label="保质期 ：" key="expDays">
       {getFieldDecorator('expDays', {
         initialValue: article.expDays ? article.expDays : 0,
-        rules: [{ required: true, message: '保质期不能为空' },],
+        rules: [{ required: true, message: '保质期不能为空！' },],
       })(
         <InputNumber min={0} />
         )}
@@ -137,7 +141,7 @@ const ArticleCreateForm = ({
     <BaseFormItem label="上架货位 ：" key="putawayBin" >
       {getFieldDecorator('putawayBin', {
         initialValue: article.putawayBin ? article.putawayBin : "StorageBin",
-        rules: [{ required: true, message: '上架货位不能为空' },],
+        rules: [{ required: true, message: '上架货位不能为空！' },],
       })(
         <Select size="large">
             <Select.Option value="StorageBin" >存储位</Select.Option>

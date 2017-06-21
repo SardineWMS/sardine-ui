@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import {Form, Input, Select, label, Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
+import {Form, Input, Select, message, label, Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
 import PermissionUtil from '../../../utils/PermissionUtil';
 import BaseCard from '../../Widget/BaseCard';
 import BaseFormItem from '../../Widget/BaseFormItem';
@@ -15,18 +15,31 @@ class ArticleMove extends React.Component {
             ...props,
             selectedRowKeys: [],
             selectedRows: [],
-            moveItems: []
+            moveItems: [],
+            isRefresh: false,
             // currentArticleItem: props.currentArticleItem
-        };
-        this.saveAndMove = this.saveAndMove.bind(this);
+        }
+        this.queryStockInfos = this.queryStockInfos.bind(this);
+        this.onArticleCodeChange = this.onArticleCodeChange.bind(this);
         // this.cancel = this.cancel.bind(this);
     };
 
     componentWillReceiveProps(newProps) {
+        let currentItem = newProps.currentArticleItem;
+        if (newProps.stockInfos && newProps.stockInfos.length > 0) {
+            newProps.currentArticleItem.articleUuid = newProps.stockInfos[0].article.uuid;
+            newProps.currentArticleItem.articleCode = newProps.stockInfos[0].article.code;
+            newProps.currentArticleItem.articleName = newProps.stockInfos[0].article.name;
+        } else {
+            newProps.currentArticleItem.articleUuid = null;
+            newProps.currentArticleItem.articleCode = null;
+            newProps.currentArticleItem.articleName = null;
+            message.error('当前商品无可用库存！');
+        }
         this.setState({
             ...newProps,
             selectedRowKeys: [],
-            selectedRows: []
+            selectedRows: [],
         });
     };
 
@@ -42,17 +55,21 @@ class ArticleMove extends React.Component {
 
     queryStockInfos(e) {
         let currentItem = this.state.currentArticleItem;
-        if (e.target.value && e.target.value != currentItem.articleCode) {
+        if (e.target.value != currentItem.articleCode) {
           this.state.onQueryStock(e.target.value);
-          currentItem.articleCode = e.target.value;
-          this.setState({
-            currentArticleItem: currentItem
-          });
-        };
+        }
     };
 
+    onArticleCodeChange = (e) => {
+        if (e.target.keyCode == 13) {
+           this.setState({isRefresh: true});
+        } else {
+           this.setState({isRefresh: false});
+        }
+    }
+
     render() {
-        let {currentArticleItem} = this.state;
+        let {currentArticleItem, stockInfos} = this.state;
         let getFieldDecorator = this.props.form.getFieldDecorator;
         let formItems = [];
         let qtyItems = [];
@@ -61,7 +78,8 @@ class ArticleMove extends React.Component {
             {getFieldDecorator("articleCode", {
                 rules: [{ required: true }], initialValue: currentArticleItem ? currentArticleItem.articleCode : null
             })(
-                <Input onBlur={(e) => this.queryStockInfos(e)} onPressEnter={(e) => this.queryStockInfos(e)}/>
+                <Input onBlur={(e) => this.queryStockInfos(e)} onPressEnter={(e) => this.queryStockInfos(e)} 
+                onKeyUp={(e) => this.onArticleCodeChange(e)}/>
                 )
             }
          </BaseFormItem>
@@ -158,7 +176,7 @@ class ArticleMove extends React.Component {
             title: '行号',
             dataIndex: 'line',
             key: 'line',
-            width: 50
+            width: 50,
         }, {
             title: '商品代码',
             dataIndex: 'articleCode',
@@ -214,12 +232,12 @@ class ArticleMove extends React.Component {
         const toolbar = [];
         toolbar.push(<Button key="canel" > 取消</Button>);
         toolbar.push(<Button key="save" disabled={!PermissionUtil("receiveBill:create")}>保存</Button>);
-        toolbar.push(<Button key="saveAndMove" disabled={!PermissionUtil("receiveBill:create")}>保存并移库</Button>);
+        toolbar.push(<Button key="saveAndMove" disabled={!PermissionUtil("receiveBill:create")}>保存并移库</Button>)
 
         const { selectedRowKeys } = this.state;
         const rowSelection = {
             selectedRowKeys,
-            onChange: this.onSelectChange
+            onChange: this.onSelectChange,
         };
         const hasSelected = selectedRowKeys.length > 0;
 
@@ -249,9 +267,10 @@ class ArticleMove extends React.Component {
                     </div>}
                 />
             </div>
-        );
-    };
-};
+        )
+    }
+
+}
 
 export default Form.create()(ArticleMove);;
 

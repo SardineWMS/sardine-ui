@@ -16,9 +16,9 @@ import {
   deleteArticleBarcode,
   saveArticleBarcode,
   addArticleBarcode,
-  setArticleFixedPickBin
+  setArticleFixedPickBin,
 } from '../../services/basicinfo/Article';
-import { queryLastLower, getCategoryByCode } from '../../services/basicinfo/Category';
+import {queryCategory, getCategoryByCode} from '../../services/basicinfo/Category';
 
 export default {
   namespace: 'article',
@@ -66,15 +66,15 @@ export default {
             dispatch({
               type: 'getAndView',
               payload: { articleUuid: location.query.key }
-            });
+            })
           } else {
             dispatch({
               type: 'query',
               payload: location.query,
-            });
-          };
-        };
-      });
+            })
+          }
+        }
+      })
     },
   },
 
@@ -85,10 +85,10 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      });
+      })
       const {
         data
-      } = yield call(queryArticles, parse(payload));
+      } = yield call(queryArticles, parse(payload))
       if (data) {
         yield put({
           type: 'querySuccess',
@@ -101,21 +101,21 @@ export default {
               current: data.obj.page,
               total: data.obj.recordCount,
               size: 'default'
-            }
-          }
-        });
-      };
+            },
+          },
+        })
+      }
     },
-    *showCreateAndqueryLastLower({ payload }, {
+    *showCreateAndqueryLastLower({payload}, {
       call,
       put
     }) {
       yield put({
         type: 'showLoading'
-      });
+      })
       const {
         data
-      } = yield call(queryLastLower, parse(payload))
+      } = yield call(queryCategory, parse(payload))
       if (data) {
         yield put({
           type: 'showCreatePage',
@@ -128,51 +128,24 @@ export default {
               current: data.obj.page,
               total: data.obj.recordCount,
               size: 'default'
-            }
-          }
-        });
-      };
+            },
+          },
+        })
+      }
     },
-    *showEditAndqueryLastLower({ payload }, {
+    *showEditAndqueryLastLower({payload}, {
       call,
       put
     }) {
       yield put({
         type: 'showLoading'
-      });
+      })
       const {
         data
-      } = yield call(queryLastLower, parse(payload));
+      } = yield call(queryCategory, parse(payload))
       if (data) {
         yield put({
           type: 'showEditPage',
-          payload: {
-            categoryList: data.obj.records,
-            categoryPagination: {
-              showSizeChanger: false,
-              showQuickJumper: true,
-              showTotal: total => `共 ${total} 条`,
-              current: data.obj.page,
-              total: data.obj.recordCount,
-              size: 'default'
-            }
-          }
-        });
-      };
-    },
-    *queryLastLower({ payload }, {
-      call,
-      put
-    }) {
-      yield put({
-        type: 'showLoading'
-      });
-      const {
-        data
-      } = yield call(queryLastLower, parse(payload));
-      if (data) {
-        yield put({
-          type: 'showCategorySelectModal',
           payload: {
             categoryList: data.obj.records,
             categoryPagination: {
@@ -183,10 +156,37 @@ export default {
               total: data.obj.recordCount,
               size: 'default'
             },
+          },
+        })
+      }
+    },
+    *queryLastLower({ payload }, {
+      call,
+      put
+    }) {
+      yield put({
+        type: 'showLoading'
+      })
+      const {
+        data
+      } = yield call(queryCategory, parse(payload))
+      if (data) {
+        yield put({
+          type: 'showCategorySelectModal',
+          payload: {
+            categoryList: data.obj,
+/*            categoryPagination: {
+              showSizeChanger: false,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
+              current: data.obj.page,
+              total: data.obj.recordCount,
+              size: 'default'
+            },*/
             currentArticle: payload.article
-          }
-        });
-      };
+          },
+        })
+      }
     },
     *getCategoryByCode({ payload }, {
       call,
@@ -194,19 +194,19 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      });
+      })
       const {
         data
-      } = yield call(getCategoryByCode, { code: payload.categoryCode });
+      } = yield call(getCategoryByCode, {code :payload.categoryCode})
       if (data) {
         yield put({
           type: 'querySuccess',
           payload: {
             category: data.obj,
             currentArticle: payload.article
-          }
-        });
-      };
+          },
+        })
+      }
     },
     *getAndView({ payload }, {
       call,
@@ -214,18 +214,18 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      });
+      })
       const {
         data
-      } = yield call(get, parse(payload));
+      } = yield call(get, parse(payload))
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
-            currentArticle: data.obj
-          }
-        });
-      };
+            currentArticle: data.obj,
+          },
+        })
+      }
     },
     *getAndShowEditPage({ payload }, {
       call,
@@ -233,7 +233,7 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      });
+      })
       const {
         data
       } = yield call(get, parse(payload))
@@ -241,10 +241,10 @@ export default {
         yield put({
           type: 'showEditPage',
           payload: {
-            currentArticle: data.obj
-          }
-        });
-      };
+            currentArticle: data.obj,
+          },
+        })
+      }
     },
     *create({
       payload
@@ -254,19 +254,19 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
-      const { data } = yield call(create, payload);
+      })
+      const { data } = yield call(create, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
-            currentArticle: data.obj
-          }
-        });
-      };
+            currentArticle: data.obj,
+          },
+        })
+      }
     },
 
     *setArticleFixedPickBin({
@@ -277,16 +277,16 @@ export default {
     }) {
       yield put({
         type: 'hideSetBinModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
-      const { data } = yield call(setArticleFixedPickBin, parse(payload));
+      })
+      const { data } = yield call(setArticleFixedPickBin, parse(payload))
       if (data) {
         yield put({
           type: 'query',
-        });
-      };
+        })
+      }
     },
 
     *getAndSaveSupplier({
@@ -297,19 +297,19 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
-      const { data } = yield call(getAndSaveSupplier, payload);
+      })
+      const { data } = yield call(getAndSaveSupplier, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
             currentArticle: data.obj,
           },
-        });
-      };
+        })
+      }
     },
 
     *deleteArticleSupplier({
@@ -320,19 +320,19 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
+      })
       const { data } = yield call(deleteArticleSupplier, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
-            currentArticle: data.obj
-          }
-        });
-      };
+            currentArticle: data.obj,
+          },
+        })
+      }
     },
 
     *setDefaultSupplier({
@@ -343,19 +343,19 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
-      const { data } = yield call(setDefaultSupplier, payload);
+      })
+      const { data } = yield call(setDefaultSupplier, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
-            currentArticle: data.obj
-          }
-        });
-      };
+            currentArticle: data.obj,
+          },
+        })
+      }
     },
 
     *addArticleSupplier({ payload }, {
@@ -364,18 +364,18 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      });
+      })
       const {
         data
-      } = yield call(addArticleSupplier, parse(payload));
+      } = yield call(addArticleSupplier, parse(payload))
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
-            currentArticle: data.obj
-          }
-        });
-      };
+            currentArticle: data.obj,
+          },
+        })
+      }
     },
     *saveArticleQpc({
       payload
@@ -385,19 +385,19 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
-      const { data } = yield call(saveArticleQpc, payload);
+      })
+      const { data } = yield call(saveArticleQpc, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
-            currentArticle: data.obj
-          }
-        });
-      };
+            currentArticle: data.obj,
+          },
+        })
+      }
     },
 
     *deleteArticleQpc({
@@ -408,19 +408,19 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
-      const { data } = yield call(deleteArticleQpc, payload);
+      })
+      const { data } = yield call(deleteArticleQpc, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
             currentArticle: data.obj,
           },
-        });
-      };
+        })
+      }
     },
 
     *setDefaultQpcStr({
@@ -431,19 +431,19 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
-      const { data } = yield call(setDefaultQpcStr, payload);
+      })
+      const { data } = yield call(setDefaultQpcStr, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
             currentArticle: data.obj,
           },
-        });
-      };
+        })
+      }
     },
 
     *addArticleQpc({ payload }, {
@@ -452,18 +452,18 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      });
+      })
       const {
         data
-      } = yield call(addArticleQpc, parse(payload));
+      } = yield call(addArticleQpc, parse(payload))
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
             currentArticle: data.obj,
           },
-        });
-      };
+        })
+      }
     },
     *saveArticleBarcode({
       payload
@@ -473,19 +473,19 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
-      const { data } = yield call(saveArticleBarcode, payload);
+      })
+      const { data } = yield call(saveArticleBarcode, payload)
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
             currentArticle: data.obj,
           },
-        });
-      };
+        })
+      }
     },
 
     *deleteArticleBarcode({
@@ -496,10 +496,10 @@ export default {
     }) {
       yield put({
         type: 'hideModal'
-      });
+      })
       yield put({
         type: 'showLoading'
-      });
+      })
       const { data } = yield call(deleteArticleBarcode, payload)
       if (data) {
         yield put({
@@ -507,8 +507,8 @@ export default {
           payload: {
             currentArticle: data.obj,
           },
-        });
-      };
+        })
+      }
     },
 
     *addArticleBarcode({ payload }, {
@@ -517,18 +517,18 @@ export default {
     }) {
       yield put({
         type: 'showLoading'
-      });
+      })
       const {
         data
-      } = yield call(addArticleBarcode, parse(payload));
+      } = yield call(addArticleBarcode, parse(payload))
       if (data) {
         yield put({
           type: 'showViewPage',
           payload: {
             currentArticle: data.obj,
           },
-        });
-      };
+        })
+      }
     },
   },
 
@@ -537,14 +537,21 @@ export default {
       return {
         ...state,
         loading: true
-      };
+      }
     },
     querySuccess(state, action) {
       return {
         ...state,
         ...action.payload,
         loading: false
-      };
+      }
+    },
+    querySuccess(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+        loading: false
+      }
     },
     showSupplier(state, action) {
       return {
@@ -552,8 +559,8 @@ export default {
         ...action.payload,
         loading: false,
         showCreate: false,
-        showView: true
-      };
+        showView: true,
+      }
     },
     showCreatePage(state, action) {
       return {
@@ -561,7 +568,7 @@ export default {
         showCreate: true,
         showView: false,
         showCategorySelectModal: false,
-        currentArticle: {}
+        currentArticle: {},
       };
     },
 
@@ -570,8 +577,8 @@ export default {
         ...state,
         ...action.payload,
         showCreate: false,
-        showView: true
-      };
+        showView: true,
+      }
     },
 
     showLable(state, action) {
@@ -579,7 +586,7 @@ export default {
         ...state,
         showLable: action.payload.showLable,
         firstInFirstOut: action.payload.showLable
-      };
+      }
     },
 
     showEditPage(state, action) {
@@ -588,23 +595,23 @@ export default {
         ...action.payload,
         showCreate: true,
         showCategorySelectModal: false,
-        showView: false
-      };
+        showView: false,
+      }
     },
 
     showCategorySelectModal(state, action) {
       return {
         ...state,
         ...action.payload,
-        showCategorySelectModal: true
-      };
+        showCategorySelectModal: true,
+      }
     },
 
     hideCategorySelectModal(state) {
       return {
         ...state,
-        showCategorySelectModal: false
-      };
+        showCategorySelectModal: false,
+      }
     },
 
     selectCategory(state, action) {
@@ -615,16 +622,16 @@ export default {
           code: action.payload.code,
           name: action.payload.name
         },
-        showCategorySelectModal: false
-      };
+        showCategorySelectModal: false,
+      }
     },
 
     backSearch(state) {
       return {
         ...state,
         showCreate: false,
-        showView: false
-      };
+        showView: false,
+      }
     },
 
     batchSetBinModal(state, action) {
@@ -633,13 +640,13 @@ export default {
         ...action.payload,
         modalVisible: false,
         batchSetBinProcessModal: true
-      };
+      }
     },
     hideBatchSetBinModal(state) {
       return {
         ...state,
         batchSetBinProcessModal: false
-      };
+      }
     },
 
     showSetBinModal(state, action) {
@@ -647,14 +654,14 @@ export default {
         ...state,
         ...action.payload,
         modalVisible: true
-      };
+      }
     },
 
     hideSetBinModal(state) {
       return {
         ...state,
         modalVisible: false
-      };
+      }
     },
 
   },

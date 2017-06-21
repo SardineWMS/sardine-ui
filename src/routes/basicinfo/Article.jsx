@@ -29,11 +29,11 @@ function Article({ location, dispatch, article }) {
 		articles,
 		modalVisible,
 		showCategorySelectModal,
-		categoryList,
-		categoryPagination,
-		category,
-		showLable,
-		firstInFirstOut
+        categoryList,
+        categoryPagination,
+        category,
+        showLable,
+        firstInFirstOut
 	} = article;
 
 	const { field, keyword } = location.query;
@@ -48,13 +48,13 @@ function Article({ location, dispatch, article }) {
 					pageSize: page.pageSize,
 					sort: sorter.columnKey,
 					order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
-				}
-			});
+				},
+			})
 		},
 		onCreate() {
 			dispatch({
 				type: 'article/showCreatePage'
-			});
+			})
 		},
 		onView(article) {
 			dispatch({
@@ -62,7 +62,7 @@ function Article({ location, dispatch, article }) {
 				payload: {
 					articleUuid: article.uuid
 				}
-			});
+			})
 		},
 		onEdit(article) {
 			dispatch({
@@ -70,87 +70,87 @@ function Article({ location, dispatch, article }) {
 				payload: {
 					articleUuid: article.uuid
 				}
-			});
+			})
 		},
-		onSetFixedPickBinItem(article) {
-			articles.push(article),
-				dispatch({
-					type: 'article/showSetBinModal',
-					payload: {
-						articles: articles,
-						modalType: "single"
-					}
-				});
-		},
-		onSetFixedPickBinBatch(articles) {
-			if (articles.length <= 0) {
-				message.warning("请选择要设置的商品！", 2, '');
-				return;
-			};
-			dispatch({
-				type: 'article/showSetBinModal',
-				payload: {
-					articles: articles,
-					modalType: "group"
-				}
-			});
-		},
+        onSetFixedPickBinItem(article) {
+            articles.push(article),
+            dispatch({
+                type:'article/showSetBinModal',
+                payload:{
+                    articles:articles,
+                    modalType:"single"
+                }
+            })
+        },
+	   	onSetFixedPickBinBatch(articles) {
+            if (articles.length <= 0) {
+                message.warning("请选择要设置的商品！", 2, '');
+                return;
+            }
+            dispatch({
+                type:'article/showSetBinModal',
+                payload:{
+                    articles:articles,
+                    modalType:"group"
+                }
+            })
+        },
 	}
 
-	const setFixedPickBinModalProps = {
-		articles: articles,
-		visible: modalVisible,
-		onOk(articles) {
-			if (modalType === "single") {
-				dispatch({
-					type: 'article/setArticleFixedPickBin',
-					payload: {
-						articleUuid: articles[0].uuid,
-						fixedPickBin: articles[0].fixedPickBin
-					}
-				});
-			} else {
-				dispatch({
-					type: 'article/batchSetBinModal',
-					payload: {
-						setFixedPickBinEntitys: articles
-					}
-				});
-			};
-		},
-		onCancel() {
-			dispatch({
-				type: 'article/hideSetBinModal'
-			});
-		}
-	}
+    const setFixedPickBinModalProps={
+        articles:articles,
+        visible:modalVisible,
+        onOk(articles){
+            if(modalType==="single"){
+           		dispatch({
+			        type: 'article/setArticleFixedPickBin',
+			        payload: {
+			        	articleUuid: articles[0].uuid,
+			        	fixedPickBin: articles[0].fixedPickBin
+			        }
+		        })
+            }else{
+                dispatch({
+                    type: 'article/batchSetBinModal',
+                    payload: {
+                        setFixedPickBinEntitys: articles
+                    }
+                })
+            }
+        },
+        onCancel(){
+            dispatch({
+                type: 'article/hideSetBinModal'
+            })  
+        }
+    }
 
-	const batchProcesssetFixedPickBinProps = {
-		showConfirmModal: batchSetBinProcessModal,
-		records: setFixedPickBinEntitys ? setFixedPickBinEntitys : [],
-		next: articleNext,
-		actionText: '设置',
-		entityCaption: '固定拣货位',
-		batchProcess(entity) {
-			dispatch({
-				type: 'article/setArticleFixedPickBin',
-				payload: {
-					articleUuid: entity.uuid,
-					fixedPickBin: entity.fixedPickBin
-				}
-			});
-		},
-		hideConfirmModal() {
-			dispatch({
-				type: 'article/hideBatchSetBinModal'
-			});
-		},
-		refreshGrid() {
-			dispatch({
-				type: 'article/query'
-			});
-		}
-	};
+    const batchProcesssetFixedPickBinProps = {
+	    showConfirmModal: batchSetBinProcessModal,
+	    records: setFixedPickBinEntitys ? setFixedPickBinEntitys : [],
+	    next: articleNext,
+	    actionText: '设置',
+	    entityCaption: '固定拣货位',
+	    batchProcess(entity) {
+	      dispatch({
+	        type: 'article/setArticleFixedPickBin',
+	        payload: {
+	        	articleUuid: entity.uuid,
+	        	fixedPickBin:entity.fixedPickBin
+	        }
+	      })
+	    },
+	    hideConfirmModal() {
+	      dispatch({
+	        type: 'article/hideBatchSetBinModal',
+	      })
+	    },
+	    refreshGrid() {
+	      dispatch({
+	        type: 'article/query'
+	      })
+	    }
+    }
 
 	const articleSearchFormProps = {
 		field,
@@ -158,10 +158,10 @@ function Article({ location, dispatch, article }) {
 		onSearch(fieldsValue) {
 			dispatch({
 				type: 'article/query',
-				payload: fieldsValue
-			});
+				payload: fieldsValue,
+			})
 		},
-	};
+	}
 
 	const createFormProps = {
 		article: currentArticle,
@@ -174,62 +174,61 @@ function Article({ location, dispatch, article }) {
 			data.token = token;
 			dispatch({
 				type: 'article/create',
-				payload: data
+				payload: data,
 			});
 		},
 		onCancel() {
 			dispatch({
-				type: 'article/backSearch'
+				type: 'article/backSearch',
 			});
 		},
 		onCategorySelect(data) {
-			dispatch({
-				type: 'article/queryLastLower',
-				payload: {
-					token: localStorage.getItem("token"),
-					article: data
-				}
-			});
-		},
-		onEnterCategory(data, categoryCode) {
-			dispatch({
-				type: 'article/getCategoryByCode',
-				payload: {
-					categoryCode: categoryCode,
-					article: data
-				}
-			});
-		},
-		onFirstInFirstOutChange(value) {
-			dispatch({
+            dispatch({
+                type: 'article/queryLastLower',
+                payload: {
+                	token: localStorage.getItem("token"),
+                	article: data
+                }
+            })
+        },
+        onEnterCategory(data, categoryCode) {
+            dispatch({
+                type: 'article/getCategoryByCode',
+                payload: {
+                    categoryCode: categoryCode,
+                    article: data
+                }
+            })
+        },
+        onFirstInFirstOutChange(value) {
+          dispatch({
 				type: 'article/showLable',
 				payload: {
 					showLable: value
 				}
 			});
-		}
-	};
+        }
+	}
 
 	const categorySelectModalProps = {
-		visible: showCategorySelectModal,
-		categoryList: categoryList,
-		categoryPagination: categoryPagination,
-		onOk(data) {
-			dispatch({
-				type: 'article/selectCategory',
-				payload: {
-					uuid: data[0].uuid,
-					code: data[0].code,
-					name: data[0].name
-				}
-			});
-		},
-		onCancel() {
-			dispatch({
-				type: 'article/hideCategorySelectModal'
-			});
-		}
-	};
+        visible: showCategorySelectModal,
+        categoryList: categoryList,
+        categoryPagination: categoryPagination,
+        onOk(data) {
+            dispatch({
+                type: 'article/selectCategory',
+                payload: { uuid: data.uuid,
+                           code: data.code,
+                           name: data.name 
+                         }
+            })
+        },
+        onCancel() {
+            dispatch({
+                type: 'article/hideCategorySelectModal',
+            })
+        }
+    }
 
 
 	const viewFormProps = {
@@ -237,7 +236,7 @@ function Article({ location, dispatch, article }) {
 		onCreate() {
 			dispatch({
 				type: 'article/showCreatePage'
-			});
+			})
 		},
 		onEdit(item) {
 			dispatch({
@@ -245,14 +244,14 @@ function Article({ location, dispatch, article }) {
 				payload: {
 					currentArticle: item
 				}
-			});
+			})
 		},
 		onBack() {
 			dispatch({
 				type: 'article/backSearch',
 			});
 		},
-	};
+	}
 
 	const viewArticleBarcodeProps = {
 		dataSource: currentArticle.barcodes,
@@ -301,7 +300,7 @@ function Article({ location, dispatch, article }) {
 				}
 			});
 		},
-	};
+	}
 
 	const viewArticleQpcStrProps = {
 		dataSource: currentArticle.qpcs,
@@ -364,7 +363,7 @@ function Article({ location, dispatch, article }) {
 				}
 			});
 		},
-	};
+	}
 
 	const viewArticleSupplierProps = {
 		dataSource: currentArticle.articleSuppliers,
@@ -410,18 +409,18 @@ function Article({ location, dispatch, article }) {
 				}
 			});
 		}
-	};
+	}
 
 	const CreateFormGen = () => <ArticleCreateForm {...createFormProps} />;
-	const CategorySelectModalGen = () => <CategorySelectModal {...categorySelectModalProps} />;
+	const CategorySelectModalGen = () => <CategorySelectModal {...categorySelectModalProps} />
 
 	function refreshWidget() {
 		if (showCreate) {
-			return (<div>
-				<CreateFormGen />
-				<CategorySelectModal {...categorySelectModalProps} />
-			</div>);
-		};
+                return (<div>
+                	<CreateFormGen />
+                	<CategorySelectModal {...categorySelectModalProps}/>
+                	</div>);
+		}
 		if (showView)
 			return (
 				<div>
@@ -438,26 +437,26 @@ function Article({ location, dispatch, article }) {
 				<SetFixedPickBinModal {...setFixedPickBinModalProps} />
 				<WMSProgress {...batchProcesssetFixedPickBinProps} />
 			</div>);
-		};
-	};
+		}
+	}
 
 	return (
 		<div className="content-inner">
 			{refreshWidget()}
 		</div>
-	);
-};
+	)
+}
 
 Article.propTypes = {
 	article: PropTypes.object,
 	location: PropTypes.object,
 	dispatch: PropTypes.func,
 	showCreate: PropTypes.bool,
-	showView: PropTypes.bool
-};
+	showView: PropTypes.bool,
+}
 
 function mapStateToProps({ article }) {
 	return article;
-};
+}
 
 export default connect(({ article }) => ({ article }))(Article);
