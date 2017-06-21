@@ -42,7 +42,7 @@ function ArticleSearch({
     title: '类别',
     dataIndex: 'category',
     key: 'category',
-    render: (text, record) => (text ? (<a href=""> {"[" + record.category.code + "]" + record.category.name} </a>) : "")
+    render: (text, record) => (text ? (<a href="/#/basicInfo/category"> {"[" + record.category.code + "]" + record.category.name} </a>) : "")
   }, {
     title: '状态',
     dataIndex: 'state',
