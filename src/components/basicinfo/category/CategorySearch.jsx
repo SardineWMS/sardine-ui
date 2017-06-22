@@ -19,15 +19,18 @@ function CategorySearch({
   const columns = [{
     title: '代码',
     dataIndex: 'code',
-    key: 'categoryCode'
+    key: 'categoryCode',
+    width: 200
   }, {
     title: '名称',
     dataIndex: 'name',
-    key: 'categoryName'
+    key: 'categoryName',
+    width: 300
   }, {
     title: '备注',
     dataIndex: 'remark',
-    key: 'remark'
+    key: 'remark',
+    width: 400
   }, {
     title: '操作',
     key: 'operation',

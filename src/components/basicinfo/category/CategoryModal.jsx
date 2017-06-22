@@ -51,8 +51,12 @@ const CategoryModal = ({
             rules: [
               {
                 required: true,
-                message: '类别代码未填写',
+                message: '类别代码不能为空！'
               },
+              {
+                max: 30,
+                message: '类别代码长度最大为30！'
+              }
             ],
           })(<Input />)}
         </BaseFormItem>
@@ -62,14 +66,22 @@ const CategoryModal = ({
             rules: [
               {
                 required: true,
-                message: '类别名称未填写',
+                message: '类别名称不能为空！',
               },
+              {
+                max: 100,
+                message: '类别名称长度最大为100！'
+              }
             ],
           })(<Input />)}
         </BaseFormItem>
         <BaseFormItem label="备注：">
           {getFieldDecorator('remark', {
             initialValue: item.remark,
+            rules: [{
+                max: 255,
+                message: '类别备注长度最大为255！'
+            }]
           })(<Input type="textarea" rows={4} />)}
         </BaseFormItem>
       </Form>
