@@ -40,8 +40,12 @@ const CreateWrhModal = ({
             rules: [
               {
                 required: true,
-                message: '仓位代码未填写',
+                message: '仓位代码不能为空！',
               },
+              {
+                max: 30,
+                message: '仓位代码最大长度为30！'
+              }
             ],
           })(<Input />)}
         </BaseFormItem>
@@ -50,13 +54,24 @@ const CreateWrhModal = ({
             rules: [
               {
                 required: true,
-                message: '仓位名称未填写',
+                message: '仓位名称不能为空！'
               },
+              {
+                max: 100,
+                message: '仓位名称最大长度为100！'
+              }
             ],
           })(<Input />)}
         </BaseFormItem>
         <BaseFormItem label="备注：">
-          {getFieldDecorator('remark', {
+          {getFieldDecorator('remark',
+           {
+            rules: [
+              {
+                max: 255,
+                message: '备注最大长度为255！'
+              }
+            ]
           })(<Input type="textarea" rows={4} />)}
         </BaseFormItem>
       </Form>

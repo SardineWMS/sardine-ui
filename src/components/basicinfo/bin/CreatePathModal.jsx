@@ -67,8 +67,12 @@ const CreatePathModal = ({
             rules: [
               {
                 required: true,
-                message: '每货道数量未填写',
+                message: '每货区数量不能为空！',
               },
+              {
+                pattern: /^\+?[1-9]\d*$/,
+                message: '货道数量必须大于0！'
+              }
             ],
           })(<Input />)}
         </BaseFormItem>

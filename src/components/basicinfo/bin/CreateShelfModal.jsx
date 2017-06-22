@@ -46,6 +46,21 @@ const CreateShelfModal = ({
     });
   };
 
+  function validate(rule, value, callback) {
+        if (rule.required == false) {
+            callback();
+            return;
+        };
+        var pattern = /^[0-9]{4}$/;
+        if (!pattern.test(value.startPath)) {
+            callback("起始货道必须是4位数字！");
+        };
+        if (!pattern.test(value.endPath)) {
+            callback("截止货道必须是4位数字！");
+        };
+        callback();
+  };
+
   const modalOpts = {
     title: '货架新建',
     visible,
@@ -59,28 +74,14 @@ const CreateShelfModal = ({
       <Form horizontal>
         <BaseFormItem label="起始~截止货道：" >
           {getFieldDecorator('shelf', {
-            rules: [{ required: true, message: '起始截止货道不能为空' },],
+            rules: [{ required: true, validator: (rule, value, callback) => validate(rule, value, callback) }], validateTrigger: 'onChange'
           })(
             <InputGroup size="large">
-              <Col span="6">
-                {getFieldDecorator('startPath', {
-                  rules: [
-                    {
-                      required: true,
-                      message: '起始货道未填写',
-                    },
-                  ],
-                })(<Input />)}
+              <Col span="12">
+                <Input />
               </Col>
-              <Col span="6">
-                {getFieldDecorator('endPath', {
-                  rules: [
-                    {
-                      required: true,
-                      message: '截止货道未填写',
-                    },
-                  ],
-                })(<Input />)}
+              <Col span="12">
+                <Input />
               </Col>
             </InputGroup>
             )}
@@ -91,7 +92,10 @@ const CreateShelfModal = ({
               {
                 required: true,
                 message: '每货道数量未填写',
-              },
+              }, {
+                pattern: /^\+?[1-9]\d*$/,
+                message: '数量必须大于0！'
+              }
             ],
           })(<Input />)}
         </BaseFormItem>

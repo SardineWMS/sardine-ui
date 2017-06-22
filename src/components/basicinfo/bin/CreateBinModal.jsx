@@ -89,7 +89,7 @@ const CreateBinModal = ({
             rules: [{ required: true, message: '起始截止货架不能为空' },],
           })(
             <InputGroup size="large">
-              <Col span="6">
+              <Col span="12">
                 {getFieldDecorator('startShelf', {
                   rules: [
                     {
@@ -99,7 +99,7 @@ const CreateBinModal = ({
                   ],
                 })(<Input />)}
               </Col>
-              <Col span="6">
+              <Col span="12">
                 {getFieldDecorator('endShelf', {
                   rules: [
                     {
@@ -121,7 +121,7 @@ const CreateBinModal = ({
               },
             ],
           })(<InputGroup size="large">
-            <Col span="6">
+            <Col span="12">
               {getFieldDecorator('startColumn', {
                 rules: [
                   {
@@ -131,7 +131,7 @@ const CreateBinModal = ({
                 ],
               })(<Input />)}
             </Col>
-            <Col span="6">
+            <Col span="12">
               {getFieldDecorator('endColumn', {
                 rules: [
                   {
@@ -152,7 +152,7 @@ const CreateBinModal = ({
               },
             ],
           })(<InputGroup size="large">
-            <Col span="6">
+            <Col span="12">
               {getFieldDecorator('startLevel', {
                 rules: [
                   {
@@ -162,7 +162,7 @@ const CreateBinModal = ({
                 ],
               })(<Input />)}
             </Col>
-            <Col span="6">
+            <Col span="12">
               {getFieldDecorator('endLevel', {
                 rules: [
                   {
