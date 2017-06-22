@@ -30,7 +30,7 @@ import Carrier from './routes/tms/Carrier';
 import Vehicle from './routes/tms/Vehicle';
 import PickArea from './routes/basicinfo/PickArea';
 import SerialArch from './routes/tms/SerialArch';
-
+import Config from './routes/basicinfo/Config';
 
 export default function ({
   history
@@ -65,6 +65,7 @@ export default function ({
         <Route path="/basicInfo/pickArea" component={PickArea} />
         <Route path="/forward/acceptanceBill" component={AcceptanceBill} />
         <Route path="/tms/serialArch" component={SerialArch} />
+        <Route path="/basicInfo/config" component={Config} />
       </Route>
     </Router>
   );
