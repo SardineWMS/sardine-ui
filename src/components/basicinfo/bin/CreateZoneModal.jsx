@@ -51,8 +51,11 @@ const CreateZoneModal = ({
             rules: [
               {
                 required: true,
-                message: '货区代码未填写',
-              },
+                message: '代码不能为空！',
+              }, {
+                pattern: /^[0-9]{2}$/,
+                message: '代码必须是两位数字！',
+              }
             ],
           })(<Input />)}
         </BaseFormItem>
@@ -62,7 +65,10 @@ const CreateZoneModal = ({
               {
                 required: true,
                 message: '货区名称未填写',
-              },
+              }, {
+                max: 100,
+                message: '名称最大长度为100！',
+              }
             ],
           })(<Input />)}
         </BaseFormItem>
@@ -77,6 +83,12 @@ const CreateZoneModal = ({
         </BaseFormItem>
         <BaseFormItem label="备注：">
           {getFieldDecorator('remark', {
+            rules: [
+              {
+                max: 255,
+                message: '备注最大长度为255！',
+              }
+            ],
           })(<Input type="textarea" rows={4} />)}
         </BaseFormItem>
       </Form>
