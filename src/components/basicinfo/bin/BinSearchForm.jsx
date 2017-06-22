@@ -40,9 +40,11 @@ const BinSearchForm = ({
   children.push(
     <BaseTwoCol>
       <BaseFormItem label="状态 等于">
-        {getFieldDecorator('state')(
-          <Select size="default">
-            <Option value="free" initialValue>空闲</Option>
+        {getFieldDecorator('state', { initialValue: '' })(
+          <Select size="large">
+            <Option value=''> 全部</Option>
+            <Option value="free">空闲</Option>
+            <Option value="using" initialValue>已使用</Option>
           </Select>
         )}
       </BaseFormItem>
@@ -51,9 +53,14 @@ const BinSearchForm = ({
   children.push(
     <BaseTwoCol>
       <BaseFormItem label="用途 等于">
-        {getFieldDecorator('usage')(
-          <Select size="default">
-            <Option value="StorageBin" initialValue>存储位</Option>
+        {getFieldDecorator('usage', { initialValue: '' })(
+          <Select size="large">
+            <Option value=''> 全部</Option>
+            <Option value="StorageBin">存储位</Option>
+            <Option value="PickUpStorageBin">拣货存储位</Option>
+            <Option value="ReceiveStorageBin">收货暂存位</Option>
+            <Option value="CollectBin">集货位</Option>
+            <Option value="SupplierCollectBin">供应商集货位</Option>
           </Select>
         )}
       </BaseFormItem>
