@@ -33,21 +33,21 @@ const CustomerAddForm = ({
     const children = [];
     children.push(
         <BaseFormItem label={"代码"} key="code">
-            {getFieldDecorator("code", { rules: [{ required: true }], initialValue: item.code })(
+            {getFieldDecorator("code", { rules: [{ required: true, message: '代码不能为空！' }], initialValue: item.code })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
         <BaseFormItem label={"名称"} key="name">
-            {getFieldDecorator("name", { rules: [{ required: true }], initialValue: item.name })(
+            {getFieldDecorator("name", { rules: [{ required: true, message: '名称不能为空！'  }], initialValue: item.name })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
         <BaseFormItem label={"类型"} key="type">
-            {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type })(
+            {getFieldDecorator("type", { rules: [{ required: true, message: '客户类型不能为空！'  }], initialValue: item.type })(
                 <Select placeholder="请选择" showSearch={false} size="large">
                     <Option value="store">百货</Option>
                     <Option value="shop">精品店</Option>
@@ -57,14 +57,14 @@ const CustomerAddForm = ({
     );
     children.push(
         <BaseFormItem label={"联系方式"} key="phone">
-            {getFieldDecorator("phone", { rules: [{ required: true }], initialValue: item.phone })(
+            {getFieldDecorator("phone", { rules: [{ required: true, message: '联系方式不能为空！'  }], initialValue: item.phone })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
         <BaseFormItem label={"地址"} key="address">
-            {getFieldDecorator("address", { rules: [{ required: true }], initialValue: item.address })(
+            {getFieldDecorator("address", { rules: [{ required: true, message: '地址不能为空！'  }], initialValue: item.address })(
                 <Input type="textarea" autosize={{ minRows: 4 }} />
             )}
         </BaseFormItem>
