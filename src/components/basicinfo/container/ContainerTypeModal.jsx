@@ -7,6 +7,16 @@ import PermissionUtil from '../../../utils/PermissionUtil';
 const ContainerTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave }) => {
     const columns = [
         {
+            title: '代码',
+            dataIndex: 'code',
+            render: (text, record) => renderColumns(record, "code", text)
+        },
+        {
+            title: '名称',
+            dataIndex: 'name',
+            render: (text, record) => renderColumns(record, "name", text)
+        },
+        {
             title: '前缀',
             dataIndex: 'barCodePrefix',
             key: 'barCodePrefix',
@@ -17,16 +27,6 @@ const ContainerTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdi
             dataIndex: 'barCodeLength',
             key: 'barCodeLength',
             render: (text, record) => renderColumns(record, "barCodeLength", text)
-        },
-        {
-            title: '代码',
-            dataIndex: 'code',
-            render: (text, record) => renderColumns(record, "code", text)
-        },
-        {
-            title: '名称',
-            dataIndex: 'name',
-            render: (text, record) => renderColumns(record, "name", text)
         },
         {
             title: '自重',
