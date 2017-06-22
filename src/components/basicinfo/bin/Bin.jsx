@@ -155,7 +155,7 @@ function BinSearch({
               </Button>
             </Dropdown>
             <Button onClick={handleDeleteBin} disabled={!PermissionUtil("bin:delete")}>删除</Button>
-            <Button onClick={handleCreateBinType} disabled={!PermissionUtil("bintype:create")}>新建货位类型</Button>
+            <Button onClick={handleCreateBinType} disabled={!PermissionUtil("bin:createType")}>新建货位类型</Button>
           </div>
         }
         dataSource={dataSource}
