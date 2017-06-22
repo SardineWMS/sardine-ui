@@ -170,7 +170,7 @@ function Customer({ location, dispatch, customer }) {
         item: currentItem,
         onBack(data) {
             dispatch({
-                type: 'customer/backSuccess',
+                type: 'customer/query',
                 payload: {
                     currentItem: {}
                 }

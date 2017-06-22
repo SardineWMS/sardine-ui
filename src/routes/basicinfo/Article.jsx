@@ -179,7 +179,7 @@ function Article({ location, dispatch, article }) {
 		},
 		onCancel() {
 			dispatch({
-				type: 'article/backSearch',
+				type: 'article/query',
 			});
 		},
 		onCategorySelect(data) {
@@ -248,7 +248,7 @@ function Article({ location, dispatch, article }) {
 		},
 		onBack() {
 			dispatch({
-				type: 'article/backSearch',
+				type: 'article/query',
 			});
 		},
 	}

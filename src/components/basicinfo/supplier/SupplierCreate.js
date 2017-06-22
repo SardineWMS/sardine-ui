@@ -6,6 +6,7 @@ import BaseFormItem from '../../Widget/BaseFormItem';
 import BaseForm from '../../Widget/BaseForm';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import Panel from '../../Widget/Panel';
 
 const SupplierCreate = ({
   item = {},
@@ -83,9 +84,16 @@ const SupplierCreate = ({
   return (
     <div>
       <ToolbarPanel children={toolbar} />
-      <BaseCard title="基本信息" single={true}>
-        <BaseForm items={children} />
+      <BaseCard title="基本信息">
+          <BaseForm items={children} />
       </BaseCard>
+      <Panel title="说明">
+          {getFieldDecorator('remark', {
+              initialValue: item.remark
+          })(
+            <Input type="textarea" autosize={{ minRows: 4 }} />
+          )}
+      </Panel>
     </div>
   );
 };

@@ -35,36 +35,35 @@ function SupplierSerachGrid({
 			title: '代码',
 			dataIndex: 'code',
 			key: 'code',
-			render: (text, record) => <p><a onClick={() => onViewItem(record)} disabled={!PermissionUtil("supplier:view")}>{text}</a></p>
+			render: (text, record) => <p><a onClick={() => onViewItem(record)} disabled={!PermissionUtil("supplier:view")}>{text}</a></p>,
+			width: 150
 		},
 		{
 			title: '姓名',
 			dataIndex: 'name',
-			key: 'name'
+			key: 'name',
+			width: 300
 		},
 		{
 			title: '状态',
 			dataIndex: 'state',
 			key: 'state',
-			render: (text) => text == "normal" ? "正常" : "已删除"
+			render: (text) => text == "normal" ? "正常" : "已删除",
+			width: 150
 		},
 		{
-			title: '操作',
-			key: 'operation',
-			render: (text, record) => (
-				<p>
-					<Popconfirm titldocke="确定要恢复吗？" onConfirm={() => onRecoverItem(record)}>
-						<a disabled={(record.state === "normal") || (!PermissionUtil("supplier:edit"))}>恢复</a>
-					</Popconfirm>
-					&nbsp;&nbsp;&nbsp;
-    			<a onClick={() => onEditItem(record)} disabled={(record.state === "deleted") || !PermissionUtil("supplier:edit")}> 编辑</a>
-					&nbsp;&nbsp;&nbsp;
-    			<Popconfirm titldocke="确定要删除吗？" onConfirm={() => onRemoveItem(record)}>
-						<a disabled={(record.state === "deleted") || (!PermissionUtil("supplier:delete"))}>删除</a>
-					</Popconfirm>
-				</p>
-			)
-		}
+			title: '联系方式',
+			dataIndex: 'phone',
+			key: 'phone',
+			width: 300
+		},
+		{
+			title: '地址',
+			dataIndex: 'address',
+			key: 'address',
+			width: 400
+		},
+		
 	];
 
 	const rowSelection = {

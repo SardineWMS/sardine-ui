@@ -67,9 +67,13 @@ export default {
           payload: {
             list: data.obj.records,
             pagination: {
-              total: data.obj.recordCount,
-              current: data.obj.page
-            }
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            current: data.obj.page,
+                            total: data.obj.recordCount,
+                            size: 'default'
+                        }
           }
         });
       };
@@ -167,9 +171,13 @@ export default {
             payload: {
               list: result.data.obj.records,
               pagination: {
-                total: result.data.obj.recordCount,
-                current: result.data.obj.page
-              }
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            current: data.obj.page,
+                            total: data.obj.recordCount,
+                            size: 'default'
+                        }
             }
           });
         };
@@ -191,9 +199,13 @@ export default {
             payload: {
               list: result.data.obj.records,
               pagination: {
-                total: result.data.obj.recordCount,
-                current: result.data.obj.page
-              }
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            current: data.obj.page,
+                            total: data.obj.recordCount,
+                            size: 'default'
+                        }
             }
           });
         };
@@ -208,9 +220,13 @@ export default {
           payload: {
             logList: data.obj.records,
             pagination: {
-              total: data.obj.recordCount,
-              current: data.obj.page
-            }
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            current: data.obj.page,
+                            total: data.obj.recordCount,
+                            size: 'default'
+                        }
           }
         },
         );

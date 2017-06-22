@@ -142,7 +142,7 @@ function Supplier({dispatch, supplier, location}) {
     },
     onBack() {
       dispatch({
-        type: 'supplier/backSearch',
+        type: 'supplier/query',
       });
     },
     onRemove(item) {

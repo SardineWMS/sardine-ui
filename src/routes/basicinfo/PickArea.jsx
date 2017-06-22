@@ -81,7 +81,7 @@ function PickArea({ location, dispatch, pickArea }) {
         item: currentItem,
         onBack(data) {
             dispatch({
-                type: 'pickArea/backSuccess',
+                type: 'pickArea/query',
                 payload: {
                     currentItem: {}
                 }

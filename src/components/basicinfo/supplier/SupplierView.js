@@ -18,46 +18,60 @@ const SupplierView = ({
   onViewLog
   }) => {
 
-  const children = [];
-  children.push(
-    <BaseFormItem label="代码 :">
+  function convertState(text) {
+        if (text == "normal")
+            return '正常';
+        if (text = "deleted")
+            return '已删除';
+    };
+
+  const basicFormItems = [];
+  basicFormItems.push(
+    <BaseFormItem label="代码 :" key="code">
       <span> {item.code} </span>
     </BaseFormItem>
   );
-  children.push(
-    <BaseFormItem label="名称 :">
+  basicFormItems.push(
+    <BaseFormItem label="名称 :" key="name">
       <span> {item.name} </span>
     </BaseFormItem>
   );
-  children.push(
-    <BaseFormItem label="联系方式 :">
+  basicFormItems.push(
+    <BaseFormItem label="联系方式 :" key="phone">
       <span>{item.phone} </span>
     </BaseFormItem>
   );
-  children.push(
-    <BaseFormItem label="地址：">
+  basicFormItems.push(
+    <BaseFormItem label="地址：" key="address">
       <span>{item.address} </span>
+    </BaseFormItem>
+  );
+  const stateFormItems = [];
+  stateFormItems.push(
+    <BaseFormItem label="状态 :" key="state">
+      <span> {convertState(item.state)} </span>
     </BaseFormItem>
   );
 
   const toolbar = [];
-  toolbar.push(<Button onClick={() => onEdit(item)} disabled={!PermissionUtil("supplier:edit")}> 编辑</Button>);
-  toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)}>
+  toolbar.push(<Button onClick={() => onEdit(item)} disabled={!PermissionUtil("supplier:edit")} key="edit"> 编辑</Button>);
+  toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)} key="delete">
     <Button disabled={(item.state === "deleted") && (!PermissionUtil("supplier:edit"))} >删除</Button>
   </Popconfirm>);
-  toolbar.push(<Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)}>
+  toolbar.push(<Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)} key="recele">
     <Button disabled={(item.state === "normal") && (!PermissionUtil("supplier:edit"))}>恢复</Button>
   </Popconfirm>);
-  toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
+  toolbar.push(<Button onClick={() => onBack()} key="back"> 返回</Button>);
 
   return (
     <div>
-      <ToolbarPanel children={toolbar} />
-      <BaseCard title="基本信息" single={true}>
-        <BaseForm items={children} />
-      </BaseCard>
-      <RemarkCard remark={item.remark} />
-    </div>
+            <ToolbarPanel children={toolbar} />
+            <BaseCard title="基本信息" single={false}>
+                <BaseForm items={basicFormItems} />
+                <BaseForm items={stateFormItems} />
+            </BaseCard>
+            <RemarkCard remark={item.remark} />
+        </div>
   );
 };
 
