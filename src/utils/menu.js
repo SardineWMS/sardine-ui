@@ -38,6 +38,9 @@ module.exports =
       }, {
         key: 'binType',
         name: '货位类型'
+      },{
+        key: 'config',
+        name: '系统配置'
       }]
     }, {
       key: 'forward',
