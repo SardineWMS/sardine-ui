@@ -68,10 +68,10 @@ const CustomerView = ({ item = {},
     let toolbar = [];
     toolbar.push(<Button onClick={() => showEdit(item)} key={Guid()} disabled={!PermissionUtil("customer:edit")}>编辑</Button>);
     toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)} key={Guid()}>
-        <Button disabled={removeRight && (!PermissionUtil("customer:edit"))} >删除</Button>
+        <Button disabled={removeRight || (!PermissionUtil("customer:delete"))} >删除</Button>
     </Popconfirm>);
     toolbar.push(<Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)} key={Guid()}>
-        <Button disabled={recoverRight && (!PermissionUtil("customer:edit"))}>恢复</Button>
+        <Button disabled={recoverRight || (!PermissionUtil("customer:delete"))}>恢复</Button>
     </Popconfirm>);
     toolbar.push(<Button onClick={() => onBack()} key={Guid()}>返回</Button>);
 

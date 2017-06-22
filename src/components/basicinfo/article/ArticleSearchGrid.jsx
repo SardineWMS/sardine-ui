@@ -72,7 +72,7 @@ function ArticleSearch({
       selectedRowKeys = selectedRows;
     },
     getCheckboxProps: record => ({
-      disabled: record.name === 'Disabled User',
+      // disabled: record.name === 'Disabled User',
     })
   };
 

@@ -93,8 +93,8 @@ function CustomerGrid({
         title={() =>
           <div>
             <Row type="flex">
-              <Col><Button type="ghost" onClick={handleRemoveBatch} disabled={!hasPermission("customer:edit")}>批量删除</Button></Col>
-              <Col><Button type="ghost" onClick={handleRecoverBatch} disabled={!hasPermission("customer:edit")}>批量恢复</Button></Col>
+              <Col><Button type="ghost" onClick={handleRemoveBatch} disabled={!hasPermission("customer:delete")}>批量删除</Button></Col>
+              <Col><Button type="ghost" onClick={handleRecoverBatch} disabled={!hasPermission("customer:delete")}>批量恢复</Button></Col>
               <Col><Button onClick={onCreate} disabled={!hasPermission("customer:create")}>新建</Button></Col>
               <Col><span style={{ marginLeft: 8 }}>{selectedRowKeys.length > 0 ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
             </Row>
