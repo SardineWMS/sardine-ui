@@ -71,21 +71,17 @@ function BinSearch({
     };
   };
 
-  function convertState(text) {
-    if (text == "initial")
-      return '初始';
-    if (text == "aborted")
-      return '已作废';
-    if (text == "inAlc")
-      return '待配送';
-    if (text == 'inSorting')
-      return '分拣中';
-    if (text == 'finished')
-      return '已完成';
-    if (text == 'inProgress')
-      return '配送中';
-    if (text == 'handover')
-      return '已交接';
+  function convertUsage(text) {
+    if (text == "StorageBin")
+      return '存储位';
+    if (text == "PickUpStorageBin")
+      return '拣货存储位';
+    if (text == "ReceiveStorageBin")
+      return '收货暂存位';
+    if (text == 'CollectBin')
+      return '集货位';
+    if (text == 'SupplierCollectBin')
+      return '供应商集货位';
   };
 
   const columns = [{
@@ -102,12 +98,12 @@ function BinSearch({
     title: '货位用途',
     dataIndex: 'usage',
     key: 'usage',
-    render: text => (text == "StorageBin" ? '存储位' : text)
+    render: text => convertUsage(text)
   }, {
     title: '货位类型',
     dataIndex: 'binType',
     key: 'binType',
-    render: (text, record) => (text ? (<a href=""> {"[" + record.binType.code + "]" + record.binType.name} </a>) : "")
+    render: (text, record) => (text ? ("[" + record.binType.code + "]" + record.binType.name) : "")
   }, {
     title: '操作',
     key: 'operation',
