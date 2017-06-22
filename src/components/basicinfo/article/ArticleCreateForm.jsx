@@ -117,14 +117,15 @@ const ArticleCreateForm = ({
   </BaseFormItem>);
 
   basicChildren.push(
-    <BaseFormItem label="质量管理 :" key="firstInFirstOut">
-      {getFieldDecorator('firstInFirstOut', {
-        initialValue: article.firstInFirstOut ? article.firstInFirstOut : true,
+    <BaseFormItem label="保质期类型 :" key="expflag">
+      {getFieldDecorator('expflag', {
+        initialValue: article.expflag ? article.expflag : "produceDate",
       })(
-        <Radio.Group>
-          <Radio value={true}>是</Radio>
-          <Radio value={false}>否</Radio>
-        </Radio.Group>
+        <Select size="large">
+          <Select.Option value="produceDate">按生产日期</Select.Option>
+          <Select.Option value="expireDate">按到效期</Select.Option>
+          <Select.Option value="none">不管理保质期</Select.Option>
+        </Select>
       )}
     </BaseFormItem>
   );
