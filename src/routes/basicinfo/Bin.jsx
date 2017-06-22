@@ -18,7 +18,7 @@ function Bin({ location, dispatch, bin }) {
   const { list, wrhModalVisible, zoneModalVisible, shelfModalVisible, pathModalVisible, binModalVisible, treeData,
     wrhs, zones, batchCreatePathProcessModal, batchCreateShelfProcessModal, batchCreateBinProcessModal, pathNext,
     shelfNext, binNext, pathEntitys, shelfEntitys, binEntitys, binTypes, deleteBinEntitys, batchDeleteBinProcessModal, binTypeList,
-    binTypeModalVisible
+    binTypeModalVisible, pagination
     } = bin;
 
   const { field, keyword } = location.query
@@ -268,12 +268,15 @@ function Bin({ location, dispatch, bin }) {
 
   const binSearchProps = {
     dataSource: list,
+    pagination: pagination,
     onPageChange(page, filters, sorter) {
       dispatch({
         type: 'bin/queryBin',
         payload: {
+          page: page.current,
+          pageSize: page.pageSize,
           sort: sorter.columnKey,
-          order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+          order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
         }
       });
     },

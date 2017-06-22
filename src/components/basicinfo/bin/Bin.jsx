@@ -14,6 +14,7 @@ function BinSearch({
   onPageChange,
   onShowStock,
   onCreateBinType,
+  pagination,
   selectBins = []
 }) {
 
@@ -161,6 +162,7 @@ function BinSearch({
         onChange={onPageChange}
         rowSelection={rowSelection}
         rowKey={record => record.uuid}
+        pagination={pagination}
       />
     </div>
   );
@@ -175,7 +177,8 @@ BinSearch.propTypes = {
   onCreateShelf: PropTypes.func,
   onCreateBin: PropTypes.func,
   onDeleteBin: PropTypes.func,
-  onShowStock: PropTypes.func
+  onShowStock: PropTypes.func,
+  pagination: PropTypes.any
 };
 
 export default BinSearch;

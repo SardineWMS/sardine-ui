@@ -30,7 +30,15 @@ export default {
     shelfModalVisible: false,
     binModalVisible: false,
     binTypeList: [],
-    binTypeModalVisible: false
+    binTypeModalVisible: false,
+    pagination: {
+      showSizeChanger: true,
+      showQuickJumper: true,
+      showTotal: total => `共 ${total} 条`,
+      current: 1,
+      total: null,
+      size: 'default'
+    },
   },
 
   subscriptions: {
@@ -74,9 +82,13 @@ export default {
             list: data.obj.pageData.records,
             treeData: data.obj.treeData,
             pagination: {
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
+              current: data.obj.pageData.page,
               total: data.obj.pageData.recordCount,
-              current: data.obj.pageData.page
-            }
+              size: 'default'
+            },
           },
         });
       };
@@ -170,9 +182,13 @@ export default {
             list: data.obj.pageData.records,
             treeData: data.obj.treeData,
             pagination: {
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
+              current: data.obj.pageData.page,
               total: data.obj.pageData.recordCount,
-              current: data.obj.pageData.page
-            }
+              size: 'default'
+            },
           }
         });
       };
@@ -204,9 +220,13 @@ export default {
             list: data.obj.pageData.records,
             treeData: data.obj.treeData,
             pagination: {
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
+              current: data.obj.pageData.page,
               total: data.obj.pageData.recordCount,
-              current: data.obj.pageData.page
-            }
+              size: 'default'
+            },
           }
         });
       };
