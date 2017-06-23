@@ -16,7 +16,7 @@ const getMenus = function (menuArray, parentPath) {
       );
     } else {
       if (item.code == "divider") {
-        return (<Menu.Divider />);
+        return (<Menu.Divider key="divider" />);
       } else {
         return (
           <Menu.Item key={item.code}>

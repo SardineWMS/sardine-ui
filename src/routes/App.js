@@ -69,22 +69,6 @@ function App({
     }
   };
 
-  const headerProps = {
-    user,
-    siderFold,
-    logout() {
-      dispatch({
-        type: 'app/logout',
-        payload: token
-      });
-    },
-    switchSider() {
-      dispatch({
-        type: 'app/switchSider'
-      });
-    }
-  };
-
   const siderProps = {
     location,
     menu: localStorage.getItem("ownedMenus")
@@ -92,19 +76,7 @@ function App({
 
   const navProps = {
     id: 'nav_1_0',
-    key: 'nav_1_0',
-    user,
-    siderFold,
-    modifyPasswd() {
-      dispatch({
-        type: 'app/showModify'
-      });
-    },
-    logout() {
-      dispatch({
-        type: 'app/logout'
-      });
-    }
+    key: 'nav_1_0'
   };
 
   const updatePasswdProps = {

@@ -111,7 +111,7 @@ const ArticleCreateForm = ({
       rules: [{required: true, message: '商品类别不能为空！'}],
       initialValue: (category && category.uuid) ? "[" + category.code + "]" + category.name : null
     })(
-      <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => selectCategory()}/>}
+      <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => selectCategory()}/>}
              onBlur={handleEnterPress} onPressEnter={handleEnterPress}/>
     )}
   </BaseFormItem>);
@@ -172,7 +172,7 @@ const ArticleCreateForm = ({
         {getFieldDecorator('remark', {
           initialValue: article.remark
         })(
-          <Input type="textarea" autosize={{minRows: 4}} defaultValue={article.remark}/>
+          <Input type="textarea" autosize={{minRows: 4}}/>
         )}
       </Panel>
     </div>

@@ -200,7 +200,7 @@ export default {
       } = yield call(getCategoryByCode, {code :payload.categoryCode})
       if (data) {
         yield put({
-          type: 'querySuccess',
+          type: 'showEditPage',
           payload: {
             category: data.obj,
             currentArticle: payload.article
@@ -543,14 +543,9 @@ export default {
       return {
         ...state,
         ...action.payload,
-        loading: false
-      }
-    },
-    querySuccess(state, action) {
-      return {
-        ...state,
-        ...action.payload,
-        loading: false
+        loading: false,
+        showCreate: false,
+        showView: false
       }
     },
     showSupplier(state, action) {
@@ -565,6 +560,7 @@ export default {
     showCreatePage(state, action) {
       return {
         ...state,
+        ...action.payload,
         showCreate: true,
         showView: false,
         showCategorySelectModal: false,

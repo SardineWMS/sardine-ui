@@ -40,7 +40,6 @@ const getHelpContent = function (content) {
 function Bread({ location, menu }) {
   let pathNames = [];
   getPathSet(menu ? eval('(' + menu + ')') : []);
-  console.dir(pathSet);
   pathSet['Home'] = {
     path: '/',
     name: '主页',
@@ -53,7 +52,6 @@ function Bread({ location, menu }) {
       pathNames.push(('-' + item).hyphenToHump());
     };
   });
-  console.dir(pathNames);
   const breads = pathNames.map((item, key) => {
     return (
       <Breadcrumb.Item key={key}>
