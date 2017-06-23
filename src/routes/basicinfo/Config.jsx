@@ -18,6 +18,7 @@ import BinScopeModal from '../../components/basicinfo/config/BinScopeModal';
 import PickBinStockLimitModal from '../../components/basicinfo/config/articleconfig/PickBinStockLimitModal';
 import OperatorModal from '../../components/basicinfo/config/taskAreaConfig/OperatorModal';
 import TaskAreaConfigModal from '../../components/basicinfo/config/taskAreaConfig/TaskAreaConfigModal';
+import ReasonConfigForm from '../../components/basicinfo/config/reasonconfig/ReasonConfigForm';
 
 function Config({ location, dispatch, config }) {
   const {
@@ -49,7 +50,9 @@ function Config({ location, dispatch, config }) {
       operatorModalVisible,
       operators,
       operatorPagination,
-      currentTaskAreaConfig
+      currentTaskAreaConfig,
+      reasons,
+      reasonType 
     } = config;
 
   const { field, keyword } = location.query
@@ -72,6 +75,20 @@ function Config({ location, dispatch, config }) {
       }else if(e.node.props.nodeValue == '0002080104') {
           dispatch({
              type: 'config/showTaskAreaConfigByPage'
+          })    
+      }else if(e.node.props.nodeValue == '0002080201') {
+          dispatch({
+             type: 'config/queryReasonConfig',
+             payload: {
+                reasonType:"DECINC"
+             }
+          })    
+      }else if(e.node.props.nodeValue == '0002080202') {
+          dispatch({
+             type: 'config/queryReasonConfig',
+             payload: {
+                reasonType:"MOVE"
+             }
           })    
       }
     }
@@ -562,6 +579,38 @@ function Config({ location, dispatch, config }) {
       }
   } 
 
+  const reasonConfigProps={
+    title: reasonType==="MOVE"? "移库原因":"损溢原因",
+    reasons : reasons ? (reasons.length>0 ? reasons : ['']):[''],
+    onAdd(reasons){
+       reasons.push('');
+       dispatch({
+        type: 'config/showReasonConfigByPage',
+        payload: {
+          reasons : reasons
+        }
+      })
+    },
+    onRemove(index,currentReasons){
+       currentReasons.splice(index,1);
+       dispatch({
+        type: 'config/showReasonConfigByPage',
+        payload: {
+          reasons : currentReasons
+        }
+      })
+    },
+    setReasonConfig(reasons){
+       dispatch({
+        type: 'config/setReasonConfig',
+        payload: {
+          reasonType: reasonType,
+          reasons : reasons
+        }
+      })
+    }
+  }
+
 
   return (
     <div className="content-inner">
@@ -617,6 +666,12 @@ function Config({ location, dispatch, config }) {
                                 <TaskAreaConfigModal {...setTaskAreaConfigModalProps} />
                            </div>
                        )
+                    case 'reasonConfigPage':
+                       return (
+                           <div>
+                                <ReasonConfigForm {...reasonConfigProps} />
+                           </div>
+                       )  
                   }
               })()
           }

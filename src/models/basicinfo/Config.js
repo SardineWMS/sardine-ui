@@ -3,6 +3,7 @@ import { queryArticleConfigByPage,setArticleFixedPickBin,setPickBinStockLimit,se
 import { queryCategoryStorageAreaConfigByPage,setCategoryStorageArea} from '../../services/basicinfo/config/CategoryStorageAreaConfig';
 import { queryPickAreaStorageAreaConfigByPage,setPickAreaStorageArea} from '../../services/basicinfo/config/PickAreaStorageAreaConfig';
 import { queryTaskAreaConfigByPage,createTaskAreaConfig,updateTaskAreaConfig,removeTaskAreaConfig} from '../../services/basicinfo/config/TaskAreaConfig';
+import { queryReasonConfig,setReasonConfig} from '../../services/basicinfo/config/ReasonConfig';
 import { queryUser} from '../../services/ia/User';
 
 import { parse } from 'qs';
@@ -67,7 +68,9 @@ export default {
             total:null,
             size:'default'
         },
-        operatorModalVisible:false
+        operatorModalVisible:false,
+        reasons:[],
+        reasonType:'DECINC'
 	},
 
   	subscriptions: {
@@ -233,6 +236,29 @@ export default {
                     type: 'queryTaskAreaConfigByPage'
                 })
             }
+        },
+       *queryReasonConfig({ payload }, { call, put }) {
+            const { data } = yield call(queryReasonConfig, parse(payload));
+            if(data.obj){
+                yield put({
+                    type: 'showReasonConfigByPage',
+                    payload: {
+                        reasons:data.obj,
+                        reasonType:payload.reasonType
+                    }
+                })
+            }
+        },
+        *setReasonConfig({ payload }, { call, put }) {
+            const { data } = yield call(setReasonConfig, parse(payload));
+            if(data.status==='200'){
+                yield put({
+                    type: 'queryReasonConfig',
+                    payload: {
+                        reasonType:payload.reasonType
+                    }
+                })
+            }
         }
     },
 
@@ -274,6 +300,14 @@ export default {
                 ...action.payload,
                 loading: false,
                 showPage:'taskAreaConfigPage'
+            }
+        },
+        showReasonConfigByPage(state, action) {
+            return {
+                ...state,
+                ...action.payload,
+                loading: false,
+                showPage:'reasonConfigPage'
             }
         },
         showBinScopeModal(state, action) {
