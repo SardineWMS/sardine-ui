@@ -1,26 +1,64 @@
-import React, { Component, PropTypes } from 'react';
 import { Form, Input, Icon, Button } from 'antd';
-import styles from '../../../less/dynamicButton.less'
+import React from 'react';
+import Guid from '../../../../utils/Guid';
 const FormItem = Form.Item;
 
-const ReasonConfigForm = ({
-  title,
-	reasons,
-	onAdd,
-	onRemove,
-	setReasonConfig,
-	form: {
-	    setFieldsValue,
-	    getFieldDecorator,
-	    getFieldsValue,
-      validateFields,
-      getFieldValue
-    	},
-	}) => {
+let uuid = 0;
+class ReasonConfigForm extends React.Component {
+  remove = (k) => {
+    const { form } = this.props;
+    // can use data-binding to get
+    const keys = form.getFieldValue('keys');
+    // We need at least one passenger
+    if (keys.length === 1) {
+      return;
+    }
 
-   	const formItemLayout = {
+    // can use data-binding to set
+    form.setFieldsValue({
+      keys: keys.filter(key => key !== k),
+    });
+  }
+
+  add = () => {
+    uuid++;
+    const { form } = this.props;
+    const keys = form.getFieldValue('keys');
+    const nextKeys = keys.concat('');
+    form.setFieldsValue({
+      keys: nextKeys,
+    });
+  }
+
+  handleSubmit = (e) => {
+    e.preventDefault();
+    this.props.form.validateFields((err, values) => {
+      if (!err) {
+        const newReasons=[];
+        for(var key in values){
+          if (key != 'keys')
+            newReasons.push(values[key]);
+        }
+       this.props.setReasonConfig(newReasons);
+      }
+    });
+  }
+
+  changeHandler = (index) => {
+    console.log(index);
+    const keys = this.props.form.getFieldValue('keys');
+    keys[`${index}`] = this.props.form.getFieldValue(`names-${index}`);
+    this.props.form.setFieldsValue({
+      keys: keys,
+    });
+    console.dir(keys);
+  }
+
+  render() {
+    const { getFieldDecorator, getFieldValue } = this.props.form;
+    const formItemLayout = {
       labelCol: {
-        xs: { span: 24 },
+        xs: { span: 4 },
         sm: { span: 4 },
       },
       wrapperCol: {
@@ -28,73 +66,53 @@ const ReasonConfigForm = ({
         sm: { span: 20 },
       },
     };
-
     const formItemLayoutWithOutLabel = {
       wrapperCol: {
         xs: { span: 24, offset: 0 },
         sm: { span: 20, offset: 4 },
       },
     };
+    getFieldDecorator('keys', { initialValue: this.props.reasons });
 
-    function handleSubmit(e){
-	    e.preventDefault();
-	    validateFields((err,values) => {
-	      if (err) {
-	        return;
-	      }
-
-        const newReasons=[];
-        for(var key in values){
-          newReasons.push(values[key]);
-        }
-       setReasonConfig(newReasons);
-	    });
-    }
-
-    function handleRemove(index){
-      const values={...getFieldsValue()};
-        const newReasons=[];
-        for(var key in values){
-          newReasons.push(values[key]);
-        }
-      onRemove(index,newReasons);
-    }
-
-
-    const formItems = reasons.map((reason, index) => {
+    const keys = getFieldValue('keys');
+    const formItems = keys.map((k, index) => {
       return (
         <FormItem
           {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
-          label={index === 0 ? title : ''}
+          label={index === 0 ? this.props.title : ''}
           required={false}
           key={index}
+          style={{'padding-top': '3px',
+                  'margin-bottom': '3px'}}
         >
-          {getFieldDecorator(`${index}`, {
-            initialValue: reason,
+          {getFieldDecorator(`names-${index}`, {
+            validateTrigger: ['onChange', 'onBlur'],
+            initialValue: k,
             rules: [{
               required: true,
               whitespace: true,
-              message: "请输入。",
+              message: "原因不能为空或者删除该行！",
             }],
           })(
-            <Input placeholder="请输入" style={{ width: '60%', marginRight: 8 }}/>
+            <Input placeholder="请输入原因" style={{ width: '60%', marginRight: 8 }} onBlur={() => this.changeHandler(index)}/>
           )}
           <Icon
             className="dynamic-delete-button"
             type="minus-circle-o"
-            disabled={reasons.length === 1}
-            onClick={() => handleRemove(index)}
+            disabled={keys.length === 1}
+            onClick={() => this.remove(k)}
           />
         </FormItem>
       );
     });
-
+    
     return (
-      <Form onSubmit={handleSubmit}>
+      <Form onSubmit={this.handleSubmit}>
         {formItems}
-        <FormItem {...formItemLayoutWithOutLabel}>
-          <Button type="dashed" onClick={() => onAdd(reasons)} style={{ width: '60%' }}>
-            <Icon type="plus" /> 添加
+        <FormItem {...formItemLayoutWithOutLabel} style={{'padding-top': '3px',
+                  'margin-bottom': '3px'}}>
+          <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
+            <Icon type="plus" /> 新增
           </Button>
         </FormItem>
         <FormItem {...formItemLayoutWithOutLabel}>
@@ -102,7 +120,8 @@ const ReasonConfigForm = ({
         </FormItem>
       </Form>
     );
-
-};
+  }
+}
 
 export default Form.create()(ReasonConfigForm);
+
