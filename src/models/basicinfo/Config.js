@@ -1,4 +1,3 @@
-import { queryOwnedMenuResourceByUser} from '../../services/ia/Resource';
 import { queryArticleConfigByPage,setArticleFixedPickBin,setPickBinStockLimit,setArticleStorageArea} from '../../services/basicinfo/config/ArticleConfig';
 import { queryCategoryStorageAreaConfigByPage,setCategoryStorageArea} from '../../services/basicinfo/config/CategoryStorageAreaConfig';
 import { queryPickAreaStorageAreaConfigByPage,setPickAreaStorageArea} from '../../services/basicinfo/config/PickAreaStorageAreaConfig';
@@ -13,7 +12,6 @@ export default {
 	state: {
 	    loading:false,
 	    showPage:'articleConfigPage',
-	    treeData:[],
         binScopeModalVisible:false,
 	    articleConfigs:[],
         articlePagination:{
@@ -73,31 +71,7 @@ export default {
         reasonType:'DECINC'
 	},
 
-  	subscriptions: {
-    	setup({ dispatch, history }) {
-	      	history.listen(location => {
-	        if (location.pathname === '/basicInfo/config') {
-	          dispatch({
-	            type: 'queryOwnedMenuResourceByUser',
-	            payload: location.query,
-	          })
-	        }
-	      })
-    	}
-    },
-
     effects: {
-	    *queryOwnedMenuResourceByUser({payload }, {call, put}) {
-		      const {data} = yield call(queryOwnedMenuResourceByUser, parse(payload))
-		      if (data) {
-		        yield put({
-		          type: 'queryMenuSuccess',
-		          payload: {
-		            treeData: data.obj
-		          },
-		        })
-		      }
-		},
         *queryArticleConfigByPage({ payload }, { call, put }) {
             const { data } = yield call(queryArticleConfigByPage, parse(payload));
             if(data.obj){
