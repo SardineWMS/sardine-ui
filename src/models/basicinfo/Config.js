@@ -12,7 +12,7 @@ export default {
 	namespace: 'config',
 	state: {
 	    loading:false,
-	    showPage:'',
+	    showPage:'articleConfigPage',
 	    treeData:[],
         binScopeModalVisible:false,
 	    articleConfigs:[],
@@ -106,8 +106,12 @@ export default {
                     payload: {
                         articleConfigs: data.obj.records,
                         articlePagination: {
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: recordCount => `共 ${recordCount} 条`,
+                            size:'default',
                             total: data.obj.recordCount,
-                            current: data.obj.page,
+                            current: data.obj.page
                         }
                     }
                 })
@@ -145,8 +149,12 @@ export default {
                     payload: {
                         categoryStorageAreaConfigs: data.obj.records,
                         categoryStorageAreaPagination: {
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: recordCount => `共 ${recordCount} 条`,
+                            size:'default',
                             total: data.obj.recordCount,
-                            current: data.obj.page,
+                            current: data.obj.page
                         }
                     }
                 })
@@ -168,8 +176,12 @@ export default {
                     payload: {
                         pickAreaStorageAreaConfigs: data.obj.records,
                         pickAreaStorageAreaPagination: {
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: recordCount => `共 ${recordCount} 条`,
+                            size:'default',
                             total: data.obj.recordCount,
-                            current: data.obj.page,
+                            current: data.obj.page
                         }
                     }
                 })
@@ -191,8 +203,12 @@ export default {
                     payload: {
                         taskAreaConfigs: data.obj.records,
                         taskAreaPagination: {
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: recordCount => `共 ${recordCount} 条`,
+                            size:'default',
                             total: data.obj.recordCount,
-                            current: data.obj.page,
+                            current: data.obj.page
                         }
                     }
                 })
@@ -206,8 +222,12 @@ export default {
                     payload: {
                         operators: data.obj.records,
                         operatorPagination: {
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: recordCount => `共 ${recordCount} 条`,
+                            size:'default',
                             total: data.obj.recordCount,
-                            current: data.obj.page,
+                            current: data.obj.page
                         }
                     }
                 })

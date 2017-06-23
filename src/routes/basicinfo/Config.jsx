@@ -58,32 +58,31 @@ function Config({ location, dispatch, config }) {
   const { field, keyword } = location.query
 
   const configTreeProps = {
-    data:treeData,
-    onSelect(selectKeys, e) {
-      if (e.node.props.nodeValue == '0002080101') {
+    onSelect(selectKeys) {
+      if (selectKeys == '0002080101') {
           dispatch({
              type: 'config/showArticleConfigByPage'
           })      
-      } else if(e.node.props.nodeValue == '0002080102') {
+      } else if(selectKeys == '0002080102') {
           dispatch({
              type: 'config/showCategoryStorageConfigByPage'
           })    
-      } else if(e.node.props.nodeValue == '0002080103') {
+      } else if(selectKeys == '0002080103') {
           dispatch({
              type: 'config/showPickAreaStorageAreaConfigByPage'
           })    
-      }else if(e.node.props.nodeValue == '0002080104') {
+      }else if(selectKeys == '0002080104') {
           dispatch({
              type: 'config/showTaskAreaConfigByPage'
           })    
-      }else if(e.node.props.nodeValue == '0002080201') {
+      }else if(selectKeys == '0002080201') {
           dispatch({
              type: 'config/queryReasonConfig',
              payload: {
                 reasonType:"DECINC"
              }
           })    
-      }else if(e.node.props.nodeValue == '0002080202') {
+      }else if(selectKeys == '0002080202') {
           dispatch({
              type: 'config/queryReasonConfig',
              payload: {
