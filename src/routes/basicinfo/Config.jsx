@@ -666,11 +666,20 @@ function Config({ location, dispatch, config }) {
                            </div>
                        )
                     case 'reasonConfigPage':
-                       return (
+                       {
+                       if (reasonType == 'MOVE')
+                         return (
                            <div>
                                 <ReasonConfigForm {...reasonConfigProps} />
                            </div>
-                       )  
+                         );
+                       else
+                         return (
+                           <div>
+                                <ReasonConfigForm {...reasonConfigProps} />
+                           </div>
+                         );
+                    }  
                   }
               })()
           }
