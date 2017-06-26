@@ -31,6 +31,7 @@ import Vehicle from './routes/tms/Vehicle';
 import PickArea from './routes/basicinfo/PickArea';
 import SerialArch from './routes/tms/SerialArch';
 import Config from './routes/basicinfo/Config';
+import WaveBill from './routes/forward/WaveBill';
 
 export default function ({
   history
@@ -66,6 +67,7 @@ export default function ({
         <Route path="/forward/acceptanceBill" component={AcceptanceBill} />
         <Route path="/tms/serialArch" component={SerialArch} />
         <Route path="/basicInfo/config" component={Config} />
+        <Route path="/forward/waveBill" component={WaveBill} />
       </Route>
     </Router>
   );

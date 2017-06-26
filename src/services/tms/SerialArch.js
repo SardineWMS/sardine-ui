@@ -65,3 +65,8 @@ export async function queryCustomerByLine(params) {
     const url = "/swms/tms/serialarch/queryCustomerByLine";
     return request(query(url, params));
 }
+
+export async function querySerialArch(params) {
+    const url = "/swms/tms/serialarch/querySerialArch";
+    return request(query(url, params));
+}

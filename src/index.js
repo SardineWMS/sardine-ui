@@ -39,7 +39,7 @@ app.model(require('./models/tms/Carrier'));
 app.model(require('./models/tms/Vehicle'));
 app.model(require('./models/basicinfo/PickArea'));
 app.model(require('./models/tms/SerialArch'));
-app.model(require('./models/basicinfo/Config'));
+app.model(require('./models/forward/WaveBill'));
 
 app.router(require('./router'));
 

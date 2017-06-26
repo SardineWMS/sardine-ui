@@ -46,7 +46,7 @@ function Receive({ location, dispatch, receive }) {
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.field,
-                    sortDirection: sorter.order
+                    order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
                 }
             }));
         },
