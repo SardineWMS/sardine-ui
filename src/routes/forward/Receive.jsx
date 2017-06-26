@@ -33,7 +33,7 @@ function Receive({ location, dispatch, receive }) {
         qpcStrTreeData,
         article_qpcStr,
         receiveStorageBin,
-        orderBillItemArticles
+        orderBillItemArticles,
     } = receive;
 
     const receiveListProps = {
@@ -41,7 +41,7 @@ function Receive({ location, dispatch, receive }) {
         pagination: pagination,
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
-                pathname: '/inner/receive',
+                pathname: '/forward/receiveBill',
                 query: {
                     page: page.current,
                     pageSize: page.pageSize,
@@ -325,7 +325,7 @@ function Receive({ location, dispatch, receive }) {
             dispatch({
                 type: 'receive/selectQpcStr',
                 payload: {
-                    record, array, orderBillItemArticles
+                    record, array, orderBillItemArticles, currentItem
                 }
             });
         }

@@ -28,7 +28,7 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
                     <div className={styles.editable_row_operations}>
                         {record.editable ?
                             <span>
-                                <a onClick={() => { onSave(record) }} disabled={!PermissionUtil("bintype:create")}>保存</a>
+                                <a onClick={() => { onSave(record) }} disabled={!PermissionUtil("bin:create")}>保存</a>
                                 <Popconfirm title={"确定要取消编辑吗？"} onConfirm={() => onCancelEdit(record)}>
                                     <a>取消</a>
                                 </Popconfirm>

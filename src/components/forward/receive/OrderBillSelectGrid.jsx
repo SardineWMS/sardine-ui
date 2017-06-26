@@ -66,6 +66,7 @@ function OrderBillSelectGrid({
     ];
 
     const rowSelection = {
+        type: 'radio',
         onChange: (selectedRowKeys, selectedRows) => {
         },
         onSelect: (record, selected, selectedRows) => {

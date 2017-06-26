@@ -67,6 +67,8 @@ const ReceiveBillAddForm = ({
     };
 
     function handleEnterPress() {
+        if (getFieldsValue().orderBillNumber == null || getFieldsValue().orderBillNumber == '')
+            return;
         const data = {
             orderBillNo: getFieldsValue().orderBillNumber
         };
