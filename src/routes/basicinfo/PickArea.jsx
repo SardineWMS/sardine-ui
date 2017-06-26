@@ -28,7 +28,13 @@ function PickArea({ location, dispatch, pickArea }) {
                     payload: result
                 });
             };
-        }
+        },
+        onCancel() {
+            dispatch({
+                type: 'pickArea/query',
+                payload: {}
+            });
+        },
     };
 
     const pickAreaSearchGridProps = {
