@@ -46,14 +46,18 @@ const PickAreaCreateForm = ({
     const basic = [];
     basic.push(
         <BaseFormItem label={"代码"} key="code">
-            {getFieldDecorator("code", { rules: [{ required: true, max: 30, message: '代码必填不能超过30字符' }], initialValue: item.code })(
+            {getFieldDecorator("code", { rules: [{ required: true, message: '代码不能为空' },{
+                max:30,message:'代码最大长度是30！'
+            }], initialValue: item.code })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     basic.push(
         <BaseFormItem label={"名称"} key="name">
-            {getFieldDecorator("name", { rules: [{ required: true, max: 100, message: '名称不填且不能超过100字符' }], initialValue: item.name })(
+            {getFieldDecorator("name", { rules: [{ required: true, message: '名称不能为空' },{
+                max:100,message:'名称最大长度是100！'
+            }], initialValue: item.name })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
@@ -87,7 +91,9 @@ const PickAreaCreateForm = ({
 
     extend.push(
         <BaseFormItem label={"分单体积"} key="pickVolume">
-            {getFieldDecorator("pickVolume", { rules: [{ required: true, message: '分单体积不能为空' }], initialValue: item.pickVolume })(
+            {getFieldDecorator("pickVolume", { rules: [{ required: true, message: '分单体积不能为空' },{
+                max:12,message:'分单体积最大长度是12！'
+            }], initialValue: item.pickVolume })(
                 <Input placeholder="请输入：" />
             )}
         </BaseFormItem>
@@ -127,11 +133,15 @@ const PickAreaCreateForm = ({
                 <BaseForm items={extend} />
             </BaseCard>
             <Panel title="说明">
+                <Form.Item>
                 {getFieldDecorator('remark', {
-                    initialValue: item.remark
+                    initialValue: item.remark,rules:[{required:false},{
+                        max:255,message:'说明的最大长度是255！'
+                    }]
                 })(
                     <Input type="textarea" autosize={{ minRows: 4 }} />
                     )}
+                    </Form.Item>
             </Panel>
         </div>
     );

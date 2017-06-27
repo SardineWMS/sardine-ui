@@ -29,11 +29,11 @@ function Article({ location, dispatch, article }) {
 		articles,
 		modalVisible,
 		showCategorySelectModal,
-        categoryList,
-        categoryPagination,
-        category,
-        showLable,
-        firstInFirstOut
+		categoryList,
+		categoryPagination,
+		category,
+		showLable,
+		firstInFirstOut
 	} = article;
 
 	const { field, keyword } = location.query;
@@ -72,85 +72,85 @@ function Article({ location, dispatch, article }) {
 				}
 			})
 		},
-        onSetFixedPickBinItem(article) {
-            articles.push(article),
-            dispatch({
-                type:'article/showSetBinModal',
-                payload:{
-                    articles:articles,
-                    modalType:"single"
-                }
-            })
-        },
-	   	onSetFixedPickBinBatch(articles) {
-            if (articles.length <= 0) {
-                message.warning("请选择要设置的商品！", 2, '');
-                return;
-            }
-            dispatch({
-                type:'article/showSetBinModal',
-                payload:{
-                    articles:articles,
-                    modalType:"group"
-                }
-            })
-        },
+		onSetFixedPickBinItem(article) {
+			articles.push(article),
+				dispatch({
+					type: 'article/showSetBinModal',
+					payload: {
+						articles: articles,
+						modalType: "single"
+					}
+				})
+		},
+		onSetFixedPickBinBatch(articles) {
+			if (articles.length <= 0) {
+				message.warning("请选择要设置的商品！", 2, '');
+				return;
+			}
+			dispatch({
+				type: 'article/showSetBinModal',
+				payload: {
+					articles: articles,
+					modalType: "group"
+				}
+			})
+		},
 	}
 
-    const setFixedPickBinModalProps={
-        articles:articles,
-        visible:modalVisible,
-        onOk(articles){
-            if(modalType==="single"){
-           		dispatch({
-			        type: 'article/setArticleFixedPickBin',
-			        payload: {
-			        	articleUuid: articles[0].uuid,
-			        	fixedPickBin: articles[0].fixedPickBin
-			        }
-		        })
-            }else{
-                dispatch({
-                    type: 'article/batchSetBinModal',
-                    payload: {
-                        setFixedPickBinEntitys: articles
-                    }
-                })
-            }
-        },
-        onCancel(){
-            dispatch({
-                type: 'article/hideSetBinModal'
-            })  
-        }
-    }
+	const setFixedPickBinModalProps = {
+		articles: articles,
+		visible: modalVisible,
+		onOk(articles) {
+			if (modalType === "single") {
+				dispatch({
+					type: 'article/setArticleFixedPickBin',
+					payload: {
+						articleUuid: articles[0].uuid,
+						fixedPickBin: articles[0].fixedPickBin
+					}
+				})
+			} else {
+				dispatch({
+					type: 'article/batchSetBinModal',
+					payload: {
+						setFixedPickBinEntitys: articles
+					}
+				})
+			}
+		},
+		onCancel() {
+			dispatch({
+				type: 'article/hideSetBinModal'
+			})
+		}
+	}
 
-    const batchProcesssetFixedPickBinProps = {
-	    showConfirmModal: batchSetBinProcessModal,
-	    records: setFixedPickBinEntitys ? setFixedPickBinEntitys : [],
-	    next: articleNext,
-	    actionText: '设置',
-	    entityCaption: '固定拣货位',
-	    batchProcess(entity) {
-	      dispatch({
-	        type: 'article/setArticleFixedPickBin',
-	        payload: {
-	        	articleUuid: entity.uuid,
-	        	fixedPickBin:entity.fixedPickBin
-	        }
-	      })
-	    },
-	    hideConfirmModal() {
-	      dispatch({
-	        type: 'article/hideBatchSetBinModal',
-	      })
-	    },
-	    refreshGrid() {
-	      dispatch({
-	        type: 'article/query'
-	      })
-	    }
-    }
+	const batchProcesssetFixedPickBinProps = {
+		showConfirmModal: batchSetBinProcessModal,
+		records: setFixedPickBinEntitys ? setFixedPickBinEntitys : [],
+		next: articleNext,
+		actionText: '设置',
+		entityCaption: '固定拣货位',
+		batchProcess(entity) {
+			dispatch({
+				type: 'article/setArticleFixedPickBin',
+				payload: {
+					articleUuid: entity.uuid,
+					fixedPickBin: entity.fixedPickBin
+				}
+			})
+		},
+		hideConfirmModal() {
+			dispatch({
+				type: 'article/hideBatchSetBinModal',
+			})
+		},
+		refreshGrid() {
+			dispatch({
+				type: 'article/query'
+			})
+		}
+	}
 
 	const articleSearchFormProps = {
 		field,
@@ -183,52 +183,53 @@ function Article({ location, dispatch, article }) {
 			});
 		},
 		onCategorySelect(data) {
-            dispatch({
-                type: 'article/queryLastLower',
-                payload: {
-                	token: localStorage.getItem("token"),
-                	article: data
-                }
-            })
-        },
-        onEnterCategory(data, categoryCode) {
-            dispatch({
-                type: 'article/getCategoryByCode',
-                payload: {
-                    categoryCode: categoryCode,
-                    article: data
-                }
-            })
-        },
-        onFirstInFirstOutChange(value) {
-          dispatch({
+			dispatch({
+				type: 'article/queryLastLower',
+				payload: {
+					token: localStorage.getItem("token"),
+					article: data
+				}
+			})
+		},
+		onEnterCategory(data, categoryCode) {
+			dispatch({
+				type: 'article/getCategoryByCode',
+				payload: {
+					categoryCode: categoryCode,
+					article: data
+				}
+			})
+		},
+		onFirstInFirstOutChange(value) {
+			dispatch({
 				type: 'article/showLable',
 				payload: {
 					showLable: value
 				}
 			});
-        }
+		}
 	}
 
 	const categorySelectModalProps = {
-        visible: showCategorySelectModal,
-        categoryList: categoryList,
-        categoryPagination: categoryPagination,
-        onOk(data) {
-            dispatch({
-                type: 'article/selectCategory',
-                payload: { uuid: data.uuid,
-                           code: data.code,
-                           name: data.name 
-                         }
-            })
-        },
-        onCancel() {
-            dispatch({
-                type: 'article/hideCategorySelectModal',
-            })
-        }
-    }
+		visible: showCategorySelectModal,
+		categoryList: categoryList,
+		categoryPagination: categoryPagination,
+		onOk(data) {
+			dispatch({
+				type: 'article/selectCategory',
+				payload: {
+					uuid: data.uuid,
+					code: data.code,
+					name: data.name
+				}
+			})
+		},
+		onCancel() {
+			dispatch({
+				type: 'article/hideCategorySelectModal',
+			})
+		}
+	}
 
 
 	const viewFormProps = {
@@ -270,6 +271,13 @@ function Article({ location, dispatch, article }) {
 			});
 		},
 		onSaveBarcode(ds, articleUuid, index) {
+			if (ds[index].newbarcode == null || ds[index].newbarcode == '') {
+				message.error("条码不能为空", 2);
+				return;
+			} else if (ds[index].newbarcode.length > 30) {
+				message.error("条码最大长度是30！", 2);
+				return;
+			}
 			dispatch({
 				type: 'article/saveArticleBarcode',
 				payload: {
@@ -319,6 +327,40 @@ function Article({ location, dispatch, article }) {
 			});
 		},
 		onSaveQpcStr(ds, articleUuid, index) {
+			if (!ds[index].newqpcStr && !ds[index].qpcStr) {
+				message.error("规格不能为空", 2);
+				return;
+			}
+			if (ds[index].newqpcStr) {
+				if (ds[index].newqpcStr.length > 30) {
+					message.error("规格最大长度是30！", 2);
+					return;
+				};
+				if (/^([1-9])+\*([1-9])+\*([1-9])+$/.test(ds[index].newqpcStr) == false) {
+					message.error("规格格式不正确，请输入类似1*1*1样式");
+					return;
+				};
+			};
+			if (ds[index].newmunit && ds[index].newmunit.length > 100) {
+				message.error("单位最大长度是100！", 2);
+				return;
+			};
+			if (ds[index].newlength && /^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(ds[index].newlength) == false) {
+				message.error("长输入不正确，最大长度12，保留三位小数");
+				return;
+			};
+			if (ds[index].newwidth && /^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(ds[index].newwidth) == false) {
+				message.error("宽输入不正确，最大长度12，保留三位小数");
+				return;
+			};
+			if (ds[index].newheight && /^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(ds[index].newheight) == false) {
+				message.error("高输入不正确，最大长度12，保留三位小数");
+				return;
+			};
+			if (ds[index].newweight && /^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(ds[index].newweight) == false) {
+				message.error("重量输入不正确，最大长度12，保留三位小数");
+				return;
+			};
 			dispatch({
 				type: 'article/saveArticleQpc',
 				payload: {
@@ -416,10 +458,10 @@ function Article({ location, dispatch, article }) {
 
 	function refreshWidget() {
 		if (showCreate) {
-                return (<div>
-                	<CreateFormGen />
-                	<CategorySelectModal {...categorySelectModalProps}/>
-                	</div>);
+			return (<div>
+				<CreateFormGen />
+				<CategorySelectModal {...categorySelectModalProps} />
+			</div>);
 		}
 		if (showView)
 			return (

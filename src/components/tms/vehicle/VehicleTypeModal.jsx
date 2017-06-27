@@ -59,16 +59,16 @@ const VehicleTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit,
                     <div className={styles.editable_row_operations}>
                         {record.editable ?
                             <span>
-                                <a onClick={() => { onSave(record) }} disabled={!PermissionUtil("bintype:create")}>保存</a>
+                                <a onClick={() => { onSave(record) }} disabled={!PermissionUtil("vehicle:createType")}>保存</a>
                                 <Popconfirm title={"确定要取消编辑吗？"} onConfirm={() => onCancelEdit(record)}>
                                     <a>取消</a>
                                 </Popconfirm>
                             </span>
                             :
                             <span>
-                                <a onClick={() => { onEdit(record) }} disabled={!PermissionUtil("bintype:edit")}>编辑</a>
+                                <a onClick={() => { onEdit(record) }} disabled={!PermissionUtil("vehicle:createType")}>编辑</a>
                                 <Popconfirm title={"确定要删除吗？"} onConfirm={() => { onDelete(record) }}>
-                                    <a disabled={!PermissionUtil("bintype:delete")}>删除</a>
+                                    <a disabled={!PermissionUtil("vehicle:createType")}>删除</a>
                                 </Popconfirm>
                             </span>
                         }

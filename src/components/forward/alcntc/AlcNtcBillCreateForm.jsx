@@ -72,7 +72,9 @@ const AlcNtcBillCreateForm = ({
 
     children.push(<BaseFormItem label={"来源单据类型："}>
         {getFieldDecorator("sourceBillType", {
-            rules: [{ required: true }],
+            rules: [{ required: true }, {
+                max: 100, message: '来源单据类型最大长度是100！'
+            }],
             initialValue: item.sourceBillType
         })(
             <Input placeholder="请输入：" />
@@ -81,7 +83,9 @@ const AlcNtcBillCreateForm = ({
 
     children.push(<BaseFormItem label={"来源单据单号："}>
         {getFieldDecorator("sourceBillNumber", {
-            rules: [{ required: true }],
+            rules: [{ required: true }, {
+                max: 30, message: '来源单据单号最大长度是30！'
+            }],
             initialValue: item.sourceBillNumber
         })(
             <Input placeholder="请输入：" />
@@ -90,7 +94,9 @@ const AlcNtcBillCreateForm = ({
 
     children.push(<BaseFormItem label={"配送原因："}>
         {getFieldDecorator("deliveryReason", {
-            rules: [{ required: true }],
+            rules: [{ required: true }, {
+                max: 100, message: '配送原因最大长度是100！'
+            }],
             initialValue: item.deliveryReason ? item.deliveryReason : '正常'
         })(
             <Input placeholder="请输入：" />

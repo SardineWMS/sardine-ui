@@ -585,6 +585,10 @@ export default {
                 return;
             };
             payload.record.receivedCaseQtyStr = payload.record.receivedQty;
+            if (isNaN(Number.parseFloat(payload.record.receiveQty))) {
+                message.error("数量格式不正确，请正确输入数字", 2);
+                return;
+            };
             const { data } = yield call(qtyToCaseQtyStr, { qty: Number(payload.record.receiveQty), qpcStr: payload.record.qpcStr });
             payload.record.receiveCaseQtyStr = data.obj;
             let totalQty = 0;

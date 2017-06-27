@@ -122,6 +122,26 @@ function DecInc({ location, dispatch, decinc }) {
         onSelectWrh(data) {
         },
         handleSave(data) {
+            for (let i = 0; i < decIncItem.length; i++) {
+                if (decIncItem[i].price == null || decIncItem[i].price == '') {
+                    message.error("第" + i + "行中的单价不能为空");
+                    return;
+                } else if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(decIncItem[i].price) == false) {
+                    message.error("第" + i + "行中的单价格式不正确，最大长度12位数字，保留3位小数");
+                    return;
+                };
+                if (decIncItem[i].qty == null || decIncItem[i].qty == '') {
+                    message.error("第" + i + "行中的数量不能为空");
+                    return;
+                } else if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(decIncItem[i].price) == false) {
+                    message.error("第" + i + "行中的数量格式不正确，最大长度12位数字，保留3位小数");
+                    return;
+                };
+                if ((decIncItem[i].reason != null || decIncItem[i].reason != '') && decIncItem.reason.length > 255) {
+                    message.error("第" + i + "行中的原因最大长度是255！", 2);
+                    return;
+                };
+            };
             const result = {};
             result.type = data.type;
             if (data.uuid) {

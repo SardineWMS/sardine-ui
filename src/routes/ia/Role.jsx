@@ -137,6 +137,20 @@ function Role({ location, dispatch, role }) {
             });
         },
         onSave(record) {
+            if (record.code == null || record.code == '') {
+                message.error("代码不能为空！", 2);
+                return;
+            } else if (record.code.length > 30) {
+                message.error("代码最大长度是30！", 2);
+                return;
+            };
+            if (record.name == null || record.name == '') {
+                message.error("名称不能为空！", 2);
+                return;
+            } else if (record.name.length > 30) {
+                message.error("名称最大长度是30！", 2);
+                return;
+            }
             dispatch({
                 type: 'role/update',
                 payload: record

@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
-import { Layout } from 'antd';
+import { Layout, message } from 'antd';
 const { Content, Footer, Sider } = Layout;
 import { connect } from 'dva';
 import BinSearch from '../../components/basicinfo/Bin/Bin';
@@ -369,6 +369,24 @@ function Bin({ location, dispatch, bin }) {
         });
     },
     onSave(record) {
+      if (record.code == null || record.code == '') {
+        message.error("代码不能为空", 2);
+        return;
+      } else if (record.code.length > 30) {
+        message.error("代码最大长度是30", 2);
+        return;
+      };
+      if (record.name == null || record.name == '') {
+        message.error("名称不能为空", 2);
+        return;
+      } else if (record.name.length > 100) {
+        message.error("名称最大长度是100！", 2);
+        return;
+      };
+      if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.bearing) == false) {
+        message.error("承重输入不正确，最大长度12，保留三位小数");
+        return;
+      };
       if (record.uuid === undefined)
         dispatch({
           type: 'bin/saveNewBinType',

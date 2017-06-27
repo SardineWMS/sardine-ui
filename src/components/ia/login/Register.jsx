@@ -67,6 +67,8 @@ const Register = ({
           {getFieldDecorator('loginId', {
             rules: [{
               required: true, message: '请输入登录ID！',
+            }, {
+              max: 30, message: '登录ID最大长度是30！'
             }],
           })(
             <Input />
@@ -76,6 +78,8 @@ const Register = ({
           {getFieldDecorator('passwd', {
             rules: [{
               required: true, message: '请输入密码！',
+            }, {
+              max: 30, message: '密码最大长度是30！'
             }],
           })(
             <Input type="password" />
@@ -85,6 +89,8 @@ const Register = ({
           {getFieldDecorator('confirmPasswd', {
             rules: [{
               required: true, message: '请确认密码！',
+            }, {
+              max: 30, message: '确认密码最大长度是30！'
             }],
           })(
             <Input type="password" />
@@ -92,7 +98,9 @@ const Register = ({
         </FormItem>
         <FormItem {...formItemLayout} label="企业名称">
           {getFieldDecorator('companyName', {
-            rules: [{ required: true, message: '请输入企业名称！' }],
+            rules: [{ required: true, message: '请输入企业名称！' }, {
+              max: 100, message: '企业名称最大长度是100！'
+            }],
           })(
             <Input />
             )}

@@ -35,14 +35,14 @@ const VehicleCreate = ({
     const children = [];
     children.push(
         <BaseFormItem label={"代码"} key="code">
-            {getFieldDecorator("code", { rules: [{ required: true, max: 30, message: '代码必填且不能超过30字符' }], initialValue: item.code })(
+            {getFieldDecorator("code", { rules: [{ required: true, message: '代码不能为空' }, { max: 30, message: '代码最大长度是30！' }], initialValue: item.code })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
         <BaseFormItem label={"车牌号"} key="vehicleNo">
-            {getFieldDecorator("vehicleNo", { rules: [{ required: true, max: 30, message: '车牌号必填且不能超过30字符' }], initialValue: item.vehicleNo })(
+            {getFieldDecorator("vehicleNo", { rules: [{ required: true, message: '车牌号不能为空' }, { max: 30, message: '车牌号最大长度是30' }], initialValue: item.vehicleNo })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
@@ -93,11 +93,13 @@ const VehicleCreate = ({
                 <BaseForm items={children} />
             </BaseCard>
             <Panel title="说明">
-                {getFieldDecorator('remark', {
-                    initialValue: item.remark
-                })(
-                    <Input type="textarea" autosize={{ minRows: 4 }} />
-                    )}
+                <Form.Item>
+                    {getFieldDecorator('remark', {
+                        initialValue: item.remark, rules: [{ max: 255, message: '说明最大长度是255！' }]
+                    })(
+                        <Input type="textarea" autosize={{ minRows: 4 }} />
+                        )}
+                </Form.Item>
             </Panel>
         </div>
     );

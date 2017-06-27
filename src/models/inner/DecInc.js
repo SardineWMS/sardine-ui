@@ -194,6 +194,14 @@ export default {
         },
 
         *calculateCaseQtyStr({ payload }, { call, put }) {
+            if (payload.record.qpcStr == null || payload.record.qpcStr == '') {
+                message.error("请先选择规格", 2);
+                return;
+            };
+            if (isNaN(Number.parseFloat(payload.record.qty))) {
+                message.error("数量格式不正确，请正确输入数字。");
+                return;
+            };
             const { data } = yield call(qtyToCaseQtyStr, {
                 qty: payload.record.qty,
                 qpcStr: payload.record.qpcStr,
