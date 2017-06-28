@@ -46,7 +46,7 @@ const CustomerAddForm = ({
         <BaseFormItem label={"名称"} key="name">
             {getFieldDecorator("name", {
                 rules: [{ required: true, message: '名称不能为空！' }, {
-                    max: 100, message: '名称最大长度30！'
+                    max: 100, message: '名称最大长度100！'
                 }], initialValue: item.name
             })(
                 <Input placeholder="请输入" />
@@ -67,7 +67,7 @@ const CustomerAddForm = ({
         <BaseFormItem label={"联系方式"} key="phone">
             {getFieldDecorator("phone", {
                 rules: [{ required: false }, {
-                    max: 100, message: '代码最大长度100！'
+                    max: 30, message: '联系方式最大长度30！'
                 }], initialValue: item.phone
             })(
                 <Input placeholder="请输入" />
@@ -78,7 +78,7 @@ const CustomerAddForm = ({
         <BaseFormItem label={"地址"} key="address">
             {getFieldDecorator("address", {
                 rules: [{ required: false }, {
-                    max: 100, message: '代码最大长度100！'
+                    max: 100, message: '地址最大长度100！'
                 }], initialValue: item.address
             })(
                 <Input type="textarea" autosize={{ minRows: 4 }} />
@@ -98,11 +98,13 @@ const CustomerAddForm = ({
                 <BaseForm items={children} />
             </BaseCard>
             <Panel title="说明">
-                {getFieldDecorator('remark', {
-                    initialValue: item.remark
-                })(
-                    <Input type="textarea" autosize={{ minRows: 4 }} />
-                    )}
+                <Form.Item>
+                    {getFieldDecorator('remark', {
+                        initialValue: item.remark, rules: [{ max: 255, message: '说明最大长度是255！' }]
+                    })(
+                        <Input type="textarea" autosize={{ minRows: 4 }} />
+                        )}
+                </Form.Item>
             </Panel>
         </div>
     );
