@@ -127,7 +127,7 @@ class RoleGrid extends React.Component {
         };
 
         function renderNameColumns(record, key, text) {
-            if (typeof record.editable === undefined)
+            if (!record.editable)
                 return text;
 
             return (<RowEditCell

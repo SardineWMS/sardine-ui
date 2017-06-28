@@ -64,7 +64,10 @@ const UpdatePasswd = ({
               {
                 required: true,
                 message: '新密码未填写',
-              },
+              }, {
+                max: 30,
+                message: '密码最大长度是30'
+              }
             ],
           })(<Input />)}
         </FormItem>
@@ -74,7 +77,10 @@ const UpdatePasswd = ({
               {
                 required: true,
                 message: '确认密码未填写',
-              },
+              }, {
+                max: 30,
+                message: '密码最大长度是30'
+              }
             ],
           })(<Input />)}
         </FormItem>

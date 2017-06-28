@@ -8,7 +8,7 @@ class RowEditCell extends React.Component {
     super(props);
     this.state = {
       value: this.props.value,
-      editable: this.props.editable
+      editable: this.props.editable,
     };
   };
   handleChange(e) {

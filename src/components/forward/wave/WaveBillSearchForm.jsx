@@ -6,7 +6,7 @@ import BaseFormItem from '../../Widget/BaseFormItem';
 
 const Option = Select.Option;
 
-const ReceiveBillSearchForm = ({
+const WaveBillSearchForm = ({
     onSearch,
     field,
     keyword,
@@ -41,41 +41,27 @@ const ReceiveBillSearchForm = ({
             <BaseFormItem label={"状态 等于"}>
                 {getFieldDecorator("state")(
                     <Select placeholder="请选择" showSearch={false} size="default">
-                        <Option value="Initial" >未审核</Option>
-                        <Option value="Audited">已审核</Option>
-                        <Option value="InProgress">进行中</Option>
+                        <Option value="initial" >初始</Option>
+                        <Option value="inProgress">启动中</Option>
+                        <Option value="exception">异常</Option>
+                        <Option value="started">启动完成</Option>
+                        <Option value="inAlc">配货中</Option>
+                        <Option value="finished">已完成</Option>
                     </Select>
                 )}
             </BaseFormItem>
         </BaseTwoCol>
     );
-    children.push(
-        <BaseTwoCol key={"supplier"}>
-            <BaseFormItem label={"供应商 等于"}>
-                {getFieldDecorator("supplier")(
-                    <Input placeholder="请输入" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
-    children.push(
-        <BaseTwoCol key={"wrh"}>
-            <BaseFormItem label={"仓位 等于"}>
-                {getFieldDecorator("wrh")(
-                    <Input placeholder="请输入" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
-    children.push(
-        <BaseTwoCol key={"orderBillNumber"}>
-            <BaseFormItem label={"订单 等于"}>
-                {getFieldDecorator("orderBill")(
-                    <Input placeholder="请输入" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
+    children.push(<BaseTwoCol key={"waveType"}>
+        <BaseFormItem label="波次类型 等于">
+            {getFieldDecorator("waveType")(
+                <Select placeholder="请选择" showSearch={false} size="default">
+                    <Option value="normal">正常波次</Option>
+                    <Option value="eCommerce">电商波次</Option>
+                </Select>
+            )}
+        </BaseFormItem>
+    </BaseTwoCol>);
 
 
     return (
@@ -83,4 +69,4 @@ const ReceiveBillSearchForm = ({
     );
 };
 
-export default Form.create()(ReceiveBillSearchForm);
+export default Form.create()(WaveBillSearchForm);

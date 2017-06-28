@@ -147,17 +147,16 @@ export default {
         },
 
         *calculateCaseQtyStr({ payload }, { call, put }) {
-            let qty = new Number();
-            try {
-                qty = Number.parseFloat(payload.record.qty);
-            } catch (e) {
-                message.warning("数量格式错误，请正确输入数字", 2, '');
-            };
             if (payload.record.qpcStr == null || payload.record.qpcStr == '') {
                 message.warning("请选择规格！", 2, '');
                 return;
             };
-
+            let qty = new Number();
+            qty = Number.parseFloat(payload.record.qty);
+            if (isNaN(qty)) {
+                message.warning("数量格式错误，请正确输入数字", 2, '');
+                return;
+            };
             const { data } = yield call(qtyToCaseQtyStr, {
                 qty: qty,
                 qpcStr: payload.record.qpcStr

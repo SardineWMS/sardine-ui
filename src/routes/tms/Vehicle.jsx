@@ -97,6 +97,48 @@ function Vehicle({ location, dispatch, vehicle }) {
             });
         },
         onSave(record) {
+            if (record.code == null || record.code == '') {
+                message.error("代码不能为空", 2);
+                return;
+            } else if (record.code.length > 30) {
+                message.error("代码最大长度是30！", 2);
+                return;
+            };
+            if (record.name == null || record.name == '') {
+                message.error("名称不能为空", 2);
+                return;
+            } else if (record.name.length > 100) {
+                message.error("名称最大长度是100！", 2);
+                return;
+            };
+            if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.bearWeight) == false) {
+                message.error("承重输入不正确，最大长度12，保留三位小数");
+                return;
+            };
+            if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.weight) == false) {
+                message.error("自重输入不正确，最大长度12，保留三位小数");
+                return;
+            };
+            if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.length) == false) {
+                message.error("长输入不正确，最大长度12，保留三位小数");
+                return;
+            };
+            if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.width) == false) {
+                message.error("宽输入不正确，最大长度12，保留三位小数");
+                return;
+            };
+            if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.height) == false) {
+                message.error("高输入不正确，最大长度12，保留三位小数");
+                return;
+            };
+            if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.volume) == false) {
+                message.error("体积输入不正确，最大长度12，保留三位小数");
+                return;
+            };
+            if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.bearVolume) == false) {
+                message.error("容积输入不正确，最大长度12，保留三位小数");
+                return;
+            };
             if (record.uuid === undefined)
                 dispatch({
                     type: 'vehicle/insertVehicleType',
@@ -117,17 +159,10 @@ function Vehicle({ location, dispatch, vehicle }) {
         },
         onCancelEdit(record) {
             record.editable = false;
-            if (!record.uuid) {
-                dispatch({
-                    type: 'vehicle/queryVehicleType'
-                });
-            }
-            else {
-                dispatch({
-                    type: 'vehicle/queryVehicleTypeSuccess',
-                    payload: record
-                });
-            };
+            dispatch({
+                type: 'vehicle/queryVehicleType',
+                payload: record
+            });
         },
         onDelete(record) {
             dispatch({

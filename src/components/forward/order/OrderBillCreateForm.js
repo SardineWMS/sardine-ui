@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import {Button, Input, Form, Select, Card, DatePicker,Col} from 'antd';
+import { Button, Input, Form, Select, Card, DatePicker, Col } from 'antd';
 import BaseCard from '../../Widget/BaseCard';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
@@ -10,49 +10,51 @@ moment.locale('zh-cn');
 
 
 const Option = Select.Option;
-const OrderBillCreateForm=({
-	item={},
-    wrhs=[],
-	onOk,
-	onCancel,
+const OrderBillCreateForm = ({
+	item = {},
+    wrhs = [],
+    onOk,
+    onCancel,
     queryWrhs,
     querySuppliers,
     form: {
 	    getFieldDecorator,
-	    validateFields,
-	    getFieldsValue
+        validateFields,
+        getFieldsValue
     }
-})=>{
-	function handlerSave(){
+}) => {
+    function handlerSave() {
         validateFields((errors) => {
             if (errors)
                 return;
-            const data = { ...getFieldsValue(), billNumber: item.billNumber, uuid: item.uuid, state: item.state, 
-                companyUuid: item.companyUuid, version: item.version ,supplier:item.supplier,wrh:item.wrh};
+            const data = {
+                ...getFieldsValue(), billNumber: item.billNumber, uuid: item.uuid, state: item.state,
+                companyUuid: item.companyUuid, version: item.version, supplier: item.supplier, wrh: item.wrh
+            };
             onOk(data);
         });
-	};
-
-    function expireDateOnSelect(value){
-        item.expireDate=value;
     };
 
-    function wrhOnSelect(value){
-        const wrhUcn=new Object();
-        wrhUcn.uuid=value.uuid;
-        wrhUcn.code=value.code;
-        wrhUcn.name=value.name;
-        item.wrh=wrhUcn;
+    function expireDateOnSelect(value) {
+        item.expireDate = value;
+    };
+
+    function wrhOnSelect(value) {
+        const wrhUcn = new Object();
+        wrhUcn.uuid = value.uuid;
+        wrhUcn.code = value.code;
+        wrhUcn.name = value.name;
+        item.wrh = wrhUcn;
     };
 
     const baseChildren = [];
-    const dataChildren=[];
-    const options=[];
+    const dataChildren = [];
+    const options = [];
 
-    wrhs.map(function(wrh){
+    wrhs.map(function (wrh) {
         options.push(
             <Option key={wrh.uuid} value={wrh} >
-                {"["+wrh.code+"]"}+{wrh.name}
+                {"[" + wrh.code + "]"}+{wrh.name}
             </Option>
         );
     });
@@ -60,37 +62,37 @@ const OrderBillCreateForm=({
     baseChildren.push(
         <BaseFormItem label={"供应商："}>
             {getFieldDecorator("supplier.uuid", { rules: [{ required: true }], initialValue: item.supplier ? item.supplier.code : null })(
-                <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => querySuppliers()} />}  />
+                <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => querySuppliers()} />} />
             )}
         </BaseFormItem>
     );
     baseChildren.push(
         <BaseFormItem label={"仓位"} >
-            {getFieldDecorator("wrh.uuid", { rules: [{ required: true }], initialValue:item.wrh ? item.wrh.code: null })(
-                <Select size="large"  onFocus={queryWrhs} onSelect={wrhOnSelect}>
-                  {options}
-                </Select>            
+            {getFieldDecorator("wrh.uuid", { rules: [{ required: true }], initialValue: item.wrh ? item.wrh.code : null })(
+                <Select size="large" onFocus={queryWrhs} onSelect={wrhOnSelect}>
+                    {options}
+                </Select>
             )}
         </BaseFormItem>
     );
     baseChildren.push(
         <BaseFormItem label={"来源单据类型"} >
-            {getFieldDecorator("billType", { rules: [{ required: false }], initialValue: item.billType })(
+            {getFieldDecorator("billType", { rules: [{ required: false }, { max: 100, message: '来源单据类型最大长度是100！' }], initialValue: item.billType })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     baseChildren.push(
         <BaseFormItem label={"来源单据号"} >
-            {getFieldDecorator("sourceBillNumber", { rules: [{ required: false }], initialValue: item.sourceBillNumber })(
+            {getFieldDecorator("sourceBillNumber", { rules: [{ required: false }, { max: 30, message: '来源单据号最大长度是30！' }], initialValue: item.sourceBillNumber })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     baseChildren.push(
-        <BaseFormItem label={"到校日期"} >
-            {getFieldDecorator("expireDate", { rules: [{ required: false }], initialValue: item.expireDate})(
-                 <DatePicker onChange={expireDateOnSelect} format='YYYY-MM-DD' style={{ width: 283 }}/>
+        <BaseFormItem label={"到效日期"} >
+            {getFieldDecorator("expireDate", { rules: [{ required: false }], initialValue: item.expireDate })(
+                <DatePicker onChange={expireDateOnSelect} format='YYYY-MM-DD' style={{ width: 283 }} />
             )}
         </BaseFormItem>
     );
@@ -107,16 +109,16 @@ const OrderBillCreateForm=({
         </BaseFormItem>
     );
 
-    const colChildren=[];
+    const colChildren = [];
     colChildren.push(
         <Col span={12} key='col1'>
-         {baseChildren}
-       </Col>
+            {baseChildren}
+        </Col>
     );
     colChildren.push(
         <Col span={12} key='col2'>
-         {dataChildren}
-       </Col>
+            {dataChildren}
+        </Col>
     );
 
 
@@ -128,7 +130,7 @@ const OrderBillCreateForm=({
         <div>
             <ToolbarPanel children={toolbar} />
             <BaseCard title="基本信息" single={true}>
-              <BaseForm items={colChildren} />
+                <BaseForm items={colChildren} />
             </BaseCard>
         </div>
     );

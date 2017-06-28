@@ -1,4 +1,4 @@
-import React, {Component, PropTypes} from 'react';
+import React, { Component, PropTypes } from 'react';
 import {
   Form, Row, Col, Input, Button, Icon, Table, message, Popconfirm, Card, Select, InputNumber
   , Radio
@@ -12,6 +12,7 @@ import RemarkCard from '../../Widget/RemarkCard';
 import Panel from '../../Widget/Panel';
 
 const RadioGroup = Radio.Group;
+const FormItem = Form.Item;
 
 const ArticleCreateForm = ({
   article = {},
@@ -34,13 +35,13 @@ const ArticleCreateForm = ({
       if (errors) {
         return;
       }
-      const data = {...getFieldsValue(), uuid: article.uuid, version: article.version, category: category};
+      const data = { ...getFieldsValue(), uuid: article.uuid, version: article.version, category: category };
       onOk(data);
     });
   }
 
   function selectCategory() {
-    let data = {...getFieldsValue()};
+    let data = { ...getFieldsValue() };
     if (article.uuid) {
       data.uuid = article.uuid;
       data.version = article.version;
@@ -53,7 +54,7 @@ const ArticleCreateForm = ({
       return;
     if (!getFieldsValue().category)
       return;
-    let data = {...getFieldsValue()};
+    let data = { ...getFieldsValue() };
     if (article.uuid) {
       data.uuid = article.uuid;
       data.version = article.version;
@@ -72,11 +73,12 @@ const ArticleCreateForm = ({
       {getFieldDecorator('code', {
         initialValue: article ? article.code : null,
         rules: [
-          {required: true, message: '商品代码不能为空！'},
+          { required: true, message: '商品代码不能为空！' },
+          { max: 30, message: '商品代码最大长度为30！' }
         ],
       })(
-        <Input type="text"/>
-      )}
+        <Input type="text" />
+        )}
     </BaseFormItem>
   );
 
@@ -85,11 +87,12 @@ const ArticleCreateForm = ({
       {getFieldDecorator('name', {
         initialValue: article ? article.name : null,
         rules: [
-          {required: true, message: '商品名称不能为空！'},
+          { required: true, message: '商品名称不能为空！' },
+          { max: 100, message: '商品名称最大长度为100！' }
         ],
       })(
-        <Input type="text"/>
-      )}
+        <Input type="text" />
+        )}
     </BaseFormItem>
   );
 
@@ -98,22 +101,23 @@ const ArticleCreateForm = ({
       {getFieldDecorator('spec', {
         initialValue: article ? article.spec : null,
         rules: [
-          {required: true, message: '包装不能为空！'},
+          { required: true, message: '包装不能为空！' },
+          { max: 30, message: '商品包装最大长度为30！' }
         ],
       })(
-        <Input type="text"/>
-      )}
+        <Input type="text" />
+        )}
     </BaseFormItem>
   );
 
   basicChildren.push(<BaseFormItem label={"商品类别："} key="category">
     {getFieldDecorator("category", {
-      rules: [{required: true, message: '商品类别不能为空！'}],
+      rules: [{ required: true, message: '商品类别不能为空！' }],
       initialValue: (category && category.uuid) ? "[" + category.code + "]" + category.name : null
     })(
-      <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => selectCategory()}/>}
-             onBlur={handleEnterPress} onPressEnter={handleEnterPress}/>
-    )}
+      <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => selectCategory()} />}
+        onBlur={handleEnterPress} onPressEnter={handleEnterPress} />
+      )}
   </BaseFormItem>);
 
   basicChildren.push(
@@ -126,7 +130,7 @@ const ArticleCreateForm = ({
           <Select.Option value="expireDate">按到效期</Select.Option>
           <Select.Option value="none">不管理保质期</Select.Option>
         </Select>
-      )}
+        )}
     </BaseFormItem>
   );
 
@@ -134,10 +138,13 @@ const ArticleCreateForm = ({
     <BaseFormItem label="保质期 ：" key="expDays">
       {getFieldDecorator('expDays', {
         initialValue: article.expDays ? article.expDays : 0,
-        rules: [{required: true, message: '保质期不能为空！'},],
+        rules: [{ required: true, message: '保质期不能为空！' }, {
+          pattern: /^[0-9]{0,11}$/,
+          message: '保质期最大长度是11！'
+        }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
       })(
-        <InputNumber min={0}/>
-      )}
+        <InputNumber min={0} />
+        )}
     </BaseFormItem>
   );
 
@@ -145,14 +152,14 @@ const ArticleCreateForm = ({
     <BaseFormItem label="上架货位 ：" key="putawayBin">
       {getFieldDecorator('putawayBin', {
         initialValue: article.putawayBin ? article.putawayBin : "StorageBin",
-        rules: [{required: true, message: '上架货位不能为空！'},],
+        rules: [{ required: true, message: '上架货位不能为空！' },],
       })(
         <Select size="large">
           <Select.Option value="StorageBin">存储位</Select.Option>
           <Select.Option value="PickUpBin">拣货位</Select.Option>
           <Select.Option value="PreChoosePickUp">优先考虑拣货位</Select.Option>
         </Select>
-      )}
+        )}
     </BaseFormItem>
   );
 
@@ -162,18 +169,23 @@ const ArticleCreateForm = ({
 
   return (
     <div>
-      <ToolbarPanel children={toolbar}/>
+      <ToolbarPanel children={toolbar} />
       <BaseCard title="基本信息">
-        <BaseForm items={basicChildren}/>
-        <BaseForm items={businessChildren}/>
+        <BaseForm items={basicChildren} />
+        <BaseForm items={businessChildren} />
       </BaseCard>
       <Panel title="说明">
-
-        {getFieldDecorator('remark', {
-          initialValue: article.remark
-        })(
-          <Input type="textarea" autosize={{minRows: 4}}/>
-        )}
+        <FormItem>
+          {getFieldDecorator('remark', {
+            initialValue: article.remark,
+            rules: [
+              { required: false, },
+              { max: 255, message: '说明最大长度为255！' }
+            ],
+          })(
+            <Input type="textarea" autosize={{ minRows: 4 }} />
+            )}
+        </FormItem>
       </Panel>
     </div>
   );

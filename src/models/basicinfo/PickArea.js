@@ -52,7 +52,8 @@ export default {
                             current: data.obj.page,
                             total: data.obj.recordCount,
                         },
-                        showPage: ''
+                        showPage: '',
+                        currentItem: {}
                     }
                 });
             };

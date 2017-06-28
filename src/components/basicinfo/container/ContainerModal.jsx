@@ -50,7 +50,7 @@ const ContainerModal = ({
       <Form horizontal>
         <BaseFormItem label="容器类型：" >
           {getFieldDecorator('containerType', {
-            rules: [{ required: true, message: '地址不能为空' },],
+            rules: [{ required: true, message: '容器类型不能为空' },],
           })(
             <Select size="large" style={{ width: 200 }} >
               {options}

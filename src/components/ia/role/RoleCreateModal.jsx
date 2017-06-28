@@ -50,6 +50,9 @@ const RoleCreateModal = ({
                         rules: [{
                             required: true,
                             message: '角色代码未填写',
+                        }, {
+                            max: 30,
+                            message: '角色代码最大长度是30'
                         }],
                     })(<Input />)}
                 </FormItem>
@@ -58,6 +61,9 @@ const RoleCreateModal = ({
                         rules: [{
                             required: true,
                             message: '角色名称未填写',
+                        }, {
+                            max: 100,
+                            message: '角色名称最大长度是30'
                         }],
                     })(<Input />)}
                 </FormItem>

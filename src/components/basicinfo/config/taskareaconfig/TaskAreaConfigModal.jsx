@@ -45,7 +45,9 @@ const TaskAreaConfigModal=({
           </BaseFormItem>
           <BaseFormItem label="作业区域">
               {getFieldDecorator('taskArea', {
-                rules: [{ required: true, message: '作业区域不能为空' },],
+                rules: [{ required: true, message: '作业区域不能为空' },{
+                  max:255,message:'作业区域最大值是255！'
+                }],
                 initialValue:taskAreaConfig.taskArea ? taskAreaConfig.taskArea: ""  
               })(<Input />)}
           </BaseFormItem>

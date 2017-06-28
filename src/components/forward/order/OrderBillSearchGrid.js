@@ -99,7 +99,7 @@ function OrderBillSearchGrid({
             key: 'totalCaseQtyStr'
     	},
 		{  
-     		title: '到校日期',
+     		title: '到效日期',
             dataIndex: 'expireDate',
             key: 'expireDate',
   			render: text => converDate(text)

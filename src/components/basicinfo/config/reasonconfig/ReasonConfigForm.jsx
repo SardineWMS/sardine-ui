@@ -34,12 +34,12 @@ class ReasonConfigForm extends React.Component {
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const newReasons=[];
-        for(var key in values){
+        const newReasons = [];
+        for (var key in values) {
           if (key != 'keys')
             newReasons.push(values[key]);
         }
-       this.props.setReasonConfig(newReasons);
+        this.props.setReasonConfig(newReasons);
       }
     });
   }
@@ -78,12 +78,14 @@ class ReasonConfigForm extends React.Component {
     const formItems = keys.map((k, index) => {
       return (
         <FormItem
-          {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel)}
+          {...(index === 0 ? formItemLayout : formItemLayoutWithOutLabel) }
           label={index === 0 ? this.props.title : ''}
           required={false}
           key={index}
-          style={{'padding-top': '3px',
-                  'margin-bottom': '3px'}}
+          style={{
+            'padding-top': '3px',
+            'margin-bottom': '3px'
+          }}
         >
           {getFieldDecorator(`names-${index}`, {
             validateTrigger: ['onChange', 'onBlur'],
@@ -92,10 +94,13 @@ class ReasonConfigForm extends React.Component {
               required: true,
               whitespace: true,
               message: "原因不能为空或者删除该行！",
+            }, {
+              max: 255,
+              message: '原因最大长度是255！'
             }],
           })(
-            <Input placeholder="请输入原因" style={{ width: '60%', marginRight: 8 }} onBlur={() => this.changeHandler(index)}/>
-          )}
+            <Input placeholder="请输入原因" style={{ width: '60%', marginRight: 8 }} onBlur={() => this.changeHandler(index)} />
+            )}
           <Icon
             className="dynamic-delete-button"
             type="minus-circle-o"
@@ -105,12 +110,14 @@ class ReasonConfigForm extends React.Component {
         </FormItem>
       );
     });
-    
+
     return (
       <Form onSubmit={this.handleSubmit}>
         {formItems}
-        <FormItem {...formItemLayoutWithOutLabel} style={{'padding-top': '3px',
-                  'margin-bottom': '3px'}}>
+        <FormItem {...formItemLayoutWithOutLabel} style={{
+          'padding-top': '3px',
+          'margin-bottom': '3px'
+        }}>
           <Button type="dashed" onClick={this.add} style={{ width: '60%' }}>
             <Icon type="plus" /> 新增
           </Button>

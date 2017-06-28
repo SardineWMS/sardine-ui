@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Table, Popconfirm, Pagination, Button, Form, Select } from 'antd';
+import { Table, Popconfirm, Pagination, Button, Form, Select, message } from 'antd';
 import RowEditCell from '../../Widget/RowEditCell';
 import RowEditCellDatePicker from '../../Widget/RowEditCellDatePicker';
 import RowEditCellSelect from '../../Widget/RowEditCellSelect.jsx';

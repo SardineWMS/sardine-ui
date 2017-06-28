@@ -9,6 +9,7 @@ import { queryBin } from '../../services/basicinfo/Bin.js';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 import { routerRedux } from 'dva/router';
+import { message } from 'antd';
 
 moment.locale('zh-cn');
 
@@ -50,7 +51,7 @@ export default {
         qpcStrTreeData: [],//商品规格下拉框数据源
         receiveStorageBin: "",//仓位下的收货暂存位
         orderBillItemArticles: [],//订单中所有的商品明细集合，
-        article_qpcStr: {}
+        article_qpcStr: {},
     },
 
     subscriptions: {
@@ -83,7 +84,11 @@ export default {
                         list: data.obj.records,
                         pagination: {
                             total: data.obj.recordCount,
-                            current: data.obj.page
+                            current: data.obj.page,
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            size: 'default'
                         },
                         currentItem: {},
                         orderItems: [],
@@ -165,7 +170,11 @@ export default {
                     itemArt.expDays = expDays;
                     itemArt.articleSpec = article.data.obj.spec;
                     itemArt.editable = true;
-                    // itemArt.bin = bin.data.obj.pageData.records[0].code;
+                    if (!bin.data.obj.pageData.records[0]) {
+                        message.error("当前仓位下不存在收货暂存位，无法新建收货单");
+                        return;
+                    }
+                    itemArt.bin = bin.data.obj.pageData.records[0].code;
                     const sku = {};
                     sku.value = itemArt.article.code;
                     sku.label = itemArt.article.code;
@@ -227,7 +236,7 @@ export default {
                         orderItems: itemLists,
                         treeData: articles,
                         orderBillItemArticles: data.obj.items,
-                        article_qpcStr: article_qpcStr
+                        article_qpcStr: article_qpcStr,
                     }
                 });
             };
@@ -271,6 +280,10 @@ export default {
         }) {
             const { data } = yield call(getOrderBillByBillNo, parse(payload));
             if (data) {
+                if (data.obj == null) {
+                    message.warning("输入的订单不存在，请正确输入", 2);
+                    return;
+                }
                 const article_qpcStr = {};
                 const bin = yield call(queryBin, { wrhUuid: data.obj.wrh.uuid, usage: 'ReceiveStorageBin' });
                 const articles = [];
@@ -287,6 +300,9 @@ export default {
                     itemArt.articleSpec = article.data.obj.spec;
                     itemArt.editable = true;
                     itemArt.bin = bin.data.obj.pageData.records[0].code;
+                    if (!itemArt.bin) {
+                        message.error("当前仓位下不存在收货暂存位，无法新建收货单");
+                    }
                     const sku = {};
                     sku.value = itemArt.article.code;
                     sku.label = itemArt.article.code;
@@ -558,7 +574,21 @@ export default {
         }, {
             call, put
         }) {
+            if (payload.record.qpcStr == null || payload.record.qpcStr == '') {
+                message.warning("请先选择商品规格", 2);
+                yield put({
+                    type: 'createSuccess',
+                    payload: {
+                        currentItem: payload.record
+                    }
+                });
+                return;
+            };
             payload.record.receivedCaseQtyStr = payload.record.receivedQty;
+            if (isNaN(Number.parseFloat(payload.record.receiveQty))) {
+                message.error("数量格式不正确，请正确输入数字", 2);
+                return;
+            };
             const { data } = yield call(qtyToCaseQtyStr, { qty: Number(payload.record.receiveQty), qpcStr: payload.record.qpcStr });
             payload.record.receiveCaseQtyStr = data.obj;
             let totalQty = 0;
@@ -646,6 +676,7 @@ export default {
             const qpcStr = payload.article_qpcStr[payload.record.article.code];
             qpcStrs.push(qpcStr);
             for (var article of payload.array) {//该商品不在原收货单明细中，只存在订单明细中
+                article.bin = payload.orderBillItemArticles[0].bin;
                 if (payload.record.line != null) {
                     if (article.line == payload.record.line) {
                         for (var item of payload.orderBillItemArticles) {
@@ -772,12 +803,20 @@ export default {
                     };
                 };
             };
-            yield put({
-                type: 'orderBillSelectSuccess',
-                payload: {
-                    orderItems: payload.array
-                }
-            });
+            if (payload.record.receiveQty != null || payload.record.receiveQty != '') {
+                yield put({
+                    type: 'calculateCaseQtyStr',
+                    payload: {
+                        record: payload.record, list: payload.array, currentItem: payload.currentItem
+                    }
+                });
+            } else
+                yield put({
+                    type: 'orderBillSelectSuccess',
+                    payload: {
+                        orderItems: payload.array
+                    }
+                });
         },
 
         *toViewOrderBill({
@@ -799,8 +838,8 @@ export default {
         querySuccess(state, action) {
             return { ...state, ...action.payload, showViewPage: false, showCreatePage: false };
         },
-        createSuccess(state) {
-            return { ...state, showCreatePage: true };
+        createSuccess(state, action) {
+            return { ...state, ...action.payload, showCreatePage: true };
         },
         cancelSuccess(state, action) {
             return { ...state, showCreatePage: false, showViewPage: false, ...action.payload };

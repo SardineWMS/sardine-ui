@@ -6,6 +6,7 @@ import ContainerModal from '../../components/BasicInfo/Container/ContainerModal'
 import WMSProgress from '../../components/BasicInfo/Container/WMSProgress';
 import ContainerTypeModal from '../../components/BasicInfo/Container/ContainerTypeModal';
 import ContainerStockInfo from '../../components/basicinfo/container/ContainerStockInfo';
+import { message } from 'antd';
 
 function Container({ location, dispatch, container }) {
   const {
@@ -164,6 +165,36 @@ function Container({ location, dispatch, container }) {
         });
     },
     onSave(record) {
+      if (record.code == null || record.code == '') {
+        message.error("代码不能为空", 2);
+        return;
+      } else if (record.code.length > 30) {
+        message.error("代码最大长度是30！", 2);
+        return;
+      };
+      if (record.name == null || record.name == '') {
+        message.error("名称不能为空", 2);
+        return;
+      } else if (record.name.length > 100) {
+        message.error("名称最大长度是100！", 2);
+        return;
+      };
+      if ((record.barCodePrefix != null || record.barCodePrefix != '') && record.barCodePrefix.length > 30) {
+        message.error("前缀最大长度是32！", 2);
+        return;
+      };
+      if ((record.barCodeLength != null || record.barCodeLength != '') && /^[1-9][0-9]$|^[0-9]$/.test(record.barCodeLength) == false) {
+        message.error("长度只能是1位或2位数字！", 2);
+        return;
+      };
+      if ((record.weight != null || record.weight != '') && /^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.weight) == false) {
+        message.error("自重输入不正确，最大长度12，保留三位小数！", 2);
+        return;
+      };
+      if ((record.bearingWeight != null || record.bearingWeight != '') && /^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.bearingWeight) == false) {
+        message.error("承重输入不正确，最大长度12，保留三位小数！", 2);
+        return;
+      };
       if (record.uuid === undefined)
         dispatch({
           type: 'container/saveNewContainerType',

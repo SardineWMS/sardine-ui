@@ -41,7 +41,11 @@ const SerialArchCreateModal = ({
                         initialValue: item.code,
                         rules: [{
                             required: true,
-                            message: '线路代码未填写',
+                            message: '线路体系代码未填写',
+                        },
+                        {
+                            max: 30,
+                            message: '线路体系代码最大长度是30！'
                         }],
                     })(<Input />)}
                 </BaseFormItem>
@@ -51,6 +55,9 @@ const SerialArchCreateModal = ({
                         rules: [{
                             required: true,
                             message: '线路体系名称未填写',
+                        }, {
+                            max: 100,
+                            message: '线路体系名称最大长度是100！'
                         }],
                     })(<Input />)}
                 </BaseFormItem>

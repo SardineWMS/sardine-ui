@@ -53,7 +53,10 @@ const DemoCreateForm = ({
                 {getFieldDecorator('code', {
                   initialValue: item.code,
                   rules: [
-                    { required: true, message: '代码未填写' },
+                    { required: true, message: '代码未填写' }, {
+                      max: 30,
+                      message: '代码最大长度是30'
+                    }
                   ],
                 })(
                   <Input type="text" />
@@ -62,7 +65,10 @@ const DemoCreateForm = ({
               <FormItem {...formItemLayout} label="姓名：" hasFeedback>
                 {getFieldDecorator('name', {
                   initialValue: item.name,
-                  rules: [{ required: true, message: '名称未填写' },],
+                  rules: [{ required: true, message: '名称未填写' }, {
+                    max: 100,
+                    message: '姓名最大长度是100'
+                  }],
                 })(
                   <Input type="text"></Input>
                   )}
@@ -70,7 +76,10 @@ const DemoCreateForm = ({
               <FormItem {...formItemLayout} label="联系方式：" hasFeedback>
                 {getFieldDecorator('phone', {
                   initialValue: item.phone,
-                  rules: [{ required: true, message: '联系方式未填写' },],
+                  rules: [{ required: false }, {
+                    max: 30,
+                    message: '联系方式最大长度是30'
+                  }],
                 })(
                   <Input type="text"></Input>
                   )}

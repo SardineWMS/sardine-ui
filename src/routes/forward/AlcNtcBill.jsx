@@ -29,6 +29,17 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
     const alcNtcBillSearchGridProps = {
         dataSource: list,
         pagination: pagination,
+        onPageChange(page, filters, sorter) {
+            dispatch(routerRedux.push({
+                pathname: '/forward/alcNtc',
+                query: {
+                    page: page.current,
+                    pageSize: page.pageSize,
+                    sort: sorter.field,
+                    order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
+                }
+            }));
+        },
         onCreate() {
             dispatch({
                 type: 'alcNtc/showCreate'

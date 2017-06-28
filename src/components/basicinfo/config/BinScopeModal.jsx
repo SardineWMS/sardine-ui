@@ -35,7 +35,7 @@ const BinScopeModal=({
   	<Modal {...modalOpts}>
       <Form>
            <BaseFormItem label={label}>
-              {getFieldDecorator('binScope', {
+              {getFieldDecorator('binScope', {rules:[{max:30,message:'最大长度为30！'}]
               })(<Input />)}
           </BaseFormItem>
       </Form>

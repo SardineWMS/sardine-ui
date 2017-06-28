@@ -45,6 +45,9 @@ const CarrierCreateModal = ({
                         rules: [{
                             required: true,
                             message: '承运商代码未填写',
+                        }, {
+                            max: 30,
+                            message: '承运商代码最大长度是30！'
                         }],
                     })(<Input />)}
                 </BaseFormItem>
@@ -54,22 +57,28 @@ const CarrierCreateModal = ({
                         rules: [{
                             required: true,
                             message: '承运商名称未填写',
+                        }, {
+                            max: 100,
+                            message: '承运商名称最大长度是100！'
                         }],
                     })(<Input />)}
                 </BaseFormItem>
                 <BaseFormItem label="联系人：">
                     {getFieldDecorator('contact', {
                         initialValue: item.contact,
+                        rules: [{ max: 100, message: '联系人最大长度是100！' }]
                     })(<Input />)}
                 </BaseFormItem>
                 <BaseFormItem label="联系方式：">
                     {getFieldDecorator('contactPhone', {
                         initialValue: item.contactPhone,
+                        rules: [{ max: 30, message: '联系方式最大长度是30！' }]
                     })(<Input />)}
                 </BaseFormItem>
                 <BaseFormItem label="地址：">
                     {getFieldDecorator('address', {
                         initialValue: item.address,
+                        rules: [{ max: 255, message: '地址最大长度是255！' }]
                     })(<Input />)}
                 </BaseFormItem>
             </Form>

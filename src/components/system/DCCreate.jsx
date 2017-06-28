@@ -58,7 +58,7 @@ const DCCreate = ({
           {getFieldDecorator('name', {
             rules: [{
               required: true, message: '请输入仓库名称！',
-            }],
+            }, { max: 100, message: '仓库名称最大长度是100！' }],
           })(
             <Input />
             )}
@@ -67,7 +67,7 @@ const DCCreate = ({
           {getFieldDecorator('acreage', {
             rules: [{
               required: true, message: '请输入仓库面积！',
-            }],
+            }, { max: 12, message: '面积最大长度是12！' }],
           })(
             <Input />
             )}
@@ -76,28 +76,30 @@ const DCCreate = ({
           {getFieldDecorator('adminCode', {
             rules: [{
               required: true, message: '请确认管理员代码！',
-            }],
+            }, { max: 30, message: '管理员代码最大长度是30！' }],
           })(
             <Input />
             )}
         </FormItem>
         <FormItem {...formItemLayout} label="管理员名称">
           {getFieldDecorator('adminName', {
-            rules: [{ required: true, message: '请输入管理员名称！' }],
+            rules: [{ required: true, message: '请输入管理员名称！' },
+            { max: 100, message: '管理员名称最大长度是100！' }],
           })(
             <Input />
             )}
         </FormItem>
         <FormItem {...formItemLayout} label="地址">
           {getFieldDecorator('address', {
-            rules: [{ required: true, message: '请输入地址！' }],
+            rules: [{ required: true, message: '请输入地址！' },
+            { max: 100, message: '地址最大长度是100！' }],
           })(
             <Input />
             )}
         </FormItem>
         <FormItem {...formItemLayout} label="主页">
           {getFieldDecorator('homePage', {
-            rules: [],
+            rules: [{ required: false }, { max: 100, message: '主页最大长度是100！' }],
           })(
             <Input />
             )}

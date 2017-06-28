@@ -21,7 +21,7 @@ export default function request(url, options) {
     .then(parseJSON)
     .then((data) => {
       if (data.status != 200) {
-        const err = new Error(showErrorMessage(data), data.status);
+        const err = new Error(data.message, data.status);
         throw err;
       } else {
         return { data };

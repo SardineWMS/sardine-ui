@@ -33,7 +33,8 @@ class PickAreaSearchGrid extends React.Component {
             title: '代码',
             dataIndex: 'code',
             key: 'code',
-            render: (text, record) => <a onClick={() => { this.state.onViewItem(record) }}>{text}</a>
+            render: (text, record) => <a onClick={() => { this.state.onViewItem(record) }}>{text}</a>,
+            sorter: true
         },
         {
             title: '名称',

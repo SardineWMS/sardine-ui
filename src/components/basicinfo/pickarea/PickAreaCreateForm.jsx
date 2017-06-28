@@ -46,29 +46,38 @@ const PickAreaCreateForm = ({
     const basic = [];
     basic.push(
         <BaseFormItem label={"代码"} key="code">
-            {getFieldDecorator("code", { rules: [{ required: true, max: 30, message: '代码必填不能超过30字符' }], initialValue: item.code })(
+            {getFieldDecorator("code", {
+                rules: [{ required: true, message: '代码不能为空' }, {
+                    max: 30, message: '代码最大长度是30！'
+                }], initialValue: item.code
+            })(
                 <Input placeholder="请输入" />
-            )}
+                )}
         </BaseFormItem>
     );
     basic.push(
         <BaseFormItem label={"名称"} key="name">
-            {getFieldDecorator("name", { rules: [{ required: true, max: 100, message: '名称不填且不能超过100字符' }], initialValue: item.name })(
+            {getFieldDecorator("name", {
+                rules: [{ required: true, message: '名称不能为空' }, {
+                    max: 100, message: '名称最大长度是100！'
+                }], initialValue: item.name
+            })(
                 <Input placeholder="请输入" />
-            )}
+                )}
         </BaseFormItem>
     );
+    //required：false 时，后面的validator 不会调用
     basic.push(
         <BaseFormItem label={"货位范围"} key="binScope">
             {getFieldDecorator("binScope", { initialValue: item.binScope, rules: [{ required: true, validator: (rule, value, callback) => validate(rule, value, callback) }], validateTrigger: 'onChange' })(
-                <Input placeholder="请输入：" />
+                <Input placeholder="样例：020310(1/2/3),0208-0210(4/5)" />
             )}
         </BaseFormItem>
     );
     basic.push(
         <BaseFormItem label={"存储区域"} key="storageArea">
-            {getFieldDecorator("storageArea", { initialValue: item.storageArea, rules: [{ required: false, validator: (rule, value, callback) => validate(rule, value, callback) }], validateTrigger: 'onChange' })(
-                <Input placeholder="请输入" />
+            {getFieldDecorator("storageArea", { initialValue: item.storageArea, rules: [{ pattern: /^\d{2,8}(\((\d\/)*\d\))*$|^\d{2,8}\-\d{2,8}(\((\d\/)*\d\))*$/, message: '输入不匹配，请重新输入' }], validateTrigger: 'onChange' })(
+                <Input placeholder="样例：020310(1/2/3),0208-0210(4/5)" />
             )}
         </BaseFormItem>
     );
@@ -86,10 +95,11 @@ const PickAreaCreateForm = ({
     );
 
     extend.push(
-        <BaseFormItem label={"分单体积"} key="pickVolume">
-            {getFieldDecorator("pickVolume", { rules: [{ required: true, message: '分单体积不能为空' }], initialValue: item.pickVolume })(
-                <Input placeholder="请输入：" />
-            )}
+        <BaseFormItem label={"分单体积(m³)"} key="pickVolume">
+            {getFieldDecorator("pickVolume", {
+                rules: [{ required: true, message: '分单体积不能为空' }, { pattern: /^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/, message: "分单体积输入不正确，只能输入正数，最大长度12，保留三位小数" }], initialValue: item.pickVolume
+            })(<Input placeholder="请输入：" />
+                )}
         </BaseFormItem>
     );
 
@@ -127,11 +137,15 @@ const PickAreaCreateForm = ({
                 <BaseForm items={extend} />
             </BaseCard>
             <Panel title="说明">
-                {getFieldDecorator('remark', {
-                    initialValue: item.remark
-                })(
-                    <Input type="textarea" autosize={{ minRows: 4 }} />
-                    )}
+                <Form.Item>
+                    {getFieldDecorator('remark', {
+                        initialValue: item.remark, rules: [{ required: false }, {
+                            max: 255, message: '说明的最大长度是255！'
+                        }]
+                    })(
+                        <Input type="textarea" autosize={{ minRows: 4 }} />
+                        )}
+                </Form.Item>
             </Panel>
         </div>
     );
