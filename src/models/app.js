@@ -65,6 +65,7 @@ export default {
         localStorage.setItem("companyUuid", data.obj.companyUuid);
         localStorage.setItem("ownedMenus", data.obj.ownedMenus);
         localStorage.setItem("ownedResources", data.obj.ownedResources);
+        localStorage.setItem("loginTime", new Date().getTime() + "");
         yield put({
           type: 'loginSuccess',
           payload: {
@@ -139,12 +140,13 @@ export default {
       call,
         put
     }) {
-      const data = yield call(logout, {
+      const {data} = yield call(logout, {
         token: localStorage.getItem("token"),
       });
-      if (!data.token) {
+      if (data.status == '200') {
         localStorage.removeItem("token");
         localStorage.removeItem("loginId");
+        localStorage.setItem("loginTime", "0");
         yield put({
           type: 'logoutSuccess'
         });

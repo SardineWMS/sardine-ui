@@ -2,6 +2,7 @@ import qs from 'qs';
 
 export function query(url, params) {
     params.token = localStorage.getItem("token");
+    localStorage.setItem("loginTime", new Date().getTime() + "");
     return url + `?${qs.stringify(params)}`;
 }
 
@@ -22,6 +23,7 @@ export function createBase(params) {
 }
 
 export function addTokenToUrl(url) {
+    localStorage.setItem("loginTime", new Date().getTime() + "");
     if(url.indexOf('?') >= 0)
         return url + `&token=` + localStorage.getItem("token");
     return url + `?token=` + localStorage.getItem("token");

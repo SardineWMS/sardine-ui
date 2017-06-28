@@ -76,7 +76,17 @@ function App({
 
   const navProps = {
     id: 'nav_1_0',
-    key: 'nav_1_0'
+    key: 'nav_1_0',
+    modifyPasswd() {
+      dispatch({
+        type: 'app/showModify'
+      });
+    },
+    logout() {
+      dispatch({
+        type: 'app/logout'
+      });
+    }
   };
 
   const updatePasswdProps = {
@@ -95,8 +105,14 @@ function App({
   };
 
   function renderApp() {
-    let token = localStorage.getItem("token");
-    if (token) {
+    // let token = localStorage.getItem("token");
+    let loginFlag = false;
+    let loginTime = localStorage.getItem("loginTime");
+    let notUseTime = new Date().getTime() - loginTime;
+    if (notUseTime < 8*60*60*1000)
+      loginFlag = true;
+    
+    if (loginFlag) {
       return (<div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
         <Nav {...navProps} />
         <UpdatePasswd {...updatePasswdProps} />
