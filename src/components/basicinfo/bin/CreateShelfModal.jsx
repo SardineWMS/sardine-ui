@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { Form, Input, Col, InputNumber, Select, Modal } from 'antd'
+import { Form,message, Input, Col, InputNumber, Select, Modal } from 'antd'
 import BaseFormItem from '../../Widget/BaseFormItem';
 const InputGroup = Input.Group;
 
@@ -22,6 +22,15 @@ const CreateShelfModal = ({
       const data = {
         ...getFieldsValue()
       };
+      var pattern = /^[0-9]{4}$/;
+        if (!pattern.test(data.startPath)) {
+            message.error("起始货道必须是4位数字！");
+            return;
+        };
+        if (!pattern.test(data.endPath)) {
+            message.error("截止货道必须是4位数字！");
+            return;
+        };
       var shelfArray = new Array();
       var pathArray = new Array();
       for (let i = 0; i < treeData.length; i++) {
@@ -42,6 +51,10 @@ const CreateShelfModal = ({
           shelfArray[i * data.count + j] = pathArray[i];
         };
       };
+      if (shelfArray.length == 0) {
+        message.warn("当前范围内没有可用货道，请重新输入货道范围！");
+        return;
+      }
       onOk(shelfArray);
     });
   };
@@ -71,20 +84,32 @@ const CreateShelfModal = ({
 
   return (
     <Modal {...modalOpts}>
-      <Form horizontal>
-        <BaseFormItem label="起始~截止货道：" >
-          {getFieldDecorator('shelf', {
-            rules: [{ required: true, validator: (rule, value, callback) => validate(rule, value, callback) }], validateTrigger: 'onChange'
-          })(
-            <InputGroup size="large">
-              <Col span="12">
-                <Input />
-              </Col>
-              <Col span="12">
-                <Input />
-              </Col>
-            </InputGroup>
-            )}
+              <Form horizontal>
+      <BaseFormItem label="起始~截止货道：" >
+            {getFieldDecorator('shelf' ,{
+            rules: [{ required: true, message: '起始截止货道不能为空' },],
+         })(
+        <InputGroup compact>
+    
+              {getFieldDecorator('startPath', {
+            rules: [
+              {
+                required: true,
+                message: '起始货道未填写',
+              },
+            ],
+          })(<Input style={{width: '50%'}}/>)}
+
+             {getFieldDecorator('endPath', {
+            rules: [
+              {
+                required: true,
+                message: '截止货道未填写',
+              },
+            ],
+          })(<Input style={{width: '50%'}} />)}
+        </InputGroup>
+         )}
         </BaseFormItem>
         <BaseFormItem label="每货道数量：">
           {getFieldDecorator('count', {
@@ -92,10 +117,7 @@ const CreateShelfModal = ({
               {
                 required: true,
                 message: '每货道数量未填写',
-              }, {
-                pattern: /^\+?[1-9]\d*$/,
-                message: '数量必须大于0！'
-              }
+              },
             ],
           })(<Input />)}
         </BaseFormItem>
