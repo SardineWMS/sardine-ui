@@ -143,7 +143,7 @@ const ArticleCreateForm = ({
           message: '保质期最大长度是11！'
         }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
       })(
-        <InputNumber min={0} />
+        <InputNumber min={0} style={{width: '100%'}}/>
         )}
     </BaseFormItem>
   );
