@@ -38,7 +38,7 @@ const SetFixedPickBinModal = ({
   };
 
   return (
-    <Modal {...modalOpts}>
+    <Modal {...modalOpts} style={{padding: '1px'}}>
       <BaseFormItem label="固定拣货位">
         {getFieldDecorator('fixedPickBin', {
           initialValue: null
