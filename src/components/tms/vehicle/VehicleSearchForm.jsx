@@ -65,7 +65,7 @@ const VehicleSearchForm = ({
     children.push(
         <BaseTwoCol key={"vehicleType"}>
             <BaseFormItem label={"车型 等于"}>
-                {getFieldDecorator("vehicleTypeCode")(
+                {getFieldDecorator("vehicleType")(
                     <Input placeholder="请输入" />
                 )}
             </BaseFormItem>
