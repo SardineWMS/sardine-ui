@@ -38,6 +38,17 @@ function Vehicle({ location, dispatch, vehicle }) {
     const vehicleSearchGridProps = {
         dataSource: list,
         pagination: pagination,
+        onPageChange(page, filters, sorter) {
+            dispatch(routerRedux.push({
+                pathname: '/tms/vehicle',
+                query: {
+                    page: page.current,
+                    pageSize: page.pageSize,
+                    sort: sorter.columnKey,
+                    order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
+                }
+            }));
+        },
         onCreateVehicleType() {
             dispatch({
                 type: 'vehicle/queryVehicleType',

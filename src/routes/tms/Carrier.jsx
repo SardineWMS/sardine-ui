@@ -55,7 +55,7 @@ function Carrier({ location, dispatch, carrier }) {
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.columnKey,
-                    order: sorter.columnKey == undefined ? '' : (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+                    order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
                 }
             }));
         },
