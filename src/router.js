@@ -32,6 +32,7 @@ import PickArea from './routes/basicinfo/PickArea';
 import SerialArch from './routes/tms/SerialArch';
 import Config from './routes/basicinfo/Config';
 import WaveBill from './routes/forward/WaveBill';
+import ReturnNtcBill from './routes/backward/ReturnNtcBill';
 
 export default function ({
   history
@@ -68,6 +69,7 @@ export default function ({
         <Route path="/tms/serialArch" component={SerialArch} />
         <Route path="/basicInfo/config" component={Config} />
         <Route path="/forward/waveBill" component={WaveBill} />
+        <Route path="/backward/rtnNtcBill" component={ReturnNtcBill} />
       </Route>
     </Router>
   );
