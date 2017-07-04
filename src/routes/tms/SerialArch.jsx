@@ -257,6 +257,10 @@ function SerialArch({ location, dispatch, serialArch }) {
             });
         }
     };
+
+    const SerialArchCreateModalGen = () => <SerialArchCreateModal {...serialArchCreateModalProps} />;
+    const SerialArchLineCreateModalGen = () => <SerialArchLineCreateModal {...serialArchCreateLineModalProps} />;
+    const SerialArchLineSelectCustomerModalGen = () => <SerialArchLineSelectCustomerModal {...serialArchLineSelectCustomerModalProps} />;
     return (
         <div className="content-inner">
             <Layout style={{ padding: '0 0', background: '#fff' }}>
@@ -265,9 +269,9 @@ function SerialArch({ location, dispatch, serialArch }) {
                 </Sider>
                 <Content style={{ padding: '0 0 0 5px', minHeight: 280 }}>
                     <SerialArchSearchGrid {...SerialArchSearchGridProps} />
-                    <SerialArchCreateModal {...serialArchCreateModalProps} />
-                    <SerialArchLineCreateModal {...serialArchCreateLineModalProps} />
-                    <SerialArchLineSelectCustomerModal {...serialArchLineSelectCustomerModalProps} />
+                    <SerialArchCreateModalGen />
+                    <SerialArchLineCreateModalGen />
+                    <SerialArchLineSelectCustomerModalGen />
                     <WMSProgress {...batchProcessRemoveCustomerProps} />
                     <WMSProgress {...batchProcessStickCustomerProps} />
                     <WMSProgress {...batchProcessPostponeCustomerProps } />
