@@ -83,14 +83,14 @@ class ReceiveBillGrid extends React.Component {
             key: 'operation',
             render: (text, record) => (
                 <p>
-                    <a onClick={() => { this.state.onEdit(record) }} disabled={!PermissionUtil("receiveBill:edit")}>编辑</a>
+                    <a onClick={() => { this.state.onEdit(record) }} disabled={!(record.state == "Initial") && PermissionUtil("receiveBill:edit")}>编辑</a>
                     &nbsp;
                 <Popconfirm title="确定要删除吗？" onConfirm={() => this.state.onDelete(record)} >
-                        <a disabled={(record.state === "deleted") && !PermissionUtil("receiveBill:delete")}>删除</a>
+                        <a disabled={!(record.state == "Initial") && PermissionUtil("receiveBill:delete")}>删除</a>
                     </Popconfirm>
                     &nbsp;
                     <Popconfirm title="确定要完成吗？" onConfirm={() => this.state.onFinish(record)}>
-                        <a disabled={!PermissionUtil("receiveBill:finish")}>完成</a>
+                        <a disabled={!(record.state == "Initial") && PermissionUtil("receiveBill:finish")}>完成</a>
                     </Popconfirm>
                 </p>
             )

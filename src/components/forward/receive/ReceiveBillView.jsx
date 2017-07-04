@@ -57,14 +57,14 @@ const ReceiveBillView = ({
 
     let toolbar = [];
     toolbar.push(
-        <Button key={Guid()} onClick={() => onEdit(item)} disabled={!PermissionUtil("receiveBill:edit")}>编辑</Button>
+        <Button key={Guid()} onClick={() => onEdit(item)} disabled={!(item.state == "Initial") && PermissionUtil("receiveBill:edit")}>编辑</Button>
     );
     toolbar.push(
         <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(item)}>
-            <Button disabled={!PermissionUtil("receiveBill:delete")}>删除</Button>
+            <Button disabled={!(item.state == "Initial") && PermissionUtil("receiveBill:delete")}>删除</Button>
         </Popconfirm>
     );
-    toolbar.push(<Button onClick={() => onFinish(item)} disabled={!PermissionUtil("receiveBill:finish")}>审核</Button>);
+    toolbar.push(<Button onClick={() => onFinish(item)} disabled={!(item.state == "Initial") && PermissionUtil("receiveBill:finish")}>审核</Button>);
 
     return (
         <div>
