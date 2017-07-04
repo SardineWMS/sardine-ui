@@ -49,7 +49,7 @@ const PickAreaViewForm = ({ item = {},
         <span>{convertOperateMode(item.pickMode)}</span>
     </BaseFormItem>);
 
-    extendFormItems.push(<BaseFormItem label="分单体积：" key={Guid()}>
+    extendFormItems.push(<BaseFormItem label="分单体积(m³)：" key={Guid()}>
         <span>{item.pickVolume}</span>
     </BaseFormItem>);
 
