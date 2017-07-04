@@ -803,7 +803,7 @@ export default {
                     };
                 };
             };
-            if (payload.record.receiveQty != null || payload.record.receiveQty != '') {
+            if (payload.record.receiveQty != "") {
                 yield put({
                     type: 'calculateCaseQtyStr',
                     payload: {
