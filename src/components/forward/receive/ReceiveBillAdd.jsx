@@ -83,7 +83,7 @@ const ReceiveBillAddForm = ({
     const children = [];
     children.push(<BaseFormItem label={"入库订单："}>
         {getFieldDecorator("orderBillNumber", { rules: [{ required: true, message: "入库订单不能为空" }], initialValue: orderBillNo })(
-            <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => onOrderBillSelect()} />} onBlur={handleEnterPress} />
+            <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => onOrderBillSelect()} />} onBlur={handleEnterPress} />
         )}
     </BaseFormItem>);
 

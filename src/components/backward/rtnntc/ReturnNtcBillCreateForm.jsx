@@ -39,12 +39,6 @@ const ReturnNtcBillCreateForm = ({
         });
     };
 
-    function refreshCustomer(e) {
-        item.customer = {};
-        item.customer.code = e.target.value;
-        checkCustomer(e.target.value);
-    };
-
     function handleEnterPress() {
         if (getFieldsValue().customer == null || getFieldsValue().customer == '')
             return;
@@ -60,9 +54,9 @@ const ReturnNtcBillCreateForm = ({
             {
                 getFieldDecorator("customer", {
                     rules: [{ required: true, message: "客户不能为空！" }],
-                    initialValue: item.customer ? item.customer.code : ''
+                    initialValue: item.customer ? item.customer.code : ""
                 })(
-                    <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => onCustomerSelect()} />} onBlur={handleEnterPress} />
+                    <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => onCustomerSelect()} />} onBlur={handleEnterPress} />
                     )
             }
         </BaseFormItem>
