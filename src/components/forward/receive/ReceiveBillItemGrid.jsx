@@ -241,7 +241,7 @@ function ReceiveBillItemGrid({
         const options = [];
 
         if (key == "articleCode") {
-            for (var data of treeData) {
+            for (let data of treeData) {
                 options.push(<Option key={data.value}>
                     {data.value}
                 </Option>)
@@ -249,7 +249,7 @@ function ReceiveBillItemGrid({
         } else {
             if (record.article != null) {
                 if (article_qpcStr[record.article.code] != null) {
-                    for (var data of article_qpcStr[record.article.code]) {
+                    for (let data of article_qpcStr[record.article.code]) {
                         options.push(<Option key={data.value}>{data.value}</Option>)
                     };
                 };

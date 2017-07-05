@@ -195,10 +195,13 @@ export default {
                         article_qpcStr[articleCode] = qpcStrs;
                     } else {
                         for (var prop in article_qpcStr) {
-                            if (prop == itemArt.articleUuid) {
+                            if (prop == itemArt.article.code) {
                                 for (var qpcStr of article_qpcStr[prop]) {
-                                    if (qpcStr != itemArt.qpcStr) {
-                                        article_qpcStr[prop].push(qpcStr);
+                                    if (qpcStr.value != itemArt.qpcStr) {
+                                        const q = {};
+                                        q.value = itemArt.qpcStr;
+                                        q.label = itemArt.qpcStr;
+                                        article_qpcStr[prop].push(q);
                                     };
                                 };
                             } else {
@@ -278,7 +281,7 @@ export default {
         }, {
             call, put
         }) {
-            const { data } = yield call(getOrderBillByBillNo, parse(payload));
+            const { data } = yield call(getOrderBill, parse(payload));
             if (data) {
                 if (data.obj == null) {
                     message.warning("输入的订单不存在，请正确输入", 2);
@@ -288,6 +291,11 @@ export default {
                 const bin = yield call(queryBin, { wrhUuid: data.obj.wrh.uuid, usage: 'ReceiveStorageBin' });
                 const articles = [];
                 let itemLists = [];
+
+                /***
+                 * 获取订单，根据订单明细构造orderBillItemArticles.
+                 * orderBillItemArticles:订单中所有商品明细信息
+                 */
                 for (var itemArt of data.obj.items) {
                     itemArt.canReceiveQty = itemArt.qty - itemArt.receivedQty;
                     itemArt.canReceiveCaseQtyStr = itemArt.caseQtyStr - itemArt.receivedCaseQtyStr;
@@ -299,15 +307,21 @@ export default {
                     itemArt.expDays = expDays;
                     itemArt.articleSpec = article.data.obj.spec;
                     itemArt.editable = true;
-                    itemArt.bin = bin.data.obj.pageData.records[0].code;
-                    if (!itemArt.bin) {
+                    if (!bin.data.obj.pageData.records[0]) {
                         message.error("当前仓位下不存在收货暂存位，无法新建收货单");
+                        return;
                     }
+                    itemArt.bin = bin.data.obj.pageData.records[0].code;
                     const sku = {};
                     sku.value = itemArt.article.code;
                     sku.label = itemArt.article.code;
                     articles.push(sku);
 
+                    /***
+                     * 构造article_qpcStr对象。
+                     * 根据订单明细中的商品信息，获取商品代码及规格。
+                     * article_qpcStr对象:articleCode-qpcStrs[]
+                     */
                     if (JSON.stringify(article_qpcStr) == "{}") {
                         let qpcStrs = [];
                         const qpcStr = new Object();
@@ -318,10 +332,13 @@ export default {
                         article_qpcStr[articleCode] = qpcStrs;
                     } else {
                         for (var prop in article_qpcStr) {
-                            if (prop == itemArt.articleUuid) {
+                            if (prop == itemArt.article.code) {
                                 for (var qpcStr of article_qpcStr[prop]) {
-                                    if (qpcStr != itemArt.qpcStr) {
-                                        article_qpcStr[prop].push(qpcStr);
+                                    if (qpcStr.value != itemArt.qpcStr) {
+                                        const q = {};
+                                        q.value = itemArt.qpcStr;
+                                        q.label = itemArt.qpcStr;
+                                        article_qpcStr[prop].push(q);
                                     };
                                 };
                             } else {
@@ -339,14 +356,15 @@ export default {
 
 
                 /***
-                 * 初始选中订单后，明细行只有一条空的记录
+                 * 初始选中订单后，收货单明细行只有一条空的记录
                  */
                 const nullOrderItem = new Object();
-                nullOrderItem.line = 0;
                 nullOrderItem.editable = true;
+                nullOrderItem.line = 1;
 
                 itemLists.push(nullOrderItem);
                 let current = data.obj;
+                current.totalCaseQtyStr = "";
                 current.type = "订单";
                 yield put({
                     type: 'orderBillSelectSuccess',
@@ -358,7 +376,7 @@ export default {
                         orderItems: itemLists,
                         treeData: articles,
                         orderBillItemArticles: data.obj.items,
-                        article_qpcStr: article_qpcStr
+                        article_qpcStr: article_qpcStr,
                     }
                 });
             };
@@ -486,10 +504,13 @@ export default {
                     article_qpcStr[articleCode] = qpcStrs;
                 } else {
                     for (var prop in article_qpcStr) {
-                        if (prop == orderItem.articleUuid) {
+                        if (prop == orderItem.article.code) {
                             for (var qpcStr of article_qpcStr[prop]) {
-                                if (qpcStr != orderItem.qpcStr) {
-                                    article_qpcStr[prop].push(qpcStr);
+                                if (qpcStr.value != orderItem.qpcStr) {
+                                    const q = {};
+                                    q.value = itemArt.qpcStr;
+                                    q.label = itemArt.qpcStr;
+                                    article_qpcStr[prop].push(q);
                                 };
                             };
                         } else {
