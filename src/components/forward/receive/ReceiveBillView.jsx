@@ -66,6 +66,7 @@ const ReceiveBillView = ({
     );
     toolbar.push(<Button onClick={() => onFinish(item)} disabled={!(item.state == "Initial") && PermissionUtil("receiveBill:finish")}>审核</Button>);
 
+    toolbar.push(<Button onClick={() => onBack()}>返回</Button >);
     return (
         <div>
             <ToolbarPanel children={toolbar} />

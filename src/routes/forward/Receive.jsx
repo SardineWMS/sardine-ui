@@ -358,6 +358,11 @@ function Receive({ location, dispatch, receive }) {
                     version: receiveBill.version
                 }
             });
+        },
+        onBack() {
+            dispatch({
+                type: 'receive/query'
+            });
         }
     };
 
