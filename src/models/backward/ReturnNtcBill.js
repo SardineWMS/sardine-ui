@@ -4,7 +4,7 @@ import { getByCode as getCustomerByCode } from '../../services/basicinfo/Custome
 import { message } from 'antd';
 import { getByCode as getArticleInfo } from '../../services/basicinfo/Article.js';
 import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, caseQtyStrSubtract } from '../../services/common/common.js';
-import { insertRtnNtcBill, queryRtnNtcBill, getRtnNtcBill, updateRtnNtcBill, remove, finish, abort } from '../../services/backward/RtnNtcBillService';
+import { insertRtnNtcBill, queryRtnNtcBill, getRtnNtcBill, updateRtnNtcBill, remove, finish, abort, genRtnBill } from '../../services/backward/RtnNtcBillService';
 import { removeByValue } from '../../utils/ArrayUtils';
 
 
@@ -28,6 +28,12 @@ export default {
         qpcs: [],
         batchDeleteProcessModal: false,
         deleteRtnNtcBillEntitys: [],
+        batchAbortProcessModal: false,
+        abortRtnNtcBillEntitys: [],
+        batchGenRtnBillProcessModal: false,
+        genRtnBillRtnNtcBillEntitys: [],
+        batchFinishProcessModal: false,
+        finishRtnNtcBillEntitys: []
     },
 
     subscriptions: {
@@ -426,12 +432,24 @@ export default {
             })
         },
 
+        *gridFinish({ payload }, { call, put }) {
+            yield call(finish, { uuid: payload.uuid, version: payload.version });
+        },
+
         *abort({ payload }, { call, put }) {
             yield call(abort, { uuid: payload.uuid, version: payload.version });
             yield put({
                 type: 'query',
                 payload: {}
             })
+        },
+
+        *gridAbort({ payload }, { call, put }) {
+            yield call(abort, { uuid: payload.uuid, version: payload.version });
+        },
+
+        *gridGenRtnBill({ payload }, { call, put }) {
+            yield call(genRtnBill, { uuid: payload.uuid, version: payload.version });
         }
 
     },
@@ -458,5 +476,24 @@ export default {
         hideDeleteRtnNtcBillModal(state) {
             return { ...state, batchDeleteProcessModal: false }
         },
+        batchAbortRtnNtcBill(state, action) {
+            return { ...state, ...action.payload, batchAbortProcessModal: true }
+        },
+        hideAbortRtnNtcBillModal(state) {
+            return { ...state, batchAbortProcessModal: false }
+        },
+        batchGenRtnBill(state, action) {
+            return { ...state, ...action.payload, batchGenRtnBillProcessModal: true }
+        },
+        hideGenRtnBillRtnNtcBillModal(state) {
+            return { ...state, batchGenRtnBillProcessModal: false }
+        },
+        batchFinishBill(state, action) {
+            return { ...state, ...action.payload, batchFinishProcessModal: true }
+        },
+        hideFinishRtnNtcBillModal(state) {
+            return { ...state, batchFinishProcessModal: false }
+        },
+
     }
 };

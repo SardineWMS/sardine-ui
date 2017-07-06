@@ -15,7 +15,8 @@ import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 
 function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
-    const { showPage, showCustomerSelectModal, currentItem, wrhs, rtnNtcBillItems, qpcs, list, pagination, batchDeleteProcessModal, deleteRtnNtcBillEntitys, rtnNtcBillNext } = rtnNtcBill;
+    const { showPage, showCustomerSelectModal, currentItem, wrhs, rtnNtcBillItems, qpcs, list, pagination, batchDeleteProcessModal, deleteRtnNtcBillEntitys, batchAbortProcessModal, abortRtnNtcBillEntitys,
+        batchGenRtnBillProcessModal, genRtnBillRtnNtcBillEntitys, batchFinishProcessModal, finishRtnNtcBillEntitys, rtnNtcBillNext } = rtnNtcBill;
 
     const returnNtcBillSearchGridProps = {
         dataSource: list,
@@ -46,13 +47,53 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
             })
         },
         onRemoveBatch(records) {
+            if (records.length <= 0) {
+                message.error("请选择要删除的退仓通知单！", 2, '');
+                return;
+            };
             dispatch({
                 type: 'rtnNtcBill/batchDeleteRtnNtcBill',
                 payload: {
                     deleteRtnNtcBillEntitys: records
                 }
             })
-        }
+        },
+        onAbortBatch(records) {
+            if (records.length <= 0) {
+                message.error("请选择要作废的退仓通知单！", 2, '');
+                return;
+            };
+            dispatch({
+                type: 'rtnNtcBill/batchAbortRtnNtcBill',
+                payload: {
+                    abortRtnNtcBillEntitys: records
+                }
+            })
+        },
+        onGenRtnBillBatch(records) {
+            if (records.length <= 0) {
+                message.error("请选择要生成退仓单的退仓通知单！", 2, '');
+                return;
+            };
+            dispatch({
+                type: 'rtnNtcBill/batchGenRtnBill',
+                payload: {
+                    genRtnBillRtnNtcBillEntitys: records
+                }
+            })
+        },
+        onFinishBatch(records) {
+            if (records.length <= 0) {
+                message.error("请选择要完成的退仓通知单！", 2, '');
+                return;
+            };
+            dispatch({
+                type: 'rtnNtcBill/batchFinishBill',
+                payload: {
+                    finishRtnNtcBillEntitys: records
+                }
+            })
+        },
     };
 
     const rtnNtcBillSearchFormProps = {
@@ -170,14 +211,15 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
             })
         },
         onSelect(data) {
+            const t = {};
             const customer = {};
             customer.uuid = data[0].uuid;
             customer.code = data[0].code;
             customer.name = data[0].name;
-            currentItem.customer = customer;
+            t.customer = customer;
             dispatch({
                 type: 'rtnNtcBill/hideCustomerModal',
-                payload: { currentItem }
+                payload: { currentItem: t }
             })
         }
     };
@@ -264,6 +306,12 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
                 type: 'rtnNtcBill/abort',
                 payload: record
             })
+        },
+        onGenRtnBill(record) {
+            dispatch({
+                type: 'rtnNtcBill/gridGenRtnBill',
+                payload: record
+            })
         }
     };
 
@@ -298,6 +346,99 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
         }
     };
 
+    const batchProcessAbortRtnNtcBillProps = {
+        showConfirmModal: batchAbortProcessModal,
+        records: abortRtnNtcBillEntitys ? abortRtnNtcBillEntitys : [],
+        next: rtnNtcBillNext,
+        actionText: '作废',
+        entityCaption: '退仓通知单',
+        batchProcess(entity) {
+            dispatch({
+                type: 'rtnNtcBill/gridAbort',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version,
+                    token: localStorage.getItem("token"),
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'rtnNtcBill/hideAbortRtnNtcBillModal'
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'rtnNtcBill/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
+        }
+    };
+
+    const batchProcessGenRtnBillRtnNtcBillProps = {
+        showConfirmModal: batchGenRtnBillProcessModal,
+        records: genRtnBillRtnNtcBillEntitys ? genRtnBillRtnNtcBillEntitys : [],
+        next: rtnNtcBillNext,
+        actionText: '生成',
+        entityCaption: '退仓单',
+        batchProcess(entity) {
+            dispatch({
+                type: 'rtnNtcBill/gridGenRtnBill',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version,
+                    token: localStorage.getItem("token"),
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'rtnNtcBill/hideGenRtnBillRtnNtcBillModal'
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'rtnNtcBill/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
+        }
+    };
+
+    const batchProcessFinishRtnNtcBillProps = {
+        showConfirmModal: batchFinishProcessModal,
+        records: finishRtnNtcBillEntitys ? finishRtnNtcBillEntitys : [],
+        next: rtnNtcBillNext,
+        actionText: '完成',
+        entityCaption: '退仓通知单',
+        batchProcess(entity) {
+            dispatch({
+                type: 'rtnNtcBill/gridFinish',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version,
+                    token: localStorage.getItem("token"),
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'rtnNtcBill/hideFinishRtnNtcBillModal'
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'rtnNtcBill/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
+        }
+    };
+
     const CustomerSelectModalGen = () => <ReturnNtcBillCreateForm {...returnNtcBillCreateFormProps} />;
     const ReturnNtcBillCreateFormGen = () => <ReturnNtcBillCreateForm {...returnNtcBillCreateFormProps} />;
     const ReturnNtcBillCreateItemGen = () => <ReturnNtcBillCreateItem {...returnNtcBillCreateItemProps} />;
@@ -318,6 +459,9 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
                                 <ReturnNtcBillSearchForm {...rtnNtcBillSearchFormProps} />
                                 <ReturnNtcBillSearchGrid {...returnNtcBillSearchGridProps} />
                                 <WMSProgress {...batchProcessDeleteRtnNtcBillProps} />
+                                <WMSProgress {...batchProcessAbortRtnNtcBillProps} />
+                                <WMSProgress {...batchProcessGenRtnBillRtnNtcBillProps} />
+                                <WMSProgress {...batchProcessFinishRtnNtcBillProps} />
                             </div>
                     }
                 })()

@@ -20,7 +20,8 @@ const ReturnNtcBillViewPage = ({
     onEdit,
     onDelete,
     onFinish,
-    onAbort
+    onAbort,
+    onGenRtnBill
 }) => {
     function convertState(text) {
         if (text == "initial")
@@ -79,7 +80,7 @@ const ReturnNtcBillViewPage = ({
             <Button disabled={!(item.state == "initial" || item.state == "aborted") && PermissionUtil("rtnNtcBill:delete")}>删除</Button>
         </Popconfirm>
     );
-    toolbar.push(<Button onClick={() => onFinish(item)} >生成退仓单</Button >);
+    toolbar.push(<Button onClick={() => onGenRtnBill(item)} >生成退仓单</Button >);
     toolbar.push(<Button onClick={() => onFinish(item)} disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>完成</Button>);
     toolbar.push(<Button onClick={() => onAbort(item)} disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>作废</Button>);
 

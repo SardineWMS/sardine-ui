@@ -36,3 +36,8 @@ export async function abort(params) {
     const url = "/swms/rtn/ntc/abort";
     return request(query(url, params), updateBaseNullBody(null));
 }
+
+export async function genRtnBill(params) {
+    const url = "/swms/rtn/ntc/genRtnBill";
+    return request(query(url, params), updateBaseNullBody(null));
+}
