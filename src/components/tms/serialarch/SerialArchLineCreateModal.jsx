@@ -1,7 +1,8 @@
 import React, { PropTypes } from 'react';
-import { Form, Input, InputNumber, Modal, Row, Col, Table, Button } from 'antd';
+import { Form, Input, InputNumber, Modal, Row, Col, Table, Button, Select } from 'antd';
 const FormItem = Form.Item;
 import BaseFormItem from '../../Widget/BaseFormItem';
+const Option = Select.Option;
 
 const SerialArchLineCreateModal = ({
     visible,
@@ -12,7 +13,8 @@ const SerialArchLineCreateModal = ({
         getFieldDecorator,
         validateFields,
         getFieldsValue
-    }
+    },
+    serialArch = [],
 }) => {
     function handleOk() {
         validateFields((errors) => {
@@ -33,6 +35,12 @@ const SerialArchLineCreateModal = ({
         wrapClassName: 'vertical-center-modal'
     };
 
+    const options = [];
+    if (serialArch != null) {
+        for (var serial of serialArch) {
+            options.push(<Option value={serial.title}>{serial.key}</Option>)
+        };
+    };
 
     const columns = [{
         title: '序号',
@@ -55,13 +63,13 @@ const SerialArchLineCreateModal = ({
         <Modal {...modalOpts}>
             <Form horizontal>
                 <BaseFormItem label="线路体系：">
-                    {getFieldDecorator('serialArchCode', {
+                    {getFieldDecorator('serialArchUuid', {
                         initialValue: item.code,
                         rules: [{
                             required: true,
-                            message: '线路体系未填写',
+                            message: '线路体系不能为空',
                         }],
-                    })(<Input />)}
+                    })(<Select>{options}</Select>)}
                 </BaseFormItem>
                 <BaseFormItem label="代码：">
                     {getFieldDecorator('code', {

@@ -125,6 +125,7 @@ function SerialArch({ location, dispatch, serialArch }) {
 
     const serialArchCreateLineModalProps = {
         visible: showCreateLineModal,
+        serialArch: treeData,
         onCancel() {
             dispatch({
                 type: 'serialArch/hideCreateLineModal'
@@ -132,7 +133,7 @@ function SerialArch({ location, dispatch, serialArch }) {
         },
         onOk(data) {
             data.serialArch = {};
-            data.serialArch.code = data.serialArchCode;
+            data.serialArch.uuid = data.serialArchUuid;
             dispatch({
                 type: 'serialArch/createLine',
                 payload: data
