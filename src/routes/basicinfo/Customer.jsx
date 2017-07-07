@@ -270,6 +270,7 @@ function Customer({ location, dispatch, customer }) {
         }
     };
     const CustomerAddGen = () => <CustomerAdd {...customerAddProps} />;
+    const CustomerGridGen = () => <CustomerGrid {...customerListProps} />;
 
     function RefreshWidget() {
         if (showCreatePage) {
@@ -294,7 +295,7 @@ function Customer({ location, dispatch, customer }) {
                     return (
                         <div>
                             <CustomerForm {...customerSearchProps} />
-                            <CustomerGrid {...customerListProps} />
+                            <CustomerGridGen />
                             <WMSProgress {...batchProcessDeleteCustomerProps} />
                             <WMSProgress {...batchProcessRecoverCustomerProps} />
                         </div>
