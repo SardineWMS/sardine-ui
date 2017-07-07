@@ -508,8 +508,8 @@ export default {
                             for (var qpcStr of article_qpcStr[prop]) {
                                 if (qpcStr.value != orderItem.qpcStr) {
                                     const q = {};
-                                    q.value = itemArt.qpcStr;
-                                    q.label = itemArt.qpcStr;
+                                    q.value = orderItem.qpcStr;
+                                    q.label = orderItem.qpcStr;
                                     article_qpcStr[prop].push(q);
                                 };
                             };
