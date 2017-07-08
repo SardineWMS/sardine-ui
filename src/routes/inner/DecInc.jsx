@@ -3,7 +3,7 @@ import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
 import { message } from 'antd';
 import DecIncSearchForm from '../../components/inner/decinc/DecIncSearchForm';
-import DecIncSearchGrid from '../../components/inner/decinc/DecIncSearchGrid_new';
+import DecIncSearchGrid from '../../components/inner/decinc/DecIncSearchGrid';
 import DecIncCreateForm from '../../components/inner/decinc/DecIncCreate';
 import DecIncCreateItem from '../../components/inner/decinc/DecIncCreateItem';
 import DecIncView from '../../components/inner/decinc/DecIncView';
