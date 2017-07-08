@@ -122,7 +122,7 @@ export default {
             const customer = payload;
             let { data } = yield call(updateCustomer, payload);
             if (data.status == "200") {
-                let getData = yield call(get, { customerUuid: payload.data.uuid });
+                let getData = yield call(get, { customerUuid: payload.uuid });
                 if (getData.data.status == "200") {
                     yield put({
                         type: 'onViewItem',
