@@ -1,101 +1,106 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import { createInfo2StringWithoutTime, lastModifyInfo2StringWithoutTime } from '../../../utils/OperatorInfoUtils';
 
 
-function DecIncInvSearchGrid({
-	dataSource,
-    pagination,
-    onPageChange,
-    onCreate,
-    onViewItem,
-    onEdit
-}) {
-    const columns = [{
-        title: '单号',
-        dataIndex: 'billNumber',
-        key: 'billNumber',
-        sorter: true,
-        render: (text, record) => <a onClick={() => {
-            onViewItem(record)
-        }} disabled={!PermissionUtil("decIncBill:view")}>{text}</a>
-    }, {
-        title: '类型',
-        dataIndex: 'type',
-        key: 'type'
-    }, {
-        title: '状态',
-        dataIndex: 'state',
-        key: 'state',
-        render: text => (text == "initial" ? '未审核' : '已审核')
-    }, {
-        title: '仓位',
-        dataIndex: 'wrh',
-        key: 'wrh',
-        render: text => text.name + "[" + text.code + "]"
-    }, {
-        title: '创建人',
-        dataIndex: 'create',
-        key: 'create',
-        render: () => { }
-    }, {
-        title: '最后修改人',
-        dataIndex: 'lastModify',
-        key: 'lastModify'
-    }, {
-        title: '操作',
-        key: 'operation',
-        fixed: 'right',
-        render: (text, record) => (
-            <p>
-                <a onClick={() => onEdit(record)}>审核</a>
-                <a onClick={() => onEdit(record)}>编辑</a>
-                <a onClick={() => onEdit(record)}>删除</a>
-            </p>
-        )
-    }];
-
-    const rowSelection = {
-        onChange: (selectedRowKeys, selectedRows) => {
-
-        },
-        onSelect: (record, selected, selectedRows) => {
-
-        },
-        onSelectAll: (selected, selectedRows, changeRows) => {
-
-        },
-        getCheckboxProps: record => ({
-
-        })
+class DecIncInvSearchGrid extends React.Component {
+    constructor(props) {
+        super(props);
+        this.state = {
+            ...props,
+            selectedRowKeys: [],
+            selectedRows: []
+        };
+        this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
+        this.handleFinishBatch = this.handleFinishBatch.bind(this);
     };
 
-    return (
-        <div>
-            <Table size="small"
-                bordered
-                columns={columns}
-                dataSource={dataSource}
-                onChange={onPageChange}
-                pagination={pagination}
-                rowKey={record => record.uuid}
-                rowSelection={rowSelection}
-                title={() => <div>
-                    <Row type="flex">
-                        <Col><Button onClick={() => { }}>批量删除</Button></Col>
-                        <Col><Button onClick={() => { }}>批量审核</Button></Col>
-                        <Col><Button onClick={() => onCreate()}>新建</Button></Col>
-                    </Row>
-                </div>}
-            />
-        </div>
-    );
-};
+    componentWillReceiveProps(newProps) {
+        this.setState({
+            ...newProps,
+            selectedRowKeys: [],
+            selectedRows: []
+        });
+    };
 
-DecIncInvSearchGrid.propTypes = {
-    dataSource: PropTypes.array,
-    pagination: PropTypes.any,
-    onPageChange: PropTypes.func
+    onSelectChange = (selectedRowKeys, selectedRows) => {
+        this.setState({ selectedRowKeys, selectedRows });
+    };
+    handleRemoveBatch() {
+        this.state.onRemoveBatch(this.state.selectedRows);
+    };
+    handleFinishBatch() {
+        this.state.onFinishBatch(this.state.selectedRows);
+    };
+
+    render() {
+        const columns = [{
+            title: '单号',
+            dataIndex: 'billNumber',
+            key: 'billNumber',
+            sorter: true,
+            render: (text, record) => <a onClick={() => {
+                this.state.onViewItem(record)
+            }} disabled={!PermissionUtil("decIncBill:view")}>{text}</a>
+        }, {
+            title: '类型',
+            dataIndex: 'type',
+            key: 'type',
+            render: text => text == 'Inc' ? '溢余' : '损耗'
+        }, {
+            title: '状态',
+            dataIndex: 'state',
+            key: 'state',
+            render: text => (text == "Initial" ? '未审核' : '已审核')
+        }, {
+            title: '仓位',
+            dataIndex: 'wrh',
+            key: 'wrh',
+            render: text => text.name + "[" + text.code + "]"
+        }, {
+            title: '创建人',
+            dataIndex: 'createInfo',
+            key: 'createInfo',
+            render: (text, record) => createInfo2StringWithoutTime(record),
+        }, {
+            title: '最后修改人',
+            dataIndex: 'lastModifyInfo',
+            key: 'lastModifyInfo',
+            render: (text, record) => lastModifyInfo2StringWithoutTime(record)
+        }];
+
+        const { selectedRowKeys } = this.state;
+        const rowSelection = {
+            selectedRowKeys,
+            onChange: this.onSelectChange
+        };
+        const hasSelected = selectedRowKeys.length > 0;
+
+        return (
+            <div>
+                <Table size="small"
+                    bordered
+                    columns={columns}
+                    dataSource={this.state.dataSource}
+                    onChange={this.state.onPageChange}
+                    pagination={this.state.pagination}
+                    rowKey={record => record.uuid}
+                    rowSelection={rowSelection}
+                    title={() => <div>
+                        <Row type="flex">
+                            <Col>
+                                <Button onClick={this.handleRemoveBatch}>批量删除</Button>
+                            </Col>
+                            <Col><Button onClick={this.handleFinishBatch}>批量审核</Button></Col>
+                            <Col><Button onClick={() => this.state.onCreate()}>新建</Button></Col>
+                        </Row>
+                    </div>}
+                />
+            </div>
+        );
+    };
+
 };
 
 export default DecIncInvSearchGrid;
