@@ -39,8 +39,9 @@ const ReceiveBillSearchForm = ({
     children.push(
         <BaseTwoCol key={"state"}>
             <BaseFormItem label={"状态 等于"}>
-                {getFieldDecorator("state")(
+                {getFieldDecorator("state", { initialValue: '' })(
                     <Select placeholder="请选择" showSearch={false} size="default">
+                        <Option value=''>全部</Option>
                         <Option value="Initial" >未审核</Option>
                         <Option value="Audited">已审核</Option>
                         <Option value="InProgress">进行中</Option>
