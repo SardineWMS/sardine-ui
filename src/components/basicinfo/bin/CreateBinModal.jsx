@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react'
-import { Form, message,Input, Col, InputNumber, Select, Modal } from 'antd'
+import { Form, message, Input, Col, InputNumber, Select, Modal } from 'antd'
 import BaseFormItem from '../../Widget/BaseFormItem';
 const InputGroup = Input.Group;
 
@@ -24,31 +24,31 @@ const CreateBinModal = ({
         ...getFieldsValue()
       };
       var shelfPattern = /^[0-9]{6}$/;
-        if ( !data.startShelf || !shelfPattern.test(data.startShelf)) {
-            message.error("起始货架必须是6位数字！");
-            return;
-        }
-        if (!shelfPattern.test(data.endShelf)) {
-            message.error("截止货架必须是6位数字！");
-            return;
-        }
-        var columnPattern = /^[0-9]{1}$/;
-        if (!data.startColumn || !columnPattern.test(data.startColumn)) {
-            message.error("起始列码必须是1位数字！");
-            return;
-        }
-        if (!columnPattern.test(data.endColumn)) {
-            message.error("截止列码必须是6位数字！");
-            return;
-        }
-        if (!columnPattern.test(data.startLevel)) {
-            message.error("起始层码必须是1位数字！");
-            return;
-        }
-        if (!columnPattern.test(data.endLevel)) {
-            message.error("截止层码必须是6位数字！");
-            return;
-        }
+      if (!data.startShelf || !shelfPattern.test(data.startShelf)) {
+        message.error("起始货架必须是6位数字！");
+        return;
+      }
+      if (!shelfPattern.test(data.endShelf)) {
+        message.error("截止货架必须是6位数字！");
+        return;
+      }
+      var columnPattern = /^[0-9]{1}$/;
+      if (!data.startColumn || !columnPattern.test(data.startColumn)) {
+        message.error("起始列码必须是1位数字！");
+        return;
+      }
+      if (!columnPattern.test(data.endColumn)) {
+        message.error("截止列码必须是6位数字！");
+        return;
+      }
+      if (!columnPattern.test(data.startLevel)) {
+        message.error("起始层码必须是1位数字！");
+        return;
+      }
+      if (!columnPattern.test(data.endLevel)) {
+        message.error("截止层码必须是6位数字！");
+        return;
+      }
       var shelfArray = new Array();
       for (let i = 0; i < treeData.length; i++) {
         let wrh = treeData[i];
@@ -85,8 +85,7 @@ const CreateBinModal = ({
           };
         };
       };
-      if (binArray.length == 0)
-      {
+      if (binArray.length == 0) {
         message.warn('当前范围没有可新建的货位，请重新输入！');
         return;
       }
@@ -120,22 +119,22 @@ const CreateBinModal = ({
             rules: [{ required: true, message: '起始截止货架不能为空' },],
           })(
             <InputGroup compact>
-                {getFieldDecorator('startShelf', {
-                  rules: [
-                    {
-                      required: true,
-                      message: '起始货架未填写',
-                    },
-                  ],
-                })(<Input style={{width: '50%'}} />)}
-                {getFieldDecorator('endShelf', {
-                  rules: [
-                    {
-                      required: true,
-                      message: '截止货架未填写',
-                    },
-                  ],
-                })(<Input style={{width: '50%'}} />)}
+              {getFieldDecorator('startShelf', {
+                rules: [
+                  {
+                    required: true,
+                    message: '起始货架未填写',
+                  },
+                ],
+              })(<Input style={{ width: '50%' }} />)}
+              {getFieldDecorator('endShelf', {
+                rules: [
+                  {
+                    required: true,
+                    message: '截止货架未填写',
+                  },
+                ],
+              })(<Input style={{ width: '50%' }} />)}
             </InputGroup>
             )}
         </BaseFormItem>
@@ -148,22 +147,22 @@ const CreateBinModal = ({
               },
             ],
           })(<InputGroup compact>
-              {getFieldDecorator('startColumn', {
-                rules: [
-                  {
-                    required: true,
-                    message: '起始列未填写',
-                  },
-                ],
-              })(<Input style={{width: '50%'}} />)}
-              {getFieldDecorator('endColumn', {
-                rules: [
-                  {
-                    required: true,
-                    message: '截止列未填写',
-                  },
-                ],
-              })(<Input style={{width: '50%'}} />)}
+            {getFieldDecorator('startColumn', {
+              rules: [
+                {
+                  required: true,
+                  message: '起始列未填写',
+                },
+              ],
+            })(<Input style={{ width: '50%' }} />)}
+            {getFieldDecorator('endColumn', {
+              rules: [
+                {
+                  required: true,
+                  message: '截止列未填写',
+                },
+              ],
+            })(<Input style={{ width: '50%' }} />)}
           </InputGroup>)}
         </BaseFormItem>
         <BaseFormItem label="起始~截止层码：">
@@ -175,22 +174,22 @@ const CreateBinModal = ({
               },
             ],
           })(<InputGroup compact>
-              {getFieldDecorator('startLevel', {
-                rules: [
-                  {
-                    required: true,
-                    message: '起始层未填写',
-                  },
-                ],
-              })(<Input style={{width: '50%'}} />)}
-              {getFieldDecorator('endLevel', {
-                rules: [
-                  {
-                    required: true,
-                    message: '起始层未填写',
-                  },
-                ],
-              })(<Input style={{width: '50%'}} />)}
+            {getFieldDecorator('startLevel', {
+              rules: [
+                {
+                  required: true,
+                  message: '起始层未填写',
+                },
+              ],
+            })(<Input style={{ width: '50%' }} />)}
+            {getFieldDecorator('endLevel', {
+              rules: [
+                {
+                  required: true,
+                  message: '起始层未填写',
+                },
+              ],
+            })(<Input style={{ width: '50%' }} />)}
           </InputGroup>)}
         </BaseFormItem>
         <BaseFormItem label="货位用途：">
@@ -203,6 +202,7 @@ const CreateBinModal = ({
               <Select.Option value="ReceiveStorageBin">收货暂存位</Select.Option>
               <Select.Option value="CollectBin">集货位</Select.Option>
               <Select.Option value="SupplierCollectBin">供应商集货位</Select.Option>
+              <Select.Option value="RtnReceiveTempBin">退仓收货暂存位</Select.Option>
             </Select>
             )}
         </BaseFormItem>
