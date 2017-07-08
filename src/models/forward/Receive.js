@@ -93,7 +93,7 @@ export default {
                         currentItem: {},
                         orderItems: [],
                         treeData: [],
-                        orderBillno: "",
+                        orderBillNo: "",
                         article_qpcStr: {},
                         receiveStorageBin: ""
                     }
