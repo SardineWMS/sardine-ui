@@ -29,7 +29,7 @@ const columns = [{
 function convertState(text) {
     if (text == "normal")
         return '正常';
-    if (text = "deleted")
+    if (text == "deleted")
         return '已删除';
 };
 
