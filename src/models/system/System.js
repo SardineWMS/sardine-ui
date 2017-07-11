@@ -89,7 +89,7 @@ export default {
                type: 'querySuccess',
                payload: {
                  wareHouses: data.obj,
-                 defaultActiveKey: data.obj && data.obj.length > 0 ? data.obj[0].code : ''
+                 defaultActiveKey: data.obj && data.obj.length > 0 ? data.obj[0].uuid : ''
                }
              })
            }
