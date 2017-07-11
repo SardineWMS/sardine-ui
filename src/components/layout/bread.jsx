@@ -1,8 +1,10 @@
-import React, { PropTypes } from 'react'
-import { Breadcrumb, Icon, Popover } from 'antd'
-import styles from '../less/main.less'
-import { config } from '../../utils'
-
+import React, {PropTypes } from 'react';
+import ReactDOM from 'react-dom';
+import { Breadcrumb, Icon, Popover, Button, Badge, Modal, Tabs } from 'antd';
+import styles from '../less/main.less';
+import { config } from '../../utils';
+import MessageModal from '../system/MessageModal';
+const TabPane = Tabs.TabPane;
 let pathSet = [{}];
 // const menu = localStorage.getItem("ownedMenus");
 // const topMenus = menu ? eval('(' + menu + ')') : [];
@@ -37,7 +39,7 @@ const getHelpContent = function (content) {
   );
 };
 
-function Bread({ location, menu }) {
+function Bread({ location, menu, onClickMessage }) {
   let pathNames = [];
   getPathSet(menu ? eval('(' + menu + ')') : []);
   pathSet['Home'] = {
@@ -63,17 +65,41 @@ function Bread({ location, menu }) {
     );
   });
 
+  const messageModalTitle =  <span>&nbsp;&nbsp;消息</span>;
+  const messageConent = <Tabs defaultActiveKey="1" tabPosition="left" style={{ height: 220 }}>
+            <TabPane tab="系统消息" key="1">Content of tab 1</TabPane>
+            <TabPane tab="仓库消息" key="2">Content of tab 2</TabPane>
+            <TabPane tab="推荐消息" key="3">Content of tab 3</TabPane>
+          </Tabs>;
+  const clickMessage = () => {
+    onClickMessage();
+    
+    // Modal.info({
+    //   title: messageModalTitle,
+    //   content: messageConent,
+    // });
+  };
+
   return (
     <div className={styles.bread}>
       <Breadcrumb style={{ width: 300 }} key="bread">
         {breads}
       </Breadcrumb>
-      <Popover content={getHelpContent(localStorage.getItem("help_content"))} title={localStorage.getItem("help_title")} key="help">
-        <Icon type="question-circle" style={{ lineHeight: 3 }} />
-      </Popover>
+      
+      <p>
+          <Badge count={250}>
+            <a onClick={clickMessage}><Icon type="message" style={{ lineHeight: 3 }} /> 消息 </a>
+          </Badge>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <a><Icon type="upload" style={{ lineHeight: 3 }} /> 意见反馈 </a>
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          <Popover content={getHelpContent(localStorage.getItem("help_content"))} title={localStorage.getItem("help_title")} key="help">
+            <a><Icon type="question-circle" style={{ lineHeight: 3 }} /> 帮助 </a>
+          </Popover>
+      </p>
     </div>
   );
-};
+}; 
 
 Bread.propTypes = {
   location: PropTypes.object

@@ -86,7 +86,7 @@ const WareHouseView = ({
 
     const extra = <p> <Button type="primary" icon="login">进入仓库</Button> &nbsp;&nbsp;
     <Button icon="edit" onClick={editWrh}>编辑</Button> &nbsp;&nbsp; 
-    <Button icon="message">推送消息</Button></p>;
+    <Button icon="notification">通知</Button></p>;
 
     return (
         <div>

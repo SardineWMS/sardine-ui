@@ -3,7 +3,8 @@ import {
   userInfo,
   logout,
   signIn,
-  updatePasswd
+  updatePasswd,
+  messageModalVisiable
 } from '../services/app'
 import {
   parse
@@ -306,5 +307,15 @@ export default {
         loginButtonLoading: false
       };
     },
+    showMessage(state) {
+      return {
+        messageModalVisiable: true
+      };
+    },
+    hideMessage(state) {
+      return {
+        messageModalVisiable: false
+      };
+    }
   }
 }

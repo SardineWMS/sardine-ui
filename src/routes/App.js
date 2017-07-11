@@ -16,8 +16,9 @@ import Register from '../components/ia/login/Register';
 import '../components/less/antMotion_style.less';
 import UpdatePasswd from '../components/ia/login/UpdatePasswd';
 import guid from '../utils/Guid';
-import { Spin, message } from 'antd'
-import { classnames } from '../utils'
+import { Spin, message } from 'antd';
+import { classnames } from '../utils';
+import MessageModal from '../components/system/MessageModal';
 
 function App({
   children,
@@ -35,7 +36,8 @@ function App({
     user,
     token,
     siderFold,
-    darkTheme
+    darkTheme,
+    messageModalVisiable
   } = app;
 
   const loginProps = {
@@ -104,8 +106,24 @@ function App({
     }
   };
 
+  const BreadProps = {
+    onClickMessage() {
+      dispatch({
+        type: 'app/showMessage'
+      });
+    }
+  };
+
+  const MessageProps = {
+    visible: messageModalVisiable,
+    onClose() {
+      dispatch({
+        type: 'app/hideMessage'
+      });
+    }
+  };
+
   function renderApp() {
-    // let token = localStorage.getItem("token");
     let loginFlag = false;
     let loginTime = localStorage.getItem("loginTime");
     let notUseTime = new Date().getTime() - loginTime;
@@ -113,14 +131,15 @@ function App({
       loginFlag = true;
     
     if (loginFlag) {
-      return (<div className={classnames(styles.layout, { [styles.fold]: siderFold })}>
+      return (<div className={classnames(styles.layout)}>
+        <MessageModal {...MessageProps} />
         <Nav {...navProps} />
         <UpdatePasswd {...updatePasswdProps} />
-        <aside className={classnames(styles.sider, { [styles.light]: !darkTheme })}>
+        <aside className={classnames(styles.sider)}>
           <Sider {...siderProps} />
         </aside>
         <div className={styles.main}>
-          <Bread location={location} menu={localStorage.getItem("ownedMenus")} />
+          <Bread location={location} menu={localStorage.getItem("ownedMenus")} {...BreadProps} />
           <div className={styles.container}>
             <div className={styles.content}>
               <Spin spinning={loading}>

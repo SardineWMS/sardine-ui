@@ -13,8 +13,7 @@ const WrhManage = ({
     function createWrh() {
         onCreate();
     }
-    const operations = <p> <Button onClick={createWrh} type="primary" icon="plus">创建仓库</Button>  &nbsp;&nbsp;
-       <Button icon="upload">意见反馈</Button> 
+    const operations = <p> <Button onClick={createWrh} type="primary" icon="plus">创建仓库</Button> 
     </p>;
 
     let wareHouseTabs = [];
