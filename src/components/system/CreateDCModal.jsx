@@ -51,10 +51,10 @@ const CreateDCModal = ({
   };
 
   const items = [];
-  items.push(<SInput label="仓库名称" fieldName="name" getFieldDecorator={getFieldDecorator} isTop rules="[{
+  items.push(<SInput key="name" label="仓库名称" fieldName="name" getFieldDecorator={getFieldDecorator} isTop rules="[{
               required: true, message: '请输入仓库名称！',
             }, { max: 100, message: '仓库名称最大长度是100！' }]" value={wareHouse ? wareHouse.name : null} />);
-  items.push(<SInput label="仓库简称" fieldName="shortName" getFieldDecorator={getFieldDecorator} rules="[{
+  items.push(<SInput key="shortName" label="仓库简称" fieldName="shortName" getFieldDecorator={getFieldDecorator} rules="[{
               required: true, message: '请输入仓库简称！',
             }, { max: 6, message: '仓库名称最大长度是6！' }]" value={wareHouse ? wareHouse.shortName : null} />);
   items.push(<BaseFormItem {...formItemLayout} label="仓库类型" hasFeedback key="dcType">
@@ -71,22 +71,22 @@ const CreateDCModal = ({
             </Select>
             )}
         </BaseFormItem>);
-  items.push(<SInput label="管理员代码" fieldName="adminCode" getFieldDecorator={getFieldDecorator} rules="[{
+  items.push(<SInput key="adminCode" label="管理员代码" fieldName="adminCode" getFieldDecorator={getFieldDecorator} rules="[{
               required: true, message: '请确认管理员代码！',
             }, { max: 30, message: '管理员代码最大长度是30！' }]" value={wareHouse ? wareHouse.adminCode : null} />);
-  items.push(<SInput label="管理员名称" fieldName="adminName" getFieldDecorator={getFieldDecorator} rules="[{ required: true, message: '请输入管理员名称！' },
+  items.push(<SInput key="adminName" label="管理员名称" fieldName="adminName" getFieldDecorator={getFieldDecorator} rules="[{ required: true, message: '请输入管理员名称！' },
             { max: 100, message: '管理员名称最大长度是100！' }]" value={wareHouse ? wareHouse.adminName : null} />);
-  items.push(<SInput label="管理员密码" fieldName="password" getFieldDecorator={getFieldDecorator} rules="[{ required: true, message: '请输入管理员密码！' },
+  items.push(<SInput key="password" label="管理员密码" fieldName="password" getFieldDecorator={getFieldDecorator} rules="[{ required: true, message: '请输入管理员密码！' },
             { max: 30, message: '管理员密码最大长度是30！' }]" value={wareHouse ? wareHouse.password : null} />);
-  items.push(<SInput label="管理员联系方式" fieldName="adminPhone" getFieldDecorator={getFieldDecorator} rules="[{ required: true, message: '请输入管理员联系方式！' },
+  items.push(<SInput key="adminPhone" label="管理员联系方式" fieldName="adminPhone" getFieldDecorator={getFieldDecorator} rules="[{ required: true, message: '请输入管理员联系方式！' },
             { max: 100, message: '管理员联系方式最大长度是100！' }]" value={wareHouse ? wareHouse.adminPhone : null} />);
-  items.push(<SInput label="地址" fieldName="address" getFieldDecorator={getFieldDecorator} rules="[{ required: true, message: '请输入地址！' },
+  items.push(<SInput key="address" label="地址" fieldName="address" getFieldDecorator={getFieldDecorator} rules="[{ required: true, message: '请输入地址！' },
             { max: 100, message: '地址最大长度是100！' }]" value={wareHouse ? wareHouse.address : null} />);
-  items.push(<SInput label="面积" fieldName="acreage" getFieldDecorator={getFieldDecorator} rules="[{
+  items.push(<SInput key="acreage" label="面积" fieldName="acreage" getFieldDecorator={getFieldDecorator} rules="[{
               required: true, message: '请输入仓库面积！',
             }, { pattern: /^[+]?[\d]+(([\.]{1}[\d]+)|([\d]*))$/,
                  message: '面积必须为数字且大于0！',}]" value={wareHouse ? wareHouse.acreage : null} addonAfter="㎡" />);
-  items.push(<SInput label="主页" fieldName="homePage" getFieldDecorator={getFieldDecorator} rules="[{ max: 100, message: '主页最大长度是100！' }]" 
+  items.push(<SInput key="homePage" label="主页" fieldName="homePage" getFieldDecorator={getFieldDecorator} rules="[{ max: 100, message: '主页最大长度是100！' }]" 
              value={wareHouse ? wareHouse.homePage : null} isBottom />);
 
   return (

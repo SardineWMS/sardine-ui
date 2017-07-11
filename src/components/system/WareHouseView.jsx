@@ -101,6 +101,7 @@ const WareHouseView = ({
                 dataSource={wareHouse.users}
                 bordered
                 pagination={false}
+                rowKey={record => record.uuid}
               />
             </Card>
         </div>

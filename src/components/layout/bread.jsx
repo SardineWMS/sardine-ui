@@ -65,10 +65,10 @@ function Bread({ location, menu }) {
 
   return (
     <div className={styles.bread}>
-      <Breadcrumb style={{ width: 300 }}>
+      <Breadcrumb style={{ width: 300 }} key="bread">
         {breads}
       </Breadcrumb>
-      <Popover content={getHelpContent(localStorage.getItem("help_content"))} title={localStorage.getItem("help_title")}>
+      <Popover content={getHelpContent(localStorage.getItem("help_content"))} title={localStorage.getItem("help_title")} key="help">
         <Icon type="question-circle" style={{ lineHeight: 3 }} />
       </Popover>
     </div>
