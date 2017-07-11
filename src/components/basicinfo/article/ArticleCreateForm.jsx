@@ -115,7 +115,7 @@ const ArticleCreateForm = ({
       rules: [{ required: true, message: '商品类别不能为空！' }],
       initialValue: (category && category.uuid) ? "[" + category.code + "]" + category.name : null
     })(
-      <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => selectCategory()} />}
+      <Input placeholder="请选择" suffix={<Icon type="ellipsis" onClick={() => selectCategory()} />}
         onBlur={handleEnterPress} onPressEnter={handleEnterPress} />
       )}
   </BaseFormItem>);

@@ -3,9 +3,11 @@ import React, {
 } from 'react'
 import {
   connect
-} from 'dva'
-import DCCreate from '../../components/system/DCCreate';
+} from 'dva';
+import CreateDCModal from '../../components/system/CreateDCModal';
+import WrhManage from '../../components/system/WrhManage';
 import styles from '../../components/less/main.less';
+import guid from '../../utils/Guid';
 import {
   Spin,
   message
@@ -17,43 +19,77 @@ import {
 function System({
   location,
   dispatch,
-  system,
+  dc,
   loading
 }) {
   const {
-    creatingButtonLoading
-  } = system;
+    creatingButtonLoading, wareHouses, showCreate, defaultActiveKey, visible, wareHouse, title
+  } = dc;
 
   const createDcProps = {
-    loading,
-    creatingButtonLoading,
-    onCreate(data) {
+    loading: loading,
+    visible: visible,
+    wareHouse: wareHouse,
+    key: wareHouse ? wareHouse.uuid : '',
+    title: title,
+    onOk(data) {
       dispatch({
-        type: 'system/create',
+        type: 'dc/create',
         payload: data
+      });
+    },
+    onCancel() {
+      dispatch({
+        type: 'dc/hideCreate'
       });
     }
   };
 
+  const wareHousesManageProps = {
+     wareHouses: wareHouses,
+     defaultActiveKey: defaultActiveKey,
+     onCreate() {
+      dispatch({
+        type: 'dc/showCreate',
+        payload: {
+          wareHouse: {},
+          title: '创建仓库'
+        }
+      });
+     },
+
+     onEdit(wareHouse) {
+      dispatch({
+        type: 'dc/showCreate',
+        payload: {
+          wareHouse: wareHouse,
+          title: '编辑仓库'
+        }
+      });
+     }
+  };
+
+
+  localStorage.setItem("help_title", "帮助");
+  localStorage.setItem("help_content", "显示当前企业下所有仓库");
+
   return (
-    <div>
-      <div className={styles.reg}>
-        <Spin spinning={loading}>
-          <DCCreate {...createDcProps} />
-        </Spin>
-      </div>
+    <div className="content-inner">
+      <WrhManage {...wareHousesManageProps} />
+      <CreateDCModal {...createDcProps} />
     </div>
   );
 };
 
 System.propTypes = {
-  creatingButtonLoading: PropTypes.bool
+  creatingButtonLoading: PropTypes.bool,
+  wareHouses: PropTypes.array
 };
 
-function mapStateToProps({ loading, system }) {
+function mapStateToProps({ loading, dc }) {
   return {
     loading: loading.global,
-    system
+    dc
   };
 };
 

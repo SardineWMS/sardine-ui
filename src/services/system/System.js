@@ -13,3 +13,18 @@ export async function create(params) {
     return request(addTokenToUrl(url),
         createBase(params));
 }
+
+export async function update(params) {
+  const url = '/swms/ia/company/update';
+  return request(addTokenToUrl(url), createBase(params))
+}
+
+export async function queryCompany(params) {
+    const url = '/swms/ia/company/query';
+    return request(query(url, params));
+}
+
+export async function get(params) {
+    const url = '/swms/ia/company/get';
+    return request(query(url, params));
+}
