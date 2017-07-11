@@ -82,10 +82,10 @@ const CreateDCModal = ({
             { max: 100, message: '管理员联系方式最大长度是100！' }]" value={wareHouse ? wareHouse.adminPhone : null} />);
   items.push(<SInput key="address" label="地址" fieldName="address" getFieldDecorator={getFieldDecorator} rules="[{ required: true, message: '请输入地址！' },
             { max: 100, message: '地址最大长度是100！' }]" value={wareHouse ? wareHouse.address : null} />);
-  items.push(<SInput key="acreage" label="面积" fieldName="acreage" getFieldDecorator={getFieldDecorator} rules="[{
+  items.push(<SInput key="acreage" label="面积(㎡)" fieldName="acreage" getFieldDecorator={getFieldDecorator} rules="[{
               required: true, message: '请输入仓库面积！',
             }, { pattern: /^[+]?[\d]+(([\.]{1}[\d]+)|([\d]*))$/,
-                 message: '面积必须为数字且大于0！',}]" value={wareHouse ? wareHouse.acreage : null} addonAfter="㎡" />);
+                 message: '面积必须为数字且大于0！',}]" value={wareHouse ? wareHouse.acreage : null}  />);
   items.push(<SInput key="homePage" label="主页" fieldName="homePage" getFieldDecorator={getFieldDecorator} rules="[{ max: 100, message: '主页最大长度是100！' }]" 
              value={wareHouse ? wareHouse.homePage : null} isBottom />);
 
