@@ -58,7 +58,7 @@ export default function ({
         <Route path="/ia/role" component={Role} />
         <Route path="/forward/order" component={OrderBill} />
         <Route path="/forward/receiveBill" component={Receive} />
-        <Route path="/system/dc" component={System} />
+        <Route path="/dc" component={System} />
         <Route path="/inner/task" component={Task} />
         <Route path="/inner/decIncBill" component={DecInc} />
         <Route path="/forward/alcNtcBill" component={AlcNtcBill} />
