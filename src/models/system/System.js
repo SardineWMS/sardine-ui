@@ -110,8 +110,8 @@ export default {
         ...action.payload,
         loading: false,
         showCreate: false,
-        visible: false
-      }
+        visible: false,
+        queryResult: true     }
     },
 
     showCreate(state, action) {

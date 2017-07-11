@@ -23,7 +23,7 @@ function System({
   loading
 }) {
   const {
-    creatingButtonLoading, wareHouses, showCreate, defaultActiveKey, visible, wareHouse, title
+    creatingButtonLoading, wareHouses, showCreate, defaultActiveKey, visible, wareHouse, title, queryResult
   } = dc;
 
   const createDcProps = {
@@ -73,12 +73,18 @@ function System({
   localStorage.setItem("help_title", "帮助");
   localStorage.setItem("help_content", "显示当前企业下所有仓库");
 
-  return (
-    <div className="content-inner">
-      <WrhManage {...wareHousesManageProps} />
-      <CreateDCModal {...createDcProps} />
-    </div>
-  );
+  if (queryResult)
+    return (
+      <div className="content-inner">
+        <WrhManage {...wareHousesManageProps} />
+        <CreateDCModal {...createDcProps} />
+      </div>
+    );
+  else 
+    return (
+      <div className="content-inner">
+      </div>
+    );
 };
 
 System.propTypes = {

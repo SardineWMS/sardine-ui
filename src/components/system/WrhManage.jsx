@@ -28,7 +28,7 @@ const WrhManage = ({
         }
     }
     return (
-        <Tabs tabBarExtraContent={operations} activeKey={defaultActiveKey}>
+        <Tabs tabBarExtraContent={operations} defaultActiveKey={defaultActiveKey}>
           {wareHouseTabs.length > 0 ? wareHouseTabs : <TabPane tab="空" key="1"><p>目前还没有仓库，快创建一个吧</p></TabPane> }
         </Tabs>
     );
