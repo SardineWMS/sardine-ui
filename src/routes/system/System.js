@@ -30,7 +30,7 @@ function System({
     loading: loading,
     visible: visible,
     wareHouse: wareHouse,
-    key: wareHouse ? wareHouse.uuid : '',
+    key: wareHouse && visible ? wareHouse.uuid : guid(),
     title: title,
     onOk(data) {
       dispatch({
