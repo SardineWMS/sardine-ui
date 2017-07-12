@@ -12,9 +12,10 @@ import {
   Col,
   Form,
   Input,
-  Select
+  Select,
+  Card
 } from 'antd';
-import styles from '../less/Home.less'
+import styles from '../less/Home.less';
 
 const FormItem = Form.Item
 
@@ -22,6 +23,8 @@ const Home = ({
   loading
 }) => {
   return (
+    <div style={{'padding-top': '5px', 'padding-left': '5px', width: '99%'}}>
+    <Card title={<b>流程概览</b>} bordered={true} noHovering={true} >
     <div className={styles.topDiv}>
   <div className={styles.parent}>
     <div className={styles.cfx} onclick="order">入库订单</div>
@@ -175,6 +178,8 @@ const Home = ({
 </div>
 <div className={styles.cfx}>供应商退货单</div>
 </div>
+</div>
+</Card>
 </div>
   );
 };

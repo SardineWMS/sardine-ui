@@ -59,6 +59,24 @@ class Header extends React.Component {
       <span>{localStorage.getItem("loginName")}</span>
     </div>);
 
+    const homeTitle = (<div>
+      <span className="img">
+        <img
+          src="http://172.17.1.53:8888/logo/home.jpg"
+          width="30"
+          height="30"
+        />
+      </span>
+      <span style={{'color': 'white'}}>主页</span>
+    </div>);
+
+    navChildren.push(
+      (<Menu.Item className="user" key="home" style={{ fontSize: 14 }}>
+        <Link to="/home" >
+            {homeTitle}
+          </Link>
+      </Menu.Item>));
+
     navChildren.push(
       (<SubMenu className="user" title={userTitle} key="userInfo" style={{ fontSize: 18 }}>
         <Item key="a" style={{ fontSize: 14 }}>用户中心</Item>
