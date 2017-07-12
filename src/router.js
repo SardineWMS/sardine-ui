@@ -8,6 +8,7 @@ import {
 import NotFound from './routes/NotFound';
 import Login from './routes/Login';
 import Register from './routes/Register';
+import Home from './routes/home/Home';
 import App from './routes/app';
 import Category from './routes/basicinfo/Category';
 import User from './routes/ia/User';
@@ -44,7 +45,7 @@ export default function ({
       <Route path="/" component={App}>
         <IndexRedirect to="/home" />
         <Route path="/ia/user" component={User} />
-        <Route path="/home" component={NotFound} />
+        <Route path="/home" component={Home} />
         <Route path="/login" component={Login} />
         <Route path="/register" component={Register} />
         <Route path="/basicInfo/category" component={Category} />
