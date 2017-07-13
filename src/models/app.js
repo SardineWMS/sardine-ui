@@ -200,6 +200,9 @@ export default {
 
   reducers: {
     loginSuccess(state, action) {
+      location.pathName = '/';
+      if (location.href != location.origin)
+        location.href = location.origin;
       return {
         ...state,
         ...action.payload,
@@ -207,6 +210,8 @@ export default {
       };
     },
     logoutSuccess(state) {
+      location.pathName = '/';
+      location.href = location.origin;
       return {
         ...state,
         login: false

@@ -43,7 +43,7 @@ class STextArea extends Input {
                      initialValue: value
          })(
       <Input.TextArea placeholder={this.props.placeholder} suffix={this.props.suffix} addonAfter={this.props.addonAfter}
-        onBlur={this.props.onBlur} onPressEnter={this.props.onPressEnter} />
+        onBlur={this.props.onBlur} onPressEnter={this.props.onPressEnter} rows={this.props.rows} />
       )}
       </FormItem>
     );

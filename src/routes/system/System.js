@@ -66,6 +66,16 @@ function System({
           title: '编辑仓库'
         }
       });
+     },
+
+     onLogin(loginid, password) {
+      dispatch({
+        type: 'app/login',
+        payload: {
+          loginid: loginid,
+          password: password
+        }
+      });
      }
   };
 

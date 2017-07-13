@@ -5,7 +5,8 @@ import BaseFormItem from '../Widget/BaseFormItem';
 
 const WareHouseView = ({ 
    wareHouse,
-   onEdit
+   onEdit,
+   onLogin
 }) => {
 
     function editWrh() {
@@ -25,6 +26,10 @@ const WareHouseView = ({
       if (text == true)
         return '是';
     };
+
+    function gotoWrhHouse() {
+        onLogin(wareHouse.adminCode, wareHouse.password);
+    }
 
     const columns = [
       {
@@ -84,7 +89,7 @@ const WareHouseView = ({
         <span>{wareHouse.homePage ? wareHouse.homePage : '空'}</span>
     </BaseFormItem>);
 
-    const extra = <p> <Button type="primary" icon="login">进入仓库</Button> &nbsp;&nbsp;
+    const extra = <p> <Button type="primary" icon="login" onClick={gotoWrhHouse}>进入仓库</Button> &nbsp;&nbsp;
     <Button icon="edit" onClick={editWrh}>编辑</Button> &nbsp;&nbsp; 
     <Button icon="notification">通知</Button></p>;
 

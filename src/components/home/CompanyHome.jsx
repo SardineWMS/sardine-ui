@@ -68,7 +68,7 @@ class CompanyHome extends React.Component {
                   </Select> 
                  )}
                </Form.Item>);
-    items.push(<STextArea key="content" label="通知内容" fieldName="content" getFieldDecorator={getFieldDecorator} rules="[{
+    items.push(<STextArea key="content" label="通知内容" rows={8} fieldName="content" getFieldDecorator={getFieldDecorator} rules="[{
               required: true, message: '请输入通知内容！',
             }, { max: 1000, message: '通知内容最大长度是1000！' }]" />);  
     items.push(<Form.Item label="图片" {...baseFormItemLayout} className={baseClassName} key="upload">

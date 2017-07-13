@@ -8,7 +8,8 @@ const WrhManage = ({
   wareHouses,
   defaultActiveKey,
   onCreate,
-  onEdit
+  onEdit,
+  onLogin
 }) => {
     function createWrh() {
         onCreate();
@@ -22,7 +23,7 @@ const WrhManage = ({
 
             let wareHouse = wareHouses[i];
             wareHouseTabs.push(<TabPane tab={wareHouse.shortName} key={wareHouse.uuid}>
-              <WareHouseView wareHouse={wareHouse} onEdit={onEdit}/>
+              <WareHouseView wareHouse={wareHouse} onEdit={onEdit} onLogin={onLogin}/>
             </TabPane>);
         }
     }
