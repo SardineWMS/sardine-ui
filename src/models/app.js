@@ -61,6 +61,7 @@ export default {
         localStorage.setItem("loginCode", data.obj.code);
         localStorage.setItem("loginId", data.obj.uuid);
         localStorage.setItem("loginName", data.obj.name);
+        localStorage.setItem("companyName", data.obj.companyName);
         localStorage.setItem("token", data.token);
         localStorage.setItem("admin", data.obj.administrator);
         localStorage.setItem("companyUuid", data.obj.companyUuid);

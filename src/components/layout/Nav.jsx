@@ -67,7 +67,7 @@ class Header extends React.Component {
           height="30"
         />
       </span>
-      <span style={{'color': 'white'}}>主页</span>
+      <span style={{'color': 'white'}}>{localStorage.getItem("companyName")}</span>
     </div>);
 
     navChildren.push(
