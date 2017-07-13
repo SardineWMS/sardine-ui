@@ -27,7 +27,7 @@ const Home = ({
     <Card title={<b>流程概览</b>} bordered={true} noHovering={true} >
     <div className={styles.topDiv}>
   <div className={styles.parent}>
-    <div className={styles.cfx} onclick="order">入库订单</div>
+    <Link to='/forward/order'><div className={styles.cfx} onclick="order">入库订单</div></Link>
     <div className={styles.line}>
        订单收货
        <hr />
@@ -35,7 +35,7 @@ const Home = ({
     <div className={styles.rightDiv}>
        <div className={styles.rightArrow}></div>
     </div>
-    <div className={styles.oval}>收货单</div>
+    <Link to="/forward/receiveBill"><div className={styles.oval}>收货单</div></Link>
     <div className={styles.line}>
       收货单审核、容器满容
       <hr />
@@ -43,7 +43,7 @@ const Home = ({
      <div className={styles.rightDiv}>
        <div className={styles.rightArrow}></div>
      </div>
-     <div className={styles.taskOval}>上架指令</div>
+     <Link to="/inner/task"><div className={styles.taskOval}>上架指令</div></Link>
      <div className={styles.line}>
         执行上架指令
         <hr />
@@ -55,7 +55,7 @@ const Home = ({
      <div className={styles.circle}>结束</div>
   </div>
   <div className={styles.twoLine}>
-     <div className={styles.cfx}>配货通知单</div>
+     <Link to="/forward/alcNtcBill"><div className={styles.cfx}>配货通知单</div></Link>
      <div className={styles.line}>
         加入波次
         <hr />
@@ -63,7 +63,7 @@ const Home = ({
 <div className={styles.rightDiv}>
          <div className={styles.rightArrow}></div>
      </div>
-<div  className={styles.oval}>波次单</div>
+<Link to="/forward/waveBill"><div  className={styles.oval}>波次单</div></Link>
 <div className={styles.line}>
 波次启动
 <hr />
@@ -71,7 +71,7 @@ const Home = ({
 <div className={styles.rightDiv}>
          <div className={styles.rightArrow}></div>
      </div>
-<div className={styles.taskOval}>拣货、补货指令</div>
+<Link to="/inner/task"><div className={styles.taskOval}>拣货、补货指令</div></Link>
 <div className={styles.line}>
 执行指令
 <hr />
@@ -80,7 +80,7 @@ const Home = ({
 <div className={styles.rightDiv}>
          <div className={styles.rightArrow}></div>
      </div>
-<div className={styles.taskOval}>装车指令</div>
+<Link to="/inner/task"><div className={styles.taskOval}>装车指令</div></Link>
 <div className={styles.line}>
 执行装车指令
 <hr />
