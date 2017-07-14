@@ -13,7 +13,8 @@ import {
   Form,
   Input,
   Select,
-  Card
+  Card,
+  Popover
 } from 'antd';
 import styles from '../less/Home.less';
 
@@ -22,12 +23,13 @@ const FormItem = Form.Item
 const Home = ({
   loading
 }) => {
+  const orderContent = <div>已审核订单：300张</div>;
   return (
     <div style={{'padding-top': '5px', 'padding-left': '5px', width: '99%'}}>
     <Card title={<b>流程概览</b>} bordered={true} noHovering={true} >
     <div className={styles.topDiv}>
   <div className={styles.parent}>
-    <Link to='/forward/order'><div className={styles.cfx} onclick="order">入库订单</div></Link>
+    <Link to='/forward/order'><Popover content={orderContent}><div className={styles.cfx} onclick="order">入库订单</div></Popover></Link>
     <div className={styles.line}>
        订单收货
        <hr />
