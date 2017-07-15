@@ -61,7 +61,7 @@ const OrderBillCreateForm = ({
 
     baseChildren.push(
         <BaseFormItem label={"供应商："}>
-            {getFieldDecorator("supplier.uuid", { rules: [{ required: true }], initialValue: item.supplier ? item.supplier.code : null })(
+            {getFieldDecorator("supplier.uuid", { rules: [{ required: true }], initialValue: item.supplier ? "["+item.supplier.code+"]"+item.supplier.name : null })(
                 <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => querySuppliers()} />} />
             )}
         </BaseFormItem>
