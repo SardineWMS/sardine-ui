@@ -76,7 +76,7 @@ const DemoCreateForm = ({
               <FormItem {...formItemLayout} label="联系方式：" hasFeedback>
                 {getFieldDecorator('phone', {
                   initialValue: item.phone,
-                  rules: [{ required: false }, {
+                  rules: [{ required: true,message:'联系方式未填写' }, {
                     max: 30,
                     message: '联系方式最大长度是30'
                   }],
