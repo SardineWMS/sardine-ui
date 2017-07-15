@@ -87,10 +87,15 @@ function Customer({ location, dispatch, customer }) {
                 message.warning("请选择要删除的客户！", 2, '');//延时2秒
                 return;
             };
+            const waitDeleteCustomers=[];
+            for(var i = 0; i < customers.length; i++){  
+                if(customers[i].state==="normal")
+                    waitDeleteCustomers.push(customers[i]);
+            }  
             dispatch({
                 type: 'customer/batchDeleteCustomer',
                 payload: {
-                    deleteCustomerEntitys: customers
+                    deleteCustomerEntitys: waitDeleteCustomers
                 }
             });
         },
@@ -99,10 +104,15 @@ function Customer({ location, dispatch, customer }) {
                 message.warning("请选择要恢复的客户！", 2, '');
                 return;
             };
+            const waitRecoverCustomers=[];
+            for(var i = 0; i < customers.length; i++){  
+                if(customers[i].state==="deleted")
+                    waitRecoverCustomers.push(customers[i]);
+            }  
             dispatch({
                 type: 'customer/batchRecoverCustomer',
                 payload: {
-                    recoverCustomerEntitys: customers
+                    recoverCustomerEntitys: waitRecoverCustomers
                 }
             });
         },
