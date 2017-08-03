@@ -42,6 +42,7 @@ app.model(require('./models/tms/SerialArch'));
 app.model(require('./models/forward/WaveBill'));
 app.model(require('./models/basicinfo/Config'));
 app.model(require('./models/backward/ReturnNtcBill'));
+app.model(require('./models/backward/ReturnBill'));
 
 app.router(require('./router'));
 
