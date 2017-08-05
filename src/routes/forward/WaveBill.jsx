@@ -120,14 +120,16 @@ function WaveBill({ location, dispatch, waveBill }) {
                 dispatch({
                     type: 'waveBill/selectTypeSuccess',
                     payload: {
-                        waveType: value
+                        waveType: value,
+                        selectedAlcNtcList: [],
                     }
                 });
             else if (value === 'normal')
                 dispatch({
                     type: 'waveBill/selectType',
                     payload: {
-                        waveType: value
+                        waveType: value,
+                        selectedAlcNtcList: [],
                     }
                 });
         },

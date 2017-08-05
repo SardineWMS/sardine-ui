@@ -85,33 +85,35 @@ export default {
             }
             const { data } = yield call(queryAlcNtcBill, { state: 'initial' });
             if (data.status == '200') {
-                let allAlcNtcBill = [];//所有初始+当前波次单明细中包含的
-                allAlcNtcBill = data.obj.records;
+                let initialAlcNtcBill = [];//所有初始+当前波次单明细中包含的
+                initialAlcNtcBill = data.obj.records;
+                let allAlcNtcBill = [];
                 for (var exist of payload.existAlcNtcList) {
-                    let obj = {};
-                    obj.billNumber = exist.alcNtcBillNumber;
-                    obj.state = exist.alcNtcBillState;
-                    obj.customer = exist.customer;
-                    obj.deliverySystem = exist.deliverySystem;
-                    allAlcNtcBill.push(obj);
+                    // let obj = {};
+                    // obj.billNumber = exist.alcNtcBillNumber;
+                    // obj.state = exist.alcNtcBillState;
+                    // obj.customer = exist.customer;
+                    // obj.deliverySystem = exist.deliverySystem;
+                    // 避免出现别名现象，可以使用es6 的析构赋值。
+                    initialAlcNtcBill.push({ ...exist });
                 }
 
-                for (var alcNtc of allAlcNtcBill) {
+                for (var alcNtc of initialAlcNtcBill) {
                     if (alcNtc.deliverySystem !== undefined) {
                         if (payload.waveType === 'normal') {
-                            if (alcNtc.deliverySystem != 'tradition') {
-                                removeByValue(allAlcNtcBill, alcNtc);
+                            if (alcNtc.deliverySystem == 'tradition') {
+                                allAlcNtcBill.push(alcNtc);
                             }
                         } else if (payload.waveType === 'eCommerce') {
-                            if (alcNtc.deliverySystem != "eCommerce")
-                                removeByValue(allAlcNtcBill, alcNtc);
+                            if (alcNtc.deliverySystem == "eCommerce")
+                                allAlcNtcBill.push(alcNtc);
                         }
                     }
                 }
                 for (var select of payload.selectedAlcNtcList) {
-                    for (var bill of allAlcNtcBill) {
-                        if (select.alcNtcBillNumber == bill.billNumber) {
-                            removeByValue(allAlcNtcBill, bill);
+                    for (var bill of initialAlcNtcBill) {
+                        if (select.alcNtcBillNumber != bill.billNumber) {
+                            allAlcNtcBill.push(alcNtc);
                             break;
                         }
                     }
