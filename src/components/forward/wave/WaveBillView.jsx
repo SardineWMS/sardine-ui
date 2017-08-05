@@ -60,6 +60,9 @@ const WaveBillView = ({
 
     let toolbar = [];
     toolbar.push(
+        <Button key={Guid()} onClick={() => onBack(item)} >返回</Button >
+    );
+    toolbar.push(
         <Button key={Guid()} onClick={() => onEdit(item)} disabled={(item.state != 'initial') || (!PermissionUtil("waveBill:edit"))}>编辑</Button>
     );
     toolbar.push(

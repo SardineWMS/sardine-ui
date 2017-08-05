@@ -174,6 +174,11 @@ function WaveBill({ location, dispatch, waveBill }) {
                 type: 'waveBill/delete',
                 payload: data
             })
+        },
+        onBack() {
+            dispatch({
+                type: 'waveBill/query',
+            })
         }
     };
 
