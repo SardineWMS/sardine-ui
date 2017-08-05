@@ -141,10 +141,12 @@ function WaveBill({ location, dispatch, waveBill }) {
         },
         handleSave(data) {
             data.serialArch = {};
-            if (data.serialArchUuid.indexOf("[") > 0)
-                data.serialArch = currentItem.serialArch;
-            else
-                data.serialArch.uuid = data.serialArchUuid;
+            if (data.serialArchUuid != null) {
+                if (data.serialArchUuid.indexOf("[") > 0)
+                    data.serialArch = currentItem.serialArch;
+                else
+                    data.serialArch.uuid = data.serialArchUuid;
+            }
             data.items = selectedAlcNtcList;
             const result = { ...currentItem, ...data };
             if (result.uuid) {
