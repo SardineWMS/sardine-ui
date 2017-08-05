@@ -48,9 +48,10 @@ const WaveBillView = ({
         <span>{convertType(item.waveType)}</span>
     </BaseFormItem>);
 
-    basicForm.push(<BaseFormItem label="线路体系：" key={Guid()}>
-        <span>{item.serialArch.name + "[" + item.serialArch.code + "]"}</span>
-    </BaseFormItem>);
+    if (item.waveType != 'eCommerce')
+        basicForm.push(<BaseFormItem label="线路体系：" key={Guid()}>
+            <span>{item.serialArch.name + "[" + item.serialArch.code + "]"}</span>
+        </BaseFormItem>);
 
     let operateForm = [];
     operateForm.push(<BaseFormItem label="状态：" key={Guid()}>

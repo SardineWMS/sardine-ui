@@ -81,7 +81,7 @@ class WaveBillSearchGrid extends React.Component {
             title: '线路体系',
             dataIndex: 'serialArch',
             key: 'serialArch',
-            render: (text, record) => "[" + text.code + "]" + text.name
+            render: (text, record) => text == null ? null : "[" + text.code + "]" + text.name
         }
         ];
         const { selectedRowKeys } = this.state;
