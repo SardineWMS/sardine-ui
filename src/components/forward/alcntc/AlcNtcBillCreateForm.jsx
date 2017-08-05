@@ -150,7 +150,7 @@ const AlcNtcBillCreateForm = ({
     return (
         <div>
             <ToolbarPanel children={toolbar} />
-            <BaseCard title="配货通知单信息" single={false}>
+            <BaseCard title="出库通知单信息" single={false}>
                 <BaseForm items={children} />
                 <BaseForm items={totalCaseQtyStrForm} />
             </BaseCard>

@@ -12,7 +12,7 @@ const WaveBillSelectAlcNtcModal = ({ dataSource, visible, onEdit, onCancel, onCa
     };
     const columns = [
         {
-            title: '配货通知单单号',
+            title: '出库通知单单号',
             dataIndex: 'billNumber',
         },
         {
@@ -32,7 +32,7 @@ const WaveBillSelectAlcNtcModal = ({ dataSource, visible, onEdit, onCancel, onCa
     };
 
     const modalOpts = {
-        title: '配货通知单',
+        title: '出库通知单',
         visible,
         wrapClassName: 'vertical-center-modal',
         width: 800,

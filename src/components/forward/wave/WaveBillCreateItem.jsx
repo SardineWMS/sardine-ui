@@ -34,7 +34,7 @@ function WaveBillCreateItem({
             dataIndex: 'line',
             key: 'line'
         }, {
-            title: '配货通知单单号',
+            title: '出库通知单单号',
             dataIndex: 'alcNtcBillNumber',
             key: 'alcNtcBillNumber',
         }, {

@@ -98,7 +98,7 @@ const AlcNtcBillView = ({
     return (
         <div>
             <ToolbarPanel children={toolbar} />
-            <BaseCard single={false} title="配货通知单">
+            <BaseCard single={false} title="出库通知单">
                 <BaseForm items={basicForm} />
                 <BaseForm items={operateForm} />
             </BaseCard>
