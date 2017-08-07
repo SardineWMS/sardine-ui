@@ -61,19 +61,19 @@ function Config({ location, dispatch, config }) {
     onSelect(selectKeys) {
       if (selectKeys == '0002080101') {
           dispatch({
-             type: 'config/showArticleConfigByPage'
+             type: 'config/queryArticleConfigByPage'
           })      
       } else if(selectKeys == '0002080102') {
           dispatch({
-             type: 'config/showCategoryStorageConfigByPage'
+             type: 'config/queryCategoryStorageAreaConfigByPage'
           })    
       } else if(selectKeys == '0002080103') {
           dispatch({
-             type: 'config/showPickAreaStorageAreaConfigByPage'
+             type: 'config/queryPickAreaStorageAreaConfigByPage'
           })    
       }else if(selectKeys == '0002080104') {
           dispatch({
-             type: 'config/showTaskAreaConfigByPage'
+             type: 'config/queryTaskAreaConfigByPage'
           })    
       }else if(selectKeys == '0002080201') {
           dispatch({

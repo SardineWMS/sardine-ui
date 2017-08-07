@@ -19,6 +19,11 @@ export async function get(params) {
   return request(query(url,params));
 }
 
+export async function getbycode(params) {
+  const url="/swms/basicinfo/supplier/getbycode";
+  return request(query(url,params));
+}
+
 export async function edit(params) {
   const url="/swms/basicinfo/supplier/savemodify";
   return request(addTokenToUrl(url),updateBase(params));

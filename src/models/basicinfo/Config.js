@@ -71,6 +71,19 @@ export default {
         reasonType:'DECINC'
 	},
 
+    subscriptions: {
+        setup({ dispatch, history }) {
+          history.listen(location => {
+            if (location.pathname === '/basicInfo/config') {
+              dispatch({
+                type: 'queryArticleConfigByPage',
+                payload: location.queryArticleConfigByPage
+              });
+            };
+          });
+        },
+    },
+
     effects: {
         *queryArticleConfigByPage({ payload }, { call, put }) {
             const { data } = yield call(queryArticleConfigByPage, parse(payload));
