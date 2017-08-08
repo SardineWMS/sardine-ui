@@ -14,7 +14,13 @@ const DateModal = ({
 		visible,
 		onOk: handleOk,
 		onCancel,
+		width:400,
 		wrapClassName: 'vertical-center-modal'
+	};
+
+	const datePickerLayout = {
+	  labelCol: { span: 8 },
+	  wrapperCol: { span: 12 }
 	};
 
 	function dateOnSelect(value) {
@@ -30,8 +36,10 @@ const DateModal = ({
 
 	return (
 		<Modal {...modalOpts}>
-			<div style={{ width: 200 }}>
-				<DatePicker onChange={dateOnSelect} format='YYYY-MM-DD' />
+			<div>
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+				<DatePicker onChange={dateOnSelect} format='YYYY-MM-DD' style={{ width: 200 }} {...datePickerLayout}/>
 			</div>
 		</Modal>
 	);
