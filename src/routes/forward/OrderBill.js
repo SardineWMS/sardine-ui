@@ -587,7 +587,8 @@ function OrderBill({ location, dispatch, orderBill }){
                 return  (
                     <div>
                         <OrderBillCreateForm {...orderBillCreateProps}/>
-                  
+                        <OrderBillItems {...orderBillItemsProps}/>
+                        <SupplierSelectModal {...supplierModalProps}/>
                     </div>
                 );
             }
