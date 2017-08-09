@@ -56,7 +56,7 @@ const OrderBillView=({
 	        </BaseFormItem>
 	);
 	baseChildren.push(
-		    <BaseFormItem  label="到校日期 :">
+		    <BaseFormItem  label="到效日期 :">
 	          <span> {item.expireDate.format('YYYY-MM-DD')} </span>
 	        </BaseFormItem>
 	);

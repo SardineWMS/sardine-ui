@@ -1,8 +1,9 @@
 import { parse } from 'qs';
 import {
     querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle,
-    getOrderBillByBillNo, refreshCaseQtyAndAmount, queryWrhs, querySuppliers
+    getOrderBillByBillNo, refreshCaseQtyAndAmount, queryWrhs
 } from '../../services/forward/OrderBill';
+import {getbycode,querybypage as querySuppliers} from '../../services/basicinfo/Supplier';
 import { message } from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -353,7 +354,25 @@ export default {
                     }
                 });
             };
-        }
+        },
+        *getSupplier({ payload }, { call, put }) {
+            const supplier = yield call(getbycode,{supplierCode:payload.supplierCode});
+            if (supplier) {
+                const orderBill=payload.currentBill;
+                const supplierUcn = new Object();
+                supplierUcn.uuid = supplier.data.obj.uuid;
+                supplierUcn.code = supplier.data.obj.code;
+                supplierUcn.name = supplier.data.obj.name;
+                orderBill.supplier= supplierUcn;
+                yield put({
+                    type: 'showEditPage',
+                    payload: {
+                        currentItem: orderBill
+                    }
+                });
+            };
+        },
+
     },
 
 

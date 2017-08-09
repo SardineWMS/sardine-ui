@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Button, Input, Form, Select, Card, DatePicker, Col } from 'antd';
+import { Button, Input, Form, Select, Card, DatePicker, Col,Icon } from 'antd';
 import BaseCard from '../../Widget/BaseCard';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
@@ -17,6 +17,7 @@ const OrderBillCreateForm = ({
     onCancel,
     queryWrhs,
     querySuppliers,
+    getSupplier,
     form: {
 	    getFieldDecorator,
         validateFields,
@@ -47,6 +48,11 @@ const OrderBillCreateForm = ({
         item.wrh = wrhUcn;
     };
 
+    function handleEnterPress() {
+       console.log(getFieldsValue().supplier);
+       //getSupplier(getFieldsValue().supplier);
+    }
+
     const baseChildren = [];
     const dataChildren = [];
     const options = [];
@@ -61,14 +67,15 @@ const OrderBillCreateForm = ({
 
     baseChildren.push(
         <BaseFormItem label={"供应商："}>
-            {getFieldDecorator("supplier.uuid", { rules: [{ required: true }], initialValue: item.supplier ? "["+item.supplier.code+"]"+item.supplier.name : null })(
-                <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => querySuppliers()} />} />
+            {getFieldDecorator("supplier", { rules: [{ required: true, message: '供应商不能为空！' }], initialValue: item.supplier ? "["+item.supplier.code+"]"+item.supplier.name : null })(
+                <Input placeholder="请选择" suffix={<Icon type="ellipsis" onClick={() => querySuppliers()}  />} 
+                 onBlur={handleEnterPress} onPressEnter={handleEnterPress}/>
             )}
         </BaseFormItem>
     );
     baseChildren.push(
         <BaseFormItem label={"仓位"} >
-            {getFieldDecorator("wrh.uuid", { rules: [{ required: true }], initialValue: item.wrh ? item.wrh.code : null })(
+            {getFieldDecorator("wrh.uuid", { rules: [{ required: true ,message: '仓位不能为空！' }], initialValue: item.wrh ? item.wrh.code : null })(
                 <Select size="large" onFocus={queryWrhs} onSelect={wrhOnSelect}>
                     {options}
                 </Select>

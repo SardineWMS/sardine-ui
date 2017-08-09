@@ -366,6 +366,15 @@ function OrderBill({ location, dispatch, orderBill }){
             dispatch({
                 type: 'orderBill/querySuppliers'
             }); 
+        },
+        getSupplier(supplierCode){
+            dispatch({
+                type: 'orderBill/getSupplier',
+                payload: {
+                    supplierCode:supplierCode,
+                    currentBill:currentItem
+                }
+            }); 
         }
     };
 
@@ -578,8 +587,7 @@ function OrderBill({ location, dispatch, orderBill }){
                 return  (
                     <div>
                         <OrderBillCreateForm {...orderBillCreateProps}/>
-                        <OrderBillItems {...orderBillItemsProps}/>
-                        <SupplierSelectModal {...supplierModalProps}/>
+                  
                     </div>
                 );
             }

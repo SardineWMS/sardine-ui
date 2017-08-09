@@ -58,9 +58,6 @@ function OrderBillSearchGrid({
 	 		return "已作废";
 	};
 
-	function converDate(text){
-	}; 
-
 	const columns=
 	[
 		{
@@ -102,7 +99,6 @@ function OrderBillSearchGrid({
      		title: '到效日期',
             dataIndex: 'expireDate',
             key: 'expireDate',
-  			render: text => converDate(text)
     	},
 	 	{
 	    	title:'操作',
