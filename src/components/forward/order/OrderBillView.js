@@ -20,7 +20,7 @@ const OrderBillView=({
 
 	function converState(text)	{
 		if(text == "Initial")
-			return "正常";
+			return "初始";
 	 	if(text=="PreBookReg")
 	 		return "已预约";
  	 	if(text=="PreChecked")
