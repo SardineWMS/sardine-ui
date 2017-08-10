@@ -64,60 +64,6 @@ function OrderBill({ location, dispatch, orderBill }){
                 }
             });
         },
-        onEditItem(item) {
-            dispatch({
-                type: 'orderBill/getForEdit',
-                payload: {
-                    uuid:item.uuid
-                }
-            });
-        },
-        onDeleteItem(item) {
-            dispatch({
-                type: 'orderBill/remove',
-                payload: {
-                    uuid:item.uuid,
-                    version:item.version
-                }
-            });
-        },
-        onBookRegItem(item) {
-            bookRegBills.push(item),
-            dispatch({
-                type:'orderBill/showDateModal',
-                payload:{
-                    bookRegBills:bookRegBills,
-                    bookRegType:"single"
-                }
-            });
-        },
-        onCheckItem(item) {
-            dispatch({
-                type: 'orderBill/gridCheck',
-                payload: {
-                    uuid:item.uuid,
-                    version:item.version
-                }
-            });
-        },
-        onFinishItem(item) {
-            dispatch({
-                type: 'orderBill/gridFinish',
-                payload: {
-                    uuid:item.uuid,
-                    version:item.version
-                }
-            });
-        },
-        onAbortItem(item) {
-            dispatch({
-                type: 'orderBill/gridAbort',
-                payload: {
-                    uuid:item.uuid,
-                    version:item.version
-                }
-            });
-        },
         onDeleteBatch(orderBills) {
             if (orderBills.length <= 0) {
                 message.warning("请选择要删除的订单！", 2, '');
@@ -405,58 +351,60 @@ function OrderBill({ location, dispatch, orderBill }){
 
     const orderBillViewFormProps={
     	item:currentItem,
-    	onEdit(item){
-	   		dispatch({
-		        type: 'orderBill/edit',
-		        payload: item
-	      	});
-    	},
-		onDelete(item){
-	   		dispatch({
-		        type: 'orderBill/remove',
-	            payload: {
-		        	uuid: item.uuid,
-		        	version:item.version
-		        }
-	      	});
-    	},
-		onBookReg(item){
-	   		dispatch({
-		        type: 'orderBill/bookReg',
-	            payload: {
-		        	uuid: item.uuid,
-		        	version:item.version,
-		        	bookedDate:item.bookedDate
-		        }
-	      	});
-    	},
-		onCheck(item){
-	   		dispatch({
-		        type: 'orderBill/check',
-	            payload: {
-		        	uuid: item.uuid,
-		        	version:item.version
-		        }
-	      	});
-    	},
-		onFinish(item){
-	   		dispatch({
-		        type: 'orderBill/finish',
-	            payload: {
-		        	uuid: item.uuid,
-		        	version:item.version
-		        }
-	      	});
-    	},
-    	onAbort(item){
-	   		dispatch({
-		        type: 'orderBill/abort',
-	            payload: {
-		        	uuid: item.uuid,
-		        	version:item.version
-		        }
-	      	});
-    	},
+    	        onEditItem(item) {
+            dispatch({
+                type: 'orderBill/getForEdit',
+                payload: {
+                    uuid:item.uuid
+                }
+            });
+        },
+        onDeleteItem(item) {
+            dispatch({
+                type: 'orderBill/remove',
+                payload: {
+                    uuid:item.uuid,
+                    version:item.version
+                }
+            });
+        },
+        onBookRegItem(item) {
+            bookRegBills.push(item),
+            dispatch({
+                type:'orderBill/showDateModal',
+                payload:{
+                    bookRegBills:bookRegBills,
+                    bookRegType:"single"
+                }
+            });
+        },
+        onCheckItem(item) {
+            dispatch({
+                type: 'orderBill/gridCheck',
+                payload: {
+                    uuid:item.uuid,
+                    version:item.version
+                }
+            });
+        },
+        onFinishItem(item) {
+            dispatch({
+                type: 'orderBill/gridFinish',
+                payload: {
+                    uuid:item.uuid,
+                    version:item.version
+                }
+            });
+        },
+        onAbortItem(item) {
+            dispatch({
+                type: 'orderBill/gridAbort',
+                payload: {
+                    uuid:item.uuid,
+                    version:item.version
+                }
+            });
+        },
         onBack(){
             dispatch({
                 type: 'orderBill/backSearchForm'
@@ -469,25 +417,6 @@ function OrderBill({ location, dispatch, orderBill }){
         editable:showViewPage ? false : true,
         inProgressBill:'InProgress'===currentItem.state,
         articleQpcs:articleQpcs,
-        // onEdit(items,index) {
-        //     items[index]["editable"] = true;
-        //     dispatch({
-        //         type: 'orderBill/showCreatePage'
-        //     })
-        // },
-        // onCancel(items,index) {
-        //     items[index]["editable"] = false;
-        //     dispatch({
-        //         type: 'orderBill/showCreatePage'
-        //     })
-        // },
-        // onSaveItems(items,index) {
-        //     items[index]["editable"] = false;
-        //     currentItem.items=items;
-        //     dispatch({
-        //         type: 'orderBill/showCreatePage'
-        //     })
-        // },
         onDelete(items,index) {
             items.splice(index);
             currentItem.items=items;
@@ -502,7 +431,6 @@ function OrderBill({ location, dispatch, orderBill }){
         onAdd(items) {
             const item=new Object();
             item.line= items?items.length+1:1;
-            //item.editable=true;
             if(items)
                 items.push(item);
             else{
@@ -510,7 +438,6 @@ function OrderBill({ location, dispatch, orderBill }){
                 orderBillItems.push(item);
                 items=orderBillItems; 
             };
-            //items[item.line-1]["editable"] = true;
             currentItem.items=items;
             dispatch({
                 type: 'orderBill/showEditPage',

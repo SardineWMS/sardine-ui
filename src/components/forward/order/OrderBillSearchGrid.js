@@ -9,12 +9,6 @@ function OrderBillSearchGrid({
   onSearch,
   onCreate,
   onViewItem,
-  onEditItem,
-  onDeleteItem,
-  onBookRegItem,
-  onCheckItem,
-  onFinishItem,
-  onAbortItem,
   onDeleteBatch,
   onBookRegBatch,
   onCheckBatch,
@@ -104,33 +98,6 @@ function OrderBillSearchGrid({
             dataIndex: 'expireDate',
             key: 'expireDate',
             render: text => converDate(text)
-    	},
-	 	{
-	    	title:'操作',
-	    	key:'operation',
-	    	render:(text,record) => (
-	    		<p>
-	    			<a onClick={() => onEditItem(record)}> 编辑</a>
-	    			 &nbsp;&nbsp;&nbsp;
-    			 	<a onClick={() => onBookRegItem(record)}> 预约</a>
-	    			 &nbsp;&nbsp;&nbsp;
-	    			<Popconfirm titldocke="确定要预检吗？" onConfirm={() => onCheckItem(record)}>
-	    				<a disabled={record.state === "normal"}>预检</a>
-	    			</Popconfirm>
-	    			&nbsp;&nbsp;&nbsp;
-    				<Popconfirm titldocke="确定要完成吗？" onConfirm={() => onFinishItem(record)}>
-	    				<a disabled={record.state === "normal"}>完成</a>
-	    			</Popconfirm>
-	    			&nbsp;&nbsp;&nbsp;
-					<Popconfirm titldocke="确定要作废吗？" onConfirm={() => onAbortItem(record)}>
-	    				<a disabled={record.state === "normal"}>作废</a>
-	    			</Popconfirm>
-	    			&nbsp;&nbsp;&nbsp;
-	    			<Popconfirm titldocke="确定要删除吗？" onConfirm={() => onDeleteItem(record)}>
-	    				<a disabled={record.state != "Initial"}>删除</a>
-	    			</Popconfirm>
-	    		</p>
-	    	)
     	}
 	];
 
