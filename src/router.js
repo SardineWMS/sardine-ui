@@ -35,6 +35,7 @@ import Config from './routes/basicinfo/Config';
 import WaveBill from './routes/forward/WaveBill';
 import ReturnNtcBill from './routes/backward/ReturnNtcBill';
 import ReturnBill from './routes/backward/ReturnBill';
+import Report from './routes/report/Report';
 
 export default function ({
   history
@@ -73,6 +74,7 @@ export default function ({
         <Route path="/forward/waveBill" component={WaveBill} />
         <Route path="/backward/rtnNtcBill" component={ReturnNtcBill} />
         <Route path="/backward/storeRtnBill" component={ReturnBill} />
+        <Route path="/report/*" component={Report} />
       </Route>
     </Router>
   );
