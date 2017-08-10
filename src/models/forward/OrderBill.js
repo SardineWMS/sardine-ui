@@ -89,10 +89,14 @@ export default {
                 type: 'querySuccess',
                 payload: {
                     list: data.obj.records,
-                    pagination: {
-                        total: data.obj.recordCount,
-                        current: data.obj.page
-                    }
+                        pagination: {
+                            total: data.obj.recordCount,
+                            current: data.obj.page,
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            size: 'default'
+                        },
                 }
                 }); 
             }
