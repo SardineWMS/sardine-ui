@@ -123,10 +123,15 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要删除的订单！", 2, '');
                 return;
             };
+            const deleteOrderBills=[];
+            orderBills.map(function(orderBill){
+                if("Initial"===orderBill.state)
+                    deleteOrderBills.push(orderBill);
+            });
             dispatch({
                 type: 'orderBill/batchRemoveOrderBill',
                 payload: {
-                    deleteOrderBillEntitys: orderBills
+                    deleteOrderBillEntitys: deleteOrderBills
                 }
             });
         },
@@ -135,10 +140,15 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要预约的订单！", 2, '');
                 return;
             };
+            const bookRegOrderBills=[];
+                orderBills.map(function(orderBill){
+                    if("Initial"===orderBill.state)
+                        bookRegOrderBills.push(orderBill);
+            });
             dispatch({
                 type:'orderBill/showDateModal',
                 payload:{
-                    bookRegBills:orderBills,
+                    bookRegBills:bookRegOrderBills,
                     bookRegType:"group"
                 }
             });
@@ -148,10 +158,15 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要预检的订单！", 2, '');
                 return;
             };
+             const checkOrderBills=[];
+                orderBills.map(function(orderBill){
+                    if("Initial"===orderBill.state || "PreBookReg"===orderBill.state)
+                        checkOrderBills.push(orderBill);
+            });
             dispatch({
                 type: 'orderBill/batchCheckOrderBill',
                 payload: {
-                    checkOrderBillEntitys: orderBills
+                    checkOrderBillEntitys: checkOrderBills
                 }
             });
         },
@@ -160,10 +175,15 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要完成的订单！", 2, '');
                 return;
             };
+            const finishOrderBills=[];
+                orderBills.map(function(orderBill){
+                    if("Finished"!=orderBill.state && "Aborted"!=orderBill.state)
+                        finishOrderBills.push(orderBill);
+            });
             dispatch({
                 type: 'orderBill/batchFinishOrderBill',
                 payload: {
-                    finishOrderBillEntitys: orderBills
+                    finishOrderBillEntitys: finishOrderBills
                 }
             });
         },
@@ -172,10 +192,15 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要作废的订单！", 2, '');
                 return;
             };
+            const abortBills=[];
+                orderBills.map(function(orderBill){
+                    if("Initial"===orderBill.state || "PreBookReg"===orderBill.state)
+                        abortBills.push(orderBill);
+            });
             dispatch({
                 type: 'orderBill/batchAbortOrderBill',
                 payload: {
-                    abortOrderBillEntitys: orderBills
+                    abortOrderBillEntitys: abortBills
                 }
             });
         }
