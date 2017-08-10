@@ -102,7 +102,11 @@ class WMSProgress extends React.Component {
           onOk={this.handleOk} onCancel={this.handleCancel}
           okText="确定" cancelText="取消"
         >
-          <p>{`是否批量${this.state.actionText} ${this.state.records.length} 个${this.state.entityCaption}?`}</p>
+          <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          {`是否批量${this.state.actionText} ${this.state.records.length} 个${this.state.entityCaption}?`}</p>
         </Modal>
         <Modal title="可怕的进度条君" visible={this.state.showProgressModal}
           onCancel={this.handleCancel} footer={[]} >
