@@ -131,20 +131,22 @@ function TaskSearch({
         scroll={{ x: 1500, y: 300 }}
         rowKey={record => record.uuid}
         rowSelection={rowSelection}
-        title={() => <div>
-          <Row type="flex">
-            <Col>
-              <Button >批量执行</Button>
-            </Col>
-            <Col>
+        title={() => 
+          <div>
+              
               <Dropdown overlay={moveMenu}>
                 <Button type="ghost" style={{ marginLeft: 8 }}>
                   移库 <Icon type="down" />
                 </Button>
               </Dropdown>
-            </Col>
-          </Row>
-        </div>}
+              <Button>收货上架</Button>
+              <Button>补货</Button>
+              <Button>拣货</Button>
+              <Button>装车</Button>
+              <Button>退仓上架</Button>
+              <Button>退货下架</Button>
+              <Button>退货交接</Button>
+          </div>}
       />
     </div>
   );

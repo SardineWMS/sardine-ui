@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 import hasPermission from '../../../utils/PermissionUtil';
+import {printPreview, print} from '../../../utils/PrintUtil';
 
 function CustomerGrid({
   dataSource,
@@ -21,6 +22,14 @@ function CustomerGrid({
   };
   function handleRecoverBatch() {
     onRecoverBatch(selectedRowKeys);
+  };
+
+  function onPrintPreview() {
+    printPreview("测试.cpt", new Map([["code", 'xxx'], ["name", 'xxx']]));
+  };
+
+  function onPrint() {
+    print("测试.cpt");
   };
 
   function convertState(text) {
@@ -97,6 +106,8 @@ function CustomerGrid({
               <Col><Button type="ghost" onClick={handleRecoverBatch} disabled={!hasPermission("customer:delete")}>批量恢复</Button></Col>
               <Col><Button onClick={onCreate} disabled={!hasPermission("customer:create")}>新建</Button></Col>
               <Col><span style={{ marginLeft: 8 }}>{selectedRowKeys.length > 0 ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
+              <Col><Button onClick={onPrintPreview} >打印预览</Button></Col>
+              <Col><Button onClick={onPrint} >打印</Button></Col>
             </Row>
           </div>} />
     </div>

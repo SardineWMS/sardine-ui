@@ -42,7 +42,7 @@ class SInput extends Input {
                      rules: rules,
                      initialValue: value
          })(
-      <Input placeholder={this.props.placeholder} suffix={this.props.suffix} addonAfter={this.props.addonAfter}
+      <Input placeholder={this.props.placeholder} type={this.props.type} suffix={this.props.suffix} addonAfter={this.props.addonAfter}
         onBlur={this.props.onBlur} onPressEnter={this.props.onPressEnter} />
       )}
       </FormItem>

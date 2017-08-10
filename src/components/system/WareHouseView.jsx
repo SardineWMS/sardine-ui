@@ -90,8 +90,7 @@ const WareHouseView = ({
     </BaseFormItem>);
 
     const extra = <p> <Button type="primary" icon="login" onClick={gotoWrhHouse}>进入仓库</Button> &nbsp;&nbsp;
-    <Button icon="edit" onClick={editWrh}>编辑</Button> &nbsp;&nbsp; 
-    <Button icon="notification">通知</Button></p>;
+    <Button icon="edit" onClick={editWrh}>编辑</Button></p>;
 
     return (
         <div>
