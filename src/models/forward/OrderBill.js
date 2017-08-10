@@ -80,7 +80,12 @@ export default {
     effects: {
         *query({ payload }, { call, put }) {
             const { data } = yield call(querybypage, parse(payload));
-            yield put({
+            if(data){
+                data.obj.records.map(function (orderBill) {
+                    orderBill.expireDate = moment(orderBill.expireDate);
+                    orderBill.bookedDate = moment(orderBill.bookedDate);
+                });
+                yield put({
                 type: 'querySuccess',
                 payload: {
                     list: data.obj.records,
@@ -89,7 +94,9 @@ export default {
                         current: data.obj.page
                     }
                 }
-            });
+                }); 
+            }
+ 
         },
 
         *get({ payload }, { call, put }) {

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Button, Input, Form, Select, Card, DatePicker, Col,Icon } from 'antd';
+import { Button, Input, Form, Select, Card, DatePicker, Col,Icon,message } from 'antd';
 import BaseCard from '../../Widget/BaseCard';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
@@ -21,7 +21,8 @@ const OrderBillCreateForm = ({
     form: {
 	    getFieldDecorator,
         validateFields,
-        getFieldsValue
+        getFieldsValue,
+        setFields
     }
 }) => {
     function handlerSave() {
@@ -37,8 +38,15 @@ const OrderBillCreateForm = ({
     };
 
     function expireDateOnSelect(value) {
+        if(typeof value =='undefined' || value==null)
+            return;
+        if(value <= Date.now()){
+           message.error("到校日期不能小于今天");
+           return;
+        }
         item.expireDate = value;
     };
+
 
     function wrhOnSelect(value) {
         const wrhUcn = new Object();
