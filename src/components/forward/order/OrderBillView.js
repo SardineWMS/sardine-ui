@@ -9,12 +9,12 @@ import BaseTwoCol from '../../Widget/BaseTwoCol';
 
 const OrderBillView=({
 	item={},
-	onEdit,
-	onDelete,
-	onBookReg,
-	onCheck,
-	onFinish,
-	onAbort,
+	onEditItem,
+	onDeleteItem,
+	onBookRegItem,
+	onCheckItem,
+	onFinishItem,
+	onAbortItem,
 	onBack
 }) => {
 
@@ -104,6 +104,20 @@ const OrderBillView=({
 
     const toolbar = [];
     toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
+    toolbar.push(<Button disabled={item.state != "Initial"} onClick={() => onEditItem(item)}> 编辑</Button>);
+    toolbar.push(<Button disabled={item.state != "Initial"} onClick={() => onBookRegItem(item)}> 预约</Button>);
+    toolbar.push(<Popconfirm title="确定要预检吗？" onConfirm={() => onCheckItem(item)}>
+		<Button disabled={item.state != "Initial" && item.state != "PreBookReg"}>预检</Button>
+	</Popconfirm>);
+    toolbar.push(<Popconfirm title="确定要完成吗？" onConfirm={() => onFinishItem(item)}>
+		<Button disabled={item.state === "Finished" || item.state === "Aborted"}>完成</Button>
+	</Popconfirm>);
+    toolbar.push(<Popconfirm title="确定要作废吗？" onConfirm={() => onAbortItem(item)}>
+		<Button disabled={item.state != "Initial"}>作废</Button>
+	</Popconfirm>);
+    toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onDeleteItem(item)}>
+		<Button disabled={item.state != "Initial"}>删除</Button>
+	</Popconfirm>);
 
     return (
         <div>

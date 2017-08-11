@@ -29,17 +29,17 @@ function Supplier({dispatch, supplier, location}) {
   const token = localStorage.getItem("token");
   const {field, keyword} = location.query;
 
-
-
   const supplierSearchGridProps = {
     dataSource: list,
     pagination: pagination,
-    onPageChange(page) {
+    onPageChange(page, filters,sorter) {
       dispatch(routerRedux.push({
-        pathname: '/wms/basicInfo/supplier',
+        pathname: '/basicInfo/supplier',
         query: {
           page: page.current,
-          pageSize: page.pageSize
+          pageSize: page.pageSize,
+          sort: sorter.columnKey,
+          order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
         }
       }));
     },

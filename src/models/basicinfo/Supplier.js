@@ -67,13 +67,13 @@ export default {
           payload: {
             list: data.obj.records,
             pagination: {
-                            showSizeChanger: true,
-                            showQuickJumper: true,
-                            showTotal: total => `共 ${total}条`,
-                            current: data.obj.page,
-                            total: data.obj.recordCount,
-                            size: 'default'
-                        }
+                showSizeChanger: true,
+                showQuickJumper: true,
+                showTotal: total => `共 ${total}条`,
+                current: data.obj.page,
+                total: data.obj.recordCount,
+                size: 'default'
+            }
           }
         });
       };
