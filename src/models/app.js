@@ -52,7 +52,6 @@ export default {
       yield put({
         type: 'hideLoginButtonLoading',
       });
-      if (data.token) {
         const loginUser = new Object();
         loginUser.uuid = data.obj.uuid;
         loginUser.code = data.obj.code;
@@ -74,14 +73,6 @@ export default {
             data
           }
         });
-      } else {
-        yield put({
-          type: 'loginFail',
-          payload: {
-            data
-          }
-        });
-      };
     },
 
     * register({
@@ -201,14 +192,7 @@ export default {
 
   reducers: {
     loginSuccess(state, action) {
-      location.pathname = '/';
-      if (location.href.indexOf("sardine") >= 0) {
-        if (location.href != (location.origin + '/sardine'))
-           location.href = location.origin + '/sardine';
-      } else {
-         if (location.href != location.origin)
-           location.href = location.origin;
-      }
+      
       return {
         ...state,
         ...action.payload,

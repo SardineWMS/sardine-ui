@@ -10,11 +10,12 @@ function Report({ location, dispatch, report }) {
       var pathName = location.pathname;
       var reportlets = pathName.substring("/report/".length, pathName.length);
       var reportletsName = reportlets + ".cpt";
-      var src = "/report/ReportServer?reportlet=" + reportletsName;
-      var token = localStorage.getItem("token");
-      var ss = localStorage.getItem("report-url") + "/ReportServer?reportlet=%E6%B5%8B%E8%AF%95.cpt&op=form&token=" + token;
+      var companyUuid = localStorage.getItem("companyUuid");
+      var userUuid = localStorage.getItem("loginId");
+      var src = localStorage.getItem("report-url") + "/ReportServer?reportlet=%E6%B5%8B%E8%AF%95.cpt&companyUuid=" + companyUuid + 
+      "&userUuid=" + userUuid;
   		return (
-               <iframe id="reportFrame" width="100%" height="500" src={ss}></iframe> 
+               <iframe id="reportFrame" width="100%" height="500" src={src}></iframe> 
   			);
   };
   

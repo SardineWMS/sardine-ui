@@ -125,10 +125,13 @@ function App({
 
   function renderApp() {
     let loginFlag = false;
-    let loginTime = localStorage.getItem("loginTime");
-    let notUseTime = new Date().getTime() - loginTime;
-    if (notUseTime < 8*60*60*1000)
-      loginFlag = true;
+    var cookies=document.cookie.split("; ");
+    for (var i=0; i<cookies.length; i++) {
+       console.dir(cookies[i]);
+       var arr=cookies[i].split("=");
+       if (arr.length > 1 && arr[0] == 'login_auth_cookie' && arr[1] == 'true')
+        loginFlag = true;
+    }
     
     if (loginFlag) {
       return (<div className={classnames(styles.layout)}>

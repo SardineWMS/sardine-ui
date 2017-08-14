@@ -16,7 +16,16 @@ function checkStatus(response) {
 }
 
 export default function request(url, options) {
-  return fetch(url, options)
+  var superagent = require("superagent");
+  var jsonp = require("superagent-jsonp");
+  let new_options = {
+      ...options,
+      credentials: 'include',
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    };
+  return fetch(url, new_options)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {

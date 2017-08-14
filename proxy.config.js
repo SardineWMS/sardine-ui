@@ -24,5 +24,5 @@ module.exports = {
 		}
 	}),
 
-    '/swms/(.*)': 'http://127.0.0.1:8080/sardine-wms-web',
+    '/swms/(.*)': 'http://localhost:8080/sardine-wms-web',
 };

@@ -1,13 +1,13 @@
 import qs from 'qs';
 
 export function query(url, params) {
-    params.token = localStorage.getItem("token");
+    params.token = "token";
     localStorage.setItem("loginTime", new Date().getTime() + "");
     return url + `?${qs.stringify(params)}`;
 }
 
 export function addTokenToParamsAndStringify(params) {
-   params.token = localStorage.getItem("token");
+   params.token = "token";
    return qs.stringify(params);
 }
 
@@ -25,8 +25,8 @@ export function createBase(params) {
 export function addTokenToUrl(url) {
     localStorage.setItem("loginTime", new Date().getTime() + "");
     if(url.indexOf('?') >= 0)
-        return url + `&token=` + localStorage.getItem("token");
-    return url + `?token=` + localStorage.getItem("token");
+        return url + `&token=` + "token";
+    return url + `?token=` + "token";
 }
 
 export function deleteBase(params) {
