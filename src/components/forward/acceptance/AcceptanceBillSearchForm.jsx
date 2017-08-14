@@ -81,7 +81,7 @@ const AcceptanceBillSearchForm = ({
     </BaseTwoCol>);
 
     children.push(<BaseTwoCol key={"deliveryType"}>
-        <BaseFormItem label="配送方式 类似于于">
+        <BaseFormItem label="配送方式 类似于">
             {getFieldDecorator("deliveryType")(
                 <Input placeholder="请输入" />
             )}
