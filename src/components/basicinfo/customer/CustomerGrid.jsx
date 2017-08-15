@@ -2,7 +2,6 @@ import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 import hasPermission from '../../../utils/PermissionUtil';
 import {printPreview, print} from '../../../utils/PrintUtil';
-import {getLodop} from '../../../LodopFuncs';
 
 function CustomerGrid({
   dataSource,

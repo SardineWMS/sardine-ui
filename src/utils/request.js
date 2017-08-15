@@ -16,8 +16,6 @@ function checkStatus(response) {
 }
 
 export default function request(url, options) {
-  var superagent = require("superagent");
-  var jsonp = require("superagent-jsonp");
   let new_options = {
       ...options,
       credentials: 'include',
