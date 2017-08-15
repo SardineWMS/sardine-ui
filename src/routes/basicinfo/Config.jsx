@@ -108,14 +108,16 @@ function Config({ location, dispatch, config }) {
   const articleConfigSearchGridProps={
       dataSource: articleConfigs,
       pagination: articlePagination,
-      onPageChange(page) {
-        dispatch(routerRedux.push({
-          type: 'config/queryArticleConfigByPage',
-          query: {
+      onPageChange(page, filters, sorter) {
+        dispatch({
+          type: 'config/queryArticleConfigByPage',  
+          payload: {
             page: page.current,
-            pageSize: page.pageSize
+            pageSize: page.pageSize,
+            sort: sorter.columnKey,
+            order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
           },
-        }))
+        })
       },
       onSetArticleFixedPickBin(articleConfigs){
         if (articleConfigs.length <= 0) {
@@ -160,6 +162,7 @@ function Config({ location, dispatch, config }) {
   const setArticleFixedPickBinModalProps={
       title:"设置固定拣货位",
       label:"固定拣货位",
+      testValue:"test",
       visible:binScopeModalVisible,
       onOk(binScope) {
         selectedArticleConfigs.map(function (articleConfig) {
@@ -316,14 +319,16 @@ function Config({ location, dispatch, config }) {
   const categoryStorageAreaConfigSearchGridProps={
       dataSource: categoryStorageAreaConfigs,
       pagination: categoryStorageAreaPagination,
-      onPageChange(page) {
-        dispatch(routerRedux.push({
+      onPageChange(page, filters, sorter) {
+        dispatch({
           type: 'config/queryCategoryStorageAreaConfigByPage',
-          query: {
+          payload: {
             page: page.current,
-            pageSize: page.pageSize
+            pageSize: page.pageSize,
+            sort: sorter.columnKey,
+            order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
           },
-        }))
+        })
       },
       onSetCategoryStorageArea(categoryStorageAreaConfigs){
        if (categoryStorageAreaConfigs.length <= 0) {
@@ -402,14 +407,16 @@ function Config({ location, dispatch, config }) {
   const pickAreaStorageAreaConfigSearchGridProps={
       dataSource: pickAreaStorageAreaConfigs,
       pagination: pickAreaStorageAreaPagination,
-      onPageChange(page) {
-        dispatch(routerRedux.push({
+      onPageChange(page, filters, sorter) {
+        dispatch({
           type: 'config/queryPickAreaStorageAreaConfigByPage',
-          query: {
+          payload: {
             page: page.current,
-            pageSize: page.pageSize
+            pageSize: page.pageSize,
+            sort: sorter.columnKey,
+            order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
           },
-        }))
+        })
       },
       onSetPickAreaStorageArea(pickAreaStorageAreaConfigs){
        if (pickAreaStorageAreaConfigs.length <= 0) {
@@ -488,14 +495,16 @@ function Config({ location, dispatch, config }) {
   const taskAreaConfigSearchGridProps={
       dataSource: taskAreaConfigs,
       pagination: taskAreaPagination,
-      onPageChange(page) {
-        dispatch(routerRedux.push({
+      onPageChange(page, filters, sorter) {
+        dispatch({
           type: 'config/queryTaskAreaConfigByPage',
-          query: {
+          payload: {
             page: page.current,
-            pageSize: page.pageSize
+            pageSize: page.pageSize,
+            sort: sorter.columnKey,
+            order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
           },
-        }))
+        })
       },
       onCreate() {
         dispatch({
