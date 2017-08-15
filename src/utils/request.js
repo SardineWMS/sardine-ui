@@ -20,7 +20,7 @@ export default function request(url, options) {
       ...options,
       credentials: 'include',
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded"
+        "Content-Type": "application/json"
       }
     };
   return fetch(url, new_options)

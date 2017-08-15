@@ -224,17 +224,23 @@ export default {
             const { data } = yield call(createTaskAreaConfig, parse(payload));
             if(data.status==='200'){
                 yield put({
+                    type: 'hideTaskAreaConfigModal'
+                })    
+                yield put({
                     type: 'queryTaskAreaConfigByPage'
                 })
             }
         },
         *updateTaskAreaConfig({ payload }, { call, put }) {
             const { data } = yield call(updateTaskAreaConfig, parse(payload));
-            if(data.status==='200'){
-                yield put({
-                    type: 'queryTaskAreaConfigByPage'
-                })
-            }
+            console.log({data});
+            yield put({
+                type: 'hideTaskAreaConfigModal'
+            }) 
+            yield put({
+                type: 'queryTaskAreaConfigByPage'
+            })
+
         },
         *removeTaskAreaConfig({ payload }, { call, put }) {
             const { data } = yield call(removeTaskAreaConfig, parse(payload));

@@ -524,10 +524,11 @@ function Config({ location, dispatch, config }) {
         });
       },
       onEdit(taskAreaConfig) {
+        const newTaskAreaConfig=new Object(taskAreaConfig);
         dispatch({
           type: 'config/showTaskAreaConfigModal',
           payload: {
-            currentTaskAreaConfig: taskAreaConfig
+            currentTaskAreaConfig: newTaskAreaConfig
           }
         })
       }
@@ -546,6 +547,9 @@ function Config({ location, dispatch, config }) {
           dispatch({
             type: 'config/updateTaskAreaConfig',
             payload: taskAreaConfig
+          })
+          dispatch({
+            type: 'config/queryTaskAreaConfigByPage'
           })
         }else{
           dispatch({
