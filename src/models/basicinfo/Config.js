@@ -335,7 +335,8 @@ export default {
             return {
                 ...state,
                 ...action.payload,
-                batchSetArticleFixedPickBinModal: true
+                batchSetArticleFixedPickBinModal: true,
+                binScopeModalVisible: false
             }
         },
         hideBatchSetArticleFixedPickBinModal(state, action) {
@@ -349,7 +350,8 @@ export default {
             return {
                 ...state,
                 ...action.payload,
-                batchSetArticleStorageAreaModal: true
+                batchSetArticleStorageAreaModal: true,
+                binScopeModalVisible: false
             }
         },
         hideBatchSetArticleStorageAreaModal(state, action) {
@@ -377,7 +379,8 @@ export default {
             return {
                 ...state,
                 ...action.payload,
-                batchSetPickBinStockLimitModal: true
+                batchSetPickBinStockLimitModal: true,
+                pickBinStockLimitModalVisible: false
             }
         },
         hideBatchSetPickBinStockLimitModal(state, action) {
@@ -391,7 +394,8 @@ export default {
             return {
                 ...state,
                 ...action.payload,
-                batchSetCategoryStorageAreaModal: true
+                batchSetCategoryStorageAreaModal: true,
+                binScopeModalVisible: false
             }
         },
         hideBatchSetCategoryStorageAreaModal(state, action) {
@@ -405,7 +409,8 @@ export default {
             return {
                 ...state,
                 ...action.payload,
-                batchSetPickAreaStorageAreaModal:true
+                batchSetPickAreaStorageAreaModal:true,
+                binScopeModalVisible: false
             }
         },
         hideBatchSetPickAreaStorageAreaModal(state, action) {
@@ -433,7 +438,7 @@ export default {
             return {
                 ...state,
                 ...action.payload,
-                operatorModalVisible:true
+                operatorModalVisible:true,
             }
         },
         hideOperatorModal(state, action) {
