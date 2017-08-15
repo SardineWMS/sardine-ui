@@ -2,6 +2,7 @@ import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 import hasPermission from '../../../utils/PermissionUtil';
 import {printPreview, print} from '../../../utils/PrintUtil';
+import {getLodop} from '../../../LodopFuncs';
 
 function CustomerGrid({
   dataSource,
@@ -25,7 +26,14 @@ function CustomerGrid({
   };
 
   function onPrintPreview() {
-    printPreview("测试.cpt", new Map([["code", 'xxx'], ["name", 'xxx']]));
+    // var LODOP=getLodop(document.getElementById('LODOP_OB'),document.getElementById('LODOP_EM'));
+    // LODOP.PRINT_INIT("打印控件功能演示_Lodop功能_表单一");
+    // LODOP.SET_PRINT_STYLE("FontSize",18);
+    // LODOP.SET_PRINT_STYLE("Bold",1);
+    // LODOP.ADD_PRINT_TEXT(50,231,260,39,"打印页面部分内容");
+    // LODOP.ADD_PRINT_HTM(88,200,350,600,document.getElementById("test1").innerHTML);
+    printPreview("测试.cpt&companyUuid=" + localStorage.getItem("companyUuid"), new Map([["code", 'xxx'], ["name", 'xxx']]));
+    // LODOP.PREVIEW();
   };
 
   function onPrint() {
@@ -107,7 +115,7 @@ function CustomerGrid({
               <Col><Button onClick={onCreate} disabled={!hasPermission("customer:create")}>新建</Button></Col>
               <Col><span style={{ marginLeft: 8 }}>{selectedRowKeys.length > 0 ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
               <Col><Button onClick={onPrintPreview} >打印预览</Button></Col>
-              <Col><Button onClick={onPrint} >打印</Button></Col>
+              
             </Row>
           </div>} />
     </div>
