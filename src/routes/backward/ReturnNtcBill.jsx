@@ -213,9 +213,9 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
         onSelect(data) {
             const t = {};
             const customer = {};
-            customer.uuid = data[0].uuid;
-            customer.code = data[0].code;
-            customer.name = data[0].name;
+            customer.uuid = data.uuid;
+            customer.code = data.code;
+            customer.name = data.name;
             t.customer = customer;
             dispatch({
                 type: 'rtnNtcBill/hideCustomerModal',

@@ -13,7 +13,7 @@ moment.locale('zh-cn');
 
 const Option = Select.Option;
 
-const ReturnNtcBillCreateForm = ({
+const RtnSupplierNtcBillCreateForm = ({
     item = {},
     onCancel,
     handleSave,
@@ -22,7 +22,7 @@ const ReturnNtcBillCreateForm = ({
         validateFields,
         getFieldsValue
     },
-    onCustomerSelect,
+    onSupplierSelect,
     wrhs = [],
     onEnterCustomer
 }) => {
@@ -50,21 +50,19 @@ const ReturnNtcBillCreateForm = ({
 
     const children = [];
     children.push(
-        <BaseFormItem label="客户：">
+        <BaseFormItem label="供应商：">
             {
                 getFieldDecorator("customer", {
-                    rules: [{ required: true, message: "客户不能为空！" }],
-                    initialValue: item.customer ? item.customer.code : ""
+                    rules: [{ required: true, message: "供应商不能为空！" }],
+                    initialValue: item.supplier ? item.supplier.code : ""
                 })(
-                    <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => onCustomerSelect()} />} onBlur={handleEnterPress} />
+                    <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => onSupplierSelect()} />} onBlur={handleEnterPress} />
                     )
             }
         </BaseFormItem>
     );
     const options = [];
     if (wrhs != null) {
-        console.log("仓位");
-        console.dir(wrhs);
         for (var wrh of wrhs) {
             options.push(<Option value={wrh.uuid}>{wrh.name + "[" + wrh.code + "]"}</Option>)
         };
@@ -96,7 +94,7 @@ const ReturnNtcBillCreateForm = ({
     );
     children.push(
         <BaseFormItem label={"退货日期："} >
-            {getFieldDecorator("returnDate", { rules: [{ required: true, message: '退货日期不能为空' }], initialValue: moment(item.returnDate) })(
+            {getFieldDecorator("rtnDate", { rules: [{ required: true, message: '退货日期不能为空' }], initialValue: moment(item.rtnDate) })(
                 <DatePicker style={{ width: 270.5 }} size="large" />
             )}
         </BaseFormItem>
@@ -118,7 +116,7 @@ const ReturnNtcBillCreateForm = ({
     return (
         <div>
             <ToolbarPanel children={toolbar} />
-            <BaseCard title="退仓通知单信息" single={false}>
+            <BaseCard title="供应商退货通知单信息" single={false}>
                 <BaseForm items={children} />
                 <BaseForm items={totalCaseQtyStrForm} />
             </BaseCard>
@@ -126,4 +124,4 @@ const ReturnNtcBillCreateForm = ({
     );
 };
 
-export default Form.create()(ReturnNtcBillCreateForm);
+export default Form.create()(RtnSupplierNtcBillCreateForm);
