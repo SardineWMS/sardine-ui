@@ -106,6 +106,7 @@ export default {
                     if (item.line == payload.record.line) {
                         item.article.uuid = data.obj.uuid;
                         item.article.name = data.obj.name;
+                        item.articleSpec = data.obj.spec;
                         item.qpcs = qpcs;
                     };
                 };
@@ -124,17 +125,6 @@ export default {
             for (var qpc of payload.record.qpcs) {
                 if (qpc.qpcStr == payload.record.qpcStr) {
                     payload.record.munit = qpc.munit;
-                };
-            };
-            const { data } = yield call(queryStock, {
-                articleUuid: payload.record.article.uuid,
-                qpcStr: payload.record.qpcStr
-            });
-
-            for (var item of payload.dataSource) {
-                if (item.line == payload.record.line) {
-                    item.munit = payload.record.munit;
-                    item.price = data.obj.price;
                 };
             };
 

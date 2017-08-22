@@ -41,7 +41,8 @@ function AlcNtcBillCreateItem({
         }, {
             title: '商品名称',
             dataIndex: 'article.name',
-            key: 'articleName'
+            key: 'articleName',
+            render: (text, record) => record.article ? record.article.name + ", " + record.articleSpec : ''
         },
         {
             title: '规格',
