@@ -67,7 +67,7 @@ function WaveBill({ location, dispatch, waveBill }) {
             const length = selectedAlcNtcList.length;
             for (let i = 0; i < selectedAlcNtcs.length; i++) {
                 const select = {};
-                select.alcNtcBillNumber = selectedAlcNtcs[i].billNumber;
+                select.ntcBillNumber = selectedAlcNtcs[i].billNumber;
                 select.line = length + i + 1;
                 select.alcNtcBillState = selectedAlcNtcs[i].state;
                 select.customer = selectedAlcNtcs[i].customer;
@@ -149,7 +149,7 @@ function WaveBill({ location, dispatch, waveBill }) {
                 else
                     data.serialArch.uuid = data.serialArchUuid;
             }
-            data.items = selectedAlcNtcList;
+            data.ntcItems = selectedAlcNtcList;
             const result = { ...currentItem, ...data };
             if (result.uuid) {
                 dispatch({

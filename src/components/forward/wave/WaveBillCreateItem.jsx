@@ -35,8 +35,8 @@ function WaveBillCreateItem({
             key: 'line'
         }, {
             title: '出库通知单单号',
-            dataIndex: 'alcNtcBillNumber',
-            key: 'alcNtcBillNumber',
+            dataIndex: 'ntcBillNumber',
+            key: 'ntcBillNumber',
         }, {
             title: '状态',
             dataIndex: 'alcNtcBillState',
