@@ -121,7 +121,7 @@ const ReturnSupplierBillSearchForm = ({
         <BaseTwoCol key={"returnSupplierDateGreaterThanOrEqualStr"}>
             <BaseFormItem label={"退货日期 大于等于"}>
                 {getFieldDecorator("returnSupplierDateGreaterThanOrEqualStr")(
-                    <DatePicker format='YYYY-MM-DD' style={{ width: 283 }} />
+                    <DatePicker format='YYYY-MM-DD' style={{ width: 290.5 }} />
                 )}
             </BaseFormItem>
         </BaseTwoCol>
@@ -130,7 +130,7 @@ const ReturnSupplierBillSearchForm = ({
         <BaseTwoCol key={"returnSupplierDateLessThanOrEqualStr"}>
             <BaseFormItem label={"退货日期 小于等于"}>
                 {getFieldDecorator("returnSupplierDateLessThanOrEqualStr")(
-                    <DatePicker format='YYYY-MM-DD' style={{ width: 283 }} />
+                    <DatePicker format='YYYY-MM-DD' style={{ width: 290.5 }} />
                 )}
             </BaseFormItem>
         </BaseTwoCol>
