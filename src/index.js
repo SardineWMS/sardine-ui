@@ -44,6 +44,8 @@ app.model(require('./models/basicinfo/Config'));
 app.model(require('./models/backward/ReturnNtcBill'));
 app.model(require('./models/backward/ReturnBill'));
 app.model(require('./models/backward/RtnSupplierNtcBill'));
+app.model(require('./models/tms/ShipBill'));
+app.model(require('./models/backward/ReturnSupplierBill'));
 
 app.router(require('./router'));
 

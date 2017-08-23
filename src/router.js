@@ -37,6 +37,8 @@ import ReturnNtcBill from './routes/backward/ReturnNtcBill';
 import ReturnBill from './routes/backward/ReturnBill';
 import Report from './routes/report/Report';
 import RtnSupplierNtcBill from './routes/backward/RtnSupplierNtcBill';
+import ShipBill from './routes/tms/ShipBill';
+import ReturnSupplierBill from './routes/backward/ReturnSupplierBill';
 
 export default function ({
   history
@@ -77,6 +79,8 @@ export default function ({
         <Route path="/backward/storeRtnBill" component={ReturnBill} />
         <Route path="/report/*" component={Report} />
         <Route path="/backward/rtnsupplierntcbill" component={RtnSupplierNtcBill} />
+        <Route path="/tms/shipBill" component={ShipBill} />
+        <Route path="/backward/returnSupplierBill" component={ReturnSupplierBill} />
       </Route>
     </Router>
   );
