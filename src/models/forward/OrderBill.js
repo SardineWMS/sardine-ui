@@ -109,7 +109,8 @@ export default {
             });
             if (orderBill) {
                 orderBill.data.obj.expireDate = moment(orderBill.data.obj.expireDate);
-                orderBill.data.obj.bookedDate = moment(orderBill.data.obj.bookedDate);
+                if(orderBill.data.obj.bookedDate != null)
+                    orderBill.data.obj.bookedDate = moment(orderBill.data.obj.bookedDate);
 
                 yield put({
                     type: 'showViewPage',

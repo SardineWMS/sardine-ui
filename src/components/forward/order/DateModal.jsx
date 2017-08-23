@@ -24,10 +24,14 @@ const DateModal = ({
 	};
 
 	function dateOnSelect(value) {
+		if(typeof value =='undefined' || value ==null)
+			return;
 		bookedDate = value;
 	};
 
 	function handleOk() {
+		if(typeof bookedDate =='undefined' || bookedDate ==null)
+			return;
 		orderBills.map(function (orderbill) {
 			orderbill.bookedDate = bookedDate;
 		});
@@ -39,7 +43,7 @@ const DateModal = ({
 			<div>
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-				<DatePicker onChange={dateOnSelect} format='YYYY-MM-DD' style={{ width: 200 }} {...datePickerLayout}/>
+				<DatePicker onChange={dateOnSelect} format='YYYY-MM-DD' style={{ width: 200 }} {...datePickerLayout} />
 			</div>
 		</Modal>
 	);

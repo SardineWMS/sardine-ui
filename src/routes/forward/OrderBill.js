@@ -38,7 +38,7 @@ function OrderBill({ location, dispatch, orderBill }){
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.field,
-                    sortDirection: sorter.order
+                   sortDirection: sorter.order
                 }
             }));
         },

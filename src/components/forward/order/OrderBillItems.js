@@ -77,14 +77,6 @@ const OrderBillItems=({
 			width: 150
 	});
 
-	columns.push({
-		    title: '金额',
-		    key: 'amount',
-			dataIndex: 'amount',
-			width: 100
-	});
-
-
 	if(inProgressBill){
 		columns.push({
 		    title: '收货数量',

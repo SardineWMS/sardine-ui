@@ -62,7 +62,7 @@ const OrderBillView=({
 	);
 	baseChildren.push(
 		    <BaseFormItem  label="预约日期 :">
-	          <span> {item.bookedDate.format('YYYY-MM-DD')} </span>
+	          <span> {item.bookedDate==null?null: item.bookedDate.format('YYYY-MM-DD')} </span>
 	        </BaseFormItem>
 	);
 	baseChildren.push(
