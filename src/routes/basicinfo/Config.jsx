@@ -71,7 +71,7 @@ function Config({ location, dispatch, config }) {
           dispatch({
              type: 'config/queryPickAreaStorageAreaConfigByPage'
           })    
-      }else if(selectKeys == '0002080104') {
+      }else if(selectKeys == '0002080301') {
           dispatch({
              type: 'config/queryTaskAreaConfigByPage'
           })    

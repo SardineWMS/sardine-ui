@@ -22,7 +22,9 @@ class ConfigTree extends React.Component {
           <TreeNode title="商品配置" key="0002080101" />    
           <TreeNode title="商品类别存储区域" key="0002080102"/>
           <TreeNode title="拣货分区存储区域" key="0002080103"/>
-          <TreeNode title="作业区域" key="0002080104"/>
+        </TreeNode>
+        <TreeNode title="配货出库" key="00020803">
+          <TreeNode title="作业区域" key="0002080301"/>
         </TreeNode>
         <TreeNode title="内部管理" key="00020802">
           <TreeNode title="损溢原因" key="0002080201" />    
