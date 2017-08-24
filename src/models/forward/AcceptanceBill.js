@@ -1,9 +1,10 @@
 import { parse } from 'qs';
 import {
     querybypage, get, create, edit, remove, finish, abort,
-    queryCustomers, queryWrhs, refreshCaseQtyAndAmount, approve, beginalc
+     queryWrhs, refreshCaseQtyAndAmount, approve, beginalc
 } from '../../services/forward/AcceptanceBill';
 import { queryStockExtendInfo } from '../../services/common/common.js';
+import {queryCustomer,getByCode as getCustomer} from '../../services/basicinfo/Customer';
 import { message } from 'antd';
 
 export default {
@@ -224,7 +225,7 @@ export default {
         },
 
         *queryCustomers({ payload }, { call, put }) {
-            const result = yield call(queryCustomers, parse(payload));
+            const result = yield call(queryCustomer, parse(payload));
             if (result) {
                 const customers = [];
                 for (var customer of result.data.obj.records) {
@@ -248,6 +249,21 @@ export default {
             };
         },
 
+        *getCustomer({ payload }, { call, put }) {
+            const result = yield call(getCustomer,parse(payload));
+            if (result.data.status==="200" && result.data.obj) {
+                yield put({
+                    type: 'showEditPage',
+                    payload: {
+                        customer:{
+                            uuid:result.data.obj.uuid,
+                            code:result.data.obj.code,
+                            name:result.data.obj.name
+                        }
+                    }
+                });
+            };
+        },
 
         *queryWrhs({ payload }, { call, put }) {
             const wrhs = yield call(queryWrhs, parse(payload));
@@ -304,8 +320,6 @@ export default {
                 });
             };
         }
-
-
     },
 
 
@@ -436,6 +450,13 @@ export default {
         hideCustomerModal(state) {
             return {
                 ...state,
+                customerModalVisible: false
+            };
+        },
+        selectCustomer(state, action) {
+            return {
+                ...state,
+                customer:action.payload.customer,
                 customerModalVisible: false
             };
         }

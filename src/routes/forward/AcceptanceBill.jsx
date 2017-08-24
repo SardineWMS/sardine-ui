@@ -21,7 +21,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         batchFinishProcessModal,finishAcceptanceBillEntitys,
         batchAbortProcessModal,abortAcceptanceBillEntitys,
         acceptanceBillNext,wrhs,customers,customerModalVisible,
-        customerPagination,stocks
+        customerPagination,stocks,customer
     } = acceptanceBill;
 
     const { field, keyword } = location.query;
@@ -137,6 +137,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
     const acceptanceBillCreateProps={
         acceptanceBill:currentAcceptanceBill,
         wrhs:wrhs,
+        customer:customer,
         onSave(acceptanceBill){
             acceptanceBill.items=currentAcceptanceBill.items;
             if(acceptanceBill.uuid){
@@ -156,6 +157,14 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                 type: 'acceptanceBill/backSearchForm'
             });
         },
+        getCustomer(customerCode){
+            dispatch({
+                type: 'acceptanceBill/getCustomer',
+                payload: {
+                    customerCode:customerCode
+                }
+            }); 
+        },
         queryCustomers(){
             dispatch({
                 type: 'acceptanceBill/queryCustomers'
@@ -173,9 +182,11 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         customers: customers,
         customerPagination: customerPagination,
         onOk(customers){
-            currentAcceptanceBill.customer=customers[0];
             dispatch({
-                type: 'acceptanceBill/hideCustomerModal'
+                type: 'acceptanceBill/selectCustomer',
+                payload: {
+                    customer: customers[0]
+                }
             });  
         },
         onCancel(){

@@ -15,6 +15,8 @@ const AcceptanceBillCreateForm = ({
     onSave,
     queryWrhs,
     queryCustomers,
+    getCustomer,
+    customer,
     wrhs = [],
     form: {
         getFieldDecorator,
@@ -30,7 +32,7 @@ const AcceptanceBillCreateForm = ({
             data = {
                 ...acceptanceBill,
                 ...getFieldsValue(),
-                customer: acceptanceBill.customer,
+                customer: customer,
                 wrh: acceptanceBill.wrh
             };
             onSave(data);
@@ -50,6 +52,16 @@ const AcceptanceBillCreateForm = ({
             acceptanceBill.deliveryType = "仓库送";
     };
 
+     function handleGetCustomer() {
+        if (!getFieldsValue().customer)
+          return;
+        if (customer && customer.code == getFieldsValue().customer)
+          return;
+        if (customer && ("[" + customer.code + "]" + customer.name) == getFieldsValue().customer)
+          return;
+       getCustomer(getFieldsValue().customer);
+     };
+
     const baseChildren = [];
     const compositiveChildren = [];
 
@@ -64,17 +76,17 @@ const AcceptanceBillCreateForm = ({
         });
     };
 
-
     baseChildren.push(
-        <BaseFormItem label={"客户："}>
-            {getFieldDecorator("customer", { rules: [{ required: true }], initialValue: acceptanceBill.customer ? acceptanceBill.customer.code : null })(
-                <Input placeholder="请选择" suffix={<Button type="primary" icon="credit-card" onClick={() => queryCustomers()} onBlur={queryWrhs} />} />
+        <BaseFormItem label={"客户："} key="customer">
+            {getFieldDecorator("customer", { rules: [{ required: true }], initialValue: customer ? "[" + customer.code + "]" + customer.name : null })(
+                <Input placeholder="请选择" suffix={<Icon type="ellipsis" onClick={() => queryCustomers()} />} 
+                onBlur={handleGetCustomer} onPressEnter={handleGetCustomer}/>
             )}
         </BaseFormItem>
     );
 
     baseChildren.push(
-        <BaseFormItem label={"仓位"} >
+        <BaseFormItem label={"仓位"} key="wrh">
             {getFieldDecorator("wrh", { rules: [{ required: true }], initialValue: acceptanceBill.wrh ? acceptanceBill.wrh.code : null })(
                 <Select size="large" onSelect={wrhOnSelect}>
                     {wrhOptions}
@@ -83,7 +95,7 @@ const AcceptanceBillCreateForm = ({
         </BaseFormItem>
     );
 
-    baseChildren.push(<BaseFormItem label={"来源单据类型："}>
+    baseChildren.push(<BaseFormItem label={"来源单据类型："} key="sourceBillType">
         {getFieldDecorator("sourceBillType", {
             rules: [{ required: true },{max:100,message:'来源单据类型最大长度是100！'}],
             initialValue: acceptanceBill.sourceBillType
@@ -92,7 +104,7 @@ const AcceptanceBillCreateForm = ({
             )}
     </BaseFormItem>);
 
-    baseChildren.push(<BaseFormItem label={"来源单据单号："}>
+    baseChildren.push(<BaseFormItem label={"来源单据单号："}  key="sourceBillNumber">
         {getFieldDecorator("sourceBillNumber", {
             rules: [{ required: true },{
                 max:30,message:'来源单据单号最大长度是30！'
@@ -103,7 +115,7 @@ const AcceptanceBillCreateForm = ({
             )}
     </BaseFormItem>);
 
-    baseChildren.push(<BaseFormItem label={"领用原因："}>
+    baseChildren.push(<BaseFormItem label={"领用原因："} key="acceptanceReason">
         {getFieldDecorator("acceptanceReason", {
             rules: [{ required: true },{
                 max:100,message:'领用原因最大长度是100！'
@@ -115,7 +127,7 @@ const AcceptanceBillCreateForm = ({
     </BaseFormItem>);
 
     baseChildren.push(
-        <BaseFormItem label={"配送体系："}>
+        <BaseFormItem label={"配送体系："} key="deliverySystem">
             {getFieldDecorator("deliverySystem", {
                 rules: [{ required: true }], initialValue: acceptanceBill.deliverySystem
             })(
@@ -127,7 +139,7 @@ const AcceptanceBillCreateForm = ({
             }
         </BaseFormItem>);
 
-    baseChildren.push(<BaseFormItem label={"配送方式："}>
+    baseChildren.push(<BaseFormItem label={"配送方式："} key="deliveryType">
         {getFieldDecorator("deliveryType", {
             rules: [{ required: true },{
                 max:100,message:'配送方式最大长度是100！'
@@ -138,11 +150,11 @@ const AcceptanceBillCreateForm = ({
             )}
     </BaseFormItem>);
 
-    compositiveChildren.push(<BaseFormItem label={"总件数："}>
+    compositiveChildren.push(<BaseFormItem label={"总件数："} key="totalCaseQtyStr">
         <label>{acceptanceBill.totalCaseQtyStr == null ? 0 : acceptanceBill.totalCaseQtyStr}</label>
     </BaseFormItem>);
 
-    compositiveChildren.push(<BaseFormItem label={"总金额："}>
+    compositiveChildren.push(<BaseFormItem label={"总金额："} key="totalAmount">
         <label>{acceptanceBill.totalAmount == null ? 0 : acceptanceBill.totalAmount}</label>
     </BaseFormItem>);
 

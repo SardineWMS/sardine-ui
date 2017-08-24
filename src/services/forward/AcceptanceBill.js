@@ -49,13 +49,6 @@ export async function abort(params) {
   return request(addTokenToUrl(url), updateBaseNullBody(params));
 }
 
-export async function queryCustomers(params) {
-  if (params == null)
-    params = { token: '' };
-  const url = "/swms/basicinfo/customer/query";
-  return request(query(url, params));
-}
-
 export async function queryWrhs(params) {
   if (params == null)
     params = { token: '' };

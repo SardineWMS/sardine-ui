@@ -260,31 +260,10 @@ const AcceptanceBillItemForm = ({
 	function handlerSelect(record, value, key) {
 		if (key === "binCode") {
 			record.binCode = value;
-			// stocks.map(function(stock){
-			// 	if(stock.binCode===value){
-			// 	    containerBarCodeOptions.push(<Option key={stock.containerBarcode}>
-			//               	{stock.containerBarcode}
-			//           	</Option>)	
-			// 	}
-			// });
 		} else if (key === "containerBarCode") {
 			record.containerBarCode = value;
-			// stocks.map(function(stock){
-			// 	if(stock.binCode===record.binCode && stock.containerBarcode===value){
-			// 	    supplierOptions.push(<Option key={stock.supplier.uuid} value={stock.supplier}>
-			//               	{"["+stock.supplier.code+"]"+stock.supplier.name}
-			//           	</Option>)	
-			// 	}
-			// });
 		} else if (key === "supplier") {
 			record.supplier = value;
-			// stocks.map(function(stock){
-			// 	if(stock.binCode===record.binCode && stock.containerBarcode===record.containerBarCode && stock.supplier.uuid===value.uuid){
-			// 	    qpcStrOptions.push(<Option key={stock.qpcStr}>
-			//               	{stock.qpcStr}
-			//           	</Option>)	
-			// 	}
-			// });
 		} else if (key === "qpcStr") {
 			record.qpcStr = value;
 			stocks.map(function (stock) {
