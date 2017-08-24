@@ -35,7 +35,10 @@ const BinScopeModal=({
   	<Modal {...modalOpts}>
       <Form>
            <BaseFormItem label={label}>
-              {getFieldDecorator('binScope', {rules:[{max:30,message:'最大长度为30！'}]
+              {getFieldDecorator('binScope', {rules: [{ required: true, message: '货位范围不能为空！' }, {
+                  pattern:  /^(([\\d]{2,8}(\\(([\\d]\/?)*[^\/]\\))?)?,?([\\d]{2,8}-([\\d]{2,8}(\\(([\\d]\/?)*[^\/]\\))?)?[^\\-])?,?([\\d]{2,8})*)*$/,
+                  message: '货位范围格式不正确'
+                }]
               })(<Input />)}
           </BaseFormItem>
       </Form>

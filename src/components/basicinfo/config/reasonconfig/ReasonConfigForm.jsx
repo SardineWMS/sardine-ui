@@ -1,4 +1,4 @@
-import { Form, Input, Icon, Button } from 'antd';
+import { Form, Input, Icon, Button,Card } from 'antd';
 import React from 'react';
 import Guid from '../../../../utils/Guid';
 const FormItem = Form.Item;
@@ -113,6 +113,10 @@ class ReasonConfigForm extends React.Component {
 
     return (
       <Form onSubmit={this.handleSubmit}>
+        <FormItem >
+          <Button type="primary" htmlType="submit" size="large">保存</Button>
+        </FormItem>
+        <Card title={this.props.title} style={{ width: '70%' }}>
         {formItems}
         <FormItem {...formItemLayoutWithOutLabel} style={{
           'padding-top': '3px',
@@ -122,9 +126,7 @@ class ReasonConfigForm extends React.Component {
             <Icon type="plus" /> 新增
           </Button>
         </FormItem>
-        <FormItem {...formItemLayoutWithOutLabel}>
-          <Button type="primary" htmlType="submit" size="large">保存</Button>
-        </FormItem>
+        </Card>
       </Form>
     );
   }
