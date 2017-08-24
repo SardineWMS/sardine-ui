@@ -51,6 +51,7 @@ function Config({ location, dispatch, config }) {
       operators,
       operatorPagination,
       currentTaskAreaConfig,
+      currentOperator,
       reasons,
       reasonType 
     } = config;
@@ -537,10 +538,17 @@ function Config({ location, dispatch, config }) {
   const setTaskAreaConfigModalProps={
       visible:taskAreaConfigModalVisible,
       taskAreaConfig:currentTaskAreaConfig,
+      currentOperator:currentOperator,
       queryOperators(){
         dispatch({
             type: 'config/queryUserByPage'
         }); 
+      },
+      getOperator(operatorCode){
+          dispatch({
+            type: 'config/getOperator',
+            payload: operatorCode
+          })
       },
       onOk(taskAreaConfig) {
         if(taskAreaConfig.uuid){
@@ -571,7 +579,7 @@ function Config({ location, dispatch, config }) {
       operatorPagination: operatorPagination,
       onOk(users){
         if(users && users.length <= 0){
-             message.warning("请选择要设置的拣货分区！", 2, '');
+             message.warning("请选择要设置的员工！", 2, '');
             return;
         }
         const user=users[0];
@@ -579,9 +587,9 @@ function Config({ location, dispatch, config }) {
         operator.uuid=user.uuid;
         operator.code=user.code;
         operator.name=user.name;
-        currentTaskAreaConfig.operator=operator;
         dispatch({
-            type: 'config/hideOperatorModal'
+            type: 'config/selectOperator',
+            payload: operator
         })  
       },
       onCancel(){

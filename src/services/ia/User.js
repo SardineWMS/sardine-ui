@@ -38,6 +38,11 @@ export async function get(params) {
   return request(query(url, params));
 }
 
+export async function getByCode(params) {
+  const url = "/swms/ia/user/getbycode";
+  return request(query(url, params));
+}
+
 export async function onlineUser(params) {
   const url = "/swms/ia/user/online";
   return request(query(url, params), updateBaseNullBody(null));

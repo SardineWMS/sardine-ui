@@ -3,7 +3,7 @@ import { queryCategoryStorageAreaConfigByPage,setCategoryStorageArea} from '../.
 import { queryPickAreaStorageAreaConfigByPage,setPickAreaStorageArea} from '../../services/basicinfo/config/PickAreaStorageAreaConfig';
 import { queryTaskAreaConfigByPage,createTaskAreaConfig,updateTaskAreaConfig,removeTaskAreaConfig} from '../../services/basicinfo/config/TaskAreaConfig';
 import { queryReasonConfig,setReasonConfig} from '../../services/basicinfo/config/ReasonConfig';
-import { queryUser} from '../../services/ia/User';
+import { queryUser,getByCode as getUserByCode} from '../../services/ia/User';
 
 import { parse } from 'qs';
 
@@ -57,6 +57,7 @@ export default {
         },
         taskAreaConfigModalVisible:false,
         currentTaskAreaConfig:{},
+        currentOperator:{},
         operators:[],
         operatorPagination:{
             showSizeChanger: true,
@@ -215,6 +216,21 @@ export default {
                             size:'default',
                             total: data.obj.recordCount,
                             current: data.obj.page
+                        }
+                    }
+                })
+            }
+        },
+       *getOperator({ payload }, { call, put }) {
+            const { data } = yield call(getUserByCode, {userCode:payload});
+            if(data.obj){
+                yield put({
+                    type: 'selectOperator',
+                    payload: {
+                        currentOperator: {
+                          uuid: data.obj.uuid,
+                          code: data.obj.code,
+                          name: data.obj.name
                         }
                     }
                 })
@@ -453,6 +469,17 @@ export default {
                 ...action.payload,
                 operatorModalVisible: false
             }
+        },
+        selectOperator(state, action) {
+          return {
+            ...state,
+            currentOperator: {
+              uuid: action.payload.uuid,
+              code: action.payload.code,
+              name: action.payload.name
+            },
+            operatorModalVisible: false
+          }
         }
     }
 }
