@@ -203,6 +203,7 @@ const CreateBinModal = ({
               <Select.Option value="CollectBin">集货位</Select.Option>
               <Select.Option value="SupplierCollectBin">供应商集货位</Select.Option>
               <Select.Option value="RtnReceiveTempBin">退仓收货暂存位</Select.Option>
+              <Select.Option value="SupplierStorageBin">供应商退货位</Select.Option>
             </Select>
             )}
         </BaseFormItem>
