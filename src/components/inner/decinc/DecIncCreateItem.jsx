@@ -283,7 +283,7 @@ function DecIncCreateItem({
         } else {
             return (<RowEditCellDatePicker
                 editable={record.editable}
-                value={record.productionDate ? text : null}
+                value={record != null && record.productionDate != null ? text : null}
                 status={status}
                 onChange={value => handleChange(record, value, key)}
             />);
