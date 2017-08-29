@@ -83,6 +83,10 @@ function BinSearch({
       return '集货位';
     if (text == 'SupplierCollectBin')
       return '供应商集货位';
+    if (text == 'SupplierStorageBin')
+      return '供应商退货位';
+    if (text == 'RtnReceiveTempBin')
+      return '退仓收货暂存位';
   };
 
   const columns = [{
