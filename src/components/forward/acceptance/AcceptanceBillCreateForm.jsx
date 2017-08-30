@@ -41,9 +41,7 @@ const AcceptanceBillCreateForm = ({
 
     function wrhOnSelect(value) {
         const wrhUcn = new Object();
-        wrhUcn.uuid = value.uuid;
-        wrhUcn.code = value.code;
-        wrhUcn.name = value.name;
+        wrhUcn.uuid = value;
         acceptanceBill.wrh = wrhUcn;
     };
 
@@ -66,14 +64,10 @@ const AcceptanceBillCreateForm = ({
     const compositiveChildren = [];
 
     const wrhOptions = [];
-    if (typeof wrhs != 'undefined') {
-        wrhs.map(function (wrh) {
-            wrhOptions.push(
-                <Option key={wrh.uuid} value={wrh}>
-                    {"[" + wrh.code + "]"}+{wrh.name}
-                </Option>
-            );
-        });
+    if (wrhs != null) {
+        for (var wrh of wrhs) {
+            wrhOptions.push(<Option value={wrh.uuid}>{wrh.name + "[" + wrh.code + "]"}</Option>)
+        };
     };
 
     baseChildren.push(

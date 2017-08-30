@@ -31,6 +31,7 @@ function OrderBill({ location, dispatch, orderBill }){
     const orderBillListProps={
     	dataSource: list,
         pagination: pagination,
+        wrhs: wrhs,
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
                 pathname: '/forward/orderBill',
@@ -50,7 +51,7 @@ function OrderBill({ location, dispatch, orderBill }){
         },
         onCreate() {
             dispatch({
-                type: 'orderBill/showCreatePage',
+                type: 'orderBill/onCreate',
                 payload: {
                   currentItem: {}
                 }

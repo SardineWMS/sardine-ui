@@ -12,10 +12,10 @@ moment.locale('zh-cn');
 const Option = Select.Option;
 const OrderBillCreateForm = ({
 	item = {},
-    wrhs = [],
     onOk,
     onCancel,
     queryWrhs,
+    wrhs,
     querySuppliers,
     getSupplier,
     form: {
@@ -50,9 +50,7 @@ const OrderBillCreateForm = ({
 
     function wrhOnSelect(value) {
         const wrhUcn = new Object();
-        wrhUcn.uuid = value.uuid;
-        wrhUcn.code = value.code;
-        wrhUcn.name = value.name;
+        wrhUcn.uuid = value;
         item.wrh = wrhUcn;
     };
 
@@ -64,14 +62,11 @@ const OrderBillCreateForm = ({
     const baseChildren = [];
     const dataChildren = [];
     const options = [];
-
-    wrhs.map(function (wrh) {
-        options.push(
-            <Option key={wrh.uuid} value={wrh} >
-                {"[" + wrh.code + "]"}+{wrh.name}
-            </Option>
-        );
-    });
+    if (wrhs != null) {
+        for (var wrh of wrhs) {
+            options.push(<Option value={wrh.uuid}>{wrh.name + "[" + wrh.code + "]"}</Option>)
+        };
+    };
 
     baseChildren.push(
         <BaseFormItem label={"供应商："}>
@@ -84,7 +79,7 @@ const OrderBillCreateForm = ({
     baseChildren.push(
         <BaseFormItem label={"仓位"} >
             {getFieldDecorator("wrh.uuid", { rules: [{ required: true ,message: '仓位不能为空！' }], initialValue: item.wrh ? item.wrh.code : null })(
-                <Select size="large" onFocus={queryWrhs} onSelect={wrhOnSelect}>
+                <Select size="large" onSelect={wrhOnSelect}>
                     {options}
                 </Select>
             )}
