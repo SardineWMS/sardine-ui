@@ -25,7 +25,7 @@ function ReturnBill({ location, dispatch, rtnBill }) {
         pagination,
         onCreate() {
             dispatch({
-                type: 'rtnBill/showCreateSuccess'
+                type: 'rtnBill/showCreate'
             })
         },
         onPageChange(page, filters, sorter) {
