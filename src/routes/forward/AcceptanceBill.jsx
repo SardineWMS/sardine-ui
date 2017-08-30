@@ -28,6 +28,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
     const acceptanceBillListProps={
     	dataSource: list,
         pagination: pagination,
+        wrhs: wrhs,
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
                 pathname: '/forward/acceptanceBill',
@@ -47,7 +48,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         },
         onCreate() {
             dispatch({
-                type: 'acceptanceBill/showCreatePage',
+                type: 'acceptanceBill/onCreate',
                 payload: {
                   currentAcceptanceBill: {}
                 }
