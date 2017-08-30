@@ -76,6 +76,14 @@ export default {
               total: data.obj.recordCount,
               current: data.obj.page
             },
+            pagination: {
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
+              current: data.obj.page,
+              total: data.obj.recordCount,
+              size: 'default'
+            },
             containerStockInfos: [],
           }
         });

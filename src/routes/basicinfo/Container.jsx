@@ -55,14 +55,16 @@ function Container({ location, dispatch, container }) {
     dataSource: list,
     pagination: pagination,
     searchExpand,
-    onPageChange(page) {
-      dispatch(routerRedux.push({
-        pathname: '/wms/basicInfo/container',
-        query: {
+    onPageChange(page, filters, sorter) {
+      dispatch({
+        type: 'container/query',
+        payload: {
           page: page.current,
-          pageSize: page.pageSize
-        }
-      }));
+          pageSize: page.pageSize,
+          sort: sorter.columnKey,
+          order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+        },
+      })
     },
     onCreate() {
       dispatch({
