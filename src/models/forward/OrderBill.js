@@ -139,6 +139,17 @@ export default {
             };
         },
 
+        *onCreate({ payload }, { call, put }) {
+            yield put({ type: 'showLoading' });
+            const { data } = yield call(queryWrhs, parse(payload));
+            yield put({
+                type: 'showCreatePage',
+                payload: {
+                    wrhs: data.obj
+                }
+            });
+        },
+
         *create({ payload }, { call, put }) {
             yield put({ type: 'showLoading' });
             const { data } = yield call(create, parse(payload));
