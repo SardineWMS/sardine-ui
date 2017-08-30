@@ -852,7 +852,27 @@ export default {
                     key: payload.orderBillNumber
                 }
             }));
-        }
+        },
+
+        *showCreate({ payload }, { call, put }) {
+            const billItem = new Object();
+            billItem.line = 1;
+            billItem.editable = true;
+            const list = [];
+            list.push(billItem);
+            const currentItem = {};
+            currentItem.totalCaseQtyStr = 0;
+            currentItem.totalAmount = 0;
+            // const { data } = yield call(queryWrhs, {});
+            yield put({
+                type: 'createSuccess',
+                payload: {
+                    orderItems: list,
+                    currentItem: currentItem,
+                    // wrhs: data.obj
+                }
+            });
+        },
     },
 
     reducers: {

@@ -60,7 +60,7 @@ function Receive({ location, dispatch, receive }) {
         },
         onCreate() {
             dispatch({
-                type: 'receive/createSuccess'
+                type: 'receive/showCreate'
             });
         },
         onViewItem(item) {
