@@ -30,13 +30,16 @@ const ReturnBillCreateItem = ({
     onModifyReturnContainer,
     onModifyProductionDate
 }) => {
-    function handleModifyReturnType() {
+    function handleModifyReturnType(e) {
+        e.preventDefault();
         onModifyReturnType(selectedRowKeys);
     };
-    function handleModifyReturnContainer() {
+    function handleModifyReturnContainer(e) {
+        e.preventDefault();
         onModifyReturnContainer(selectedRowKeys);
     };
-    function handleModifyProductionDate() {
+    function handleModifyProductionDate(e) {
+        e.preventDefault();
         onModifyProductionDate(selectedRowKeys);
     };
     const columns = [];
