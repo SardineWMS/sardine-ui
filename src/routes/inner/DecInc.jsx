@@ -56,7 +56,7 @@ function DecInc({ location, dispatch, decinc }) {
         },
         onCreate() {
             dispatch({
-                type: 'decinc/createSuccess',
+                type: 'decinc/showCreate',
                 payload: { currentItem }
             });
         },
