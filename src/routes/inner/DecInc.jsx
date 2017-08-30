@@ -137,7 +137,7 @@ function DecInc({ location, dispatch, decinc }) {
                     message.error("第" + i + "行中的数量格式不正确，最大长度12位数字，保留3位小数");
                     return;
                 };
-                if ((decIncItem[i].reason != null || decIncItem[i].reason != '') && decIncItem[i].reason.length > 255) {
+                if ((decIncItem[i].reason && decIncItem[i].reason.length > 255)) {
                     message.error("第" + i + "行中的原因最大长度是255！", 2);
                     return;
                 };
