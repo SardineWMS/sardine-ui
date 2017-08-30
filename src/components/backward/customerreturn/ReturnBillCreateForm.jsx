@@ -26,7 +26,8 @@ const ReturnBillCreateForm = ({
     wrhs = [],
     onEnterCustomer
 }) => {
-    function handleCreate() {
+    function handleCreate(e) {
+        e.preventDefault();
         validateFields((errors) => {
             if (errors)
                 return;
@@ -39,7 +40,8 @@ const ReturnBillCreateForm = ({
         });
     };
 
-    function handleEnterPress() {
+    function handleEnterPress(e) {
+        e.preventDefault();
         if (getFieldsValue().customer == null || getFieldsValue().customer == '')
             return;
         const data = {
