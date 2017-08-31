@@ -7,7 +7,7 @@ import TaskSearchGrid from '../../components/Inner/Task/TaskSearchGrid';
 import ArticleMove from '../../components/Inner/Task/ArticleMove';
 import ContainerMove from '../../components/Inner/Task/ContainerMove';
 
-function Task({location, dispatch, task}) {
+function Task({ location, dispatch, task }) {
     const {
         list,
         loading,
@@ -20,8 +20,8 @@ function Task({location, dispatch, task}) {
         containerMoveModalVisable
     } = task;
 
-    const {field, keyword} = location.query;
-    
+    const { field, keyword } = location.query;
+
 
     const taskListProps = {
         dataSource: list,
@@ -41,14 +41,20 @@ function Task({location, dispatch, task}) {
         onArticleMove() {
             dispatch({
                 type: 'task/showArticleMoveModal',
-                payload: { }
+                payload: {}
             });
         },
         onContainerMove() {
             dispatch({
                 type: 'task/showContainerMoveModal',
-                payload: { }
+                payload: {}
             });
+        },
+        onExecute(record) {
+            dispatch({
+                type: 'task/execute',
+                payload: record
+            })
         }
     };
 
@@ -56,10 +62,10 @@ function Task({location, dispatch, task}) {
         currentArticleItem: currentArticleItem,
         stockInfos: stockInfos,
         onQueryStock(articleCode) {
-           dispatch({
+            dispatch({
                 type: 'task/queryStocks',
                 payload: {
-                  articleCode: articleCode
+                    articleCode: articleCode
                 }
             });
         },
@@ -89,10 +95,10 @@ function Task({location, dispatch, task}) {
     const containerMoveProps = {
         container: container,
         onGetContainer(containerBarcode) {
-           dispatch({
+            dispatch({
                 type: 'task/getContainer',
                 payload: {
-                  containerBarcode: containerBarcode
+                    containerBarcode: containerBarcode
                 }
             });
         },
@@ -133,16 +139,16 @@ function Task({location, dispatch, task}) {
     function refreshWidget() {
         if (articleMoveModalVisable) {
             return (
-               <div>
-                  <ArticleMove {...articleMoveProps} />
-               </div>
+                <div>
+                    <ArticleMove {...articleMoveProps} />
+                </div>
             );
         };
         if (containerMoveModalVisable) {
             return (
-               <div>
-                  <ContainerMove {...containerMoveProps} />
-               </div>
+                <div>
+                    <ContainerMove {...containerMoveProps} />
+                </div>
             );
         };
         return (
@@ -162,7 +168,7 @@ Task.propTypes = {
     task: PropTypes.object
 };
 
-function mapStateToProps({task}) {
+function mapStateToProps({ task }) {
     return { task };
 };
 

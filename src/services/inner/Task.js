@@ -41,3 +41,8 @@ export async function containerMove(params) {
     const url = '/swms/inner/decInc/containerMove';
     return request(addTokenToUrl(url), createBase(params));
 }
+
+export async function execute(params) {
+    const url='swms/inner/task/execute';
+    
+}

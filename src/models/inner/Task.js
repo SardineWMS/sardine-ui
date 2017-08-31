@@ -1,7 +1,7 @@
 import { parse } from 'qs';
 import {
     queryTask, queryStocks, saveArticleMoveRule, saveAndMoveArticleMoveRule, saveContainerMoveRule,
-    saveAndMoveContainerMoveRule, articleMove, containerMove
+    saveAndMoveContainerMoveRule, articleMove, containerMove, execute
 } from '../../services/Inner/Task';
 import { getByBarcode } from '../../services/basicinfo/Container';
 
@@ -277,6 +277,10 @@ export default {
                 };
             };
         },
+
+        *execute({ payload }, { call, put }) {
+            yield call(execute, { uuid: payload.uuid, version: payload.version });
+        }
     },
 
     reducers: {

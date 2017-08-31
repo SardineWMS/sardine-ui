@@ -37,7 +37,7 @@ const SupplierCreate = ({
         initialValue: item.code,
         rules: [
           { required: true, message: '代码未填写' },
-          {max:30,message:'代码最大长度是30！'}
+          { max: 30, message: '代码最大长度是30！' }
         ],
       })(
         <Input type="text" />
@@ -51,7 +51,7 @@ const SupplierCreate = ({
         initialValue: item.name,
         rules: [
           { required: true, message: '姓名未填写' },
-          {max:100,message:'姓名最大长度是100！'}
+          { max: 100, message: '姓名最大长度是100！' }
         ],
       })(
         <Input type="text" />
@@ -62,17 +62,29 @@ const SupplierCreate = ({
   children.push(
     <BaseFormItem label="联系方式：" >
       {getFieldDecorator('phone', {
-        initialValue: item.phone,rules:[{max:30,message:'联系方式最大长度是30！'}]
+        initialValue: item.phone, rules: [{ max: 30, message: '联系方式最大长度是30！' }]
       })(
         <Input type="text" />
         )}
     </BaseFormItem>
   );
 
+  if (item.uuid) {
+    console.log("item", item);
+    children.push(<BaseFormItem label="存储区域：">
+      {
+        getFieldDecorator('storageArea', { initialValue: item.storageArea, rules: [{ max: 30, message: '存储区域最大长度是30！' }] })(
+          <Input type="text" />
+        )
+      }
+    </BaseFormItem>
+    )
+  }
+
   children.push(
     <BaseFormItem label="地址：" hasFeedback>
       {getFieldDecorator('address', {
-        initialValue: item.address,rules:[{max:100,message:'地址最大长度是100！'}]
+        initialValue: item.address, rules: [{ max: 100, message: '地址最大长度是100！' }]
       })(
         <Input type="textarea" autosize={{ minRows: 4 }}></Input>
         )}
@@ -87,16 +99,16 @@ const SupplierCreate = ({
     <div>
       <ToolbarPanel children={toolbar} />
       <BaseCard title="基本信息">
-          <BaseForm items={children} />
+        <BaseForm items={children} />
       </BaseCard>
       <Panel title="说明">
         <Form.Item>
           {getFieldDecorator('remark', {
-              initialValue: item.remark,rules:[{max:255,message:'说明最大长度是255！'}]
+            initialValue: item.remark, rules: [{ max: 255, message: '说明最大长度是255！' }]
           })(
             <Input type="textarea" autosize={{ minRows: 4 }} />
-          )}
-          </Form.Item>
+            )}
+        </Form.Item>
       </Panel>
     </div>
   );

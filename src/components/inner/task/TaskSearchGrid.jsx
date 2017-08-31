@@ -6,8 +6,33 @@ function TaskSearch({
   pagination,
   onPageChange,
   onArticleMove,
-  onContainerMove
+  onContainerMove,
+  onExecute
 }) {
+  function convertTaskType(text) {
+    if (text == 'Putaway')
+      return '上架指令';
+    if (text == 'Rpl')
+      return '补货指令';
+    if (text == 'RtnPutaway')
+      return '退仓上架指令';
+    if (text == 'RtnShelf')
+      return '退货下架指令';
+    if (text == 'Move')
+      return '移库指令';
+  };
+
+  function convertState(text) {
+    if (text == 'Initial')
+      return '初始';
+    if (text == 'InProgress')
+      return '进行中';
+    if (text == 'Finished')
+      return '已完成';
+    if (text == 'Aborted')
+      return '已作废';
+  }
+
   const columns = [{
     title: '指令号',
     dataIndex: 'taskNo',
@@ -19,12 +44,13 @@ function TaskSearch({
     dataIndex: 'taskType',
     key: 'taskType',
     sorter: true,
-    width: 100
+    width: 100,
+    render: text => convertTaskType(text)
   }, {
     title: '状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => (text == "normal" ? '正常' : text),
+    render: text => convertState(text),
     width: 100
   }, {
     title: '商品',
@@ -83,9 +109,12 @@ function TaskSearch({
     width: 200,
     render: (text, record) => (
       <p>
-        <a onClick={() => onEdit(record)}>执行</a>
+        <a onClick={() => onExecute(record)}>执行</a>
+        &nbsp;
         <a onClick={() => onEdit(record)}>编辑</a>
+        &nbsp;
         <a onClick={() => onEdit(record)}>删除</a>
+        &nbsp;
         <a onClick={() => onEdit(record)}>作废</a>
       </p>
     )
@@ -131,21 +160,21 @@ function TaskSearch({
         scroll={{ x: 1500, y: 300 }}
         rowKey={record => record.uuid}
         rowSelection={rowSelection}
-        title={() => 
+        title={() =>
           <div>
-              
-              <Dropdown overlay={moveMenu}>
-                <Button type="ghost" style={{ marginLeft: 8 }}>
-                  移库 <Icon type="down" />
-                </Button>
-              </Dropdown>
-              <Button>收货上架</Button>
-              <Button>补货</Button>
-              <Button>拣货</Button>
-              <Button>装车</Button>
-              <Button>退仓上架</Button>
-              <Button>退货下架</Button>
-              <Button>退货交接</Button>
+
+            <Dropdown overlay={moveMenu}>
+              <Button type="ghost" style={{ marginLeft: 8 }}>
+                移库 <Icon type="down" />
+              </Button>
+            </Dropdown>
+            <Button>收货上架</Button>
+            <Button>补货</Button>
+            <Button>拣货</Button>
+            <Button>装车</Button>
+            <Button>退仓上架</Button>
+            <Button>退货下架</Button>
+            <Button>退货交接</Button>
           </div>}
       />
     </div>
