@@ -6,6 +6,10 @@ import TaskSearchForm from '../../components/Inner/Task/TaskSearchForm';
 import TaskSearchGrid from '../../components/Inner/Task/TaskSearchGrid';
 import ArticleMove from '../../components/Inner/Task/ArticleMove';
 import ContainerMove from '../../components/Inner/Task/ContainerMove';
+import PutAwayModal from '../../components/Inner/Task/PutAwayModal';
+import RplerModal from '../../components/Inner/Task/RplerModal';
+import UserModal from '../../components/Inner/Task/UserModal';
+import WMSProgress from '../../components/Widget/WMSProgress';
 
 function Task({ location, dispatch, task }) {
     const {
@@ -17,11 +21,22 @@ function Task({ location, dispatch, task }) {
         stockInfos,
         pagination,
         articleMoveModalVisable,
-        containerMoveModalVisable
+        containerMoveModalVisable,
+        abortTaskEntitys,
+        batchAbortProcessModalVisable,
+        putAwayTaskEntitys,
+        batchPutAwayProcessModalVisable,
+        rplTaskEntitys,
+        batchRplProcessModalVisable,
+        userModalVisable,
+        setRplerModalVisable,
+        userList,
+        currentRpler,
+        taskNext,
+        putAwayModalVisable
     } = task;
 
     const { field, keyword } = location.query;
-
 
     const taskListProps = {
         dataSource: list,
@@ -55,6 +70,207 @@ function Task({ location, dispatch, task }) {
                 type: 'task/execute',
                 payload: record
             })
+        },
+        onAbortBatch(tasks) {
+            if (tasks.length <= 0) {
+                message.warning("请选择要作废的指令", 2, '');
+                return;
+            };
+            dispatch({
+                type: 'task/batchAbortTask',
+                payload: {
+                    abortTaskEntitys: tasks
+                }
+            });
+        },
+        onPutAway(tasks) {
+            if (tasks.length <= 0) {
+                message.warning("请选择要收货上架的指令", 2, '');
+                return;
+            };
+            dispatch({
+                type: 'task/showPutAwayModal',
+                payload: {
+                   putAwayTaskEntitys:tasks
+                }
+            });
+        },
+        onRpl(tasks) {
+            if (tasks.length <= 0) {
+                message.warning("请选择要补货的指令", 2, '');
+                return;
+            };
+            dispatch({
+                type: 'task/showRplerModal',
+                payload: {
+                   rplTaskEntitys:tasks
+                }
+            });
+        }
+    };
+
+    const putAwayModalProps={
+        visible:putAwayModalVisable,
+        tasks:putAwayTaskEntitys,
+        onOk(tasks) {
+            dispatch({
+                type: 'task/batchPutAwayTask',
+                payload: {
+                   rplTaskEntitys:tasks
+                }
+            });
+        },
+        onCancel() {
+            dispatch({
+                type: 'task/hidePutAwayModal'
+            });
+        }
+    }
+
+    const batchProcessPutAwayTaskProps = {
+        showConfirmModal: batchPutAwayProcessModalVisable,
+        records: putAwayTaskEntitys ? putAwayTaskEntitys : [],
+        next: taskNext,
+        actionText: '上架',
+        entityCaption: '指令',
+        batchProcess(entity) {
+            dispatch({
+                type: 'task/putAway',
+                payload: {
+                    uuid:entity.uuid,
+                    version:entity.version,
+                    toBinCode:entity.toBinCode,
+                    toContainerBarcode:entity.toContainerBarcode
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'task/hideBatchPutAwayTask',
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'task/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
+        }
+    };
+
+    const rplerModalProps={
+        visible:setRplerModalVisable,
+        currentRpler:currentRpler,
+        queryRplers() {
+            dispatch({
+                type: 'task/queryUserByPage'
+            });
+        },
+        getRpler(rplerCode) {
+            dispatch({
+                type: 'task/getUser',
+                payload: {
+                   userCode:rplerCode
+                }
+            });
+        },
+        onOk() {
+            dispatch({
+                type: 'task/batchRplTask'
+            });
+        },
+        onCancel() {
+            dispatch({
+                type: 'task/hideRplerModal'
+            });
+        }
+    };
+
+    const userModalProps={
+        visible:userModalVisable,
+        users:userList,
+        userPagination: pagination,
+        onOk(users) {
+            if(!users)
+                return;
+            dispatch({
+                type: 'task/selectRpler',
+                payload: {
+                   currentRpler:{
+                    uuid:users[0].uuid,
+                    code:users[0].code,
+                    name:users[0].name
+                   }
+                }
+            });
+        },
+        onCancel() {
+            dispatch({
+                type: 'task/hideUerModal'
+            });
+        }
+    };
+
+    const batchProcessRplTaskProps = {
+        showConfirmModal: batchRplProcessModalVisable,
+        records: rplTaskEntitys ? rplTaskEntitys : [],
+        next: taskNext,
+        actionText: '补货',
+        entityCaption: '指令',
+        batchProcess(entity) {
+            dispatch({
+                type: 'task/rpl',
+                payload: {
+                    rplBillUuid:entity.uuid,
+                    version:entity.version,
+                    rpler:currentRpler
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'task/hideBatchRplTask',
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'task/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
+        }
+    };
+
+
+    const batchProcessAbortTaskProps = {
+        showConfirmModal: batchAbortProcessModalVisable,
+        records: abortTaskEntitys ? abortTaskEntitys : [],
+        next: taskNext,
+        actionText: '作废',
+        entityCaption: '指令',
+        batchProcess(entity) {
+            dispatch({
+                type: 'task/abort',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'task/hideAbortTaskModal',
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'task/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
         }
     };
 
@@ -155,6 +371,12 @@ function Task({ location, dispatch, task }) {
             <div>
                 <TaskSearchForm {...taskSearchProps} />
                 <TaskSearchGrid {...taskListProps} />
+                <WMSProgress {...batchProcessAbortTaskProps} />
+                <UserModal {...userModalProps} />
+                <RplerModal {...rplerModalProps} />
+                <WMSProgress {...batchProcessRplTaskProps} />
+                <PutAwayModal {...putAwayModalProps} />
+                <WMSProgress {...batchProcessPutAwayTaskProps} />
             </div>
         );
     };

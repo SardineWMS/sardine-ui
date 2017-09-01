@@ -4,7 +4,16 @@ import { query, addTokenToUrl, createBase, updateBase, deleteBase } from '../../
 
 export async function queryTask(params) {
     const url = "/swms/inner/task/query";
-    return request(query(url, params));
+
+    var req = new Object();
+    req.method = 'post';
+    req.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    };
+    req.body = JSON.stringify(params.states?params.states:[]);
+
+    return request(query(url, params),req);
 }
 
 export async function queryStocks(params) {
@@ -44,5 +53,19 @@ export async function containerMove(params) {
 
 export async function execute(params) {
     const url='swms/inner/task/execute';
-    
+}
+
+export async function abort(params) {
+  const url = `/swms/inner/task/abort?${qs.stringify(params)}`;
+  return request(addTokenToUrl(url), updateBaseNullBody(params));
+}
+
+export async function putaway(params) {
+  const url = `/swms/inner/task/putaway?${qs.stringify(params)}`;
+  return request(addTokenToUrl(url), updateBaseNullBody(params));
+}
+
+export async function rpl(params) {
+    const url = `/swms/inner/task/rpl?rplBillUuid=${params.rplBillUuid}&version=${params.version}`;
+    return request(addTokenToUrl(url), createBase(params.rpler));
 }

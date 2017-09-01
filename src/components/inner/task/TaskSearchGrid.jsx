@@ -7,62 +7,37 @@ function TaskSearch({
   onPageChange,
   onArticleMove,
   onContainerMove,
-  onExecute
+  onExecute,
+  onAbortBatch,
+  onPutAway,
+  onRpl,
+  selectedRowKeys = []
 }) {
-  function convertTaskType(text) {
-    if (text == 'Putaway')
-      return '上架指令';
-    if (text == 'Rpl')
-      return '补货指令';
-    if (text == 'RtnPutaway')
-      return '退仓上架指令';
-    if (text == 'RtnShelf')
-      return '退货下架指令';
-    if (text == 'Move')
-      return '移库指令';
-  };
-
-  function convertState(text) {
-    if (text == 'Initial')
-      return '初始';
-    if (text == 'InProgress')
-      return '进行中';
-    if (text == 'Finished')
-      return '已完成';
-    if (text == 'Aborted')
-      return '已作废';
-  }
 
   const columns = [{
-    title: '指令号',
-    dataIndex: 'taskNo',
-    key: 'taskNo',
-    sorter: true,
-    width: 150
-  }, {
-    title: '指令类型',
-    dataIndex: 'taskType',
-    key: 'taskType',
-    sorter: true,
-    width: 100,
-    render: text => convertTaskType(text)
-  }, {
     title: '状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => convertState(text),
-    width: 100
-  }, {
-    title: '商品',
+    width: 80
+  },{
+    title: '商品代码',
     dataIndex: 'article',
     key: 'article',
-    width: 150
-  }, {
-    title: '规格',
-    dataIndex: 'qpcStr',
-    key: 'qpcStr',
+    render: (text) => text.code,
     width: 100
   }, {
+    title: '名称及规格',
+    dataIndex: 'articleSpec',
+    key: 'articleSpec',
+    render: (text, record) => record.article.name + "," + record.articleSpec,
+    width: 150
+  },{
+    title: '包装',
+    dataIndex: 'qpcStr',
+    key: 'qpcStr',
+    render: (text, record) => record.munit + "," + record.qpcStr,
+    width: 150
+  },{
     title: '数量',
     dataIndex: 'qty',
     key: 'qty',
@@ -103,21 +78,23 @@ function TaskSearch({
     key: 'realCaseQtyStr',
     width: 100
   }, {
-    title: '操作',
-    key: 'operation',
+    title: '操作人',
+    dataIndex: 'operator',
+    key: 'operator',
+    width: 100
+  }, {
+    title: '操作时间',
+    dataIndex: 'operateTime',
+    key: 'operateTime',
+    width: 100
+  },
+  {
+    title: '来源单据',
+    dataIndex: 'sourceBill',
+    key: 'sourceBill',
     fixed: 'right',
-    width: 200,
-    render: (text, record) => (
-      <p>
-        <a onClick={() => onExecute(record)}>执行</a>
-        &nbsp;
-        <a onClick={() => onEdit(record)}>编辑</a>
-        &nbsp;
-        <a onClick={() => onEdit(record)}>删除</a>
-        &nbsp;
-        <a onClick={() => onEdit(record)}>作废</a>
-      </p>
-    )
+    width: 150,
+    render: (text) => "[" + text.billNumber + "]" + text.billType
   }];
 
   const moveMenu = (
@@ -134,19 +111,30 @@ function TaskSearch({
       onContainerMove();
   };
 
+  function handlerAbortBatch() {
+      onAbortBatch(selectedRowKeys);
+  };
+
+  function handlerPutAway() {
+      onPutAway(selectedRowKeys);
+  };
+
+  function handlerRpl() {
+      onRpl(selectedRowKeys);
+  };
+  
   const rowSelection = {
-    onChange: (selectedRowKeys, selectedRows) => {
-
-    },
-    onSelect: (record, selected, selectedRows) => {
-
-    },
-    onSelectAll: (selected, selectedRows, changeRows) => {
-
-    },
-    getCheckboxProps: record => ({
-
-    })
+      onChange: (selectedRowKeys, selectedRows) => {
+      },
+      onSelect: (record, selected, selectedRows) => {
+          selectedRowKeys = selectedRows;
+      },
+      onSelectAll: (selected, selectedRows, changeRows) => {
+          selectedRowKeys = selectedRows;
+      },
+      getCheckboxProps: record => ({
+          disabled: record.name === 'Disabled User',
+      })
   };
 
   return (
@@ -168,13 +156,14 @@ function TaskSearch({
                 移库 <Icon type="down" />
               </Button>
             </Dropdown>
-            <Button>收货上架</Button>
-            <Button>补货</Button>
+            <Button onClick={handlerPutAway}>收货上架</Button>
+            <Button onClick={handlerRpl}>补货</Button>
             <Button>拣货</Button>
             <Button>装车</Button>
             <Button>退仓上架</Button>
             <Button>退货下架</Button>
             <Button>退货交接</Button>
+            <Button onClick={handlerAbortBatch}>批量作废</Button>
           </div>}
       />
     </div>

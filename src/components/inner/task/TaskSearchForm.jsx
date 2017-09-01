@@ -27,43 +27,49 @@ const TaskSearchForm = ({
   };
 
   const children = [];
+
   children.push(
-    <BaseTwoCol key="taskNo">
-      <BaseFormItem  label="指令号 等于">
-        {getFieldDecorator('taskNo')(
-          <Input type="text" placeholder="指令号 等于" />
-        )}
-      </BaseFormItem>
-    </BaseTwoCol>
-  );
-  children.push(
-    <BaseTwoCol key="taskType">
-      <BaseFormItem label="指令类型 等于">
-        {getFieldDecorator('taskType')(
-          <Select size="large">
-            <Option value="Putaway">上架指令</Option>
-            <Option value="Pickup">拣货指令</Option>
-            <Option value="Rpl">补货指令</Option>
-            <Option value="RtnPutaway">退仓上架指令</Option>
-            <Option value="RtnShelf">退货下架指令</Option>
-            <Option value="RtnHandover">退货交接指令</Option>
-            <Option value="Move">移库指令</Option>
-            <Option value="Ship">装车指令</Option>
-          </Select>
-        )}
-      </BaseFormItem>
-    </BaseTwoCol>
-  );
-  children.push(
-    <BaseTwoCol key="state">
+    <BaseTwoCol key="states">
       <BaseFormItem  label="状态 等于">
-        {getFieldDecorator('state')(
-          <Select size="large">
-            <Option value="Initial">初始</Option>
-            <Option value="InProgress">进行中</Option>
-            <Option value="Finished">已完成</Option>
-            <Option value="Aborted">已作废</Option>
+        {getFieldDecorator('states')(
+          <Select  mode="multiple" >
+            <Option value="待上架">待上架</Option>
+            <Option value="待退仓上架">待退仓上架</Option>
+            <Option value="待退货下架">待退货下架</Option>
+            <Option value="待移库">待移库</Option>
+            <Option value="上架中">上架中</Option>
+            <Option value="退仓上架中">退仓上架中</Option>
+            <Option value="退货下架中">退货下架中</Option>
+            <Option value="移库中">移库中</Option>
+            <Option value="上架完成">上架完成</Option>
+            <Option value="退仓上架完成">退仓上架完成</Option>
+            <Option value="退货下架完成">退货下架完成</Option>
+            <Option value="移库完成">移库完成</Option>
+            <Option value="上架作废">上架作废</Option>
+            <Option value="退仓上架作废">退仓上架作废</Option>
+            <Option value="退货下架作废">退货下架作废</Option>
+            <Option value="移库作废">移库作废</Option>
+            <Option value="待拣货">待拣货</Option>
+            <Option value="拣货中">拣货中</Option>
+            <Option value="拣货完成">拣货完成</Option>
+            <Option value="拣货异常">拣货异常</Option>
+            <Option value="拣货跳过">拣货跳过</Option>
+            <Option value="拣货缺货">拣货缺货</Option>
+            <Option value="待补货">待补货</Option>
+            <Option value="补货中">补货中</Option>
+            <Option value="补货异常">补货异常</Option>
+            <Option value="补货完成">补货完成</Option>
           </Select>
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
+
+  children.push(
+    <BaseTwoCol key="articleCode">
+      <BaseFormItem  label="商品条码 类似于">
+        {getFieldDecorator('articleCode')(
+          <Input type="text" placeholder="商品条码 类似于" />
         )}
       </BaseFormItem>
     </BaseTwoCol>

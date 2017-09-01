@@ -48,7 +48,7 @@ const TaskAreaConfigModal=({
       <Form horizontal>
            <BaseFormItem label="员工">
               {getFieldDecorator('operator', {
-                rules: [{ required: true, message: '员工不能为空' }], initialValue:(currentOperator && currentOperator.uuid) ? "[" + currentOperator.code + "]" + currentOperator.name : null
+                rules: [{ required: true, message: '员工不能为空' }], initialValue: currentOperator.name
               })(
                 <Input placeholder="请选择" suffix={<Icon type="ellipsis" onClick={() => queryOperators()} />}  
                 onBlur={handleEnterPress} onPressEnter={handleEnterPress} />

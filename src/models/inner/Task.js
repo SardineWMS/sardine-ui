@@ -1,7 +1,7 @@
 import { parse } from 'qs';
 import {
     queryTask, queryStocks, saveArticleMoveRule, saveAndMoveArticleMoveRule, saveContainerMoveRule,
-    saveAndMoveContainerMoveRule, articleMove, containerMove, execute
+    saveAndMoveContainerMoveRule, articleMove, containerMove, execute,abort,putaway,rpl
 } from '../../services/Inner/Task';
 import { getByBarcode } from '../../services/basicinfo/Container';
 
@@ -24,7 +24,18 @@ export default {
             size: 'default'
         },
         articleMoveModalVisable: false,
-        containerMoveModalVisable: false
+        containerMoveModalVisable: false,
+        batchAbortProcessModalVisable: false,
+        abortTaskEntitys:[],
+        putAwayModalVisable:false,
+        putAwayTaskEntitys:[],
+        batchPutAwayProcessModalVisable:false,
+        rplTaskEntitys:[],
+        batchRplProcessModalVisable:false,
+        userList:[],
+        userModalVisable:false,
+        setRplerModalVisable:false,
+        currentRpler:{}
     },
 
     subscriptions: {
@@ -277,9 +288,131 @@ export default {
                 };
             };
         },
-
         *execute({ payload }, { call, put }) {
             yield call(execute, { uuid: payload.uuid, version: payload.version });
+        },
+                *abort({
+            payload
+        }, {
+            call, put
+        }) {
+            yield put({
+                type: 'showLoading',
+            })
+            const { data } = yield call(abort, parse(payload));
+            if (data.status == "200") {
+                const { data } = yield call(queryTask, parse(payload));
+                if (data.status == "200") {
+                    yield put({
+                        type: 'querySuccess',
+                        payload: {
+                            list: data.obj.records,
+                            pagination: {
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
+                            }
+                        }
+                    });
+                };
+            };
+        },
+        *putAway({
+            payload
+        }, {
+            call, put
+        }) {
+            yield put({
+                type: 'showLoading',
+            })
+            const { data } = yield call(putaway, parse(payload));
+            if (data.status == "200") {
+                yield put({
+                    type: 'hidePutAwayModal'
+                })
+                const { data } = yield call(queryTask, parse(payload));
+                if (data.status == "200") {
+                    yield put({
+                        type: 'querySuccess',
+                        payload: {
+                            list: data.obj.records,
+                            pagination: {
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
+                            }
+                        }
+                    });
+                };
+            };
+        },
+        *rpl({
+            payload
+        }, {
+            call, put
+        }) {
+            yield put({
+                type: 'showLoading',
+            })
+            const { data } = yield call(rpl,payload);
+            if (data.status == "200") {
+                const { data } = yield call(queryTask, parse(payload));
+                if (data.status == "200") {
+                    yield put({
+                        type: 'querySuccess',
+                        payload: {
+                            list: data.obj.records,
+                            pagination: {
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
+                            }
+                        }
+                    });
+                };
+            };
+        },
+        *queryUserByPage({ payload }, { call, put }) {
+            const { data } = yield call(queryUser, parse(payload));
+            if(data.obj){
+                yield put({
+                    type: 'showUerModal',
+                    payload: {
+                        userList: data.obj.records,
+                        pagination: {
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: recordCount => `共 ${recordCount} 条`,
+                            size:'default',
+                            total: data.obj.recordCount,
+                            current: data.obj.page
+                        }
+                    }
+                })
+            }
+        },
+       *getUser({ payload }, { call, put }) {
+            const { data } = yield call(getUserByCode,parse(payload));
+            if(data.obj){
+                yield put({
+                    type: 'showLoading'
+                })
+                yield put({
+                    type: 'showRplerModal',
+                    payload: {
+                        currentRpler:data.obj
+                    }
+                })
+            }
         }
     },
 
@@ -293,7 +426,6 @@ export default {
         queryStocksSuccess(state, action) {
             return { ...state, ...action.payload, loading: false };
         },
-
         showArticleMoveModal(state, action) {
             return {
                 ...state,
@@ -304,7 +436,6 @@ export default {
                 containerMoveModalVisable: false
             };
         },
-
         showContainerMoveModal(state, action) {
             return { ...state, ...action.payload, containerMoveModalVisable: true, articleMoveModalVisable: false };
         },
@@ -315,6 +446,68 @@ export default {
 
         getContainerSuccess(state, action) {
             return { ...state, ...action.payload, loading: false };
+        },
+                batchAbortTask(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                batchAbortProcessModalVisable: true };
+        },
+        hideAbortTaskModal(state, action) {
+            return { ...state, batchAbortProcessModalVisable: false };
+        },
+        showPutAwayModal(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                putAwayModalVisable: true };
+        },
+        hidePutAwayModal(state, action) {
+            return { ...state, putAwayModalVisable: false };
+        },
+        batchPutAwayTask(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                putAwayModalVisable: false ,
+                batchPutAwayProcessModalVisable: true };
+        },
+        hideBatchPutAwayTask(state, action) {
+            return { ...state, batchPutAwayProcessModalVisable: false };
+        },
+        batchRplTask(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                setRplerModalVisable:false,
+                batchRplProcessModalVisable: true };
+        },
+        hideBatchRplTask(state, action) {
+            return { ...state, batchRplProcessModalVisable: false };
+        },
+        showUerModal(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                userModalVisable: true };
+        },
+        hideUerModal(state, action) {
+            return { ...state, userModalVisable: false };
+        },
+        showRplerModal(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                setRplerModalVisable: true };
+        },
+        hideRplerModal(state, action) {
+            return { ...state, setRplerModalVisable: false };
+        },
+        selectRpler(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                userModalVisable: false };
         }
     }
 }
