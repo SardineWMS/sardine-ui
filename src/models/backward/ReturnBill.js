@@ -1,5 +1,5 @@
 import { parse } from 'qs';
-import { queryWrhs, queryBin } from '../../services/basicinfo/Bin.js';
+import { queryWrhs, queryBin, getBinByWrhAndUsage } from '../../services/basicinfo/Bin.js';
 import { getByCode as getCustomerByCode } from '../../services/basicinfo/Customer.js';
 import { get as getArticle } from '../../services/basicinfo/Article.js';
 import { queryRtnNtcBillByBillNumber } from '../../services/backward/RtnNtcBillService.js';
@@ -567,11 +567,28 @@ export default {
             yield put({
                 type: 'showCreateSuccess'
             })
-        }
+        },
+
+        *refreshBin({ payload }, { call, put }) {
+            let result = {};
+            let binUsage = "";
+            if (payload.record.returnType == 'goodReturn')
+                binUsage = 'ReceiveStorageBin';
+            else
+                binUsage = 'RtnReceiveTempBin'
+            result = yield call(getBinByWrhAndUsage, { wrhUuid: payload.currentItem.wrh.uuid, binUsage: binUsage });
+            if (result.data.obj == null) {
+                message.error("不存在相应的收货暂存位", 3);
+                payload.record.binCode = "";
+            }
+            payload.record.binCode = result.data.obj;
+            yield put({
+                type: 'showCreateSuccess'
+            })
 
 
+        },
     },
-
     reducers: {
         querySuccess(state, action) {
             return { ...state, ...action.payload, showPage: '' }

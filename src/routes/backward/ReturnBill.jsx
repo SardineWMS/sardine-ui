@@ -209,6 +209,14 @@ function ReturnBill({ location, dispatch, rtnBill }) {
                     modifyProductionDateEntitys: selecteds
                 }
             })
+        },
+        refreshBin(record, dataSource) {
+            dispatch({
+                type: 'rtnBill/refreshBin',
+                payload: {
+                    record, dataSource, currentItem
+                }
+            })
         }
     };
 

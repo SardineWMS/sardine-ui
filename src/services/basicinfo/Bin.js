@@ -92,3 +92,8 @@ export async function getBinByCode(params) {
   const url = '/swms/basicinfo/bin/getBinByCode';
   return request(query(url, params));
 }
+
+export async function getBinByWrhAndUsage(params) {
+  const url = '/swms/basicinfo/bin/getbinbywrhandusage';
+  return request(query(url, params));
+}

@@ -28,7 +28,8 @@ const ReturnBillCreateItem = ({
     selectedRowKeys = [],
     onModifyReturnType,
     onModifyReturnContainer,
-    onModifyProductionDate
+    onModifyProductionDate,
+    refreshBin
 }) => {
     function handleModifyReturnType(e) {
         e.preventDefault();
@@ -226,6 +227,7 @@ const ReturnBillCreateItem = ({
         };
         if (key === 'returnType') {
             record.returnType = value;
+            refreshBin(record, dataSource);
         }
     };
 
