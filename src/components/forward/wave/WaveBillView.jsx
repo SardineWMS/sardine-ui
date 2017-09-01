@@ -75,7 +75,7 @@ const WaveBillView = ({
     toolbar.push(<Button onClick={() => onAudit(item)}>回滚</Button >)
 
     const waveBillViewItemProps = {
-        dataSource: item.items
+        dataSource: item.ntcItems
     };
 
     return (

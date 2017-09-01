@@ -37,6 +37,8 @@ function WaveBillViewItem({
             return '配送中';
         if (text == 'handover')
             return '已交接';
+        if (text == 'used')
+            return '已使用';
     };
 
     function handleChange(record, value, key) {
@@ -57,17 +59,18 @@ function WaveBillViewItem({
         {
             title: '行号',
             dataIndex: 'line',
-            key: 'line'
+            key: 'line',
+            render: (text, record, index) => index + 1
         },
         {
             title: '出库通知单单号',
-            dataIndex: 'alcNtcBillNumber',
-            key: 'alcNtcBillNumber',
+            dataIndex: 'ntcBillNumber',
+            key: 'ntcBillNumber',
         },
         {
             title: '状态',
-            dataIndex: 'alcNtcBillState',
-            key: 'alcNtcBillState',
+            dataIndex: 'ntcBillState',
+            key: 'ntcBillState',
             render: (text, record) => convertState(text)
         },
         {
