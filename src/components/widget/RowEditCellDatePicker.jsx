@@ -40,7 +40,7 @@ class RowEditCellDatePicker extends React.Component {
                     </div>
                     :
                     <div className={styles.editable_row_text}>
-                        {value === undefined ? ' ' : value.toString() || ' '}
+                        {value === undefined || value === null ? ' ' : value.toString() || ' '}
                     </div>
             }
         </div>);
