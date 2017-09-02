@@ -1,6 +1,6 @@
 import request from '../../utils/request';
 import qs from 'qs';
-import { query, addTokenToUrl, createBase, updateBase, deleteBase } from '../../utils/BaseService';
+import { query, addTokenToUrl, createBase, updateBase, deleteBase, updateBaseNullBody } from '../../utils/BaseService';
 
 export async function queryTask(params) {
     const url = "/swms/inner/task/query";
@@ -11,9 +11,9 @@ export async function queryTask(params) {
         'Accept': 'application/json',
         'Content-Type': 'application/json'
     };
-    req.body = JSON.stringify(params.states?params.states:[]);
+    req.body = JSON.stringify(params.states ? params.states : []);
 
-    return request(query(url, params),req);
+    return request(query(url, params), req);
 }
 
 export async function queryStocks(params) {
@@ -52,17 +52,17 @@ export async function containerMove(params) {
 }
 
 export async function execute(params) {
-    const url='swms/inner/task/execute';
+    const url = 'swms/inner/task/execute';
 }
 
 export async function abort(params) {
-  const url = `/swms/inner/task/abort?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url), updateBaseNullBody(params));
+    const url = `/swms/inner/task/abort?${qs.stringify(params)}`;
+    return request(addTokenToUrl(url), updateBaseNullBody(params));
 }
 
 export async function putaway(params) {
-  const url = `/swms/inner/task/putaway?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url), updateBaseNullBody(params));
+    const url = `/swms/inner/task/putaway?${qs.stringify(params)}`;
+    return request(addTokenToUrl(url), updateBaseNullBody(params));
 }
 
 export async function rpl(params) {

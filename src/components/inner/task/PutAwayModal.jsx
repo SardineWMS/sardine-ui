@@ -1,9 +1,9 @@
 import React, { PropTypes } from 'react'
-import {Form,Modal,Input,Button,Icon} from 'antd';
+import { Form, Modal, Input, Button, Icon } from 'antd';
 import moment from 'moment';
 import BaseFormItem from '../../Widget/BaseFormItem';
 
-const PutAwayModal=({
+const PutAwayModal = ({
     tasks,
     visible,
     onOk,
@@ -13,8 +13,8 @@ const PutAwayModal=({
         validateFields,
         getFieldsValue
     }
-})=>{
-  
+}) => {
+
     const modalOpts = {
         title: "收货上架",
         visible,
@@ -23,29 +23,31 @@ const PutAwayModal=({
         wrapClassName: 'vertical-center-modal',
     }
 
-    function handleOk(){
-        const data = {
-            ...tasks,
-            ...getFieldsValue()
-        }
-        onOk(data);
+    function handleOk() {
+        validateFields((errors) => {
+            for (let task of tasks) {
+                task.toBinCode = getFieldsValue().toBinCode;
+                task.toContainerBarcode = getFieldsValue().toContainerBarcode;
+            }
+            onOk(tasks);
+        });
     }
 
-  return(
-    <Modal {...modalOpts}>
-      <Form horizontal>
-          <BaseFormItem label="目标货位">
-              {getFieldDecorator('toBinCode', {
-                rules: [{ required: true, message: '目标货位不能为空' }],
-              })(<Input />)}
-          </BaseFormItem>
-          <BaseFormItem label="目标容器">
-              {getFieldDecorator('toContainerBarcode', {
-              })(<Input />)}
-          </BaseFormItem>
-      </Form>
-    </Modal>
-  )
+    return (
+        <Modal {...modalOpts}>
+            <Form horizontal>
+                <BaseFormItem label="目标货位">
+                    {getFieldDecorator('toBinCode', {
+                        rules: [{ required: true, message: '目标货位不能为空' }],
+                    })(<Input />)}
+                </BaseFormItem>
+                <BaseFormItem label="目标容器">
+                    {getFieldDecorator('toContainerBarcode', {
+                    })(<Input />)}
+                </BaseFormItem>
+            </Form>
+        </Modal>
+    )
 }
 
 export default Form.create()(PutAwayModal);
