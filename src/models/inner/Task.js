@@ -4,6 +4,7 @@ import {
     saveAndMoveContainerMoveRule, articleMove, containerMove, execute,abort,putaway,rpl
 } from '../../services/Inner/Task';
 import { getByBarcode } from '../../services/basicinfo/Container';
+import { queryUser,getByCode as getUserByCode} from '../../services/ia/User';
 
 export default {
     namespace: 'task',
