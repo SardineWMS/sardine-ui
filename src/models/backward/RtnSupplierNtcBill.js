@@ -6,7 +6,8 @@ import { queryWrhs } from '../../services/basicinfo/Bin.js';
 import { getByCode as getArticleInfo } from '../../services/basicinfo/Article.js';
 import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, caseQtyStrSubtract } from '../../services/common/common.js';
 import { removeByValue } from '../../utils/ArrayUtils';
-
+import {getbycode as getSupplier,querybypage as querySuppliers} from '../../services/basicinfo/Supplier';
+import { message} from 'antd';
 
 export default modelExtend(pageModel, {
     namespace: 'rtnSupplierNtcBill',
@@ -21,7 +22,9 @@ export default modelExtend(pageModel, {
         finishBillEntitys: [],
         batchFinishProcessModal: false,
         genTaskBillEntitys: [],
-        batchGenTaskProcessModal: false
+        batchGenTaskProcessModal: false,
+        suppliers:[],
+        currentSupplier:{}
     },
 
     subscriptions: {
@@ -72,6 +75,7 @@ export default modelExtend(pageModel, {
                     payload.billItems.push(nullObj);
                     currentItem.totalCaseQtyStr = 0;
                     currentItem.totalAmount = 0;
+                    currentSupplier:{};
                 }
                 yield put({
                     type: 'showCreateSuccess',
@@ -82,6 +86,51 @@ export default modelExtend(pageModel, {
                     }
                 })
             }
+        },
+
+        *querySuppliers({ payload }, { call, put }) {
+            const result = yield call(querySuppliers, parse(payload));
+            if (result) {
+                const suppliers = [];
+                for (var supplier of result.data.obj.records) {
+                    const supplierUcn = new Object();
+                    supplierUcn.uuid = supplier.uuid;
+                    supplierUcn.code = supplier.code;
+                    supplierUcn.name = supplier.name;
+                    suppliers.push(supplierUcn);
+                };
+
+                yield put({
+                    type: 'showSupplierModal',
+                    payload: {
+                        suppliers: suppliers,
+                        pagination: {
+                            total: result.data.obj.recordCount,
+                            current: result.data.obj.page,
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            size: 'default'
+                        },
+                    }
+                });
+            };
+        },
+
+        *getSupplier({ payload }, { call, put }) {
+            const supplier = yield call(getSupplier,parse(payload));
+            if (supplier) {
+                const supplierUcn = new Object();
+                supplierUcn.uuid = supplier.data.obj.uuid;
+                supplierUcn.code = supplier.data.obj.code;
+                supplierUcn.name = supplier.data.obj.name;
+                yield put({
+                    type: 'showCreateSuccess',
+                    payload: {
+                        currentSupplier: supplierUcn
+                    }
+                });
+            };
         },
 
         *getArticleInfo({ payload }, { call, put }) {
@@ -257,7 +306,8 @@ export default modelExtend(pageModel, {
                     payload: {
                         currentItem: data.obj,
                         billItems: data.obj.items,
-                        wrhs: wrhsData.data.obj
+                        wrhs: wrhsData.data.obj,
+                        currentSupplier:data.obj.supplier
                     }
                 })
             }
@@ -331,11 +381,22 @@ export default modelExtend(pageModel, {
         showCreateSuccess(state, action) {
             return { ...state, ...action.payload, showPage: 'create' };
         },
-        showSupplierModal(state) {
-            return { ...state, showSupplierSelectModal: true }
+        showSupplierModal(state, action) {
+            return { ...state,...action.payload, showSupplierSelectModal: true }
         },
         hideSupplierModal(state, action) {
             return { ...state, ...action.payload, showSupplierSelectModal: false }
+        },
+        selectSupplier(state, action) {
+          return {
+            ...state,
+            currentSupplier: {
+              uuid: action.payload.uuid,
+              code: action.payload.code,
+              name: action.payload.name
+            },
+            showSupplierSelectModal: false,
+          }
         },
         showViewSuccess(state, action) {
             return { ...state, ...action.payload, showPage: 'view' };

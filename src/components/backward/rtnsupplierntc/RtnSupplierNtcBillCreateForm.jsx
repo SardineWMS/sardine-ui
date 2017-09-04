@@ -22,9 +22,10 @@ const RtnSupplierNtcBillCreateForm = ({
         validateFields,
         getFieldsValue
     },
-    onSupplierSelect,
     wrhs = [],
-    onEnterCustomer
+    onSupplierSelect,
+    supplier,
+    onEnterSupplier
 }) => {
     function handleCreate() {
         validateFields((errors) => {
@@ -35,32 +36,31 @@ const RtnSupplierNtcBillCreateForm = ({
                 ...getFieldsValue(),
                 ...item
             };
+            data.supplier=supplier;
             handleSave(data);
         });
     };
 
-    function handleEnterPress() {
-        if (getFieldsValue().customer == null || getFieldsValue().customer == '')
+    function handleEnterPressSupplier() {
+        if (getFieldsValue().supplier == null || getFieldsValue().supplier == '')
             return;
         const data = {
-            customer: getFieldsValue().customer
+            supplierCode: getFieldsValue().supplier
         };
-        onEnterCustomer(data);
+        onEnterSupplier(data);
     };
 
     const children = [];
-    children.push(
-        <BaseFormItem label="供应商：">
-            {
-                getFieldDecorator("customer", {
-                    rules: [{ required: true, message: "供应商不能为空！" }],
-                    initialValue: item.supplier ? item.supplier.code : ""
-                })(
-                    <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => onSupplierSelect()} />} onBlur={handleEnterPress} />
-                    )
-            }
-        </BaseFormItem>
-    );
+    children.push(<BaseFormItem label={"供应商："} key="supplier">
+        {getFieldDecorator("supplier", {
+          rules: [{ required: true, message: '商品类别不能为空！' }],
+          initialValue: (supplier && supplier.uuid) ? "[" + supplier.code + "]" + supplier.name : null
+        })(
+          <Input placeholder="请选择" suffix={<Icon type="ellipsis" onClick={() => onSupplierSelect()} />}
+            onBlur={handleEnterPressSupplier} onPressEnter={handleEnterPressSupplier} />
+          )}
+    </BaseFormItem>);
+
     const options = [];
     if (wrhs != null) {
         for (var wrh of wrhs) {

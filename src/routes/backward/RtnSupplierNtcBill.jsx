@@ -7,12 +7,17 @@ import RtnSupplierNtcBillSearchGrid from '../../components/backward/rtnsuppliern
 import RtnSupplierNtcBillSearchForm from '../../components/backward/rtnsupplierntc/RtnSupplierNtcBillSearchForm';
 import RtnSupplierNtcBillCreateItem from '../../components/backward/rtnsupplierntc/RtnSupplierNtcBillCreateItem';
 import RtnSupplierNtcBillCreateForm from '../../components/backward/rtnsupplierntc/RtnSupplierNtcBillCreateForm';
-import SupplierSelectGrid from '../../components/widget/SupplierSelectGrid';
+import SupplierSelectModal from '../../components/forward/Order/SupplierSelectModal';
 import RtnSupplierNtcBillViewPage from '../../components/backward/rtnsupplierntc/RtnSupplierNtcBillViewPage';
 import WMSProgress from '../../components/Widget/WMSProgress';
 
 function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
-    const { showPage, billItems, wrhs, currentItem, showSupplierSelectModal, list, abortBillEntitys, batchAbortProcessModal, removeBillEntitys, batchRemoveProcessModal, billNext, pagination, batchFinishProcessModal, finishBillEntitys, batchGenTaskProcessModal, genTaskBillEntitys } = rtnSupplierNtcBill;
+    const { showPage, billItems, wrhs, currentItem,
+     showSupplierSelectModal, list, abortBillEntitys, batchAbortProcessModal,
+      removeBillEntitys, batchRemoveProcessModal, billNext, pagination, 
+      batchFinishProcessModal, finishBillEntitys, 
+      batchGenTaskProcessModal, genTaskBillEntitys,currentSupplier,suppliers } 
+      = rtnSupplierNtcBill;
 
     const RtnSupplierNtcBillSearchGridProps = {
         dataSource: list,
@@ -95,9 +100,16 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
     const RtnSupplierNtcBillCreateFormProps = {
         wrhs: wrhs,
         item: currentItem,
+        supplier:currentSupplier,
         onSupplierSelect() {
             dispatch({
-                type: 'rtnSupplierNtcBill/showSupplierModal'
+                type: 'rtnSupplierNtcBill/querySuppliers'
+            })
+        },
+        onEnterSupplier(supplierCode){
+            dispatch({
+                type: 'rtnSupplierNtcBill/getSupplier',
+                payload:supplierCode
             })
         },
         handleSave(data, dataSource) {
@@ -217,23 +229,22 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
         },
     };
 
-    const supplierSelectGridProps = {
-        visible: showSupplierSelectModal,
-        onCancel() {
+    const supplierModalProps={
+        visible:showSupplierSelectModal,
+        suppliers: suppliers,
+        supplierPagination: pagination,
+        onOk(suppliers){
+            if(suppliers.length<1)
+                return;
+            dispatch({
+                type: 'rtnSupplierNtcBill/selectSupplier',
+                payload:suppliers[0]
+            });
+        },
+        onCancel(){
             dispatch({
                 type: 'rtnSupplierNtcBill/hideSupplierModal'
-            })
-        },
-        onSelect(data) {
-            const supplier = {};
-            supplier.uuid = data.uuid;
-            supplier.code = data.code;
-            supplier.name = data.name;
-            currentItem.supplier = supplier;
-            dispatch({
-                type: 'rtnSupplierNtcBill/hideSupplierModal',
-                payload: { currentItem: currentItem }
-            })
+            });
         }
     };
 
@@ -411,7 +422,7 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
                             return <div>
                                 <RtnSupplierNtcBillCreateForm {...RtnSupplierNtcBillCreateFormProps} />
                                 <RtnSupplierNtcBillCreateItem {...RtnSupplierNtcBillCreateItemProps} />
-                                <SupplierSelectGrid {...supplierSelectGridProps} />
+                                <SupplierSelectModal {...supplierModalProps} />
                             </div>
 
                         default:
