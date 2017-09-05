@@ -11,6 +11,7 @@ function TaskSearch({
   onAbortBatch,
   onPutAway,
   onRpl,
+  onPick,
   selectedRowKeys = []
 }) {
 
@@ -122,6 +123,10 @@ function TaskSearch({
   function handlerRpl() {
       onRpl(selectedRowKeys);
   };
+
+  function handlerPick() {
+      onPick(selectedRowKeys);
+  };
   
   const rowSelection = {
       onChange: (selectedRowKeys, selectedRows) => {
@@ -158,7 +163,7 @@ function TaskSearch({
             </Dropdown>
             <Button onClick={handlerPutAway}>收货上架</Button>
             <Button onClick={handlerRpl}>补货</Button>
-            <Button>拣货</Button>
+            <Button onClick={handlerPick}>拣货</Button>
             <Button>装车</Button>
             <Button>退仓上架</Button>
             <Button>退货下架</Button>

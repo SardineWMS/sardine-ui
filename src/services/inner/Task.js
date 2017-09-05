@@ -1,4 +1,5 @@
 import request from '../../utils/request';
+import React from 'react';
 import qs from 'qs';
 import { query, addTokenToUrl, createBase, updateBase, deleteBase, updateBaseNullBody } from '../../utils/BaseService';
 
@@ -68,4 +69,9 @@ export async function putaway(params) {
 export async function rpl(params) {
     const url = `/swms/inner/task/rpl?rplBillUuid=${params.rplBillUuid}&version=${params.version}`;
     return request(addTokenToUrl(url), createBase(params.rpler));
+}
+
+export async function batchPick(params) {
+    const url = `/swms/inner/task/batchpick?toBinCode=${params.toBinCode}&toContainerBarcode=${params.toContainerBarcode}`;
+    return request(addTokenToUrl(url), createBase(params.pickItemUuids));
 }

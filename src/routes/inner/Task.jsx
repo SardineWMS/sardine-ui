@@ -1,6 +1,8 @@
 import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
+import { message } from 'antd';
+
 
 import TaskSearchForm from '../../components/Inner/Task/TaskSearchForm';
 import TaskSearchGrid from '../../components/Inner/Task/TaskSearchGrid';
@@ -8,6 +10,7 @@ import ArticleMove from '../../components/Inner/Task/ArticleMove';
 import ContainerMove from '../../components/Inner/Task/ContainerMove';
 import PutAwayModal from '../../components/Inner/Task/PutAwayModal';
 import RplerModal from '../../components/Inner/Task/RplerModal';
+import PickModal from '../../components/Inner/Task/PickModal';
 import UserModal from '../../components/Inner/Task/UserModal';
 import WMSProgress from '../../components/Widget/WMSProgress';
 
@@ -31,9 +34,12 @@ function Task({ location, dispatch, task }) {
         userModalVisable,
         setRplerModalVisable,
         userList,
-        currentRpler,
+        currentUser,
         taskNext,
-        putAwayModalVisable
+        putAwayModalVisable,
+        setPickModalVisable,
+        pickTaskEntitys,
+        batchPickProcessModalVisable
     } = task;
 
     const { field, keyword } = location.query;
@@ -106,6 +112,18 @@ function Task({ location, dispatch, task }) {
                    rplTaskEntitys:tasks
                 }
             });
+        },
+        onPick(tasks) {
+            if (tasks.length <= 0) {
+                message.warning("请选择要拣货的指令", 2, '');
+                return;
+            };
+            dispatch({
+                type: 'task/showPickModal',
+                payload: {
+                   pickTaskEntitys:tasks
+                }
+            });
         }
     };
 
@@ -161,7 +179,7 @@ function Task({ location, dispatch, task }) {
 
     const rplerModalProps={
         visible:setRplerModalVisable,
-        currentRpler:currentRpler,
+        currentRpler:currentUser,
         queryRplers() {
             dispatch({
                 type: 'task/queryUserByPage'
@@ -171,7 +189,8 @@ function Task({ location, dispatch, task }) {
             dispatch({
                 type: 'task/getUser',
                 payload: {
-                   userCode:rplerCode
+                   userCode:rplerCode,
+                   type:"Rpl"
                 }
             });
         },
@@ -192,12 +211,12 @@ function Task({ location, dispatch, task }) {
         users:userList,
         userPagination: pagination,
         onOk(users) {
-            if(!users)
+            if(!users || users.size<1)
                 return;
             dispatch({
-                type: 'task/selectRpler',
+                type: 'task/selectUser',
                 payload: {
-                   currentRpler:{
+                   currentUser:{
                     uuid:users[0].uuid,
                     code:users[0].code,
                     name:users[0].name
@@ -224,7 +243,78 @@ function Task({ location, dispatch, task }) {
                 payload: {
                     rplBillUuid:entity.uuid,
                     version:entity.version,
-                    rpler:currentRpler
+                    rpler:currentUser
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'task/hideBatchRplTask',
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'task/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
+        }
+    };
+
+    const pickModalProps={
+        visible:setPickModalVisable,
+        currentPicker:currentUser,
+        tasks:pickTaskEntitys,
+        queryPickers() {
+            dispatch({
+                type: 'task/queryUserByPage'
+            });
+        },
+        getPicker(pickerCode) {
+            dispatch({
+                type: 'task/getUser',
+                payload: {
+                   userCode:pickerCode,
+                   type:"PICK"
+                }
+            });
+        },
+        onOk(data) {
+            let pickItemUuids=[];
+            for (let task of pickTaskEntitys) {
+                pickItemUuids.push(task.uuid);
+            };
+            dispatch({
+                type: 'task/batchPick',
+                payload:{
+                    pickItemUuids:pickItemUuids,
+                    toBinCode:data.toBinCode,
+                    toContainerBarcode:data.toContainerBarcode
+                   // picker:currentUser
+                }
+            });
+        },
+        onCancel() {
+            dispatch({
+                type: 'task/hidePickModal'
+            });
+        }
+    };
+
+    const batchProcessPickTaskProps = {
+        showConfirmModal: batchPickProcessModalVisable,
+        records: pickTaskEntitys ? pickTaskEntitys : [],
+        next: taskNext,
+        actionText: '拣货',
+        entityCaption: '指令',
+        batchProcess(entity) {
+            dispatch({
+                type: 'task/batchPick',
+                payload: {
+                    rplBillUuid:entity.uuid,
+                    version:entity.version,
+                    rpler:currentUser
                 }
             });
         },
@@ -377,6 +467,7 @@ function Task({ location, dispatch, task }) {
                 <WMSProgress {...batchProcessRplTaskProps} />
                 <PutAwayModal {...putAwayModalProps} />
                 <WMSProgress {...batchProcessPutAwayTaskProps} />
+                <PickModal {...pickModalProps} />
             </div>
         );
     };

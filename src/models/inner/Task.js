@@ -1,7 +1,7 @@
 import { parse } from 'qs';
 import {
     queryTask, queryStocks, saveArticleMoveRule, saveAndMoveArticleMoveRule, saveContainerMoveRule,
-    saveAndMoveContainerMoveRule, articleMove, containerMove, execute,abort,putaway,rpl
+    saveAndMoveContainerMoveRule, articleMove, containerMove, execute,abort,putaway,rpl,batchPick
 } from '../../services/Inner/Task';
 import { getByBarcode } from '../../services/basicinfo/Container';
 import { queryUser,getByCode as getUserByCode} from '../../services/ia/User';
@@ -36,7 +36,10 @@ export default {
         userList:[],
         userModalVisable:false,
         setRplerModalVisable:false,
-        currentRpler:{}
+        setPickModalVisable:false,
+        pickTaskEntitys:[],
+        batchPickProcessModalVisable:false,
+        currentUser:{}
     },
 
     subscriptions: {
@@ -382,6 +385,38 @@ export default {
                 };
             };
         },
+        *batchPick({
+            payload
+        }, {
+            call, put
+        }) {
+            yield put({
+                type: 'showLoading',
+            })
+            const { data } = yield call(batchPick,payload);
+            if (data.status == "200") {
+                yield put({
+                    type: 'hidePickModal'
+                })
+                const { data } = yield call(queryTask, parse(payload));
+                if (data.status == "200") {
+                    yield put({
+                        type: 'querySuccess',
+                        payload: {
+                            list: data.obj.records,
+                            pagination: {
+                                showSizeChanger: true,
+                                showQuickJumper: true,
+                                showTotal: total => `共 ${total} 条`,
+                                current: data.obj.page,
+                                total: data.obj.recordCount,
+                                size: 'default'
+                            }
+                        }
+                    });
+                };
+            };
+        },
         *queryUserByPage({ payload }, { call, put }) {
             const { data } = yield call(queryUser, parse(payload));
             if(data.obj){
@@ -408,9 +443,9 @@ export default {
                     type: 'showLoading'
                 })
                 yield put({
-                    type: 'showRplerModal',
+                    type: "PICK"===payload.type?'showPickModal':'showRplerModal',
                     payload: {
-                        currentRpler:data.obj
+                        currentUser:data.obj
                     }
                 })
             }
@@ -504,7 +539,26 @@ export default {
         hideRplerModal(state, action) {
             return { ...state, setRplerModalVisable: false };
         },
-        selectRpler(state, action) {
+        batchPickTask(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                setPickModalVisable:false,
+                batchPickProcessModalVisable: true };
+        },
+        hideBatchPickTask(state, action) {
+            return { ...state, batchPickProcessModalVisable: false };
+        },
+        showPickModal(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                setPickModalVisable: true };
+        },
+        hidePickModal(state, action) {
+            return { ...state, setPickModalVisable: false };
+        },
+        selectUser(state, action) {
             return { 
                 ...state, 
                 ...action.payload, 
