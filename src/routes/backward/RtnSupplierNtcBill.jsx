@@ -13,11 +13,11 @@ import WMSProgress from '../../components/Widget/WMSProgress';
 
 function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
     const { showPage, billItems, wrhs, currentItem,
-     showSupplierSelectModal, list, abortBillEntitys, batchAbortProcessModal,
-      removeBillEntitys, batchRemoveProcessModal, billNext, pagination, 
-      batchFinishProcessModal, finishBillEntitys, 
-      batchGenTaskProcessModal, genTaskBillEntitys,currentSupplier,suppliers } 
-      = rtnSupplierNtcBill;
+        showSupplierSelectModal, list, abortBillEntitys, batchAbortProcessModal,
+        removeBillEntitys, batchRemoveProcessModal, billNext, pagination,
+        batchFinishProcessModal, finishBillEntitys,
+        batchGenTaskProcessModal, genTaskBillEntitys, currentSupplier, suppliers }
+        = rtnSupplierNtcBill;
 
     const RtnSupplierNtcBillSearchGridProps = {
         dataSource: list,
@@ -100,16 +100,16 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
     const RtnSupplierNtcBillCreateFormProps = {
         wrhs: wrhs,
         item: currentItem,
-        supplier:currentSupplier,
+        supplier: currentSupplier,
         onSupplierSelect() {
             dispatch({
                 type: 'rtnSupplierNtcBill/querySuppliers'
             })
         },
-        onEnterSupplier(supplierCode){
+        onEnterSupplier(supplierCode) {
             dispatch({
                 type: 'rtnSupplierNtcBill/getSupplier',
-                payload:supplierCode
+                payload: supplierCode
             })
         },
         handleSave(data, dataSource) {
@@ -229,19 +229,19 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
         },
     };
 
-    const supplierModalProps={
-        visible:showSupplierSelectModal,
+    const supplierModalProps = {
+        visible: showSupplierSelectModal,
         suppliers: suppliers,
         supplierPagination: pagination,
-        onOk(suppliers){
-            if(suppliers.length<1)
+        onOk(suppliers) {
+            if (suppliers.length < 1)
                 return;
             dispatch({
                 type: 'rtnSupplierNtcBill/selectSupplier',
-                payload:suppliers[0]
+                payload: suppliers[0]
             });
         },
-        onCancel(){
+        onCancel() {
             dispatch({
                 type: 'rtnSupplierNtcBill/hideSupplierModal'
             });
@@ -268,6 +268,12 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
                 payload: record
             })
         },
+        onGenTask(record) {
+            dispatch({
+                type: 'rtnSupplierNtcBill/genTask',
+                payload: record
+            })
+        }
     };
 
     const rtnSupplierNtcBillSearchFormProps = {

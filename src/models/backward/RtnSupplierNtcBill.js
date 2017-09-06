@@ -1,13 +1,13 @@
 import { parse } from 'qs';
-import { queryBill, insertBill, getRtnSupplierNtcBill, updateBill, abort, remove, finish } from '../../services/backward/RtnSupplierNtcBillService';
+import { queryBill, insertBill, getRtnSupplierNtcBill, updateBill, abort, remove, finish,genTask } from '../../services/backward/RtnSupplierNtcBillService';
 import modelExtend from 'dva-model-extend';
 import { pageModel } from '../../utils/BaseModel';
 import { queryWrhs } from '../../services/basicinfo/Bin.js';
 import { getByCode as getArticleInfo } from '../../services/basicinfo/Article.js';
 import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, caseQtyStrSubtract } from '../../services/common/common.js';
 import { removeByValue } from '../../utils/ArrayUtils';
-import {getbycode as getSupplier,querybypage as querySuppliers} from '../../services/basicinfo/Supplier';
-import { message} from 'antd';
+import { getbycode as getSupplier, querybypage as querySuppliers } from '../../services/basicinfo/Supplier';
+import { message } from 'antd';
 
 export default modelExtend(pageModel, {
     namespace: 'rtnSupplierNtcBill',
@@ -23,8 +23,8 @@ export default modelExtend(pageModel, {
         batchFinishProcessModal: false,
         genTaskBillEntitys: [],
         batchGenTaskProcessModal: false,
-        suppliers:[],
-        currentSupplier:{}
+        suppliers: [],
+        currentSupplier: {}
     },
 
     subscriptions: {
@@ -75,7 +75,7 @@ export default modelExtend(pageModel, {
                     payload.billItems.push(nullObj);
                     currentItem.totalCaseQtyStr = 0;
                     currentItem.totalAmount = 0;
-                    currentSupplier:{};
+                    currentSupplier: { };
                 }
                 yield put({
                     type: 'showCreateSuccess',
@@ -118,7 +118,7 @@ export default modelExtend(pageModel, {
         },
 
         *getSupplier({ payload }, { call, put }) {
-            const supplier = yield call(getSupplier,parse(payload));
+            const supplier = yield call(getSupplier, parse(payload));
             if (supplier) {
                 const supplierUcn = new Object();
                 supplierUcn.uuid = supplier.data.obj.uuid;
@@ -307,7 +307,7 @@ export default modelExtend(pageModel, {
                         currentItem: data.obj,
                         billItems: data.obj.items,
                         wrhs: wrhsData.data.obj,
-                        currentSupplier:data.obj.supplier
+                        currentSupplier: data.obj.supplier
                     }
                 })
             }
@@ -375,6 +375,16 @@ export default modelExtend(pageModel, {
                 })
             }
         },
+
+        *genTask({ payload }, { call, put }) {
+            const { data } = yield call(genTask, { uuid: payload.uuid, version: payload.version });
+            if (data.status == "200") {
+                yield put({
+                    type: 'showView',
+                    payload: { uuid: payload.uuid }
+                })
+            }
+        }
     },
 
     reducers: {
@@ -382,21 +392,21 @@ export default modelExtend(pageModel, {
             return { ...state, ...action.payload, showPage: 'create' };
         },
         showSupplierModal(state, action) {
-            return { ...state,...action.payload, showSupplierSelectModal: true }
+            return { ...state, ...action.payload, showSupplierSelectModal: true }
         },
         hideSupplierModal(state, action) {
             return { ...state, ...action.payload, showSupplierSelectModal: false }
         },
         selectSupplier(state, action) {
-          return {
-            ...state,
-            currentSupplier: {
-              uuid: action.payload.uuid,
-              code: action.payload.code,
-              name: action.payload.name
-            },
-            showSupplierSelectModal: false,
-          }
+            return {
+                ...state,
+                currentSupplier: {
+                    uuid: action.payload.uuid,
+                    code: action.payload.code,
+                    name: action.payload.name
+                },
+                showSupplierSelectModal: false,
+            }
         },
         showViewSuccess(state, action) {
             return { ...state, ...action.payload, showPage: 'view' };

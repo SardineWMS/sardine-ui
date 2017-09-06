@@ -21,7 +21,7 @@ const RtnSupplierNtcBillViewPage = ({
     onDelete,
     onFinish,
     onAbort,
-    onGenRtnBill
+    onGenTask
 }) => {
     function convertState(text) {
         if (text == "Initial")
@@ -80,7 +80,7 @@ const RtnSupplierNtcBillViewPage = ({
             <Button disabled={!(item.state == "Initial" || item.state == "Aborted") && PermissionUtil("rtnNtcBill:delete")}>删除</Button>
         </Popconfirm>
     );
-    toolbar.push(<Button onClick={() => onGenRtnBill(item)} disabled={!(item.state == "Initial") && PermissionUtil("rtnNtcBill:edit")}>生成下架指令</Button >);
+    toolbar.push(<Button onClick={() => onGenTask(item)} disabled={!(item.state == "Initial") && PermissionUtil("rtnNtcBill:edit")}>生成下架指令</Button >);
     toolbar.push(<Button onClick={() => onFinish(item)} disabled={!(item.state == "Initial") && PermissionUtil("rtnNtcBill:edit")}>完成</Button>);
     toolbar.push(<Button onClick={() => onAbort(item)} disabled={!(item.state == "Initial") && PermissionUtil("rtnNtcBill:edit")}>作废</Button>);
 

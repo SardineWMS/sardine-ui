@@ -36,3 +36,8 @@ export async function finish(params) {
     const url = "/swms/rtn/rtnsupplierntc/finish";
     return request(query(url, params), updateBaseNullBody(null));
 }
+
+export async function genTask(params) {
+    const url = "/swms/rtn/rtnsupplierntc/gentask";
+    return request(query(url, params), updateBaseNullBody(null));
+}
