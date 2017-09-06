@@ -312,6 +312,11 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
                 type: 'rtnNtcBill/gridGenRtnBill',
                 payload: record
             })
+        },
+        onBack() {
+            dispatch({
+                type: 'rtnNtcBill/query',
+            })
         }
     };
 

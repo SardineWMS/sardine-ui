@@ -83,6 +83,7 @@ const ReturnNtcBillViewPage = ({
     toolbar.push(<Button onClick={() => onGenRtnBill(item)} disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>生成退仓单</Button >);
     toolbar.push(<Button onClick={() => onFinish(item)} disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>完成</Button>);
     toolbar.push(<Button onClick={() => onAbort(item)} disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>作废</Button>);
+    toolbar.push(<Button onClick={() => onBack()}>返回</Button>);
 
     return (
         <div>
