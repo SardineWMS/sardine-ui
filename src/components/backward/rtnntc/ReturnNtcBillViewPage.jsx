@@ -47,7 +47,7 @@ const ReturnNtcBillViewPage = ({
         <span>{item.sourceBillNumber == null ? "" : item.sourceBillType + "[" + item.sourceBillNumber + "]"}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="退货日期：" key={Guid()}>
-        <span>{moment(item.returnDate).format("YYYY-MM-DD h:mm:ss")}</span>
+        <span>{moment(item.returnDate).format("YYYY-MM-DD")}</span>
     </BaseFormItem>);
 
     let extendForm = [];
