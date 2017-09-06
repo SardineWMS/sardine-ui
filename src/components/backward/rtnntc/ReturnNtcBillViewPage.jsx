@@ -88,7 +88,7 @@ const ReturnNtcBillViewPage = ({
     return (
         <div>
             <ToolbarPanel children={toolbar} />
-            <BaseCard single={false} title="收货单信息">
+            <BaseCard single={false} title="退仓通知单信息">
                 <BaseForm items={basicForm} />
                 <BaseForm items={extendForm} />
             </BaseCard>
