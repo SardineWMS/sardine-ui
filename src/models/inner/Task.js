@@ -35,8 +35,6 @@ export default {
         batchRplProcessModalVisable:false,
         userList:[],
         userModalVisable:false,
-        setRplerModalVisable:false,
-        setPickModalVisable:false,
         pickTaskEntitys:[],
         batchPickProcessModalVisable:false,
         currentUser:{}
@@ -48,7 +46,7 @@ export default {
                 if (location.pathname === '/inner/task') {
                     dispatch({
                         type: 'query',
-                        payload: location.query,
+                        payload: location.query
                     });
                 };
             });
@@ -64,6 +62,7 @@ export default {
             yield put({
                 type: 'showLoading',
             });
+            payload.taskType = payload.taskType? payload.taskType:'Putaway';
             const { data } = yield call(queryTask, parse(payload));
             if (data.status == "200") {
                 yield put({
@@ -515,7 +514,6 @@ export default {
             return { 
                 ...state, 
                 ...action.payload, 
-                setRplerModalVisable:false,
                 batchRplProcessModalVisable: true };
         },
         hideBatchRplTask(state, action) {
@@ -529,15 +527,6 @@ export default {
         },
         hideUerModal(state, action) {
             return { ...state, userModalVisable: false };
-        },
-        showRplerModal(state, action) {
-            return { 
-                ...state, 
-                ...action.payload, 
-                setRplerModalVisable: true };
-        },
-        hideRplerModal(state, action) {
-            return { ...state, setRplerModalVisable: false };
         },
         batchPickTask(state, action) {
             return { 

@@ -1,15 +1,21 @@
 import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
-import { message } from 'antd';
+import { message,Tabs } from 'antd';
 
-
-import TaskSearchForm from '../../components/Inner/Task/TaskSearchForm';
-import TaskSearchGrid from '../../components/Inner/Task/TaskSearchGrid';
+import RplTaskSearchForm from '../../components/Inner/Task/RplTaskSearchForm';
+import RplTaskSearchGrid from '../../components/Inner/Task/RplTaskSearchGrid';
+import PutawayTaskSearchForm from '../../components/Inner/Task/PutawayTaskSearchForm';
+import PutawayTaskSearchGrid from '../../components/Inner/Task/PutawayTaskSearchGrid';
+import RtnPutawayTaskSearchForm from '../../components/Inner/Task/RtnPutawayTaskSearchForm';
+import RtnPutawayTaskSearchGrid from '../../components/Inner/Task/RtnPutawayTaskSearchGrid';
+import RtnShelfTaskSearchForm from '../../components/Inner/Task/RtnShelfTaskSearchForm';
+import RtnShelfTaskSearchGrid from '../../components/Inner/Task/RtnShelfTaskSearchGrid';
+import RtnHandoverTaskSearchForm from '../../components/Inner/Task/RtnHandoverTaskSearchForm';
+import RtnHandoverTaskSearchGrid from '../../components/Inner/Task/RtnHandoverTaskSearchGrid';
 import ArticleMove from '../../components/Inner/Task/ArticleMove';
 import ContainerMove from '../../components/Inner/Task/ContainerMove';
 import PutAwayModal from '../../components/Inner/Task/PutAwayModal';
-import RplerModal from '../../components/Inner/Task/RplerModal';
 import PickModal from '../../components/Inner/Task/PickModal';
 import UserModal from '../../components/Inner/Task/UserModal';
 import WMSProgress from '../../components/Widget/WMSProgress';
@@ -32,7 +38,6 @@ function Task({ location, dispatch, task }) {
         rplTaskEntitys,
         batchRplProcessModalVisable,
         userModalVisable,
-        setRplerModalVisable,
         userList,
         currentUser,
         taskNext,
@@ -42,8 +47,17 @@ function Task({ location, dispatch, task }) {
         batchPickProcessModalVisable
     } = task;
 
-    const { field, keyword } = location.query;
+    const TaskType={
+        PUTAWAY:"Putaway",
+        RPL:"Rpl",
+        PICK:"Pick",
+        RTNPUTAWAY:"RtnPutaway",
+        RTNSHELF:"RtnShelf",
+        RTNHANDOVER:"RtnHandover",
+        MOVE:"Move"
+    }
 
+    const { field, keyword } = location.query;
     const taskListProps = {
         dataSource: list,
         pagination: pagination,
@@ -91,7 +105,7 @@ function Task({ location, dispatch, task }) {
         },
         onPutAway(tasks) {
             if (tasks.length <= 0) {
-                message.warning("请选择要收货上架的指令", 2, '');
+                message.warning("请选择要上架的指令", 2, '');
                 return;
             };
             dispatch({
@@ -107,7 +121,7 @@ function Task({ location, dispatch, task }) {
                 return;
             };
             dispatch({
-                type: 'task/showRplerModal',
+                type: 'task/batchRplTask',
                 payload: {
                    rplTaskEntitys:tasks
                 }
@@ -173,35 +187,6 @@ function Task({ location, dispatch, task }) {
                 payload: {
                     token: localStorage.getItem("token")
                 }
-            });
-        }
-    };
-
-    const rplerModalProps={
-        visible:setRplerModalVisable,
-        currentRpler:currentUser,
-        queryRplers() {
-            dispatch({
-                type: 'task/queryUserByPage'
-            });
-        },
-        getRpler(rplerCode) {
-            dispatch({
-                type: 'task/getUser',
-                payload: {
-                   userCode:rplerCode,
-                   type:"Rpl"
-                }
-            });
-        },
-        onOk() {
-            dispatch({
-                type: 'task/batchRplTask'
-            });
-        },
-        onCancel() {
-            dispatch({
-                type: 'task/hideRplerModal'
             });
         }
     };
@@ -442,6 +427,15 @@ function Task({ location, dispatch, task }) {
         }
     };
 
+    const tabsProps = {
+        onPageChange(key) {
+            dispatch({
+                type: 'task/query',
+                payload: {taskType:key}
+            });
+        }
+    };
+
     function refreshWidget() {
         if (articleMoveModalVisable) {
             return (
@@ -459,11 +453,30 @@ function Task({ location, dispatch, task }) {
         };
         return (
             <div>
-                <TaskSearchForm {...taskSearchProps} />
-                <TaskSearchGrid {...taskListProps} />
+                <Tabs defaultActiveKey={TaskType.PUTAWAY} onChange={activeKey=> tabsProps.onPageChange(activeKey)}>
+                    <Tabs.TabPane tab="收货上架" key={TaskType.PUTAWAY}>
+                        <PutawayTaskSearchForm {...taskSearchProps} />
+                        <PutawayTaskSearchGrid {...taskListProps} />                    
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="补货" key={TaskType.RPL}>
+                        <RplTaskSearchForm {...taskSearchProps} />
+                        <RplTaskSearchGrid {...taskListProps} />      
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="退仓上架" key={TaskType.RTNPUTAWAY}>
+                        <RtnPutawayTaskSearchForm {...taskSearchProps} />
+                        <RtnPutawayTaskSearchGrid {...taskListProps} />      
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="退货下架" key={TaskType.RTNSHELF}>
+                        <RtnShelfTaskSearchForm {...taskSearchProps} />
+                        <RtnShelfTaskSearchGrid {...taskListProps} />      
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="退货交接" key={TaskType.RTNHANDOVER}>
+                        <RtnHandoverTaskSearchForm {...taskSearchProps} />
+                        <RtnHandoverTaskSearchGrid {...taskListProps} />      
+                    </Tabs.TabPane>
+                </Tabs>
                 <WMSProgress {...batchProcessAbortTaskProps} />
                 <UserModal {...userModalProps} />
-                <RplerModal {...rplerModalProps} />
                 <WMSProgress {...batchProcessRplTaskProps} />
                 <PutAwayModal {...putAwayModalProps} />
                 <WMSProgress {...batchProcessPutAwayTaskProps} />
