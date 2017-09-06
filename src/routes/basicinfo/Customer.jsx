@@ -7,7 +7,7 @@ import CustomerGrid from '../../components/basicinfo/Customer/CustomerGrid';
 import CustomerForm from '../../components/basicinfo/Customer/CustomerForm';
 import CustomerAdd from '../../components/basicinfo/Customer/CustomerAdd';
 import CustomerView from '../../components/basicinfo/Customer/CustomerView';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
 function Customer({ location, dispatch, customer }) {
     const {
         list, showCreatePage, pagination, showViewPage, currentItem, current,
@@ -87,15 +87,10 @@ function Customer({ location, dispatch, customer }) {
                 message.warning("请选择要删除的客户！", 2, '');//延时2秒
                 return;
             };
-            const waitDeleteCustomers=[];
-            for(var i = 0; i < customers.length; i++){  
-                if(customers[i].state==="normal")
-                    waitDeleteCustomers.push(customers[i]);
-            }  
             dispatch({
                 type: 'customer/batchDeleteCustomer',
                 payload: {
-                    deleteCustomerEntitys: waitDeleteCustomers
+                    deleteCustomerEntitys: customers
                 }
             });
         },
@@ -104,15 +99,10 @@ function Customer({ location, dispatch, customer }) {
                 message.warning("请选择要恢复的客户！", 2, '');
                 return;
             };
-            const waitRecoverCustomers=[];
-            for(var i = 0; i < customers.length; i++){  
-                if(customers[i].state==="deleted")
-                    waitRecoverCustomers.push(customers[i]);
-            }  
             dispatch({
                 type: 'customer/batchRecoverCustomer',
                 payload: {
-                    recoverCustomerEntitys: waitRecoverCustomers
+                    recoverCustomerEntitys: customers
                 }
             });
         },
@@ -224,16 +214,8 @@ function Customer({ location, dispatch, customer }) {
         next: customerNext,
         actionText: '删除',
         entityCaption: '客户',
-        batchProcess(entity) {
-            dispatch({
-                type: 'customer/gridRemove',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token")
-                }
-            });
-        },
+        url: '/swms/basicinfo/customer/remove',
+        canSkipState: 'deleted',
         hideConfirmModal() {
             dispatch({
                 type: 'customer/hideDeleteCustomerModal'
@@ -255,16 +237,8 @@ function Customer({ location, dispatch, customer }) {
         next: customerNext,
         actionText: '恢复',
         entityCaption: '客户',
-        batchProcess(entity) {
-            dispatch({
-                type: 'customer/gridRecover',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token")
-                }
-            });
-        },
+        url: '/swms/basicinfo/customer/recover',
+        canSkipState: 'normal',
         hideConfirmModal() {
             dispatch({
                 type: 'customer/hideRecoverCustomerModal'

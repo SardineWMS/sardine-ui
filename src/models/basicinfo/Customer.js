@@ -48,7 +48,6 @@ export default {
             call, put
         }) {
             const { data } = yield call(queryCustomer, parse(payload));
-
             if (data.status == "200") {
                 let customerList = data.obj.records;
                 yield put({
@@ -61,7 +60,7 @@ export default {
                             showTotal: total => `共 ${total}条`,
                             current: data.obj.page,
                             total: data.obj.recordCount,
-                            size: 'default'
+                            pageSize: payload.pageSize
                         },
                         currentItem: {}
                     }
