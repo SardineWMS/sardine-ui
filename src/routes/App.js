@@ -148,10 +148,11 @@ function App({
               <Spin spinning={loading}>
                 {children}
               </Spin>
+              <Footer />
             </div>
           </div>
-          <Footer />
         </div>
+        
       </div>);
     };
     if (registerLoading) {

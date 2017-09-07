@@ -6,7 +6,6 @@
   height: 100vh;
   min-width: 800px;
   border:1px solid #008B00;
-  overflow: auto;
 
   &.fold{
     .sider{
@@ -178,8 +177,9 @@
 
   .main {
     margin-left: 200px;
-    overflow: auto;
-    height: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+    height: 92%;
     transition: @transition-ease-out;
 
     .container {
