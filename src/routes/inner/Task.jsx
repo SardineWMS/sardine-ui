@@ -88,6 +88,18 @@ function Task({ location, dispatch, task }) {
                 }
             });
         },
+        refresItemRealCaseQtyStr(itemIndex,childIndex,realQty,qpcStr){
+            dispatch({
+                type: 'task/refresRealCaseQtyStr',
+                payload: {
+                    itemIndex:itemIndex,
+                    childIndex:childIndex,
+                    qty:realQty,
+                    qpcStr:qpcStr,
+                    tasks:list
+                }
+            });
+        },
         onArticleMove() {
             dispatch({
                 type: 'task/showArticleMoveModal',

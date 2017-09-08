@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col ,Badge} from 'antd';
+const EditableCell = require('../../widget/EditableCell');
 
 function PickTaskSearchGrid({
   dataSource,
@@ -7,7 +8,7 @@ function PickTaskSearchGrid({
   onPageChange,
   onAbortBatch,
   onRpl,
-  refresRealCaseQtyStr,
+  refresItemRealCaseQtyStr,
   selectedRowKeys = []
 }) {
 
@@ -103,18 +104,7 @@ function PickTaskSearchGrid({
 
     ];
 
-    const menu = (
-      <Menu>
-        <Menu.Item>
-          Action 1
-        </Menu.Item>
-        <Menu.Item>
-          Action 2
-        </Menu.Item>
-      </Menu>
-    );
-
-  const expandedRowRender = (childDataSource) => {
+  const expandedRowRender = (childDataSource,childIndex) => {
     const childColumns = [{
       title: '状态',
       dataIndex: 'state',
@@ -172,7 +162,8 @@ function PickTaskSearchGrid({
       title: '实际数量',
       dataIndex: 'realQty',
       key: 'realQty',
-      width: 100
+      width: 120,
+      render: (text, record, index) => renderColumns(record,"realQty", text,index)
     }, {
       title: '实际件数',
       dataIndex: 'realCaseQtyStr',
@@ -184,6 +175,33 @@ function PickTaskSearchGrid({
       key: 'picker',
       width: 100
     }];
+
+    function renderColumns(record, key, text,index) {
+    // if(key==="toBinCode")
+    //   return text;
+    return (<EditableCell
+      editable= {false}
+      value={text}
+      status={status}
+      onChange={value => handleChange(record,key,value,index)}
+      />);
+    };
+
+    function handleChange(record,key,value,itemIndex){
+      var reg = /^\d+(\.{0,1}\d+){0,1}$/;
+      if(!reg.test(value)){
+        message.error("请输入大于0的数字", 2, '');
+        return;
+      }
+      if(value> record.qty){
+        message.error("实际数量不能大于计划数量", 2, '');
+        return;
+      }
+      record.realQty=value;
+      childDataSource[itemIndex]=record;
+      dataSource[childIndex].items=childDataSource;
+      refresItemRealCaseQtyStr(itemIndex,childIndex,record.realQty,record.qpcStr);
+    };
 
     return (
       <Table
@@ -219,7 +237,7 @@ function PickTaskSearchGrid({
         pagination={pagination}
         rowKey={record => record.uuid}
         rowSelection={rowSelection}
-        expandedRowRender={record => expandedRowRender(record.items)}
+        expandedRowRender={(record,index) => expandedRowRender(record.items,index)}
         title={() =>
           <div>
             <Button onClick={handlerAbortBatch}>批量作废</Button>

@@ -64,7 +64,7 @@ function PutawayTaskSearchGrid({
     title: '实际数量',
     dataIndex: 'realQty',
     key: 'realQty',
-    width: 70
+    width: 70,
   }, {
     title: '实际件数',
     dataIndex: 'realCaseQtyStr',

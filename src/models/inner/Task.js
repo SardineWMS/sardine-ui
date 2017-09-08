@@ -467,6 +467,24 @@ export default {
                     }
                 })
             }
+        },
+        *refresItemRealCaseQtyStr({ payload }, { call, put }) {
+            const { data } = yield call(qtyToCaseQtyStr,{qty:payload.qty,qpcStr:payload.qpcStr});
+            if(data.obj){
+                var currentList=payload.tasks;
+                var currentTask=currentList[payload.childIndex];
+                currentTask[payload.itemIndex].realCaseQtyStr=data.obj;
+                currentList[payload.childIndex]=currentTask;
+                yield put({
+                    type: 'showLoading'
+                })
+                yield put({
+                    type: 'querySuccess',
+                    payload: {
+                        list:currentList
+                    }
+                })
+            }
         }
     },
 
