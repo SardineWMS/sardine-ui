@@ -18,7 +18,7 @@ const RtnShelfTaskSearchForm = ({
 }) => {
   function handleSearch(e) {
     e.preventDefault();
-    onSearch({...getFieldsValue(),taskType: "RtnShelf"});
+    onSearch(getFieldsValue());
   };
 
   function handleReset(e) {

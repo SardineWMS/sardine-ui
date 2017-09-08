@@ -18,7 +18,7 @@ const RtnHandoverTaskSearchForm = ({
 }) => {
   function handleSearch(e) {
     e.preventDefault();
-    onSearch({...getFieldsValue(),taskType: "RtnHandover"});
+    onSearch(getFieldsValue());
   };
 
   function handleReset(e) {

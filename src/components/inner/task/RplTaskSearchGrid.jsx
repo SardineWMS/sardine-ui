@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
+import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col,message} from 'antd';
+const EditableCell = require('../../widget/EditableCell');
 
 function RplTaskSearchGrid({
 	dataSource,
@@ -7,6 +8,7 @@ function RplTaskSearchGrid({
   onPageChange,
   onAbortBatch,
   onRpl,
+  refresRealCaseQtyStr,
   selectedRowKeys = []
 }) {
 
@@ -56,7 +58,8 @@ function RplTaskSearchGrid({
     title: '实际数量',
     dataIndex: 'realQty',
     key: 'realQty',
-    width: 70
+    width: 100,
+    render: (text, record, index) => renderColumns(record,"realQty", text,index)
   }, {
     title: '实际件数',
     dataIndex: 'realCaseQtyStr',
@@ -80,6 +83,32 @@ function RplTaskSearchGrid({
     width: 150,
     render: (text) => "[" + text.billNumber + "]" + text.billType
   }];
+
+  function renderColumns(record, key, text,index) {
+    // if(key==="toBinCode")
+    //   return text;
+    return (<EditableCell
+      editable= {false}
+      value={text}
+      status={status}
+      onChange={value => handleChange(record,key,value,index)}
+    />);
+  };
+
+  function handleChange(record,key,value,index){
+    var reg = /^\d+(\.{0,1}\d+){0,1}$/;
+    if(!reg.test(value)){
+      message.error("请输入大于0的数字", 2, '');
+      return;
+    }
+    if(value> record.qty){
+      message.error("实际数量不能大于计划数量", 2, '');
+      return;
+    }
+    record.realQty=value;
+    dataSource[index]=record;
+    refresRealCaseQtyStr(index,record.realQty,record.qpcStr);
+  };
 
   function handlerAbortBatch() {
       onAbortBatch(selectedRowKeys);

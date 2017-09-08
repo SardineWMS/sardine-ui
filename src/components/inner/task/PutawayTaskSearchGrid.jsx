@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
+const EditableCell = require('../../widget/EditableCell');
 
 function PutawayTaskSearchGrid({
 	dataSource,
@@ -36,17 +37,19 @@ function PutawayTaskSearchGrid({
     title: '来源容器',
     dataIndex: 'fromContainerBarcode',
     key: 'fromContainerBarcode',
-    width: 100
+    width: 100,
   }, {
     title: '目标货位',
     dataIndex: 'toBinCode',
     key: 'toBinCode',
-    width: 100
+    width: 120,
+    render: (text, record, index) => renderColumns(record,"toBinCode", text)
   }, {
     title: '目标容器',
     dataIndex: 'toContainerBarcode',
     key: 'toContainerBarcode',
-    width: 100
+    width: 120,
+    render: (text, record, index) => renderColumns(record,"toContainerBarcode", text)
   },{
     title: '数量',
     dataIndex: 'qty',
@@ -85,6 +88,24 @@ function PutawayTaskSearchGrid({
     width: 150,
     render: (text) => "[" + text.billNumber + "]" + text.billType
   }];
+
+  function renderColumns(record, key, text) {
+    // if(key==="toBinCode")
+    //   return text;
+    return (<EditableCell
+      editable= {false}
+      value={text}
+      status={status}
+      onChange={value => handleChange(record,key,value)}
+    />);
+  };
+
+  function handleChange(record,key,value){
+    if("toBinCode"===key)
+      record.toBinCode=value;
+    else 
+      record.toContainerBarcode=value;
+  };
 
   function handlerPutAway() {
       onPutAway(selectedRowKeys);

@@ -5,7 +5,7 @@ import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
 
-const PutawayTaskSearchForm = ({
+const PickTaskSearchForm = ({
   onSearch,
   field,
   keyword,
@@ -33,9 +33,11 @@ const PutawayTaskSearchForm = ({
       <BaseFormItem  label="状态 等于">
         {getFieldDecorator('states')(
           <Select  mode="multiple" >
-            <Option value="待上架">待上架</Option>
-            <Option value="上架中">上架中</Option>
-            <Option value="上架完成">上架完成</Option>
+            <Option value="inConfirm">待确认</Option>
+            <Option value="approved">已批准</Option>
+            <Option value="inProgress">进行中</Option>
+            <Option value="exception">异常</Option>
+            <Option value="audited">已审核</Option>
           </Select>
         )}
       </BaseFormItem>
@@ -57,11 +59,11 @@ const PutawayTaskSearchForm = ({
   );
 };
 
-PutawayTaskSearchForm.propTypes = {
+PickTaskSearchForm.propTypes = {
   form: PropTypes.object.isRequired,
   onSearch: PropTypes.func,
   field: PropTypes.string,
   keyword: PropTypes.string
 };
 
-export default Form.create()(PutawayTaskSearchForm);
+export default Form.create()(PickTaskSearchForm);

@@ -18,7 +18,7 @@ const RplTaskSearchForm = ({
 }) => {
   function handleSearch(e) {
     e.preventDefault();
-    onSearch({...getFieldsValue(),taskType: "Rpl"});
+    onSearch(getFieldsValue());
   };
 
   function handleReset(e) {

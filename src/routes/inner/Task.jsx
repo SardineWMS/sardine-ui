@@ -3,22 +3,23 @@ import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
 import { message,Tabs } from 'antd';
 
-import RplTaskSearchForm from '../../components/Inner/Task/RplTaskSearchForm';
-import RplTaskSearchGrid from '../../components/Inner/Task/RplTaskSearchGrid';
-import PutawayTaskSearchForm from '../../components/Inner/Task/PutawayTaskSearchForm';
-import PutawayTaskSearchGrid from '../../components/Inner/Task/PutawayTaskSearchGrid';
-import RtnPutawayTaskSearchForm from '../../components/Inner/Task/RtnPutawayTaskSearchForm';
-import RtnPutawayTaskSearchGrid from '../../components/Inner/Task/RtnPutawayTaskSearchGrid';
-import RtnShelfTaskSearchForm from '../../components/Inner/Task/RtnShelfTaskSearchForm';
-import RtnShelfTaskSearchGrid from '../../components/Inner/Task/RtnShelfTaskSearchGrid';
-import RtnHandoverTaskSearchForm from '../../components/Inner/Task/RtnHandoverTaskSearchForm';
-import RtnHandoverTaskSearchGrid from '../../components/Inner/Task/RtnHandoverTaskSearchGrid';
-import ArticleMove from '../../components/Inner/Task/ArticleMove';
-import ContainerMove from '../../components/Inner/Task/ContainerMove';
-import PutAwayModal from '../../components/Inner/Task/PutAwayModal';
-import PickModal from '../../components/Inner/Task/PickModal';
-import UserModal from '../../components/Inner/Task/UserModal';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import RplTaskSearchForm from '../../components/inner/task/RplTaskSearchForm';
+import RplTaskSearchGrid from '../../components/inner/task/RplTaskSearchGrid';
+import PutawayTaskSearchForm from '../../components/inner/task/PutawayTaskSearchForm';
+import PutawayTaskSearchGrid from '../../components/inner/task/PutawayTaskSearchGrid';
+import RtnPutawayTaskSearchForm from '../../components/inner/task/RtnPutawayTaskSearchForm';
+import RtnPutawayTaskSearchGrid from '../../components/inner/task/RtnPutawayTaskSearchGrid';
+import RtnShelfTaskSearchForm from '../../components/inner/task/RtnShelfTaskSearchForm';
+import RtnShelfTaskSearchGrid from '../../components/inner/task/RtnShelfTaskSearchGrid';
+import RtnHandoverTaskSearchForm from '../../components/inner/task/RtnHandoverTaskSearchForm';
+import RtnHandoverTaskSearchGrid from '../../components/inner/task/RtnHandoverTaskSearchGrid';
+import PickTaskSearchForm from '../../components/inner/task/PickTaskSearchForm';
+import PickTaskSearchGrid from '../../components/inner/task/PickTaskSearchGrid';
+import PickModal from '../../components/inner/task/PickModal';
+import ArticleMove from '../../components/inner/task/ArticleMove';
+import ContainerMove from '../../components/inner/task/ContainerMove';
+import UserModal from '../../components/inner/task/UserModal';
+import WMSProgress from '../../components/widget/WMSProgress';
 
 function Task({ location, dispatch, task }) {
     const {
@@ -41,10 +42,12 @@ function Task({ location, dispatch, task }) {
         userList,
         currentUser,
         taskNext,
-        putAwayModalVisable,
-        setPickModalVisable,
         pickTaskEntitys,
-        batchPickProcessModalVisable
+        setPickModalVisable,
+        batchPickProcessModalVisable,
+        rtnShelfTaskEntitys,
+        batchRtnShelfProcessModalVisable,
+        taskType
     } = task;
 
     const TaskType={
@@ -55,7 +58,7 @@ function Task({ location, dispatch, task }) {
         RTNSHELF:"RtnShelf",
         RTNHANDOVER:"RtnHandover",
         MOVE:"Move"
-    }
+    };
 
     const { field, keyword } = location.query;
     const taskListProps = {
@@ -65,6 +68,7 @@ function Task({ location, dispatch, task }) {
             dispatch(routerRedux.push({
                 pathname: '/wms/inner/task',
                 query: {
+                    taskType:taskType,
                     page: page.current,
                     pageSize: page.pageSize,
                     token: localStorage.getItem("token"),
@@ -72,6 +76,17 @@ function Task({ location, dispatch, task }) {
                     sortDirection: sorter.order
                 }
             }));
+        },
+        refresRealCaseQtyStr(index,realQty,qpcStr){
+            dispatch({
+                type: 'task/refresRealCaseQtyStr',
+                payload: {
+                    index:index,
+                    qty:realQty,
+                    qpcStr:qpcStr,
+                    tasks:list
+                }
+            });
         },
         onArticleMove() {
             dispatch({
@@ -108,8 +123,15 @@ function Task({ location, dispatch, task }) {
                 message.warning("请选择要上架的指令", 2, '');
                 return;
             };
+            for(var i = 0; i < tasks.length; i++){
+                var task=tasks[i];
+                if(!task.toBinCode || "-"===task.toBinCode){
+                    message.error("第"+(i+ 1)+"条指令未设置目标货位", 2, '');
+                    return;
+                }
+            };
             dispatch({
-                type: 'task/showPutAwayModal',
+                type: 'task/batchPutAwayTask',
                 payload: {
                    putAwayTaskEntitys:tasks
                 }
@@ -127,6 +149,25 @@ function Task({ location, dispatch, task }) {
                 }
             });
         },
+        onRtnShelf(tasks) {
+            if (tasks.length <= 0) {
+                message.warning("请选择要下架的指令", 2, '');
+                return;
+            };
+            for(var i = 0; i < tasks.length; i++){
+                var task=tasks[i];
+                if(!task.toBinCode || "-"===task.toBinCode){
+                    message.error("第"+(i+ 1)+"条指令未设置目标货位", 2, '');
+                    return;
+                }
+            };
+            dispatch({
+                type: 'task/batchRtnShelfTask',
+                payload: {
+                   rtnShelfTaskEntitys:tasks
+                }
+            });
+        },
         onPick(tasks) {
             if (tasks.length <= 0) {
                 message.warning("请选择要拣货的指令", 2, '');
@@ -141,24 +182,6 @@ function Task({ location, dispatch, task }) {
         }
     };
 
-    const putAwayModalProps={
-        visible:putAwayModalVisable,
-        tasks:putAwayTaskEntitys,
-        onOk(tasks) {
-            dispatch({
-                type: 'task/batchPutAwayTask',
-                payload: {
-                   rplTaskEntitys:tasks
-                }
-            });
-        },
-        onCancel() {
-            dispatch({
-                type: 'task/hidePutAwayModal'
-            });
-        }
-    }
-
     const batchProcessPutAwayTaskProps = {
         showConfirmModal: batchPutAwayProcessModalVisable,
         records: putAwayTaskEntitys ? putAwayTaskEntitys : [],
@@ -172,7 +195,8 @@ function Task({ location, dispatch, task }) {
                     uuid:entity.uuid,
                     version:entity.version,
                     toBinCode:entity.toBinCode,
-                    toContainerBarcode:entity.toContainerBarcode
+                    toContainerBarcode:entity.toContainerBarcode,
+                    taskType:taskType
                 }
             });
         },
@@ -185,7 +209,8 @@ function Task({ location, dispatch, task }) {
             dispatch({
                 type: 'task/query',
                 payload: {
-                    token: localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
+                    taskType:taskType
                 }
             });
         }
@@ -228,20 +253,56 @@ function Task({ location, dispatch, task }) {
                 payload: {
                     rplBillUuid:entity.uuid,
                     version:entity.version,
-                    rpler:currentUser
+                    taskType:taskType
                 }
             });
         },
         hideConfirmModal() {
             dispatch({
-                type: 'task/hideBatchRplTask',
+                type: 'task/hideBatchRplTask'
             });
         },
         refreshGrid() {
             dispatch({
                 type: 'task/query',
                 payload: {
-                    token: localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
+                    taskType:taskType
+                }
+            });
+        }
+    };
+
+    const batchProcessRtnShelfTaskProps = {
+        showConfirmModal: batchRtnShelfProcessModalVisable,
+        records: rtnShelfTaskEntitys ? rtnShelfTaskEntitys : [],
+        next: taskNext,
+        actionText: '退货下架',
+        entityCaption: '指令',
+        batchProcess(entity) {
+            dispatch({
+                type: 'task/rtnShelf',
+                payload: {
+                    uuid:entity.uuid,
+                    version:entity.version,
+                    toBinCode:entity.toBinCode,
+                    toContainerBarcode:entity.toContainerBarcode,
+                    qty:entity.realQty,
+                    taskType:taskType
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'task/hideBatchRtnShelfTask'
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'task/query',
+                payload: {
+                    token: localStorage.getItem("token"),
+                    taskType:taskType
                 }
             });
         }
@@ -330,7 +391,8 @@ function Task({ location, dispatch, task }) {
                 type: 'task/abort',
                 payload: {
                     uuid: entity.uuid,
-                    version: entity.version
+                    version: entity.version,
+                    taskType:taskType
                 }
             });
         },
@@ -343,7 +405,8 @@ function Task({ location, dispatch, task }) {
             dispatch({
                 type: 'task/query',
                 payload: {
-                    token: localStorage.getItem("token")
+                    token: localStorage.getItem("token"),
+                    taskType:taskType
                 }
             });
         }
@@ -420,6 +483,7 @@ function Task({ location, dispatch, task }) {
         field,
         keyword,
         onSearch(fieldsValue) {
+            fieldsValue.taskType=taskType;
             dispatch({
                 type: 'task/query',
                 payload: fieldsValue
@@ -474,13 +538,17 @@ function Task({ location, dispatch, task }) {
                         <RtnHandoverTaskSearchForm {...taskSearchProps} />
                         <RtnHandoverTaskSearchGrid {...taskListProps} />      
                     </Tabs.TabPane>
+                    <Tabs.TabPane tab="拣货" key={TaskType.PICK}>
+                        <PickTaskSearchForm {...taskSearchProps} />
+                        <PickTaskSearchGrid {...taskListProps} />      
+                    </Tabs.TabPane>
                 </Tabs>
                 <WMSProgress {...batchProcessAbortTaskProps} />
                 <UserModal {...userModalProps} />
                 <WMSProgress {...batchProcessRplTaskProps} />
-                <PutAwayModal {...putAwayModalProps} />
                 <WMSProgress {...batchProcessPutAwayTaskProps} />
                 <PickModal {...pickModalProps} />
+                <WMSProgress {...batchProcessRtnShelfTaskProps} />
             </div>
         );
     };

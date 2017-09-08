@@ -1,10 +1,12 @@
 import { parse } from 'qs';
 import {
     queryTask, queryStocks, saveArticleMoveRule, saveAndMoveArticleMoveRule, saveContainerMoveRule,
-    saveAndMoveContainerMoveRule, articleMove, containerMove, execute,abort,putaway,rpl,batchPick
+    saveAndMoveContainerMoveRule, articleMove, containerMove, execute,abort,putaway,rpl,batchPick,
+    rtnshelf
 } from '../../services/Inner/Task';
 import { getByBarcode } from '../../services/basicinfo/Container';
 import { queryUser,getByCode as getUserByCode} from '../../services/ia/User';
+import { qtyToCaseQtyStr} from '../../services/common/common';
 
 export default {
     namespace: 'task',
@@ -28,7 +30,6 @@ export default {
         containerMoveModalVisable: false,
         batchAbortProcessModalVisable: false,
         abortTaskEntitys:[],
-        putAwayModalVisable:false,
         putAwayTaskEntitys:[],
         batchPutAwayProcessModalVisable:false,
         rplTaskEntitys:[],
@@ -37,6 +38,8 @@ export default {
         userModalVisable:false,
         pickTaskEntitys:[],
         batchPickProcessModalVisable:false,
+        setPickModalVisable:false,
+        batchRtnShelfProcessModalVisable:false,
         currentUser:{}
     },
 
@@ -68,6 +71,7 @@ export default {
                 yield put({
                     type: 'querySuccess',
                     payload: {
+                        taskType:payload.taskType,
                         list: data.obj.records,
                         pagination: {
                             showSizeChanger: true,
@@ -294,7 +298,7 @@ export default {
         *execute({ payload }, { call, put }) {
             yield call(execute, { uuid: payload.uuid, version: payload.version });
         },
-                *abort({
+        *abort({
             payload
         }, {
             call, put
@@ -333,23 +337,12 @@ export default {
             })
             const { data } = yield call(putaway, parse(payload));
             if (data.status == "200") {
-                yield put({
-                    type: 'hidePutAwayModal'
-                })
                 const { data } = yield call(queryTask, parse(payload));
                 if (data.status == "200") {
                     yield put({
-                        type: 'querySuccess',
-                        payload: {
-                            list: data.obj.records,
-                            pagination: {
-                                showSizeChanger: true,
-                                showQuickJumper: true,
-                                showTotal: total => `共 ${total} 条`,
-                                current: data.obj.page,
-                                total: data.obj.recordCount,
-                                size: 'default'
-                            }
+                        type: 'query',
+                        payload:{
+                            taskType:payload.taskType
                         }
                     });
                 };
@@ -365,20 +358,30 @@ export default {
             })
             const { data } = yield call(rpl,payload);
             if (data.status == "200") {
+                yield put({
+                    type: 'query',
+                    payload:{
+                        taskType:payload.taskType
+                    }
+                });
+            };
+        },
+        *rtnShelf({
+            payload
+        }, {
+            call, put
+        }) {
+            yield put({
+                type: 'showLoading',
+            })
+            const { data } = yield call(rtnshelf, parse(payload));
+            if (data.status == "200") {
                 const { data } = yield call(queryTask, parse(payload));
                 if (data.status == "200") {
                     yield put({
-                        type: 'querySuccess',
-                        payload: {
-                            list: data.obj.records,
-                            pagination: {
-                                showSizeChanger: true,
-                                showQuickJumper: true,
-                                showTotal: total => `共 ${total} 条`,
-                                current: data.obj.page,
-                                total: data.obj.recordCount,
-                                size: 'default'
-                            }
+                        type: 'query',
+                        payload:{
+                            taskType:payload.taskType
                         }
                     });
                 };
@@ -448,6 +451,22 @@ export default {
                     }
                 })
             }
+        },
+        *refresRealCaseQtyStr({ payload }, { call, put }) {
+            const { data } = yield call(qtyToCaseQtyStr,{qty:payload.qty,qpcStr:payload.qpcStr});
+            if(data.obj){
+                var currentList=payload.tasks;
+                currentList[payload.index].realCaseQtyStr=data.obj;
+                yield put({
+                    type: 'showLoading'
+                })
+                yield put({
+                    type: 'querySuccess',
+                    payload: {
+                        list:currentList
+                    }
+                })
+            }
         }
     },
 
@@ -491,24 +510,18 @@ export default {
         hideAbortTaskModal(state, action) {
             return { ...state, batchAbortProcessModalVisable: false };
         },
-        showPutAwayModal(state, action) {
-            return { 
-                ...state, 
-                ...action.payload, 
-                putAwayModalVisable: true };
-        },
-        hidePutAwayModal(state, action) {
-            return { ...state, putAwayModalVisable: false };
-        },
         batchPutAwayTask(state, action) {
             return { 
                 ...state, 
                 ...action.payload, 
-                putAwayModalVisable: false ,
-                batchPutAwayProcessModalVisable: true };
+                batchPutAwayProcessModalVisable: true 
+            };
         },
         hideBatchPutAwayTask(state, action) {
-            return { ...state, batchPutAwayProcessModalVisable: false };
+            return { 
+                ...state, 
+                batchPutAwayProcessModalVisable: false 
+            };
         },
         batchRplTask(state, action) {
             return { 
@@ -517,7 +530,20 @@ export default {
                 batchRplProcessModalVisable: true };
         },
         hideBatchRplTask(state, action) {
-            return { ...state, batchRplProcessModalVisable: false };
+            return { 
+                ...state,
+                batchRplProcessModalVisable: false 
+            };
+        },
+        batchRtnShelfTask(state, action) {
+            return { 
+                ...state, 
+                ...action.payload, 
+                batchRtnShelfProcessModalVisable: true 
+            };
+        },
+        hideBatchRtnShelfTask(state, action) {
+            return { ...state, batchRtnShelfProcessModalVisable: false };
         },
         showUerModal(state, action) {
             return { 

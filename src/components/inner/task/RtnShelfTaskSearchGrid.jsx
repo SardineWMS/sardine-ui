@@ -1,12 +1,14 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col } from 'antd';
+const EditableCell = require('../../widget/EditableCell');
 
 function RtnShelfTaskSearchGrid({
 	dataSource,
   pagination,
   onPageChange,
-  onPutAway,
+  onRtnShelf,
   onAbortBatch,
+  refresRealCaseQtyStr,
   selectedRowKeys = []
 }) {
 
@@ -46,12 +48,14 @@ function RtnShelfTaskSearchGrid({
     title: '目标货位',
     dataIndex: 'toBinCode',
     key: 'toBinCode',
-    width: 100
+    width: 120,
+    render: (text, record, index) => renderColumns(record,"toBinCode", text,index)
   }, {
     title: '目标容器',
     dataIndex: 'toContainerBarcode',
     key: 'toContainerBarcode',
-    width: 100
+    width: 120,
+    render: (text, record, index) => renderColumns(record,"toContainerBarcode", text,index)
   },{
     title: '数量',
     dataIndex: 'qty',
@@ -66,7 +70,8 @@ function RtnShelfTaskSearchGrid({
     title: '实际数量',
     dataIndex: 'realQty',
     key: 'realQty',
-    width: 70
+    width: 100,
+    render: (text, record, index) => renderColumns(record,"realQty", text,index)
   }, {
     title: '实际件数',
     dataIndex: 'realCaseQtyStr',
@@ -91,8 +96,42 @@ function RtnShelfTaskSearchGrid({
     render: (text) => "[" + text.billNumber + "]" + text.billType
   }];
 
-  function handlerPutAway() {
-      onPutAway(selectedRowKeys);
+  function renderColumns(record, key, text,index) {
+    // if(key==="toBinCode")
+    //   return text;
+    return (<EditableCell
+      editable= {false}
+      value={text}
+      status={status}
+      onChange={value => handleChange(record,key,value,index)}
+    />);
+  };
+
+  function handleChange(record,key,value,index){
+    if(key==="toBinCode"){
+      record.toBinCode=value;
+      dataSource[index]=record;
+    }else if(key==="toContainerBarcode"){
+      record.toContainerBarcode=value;
+      dataSource[index]=record;
+    }else{
+      var reg = /^\d+(\.{0,1}\d+){0,1}$/;
+      if(!reg.test(value)){
+        message.error("请输入大于0的数字", 2, '');
+        return;
+      }
+      if(value> record.qty){
+        message.error("实际数量不能大于计划数量", 2, '');
+        return;
+      }
+      record.realQty=value;
+      dataSource[index]=record;
+      refresRealCaseQtyStr(index,record.realQty,record.qpcStr); 
+    }
+  };
+
+  function handlerRtnShelf() {
+      onRtnShelf(selectedRowKeys);
   };
 
   function handlerAbortBatch() {
@@ -126,7 +165,7 @@ function RtnShelfTaskSearchGrid({
         rowSelection={rowSelection}
         title={() =>
           <div>
-            <Button onClick={handlerPutAway}>退货下架</Button>
+            <Button onClick={handlerRtnShelf}>退货下架</Button>
             <Button onClick={handlerAbortBatch}>批量作废</Button>
           </div>}
       />
@@ -138,7 +177,7 @@ RtnShelfTaskSearchGrid.propTypes = {
   dataSource: PropTypes.array,
   pagination: PropTypes.any,
   onPageChange: PropTypes.func,
-  onPutAway: PropTypes.func,
+  onRtnShelf: PropTypes.func,
   onAbortBatch:PropTypes.func
 };
 

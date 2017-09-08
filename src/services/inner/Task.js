@@ -67,8 +67,13 @@ export async function putaway(params) {
 }
 
 export async function rpl(params) {
-    const url = `/swms/inner/task/rpl?rplBillUuid=${params.rplBillUuid}&version=${params.version}`;
-    return request(addTokenToUrl(url), createBase(params.rpler));
+    const url = `/swms/inner/task/rpl?${qs.stringify(params)}`;
+    return request(addTokenToUrl(url), updateBaseNullBody(params));
+}
+
+export async function rtnshelf(params) {
+    const url = `/swms/inner/task/rtnshelf?${qs.stringify(params)}`;
+    return request(addTokenToUrl(url), updateBaseNullBody(params));
 }
 
 export async function batchPick(params) {
