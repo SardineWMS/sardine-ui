@@ -48,18 +48,19 @@ function PickTaskSearchGrid({
         title: '单号',
         dataIndex: 'billNumber',
         key: 'billNumber',
-        width: 80
+        width: 120
       }, {
         title: '客户',
         dataIndex: 'customer',
         key: 'customer',
-        width: 50,
-        render: (text) => "[" + text.code + "]" + text.name
+        width: 100,
+        render: (text) => text?"[" + text.code + "]" + text.name :text
       }, {
         title: '配送方式',
         dataIndex: 'deliveryType',
         key: 'deliveryType',
-        width: 50
+        width: 50,
+        render: (text) => "warehouse"===text?"仓库送":"自提"
       }, {
         title: '操作方式',
         dataIndex: 'method',
@@ -77,15 +78,15 @@ function PickTaskSearchGrid({
         title: '拣货区域',
         dataIndex: 'pickArea',
         key: 'pickArea',
-        width: 100,
-        render: (text) => "[" + text.code + "]" + text.name
+        width: 50,
+        render: (text) =>text? "[" + text.code + "]" + text.name :text
       },
       {
         title: '来源单据',
         dataIndex: 'sourceBill',
         key: 'sourceBill',
-        width: 100,
-        render: (text) => "[" + text.billNumber + "]" + text.billType
+        width: 150,
+        render: (text) =>text? "[" + text.billNumber + "]" + text.billType :text
       },
       {
         title: '拣货顺序',
@@ -146,22 +147,22 @@ function PickTaskSearchGrid({
       title: '来源货位',
       dataIndex: 'sourceBinCode',
       key: 'sourceBinCode',
-      width: 70
+      width: 100
     },{
       title: '来源容器',
       dataIndex: 'sourceContainerBarcode',
       key: 'sourceContainerBarcode',
-      width: 70
+      width: 100
     }, {
       title: '目标货位',
       dataIndex: 'toBinCode',
       key: 'toBinCode',
-      width: 70
+      width: 100
     },{
       title: '目标容器',
       dataIndex: 'toContainerBarcode',
       key: 'toContainerBarcode',
-      width: 70
+      width: 100
     },{
       title: '件数',
       dataIndex: 'caseQtyStr',
@@ -171,7 +172,7 @@ function PickTaskSearchGrid({
       title: '实际数量',
       dataIndex: 'realQty',
       key: 'realQty',
-      width: 70
+      width: 100
     }, {
       title: '实际件数',
       dataIndex: 'realCaseQtyStr',

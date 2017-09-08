@@ -21,7 +21,7 @@ function RplTaskSearchGrid({
     title: '商品',
     dataIndex: 'article',
     key: 'article',
-    render: (text,record) => "["+text.code+"]"+text.name+"," + record.articleSpec,
+    render: (text,record) =>text? "["+text.code+"]"+text.name+"," + record.articleSpec : text,
     width: 150
   },{
     title: '包装',
@@ -81,7 +81,7 @@ function RplTaskSearchGrid({
     dataIndex: 'sourceBill',
     key: 'sourceBill',
     width: 150,
-    render: (text) => "[" + text.billNumber + "]" + text.billType
+    render: (text) =>text? "[" + text.billNumber + "]" + text.billType:text
   }];
 
   function renderColumns(record, key, text,index) {
