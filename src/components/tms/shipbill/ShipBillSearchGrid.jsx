@@ -10,7 +10,8 @@ function ShipBillSearchGrid({
     onViewShipBill,
     onViewVehicle,
     onFinishBatch,
-    selectedRowKeys = []
+    selectedRowKeys = [],
+    onCreate
 }) {
 
     function handlerFinishBatch() {
@@ -65,19 +66,19 @@ function ShipBillSearchGrid({
                 title: '司机',
                 dataIndex: 'driver',
                 key: 'driver',
-                render: text => ("["+text.code+"]"+text.name)
+                render: text => ("[" + text.code + "]" + text.name)
             },
             {
                 title: '客户数',
                 dataIndex: 'customerCount',
                 key: 'customerCount'
             },
-             {
+            {
                 title: '总件数',
                 dataIndex: 'totalCaseQty',
                 key: 'totalCaseQty'
             },
-              {
+            {
                 title: '容器数',
                 dataIndex: 'containerCount',
                 key: 'containerCount'
@@ -106,6 +107,8 @@ function ShipBillSearchGrid({
                     () =>
                         <div>
                             <Button onClick={handlerFinishBatch} disabled={(!PermissionUtil("shipBill:finish"))}> 批量完成</Button>
+                            &nbsp;
+                            <Button onClick={() => onCreate()}>新建</Button>
                         </div>
                 }
                 dataSource={dataSource}

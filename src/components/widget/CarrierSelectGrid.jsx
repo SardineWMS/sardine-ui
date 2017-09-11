@@ -27,13 +27,13 @@ const columns = [{
 ];
 
 function convertState(text) {
-    if (text == "normal")
-        return '正常';
-    if (text == "deleted")
-        return '已删除';
+    if (text == "online")
+        return '已启用';
+    if (text == "offline")
+        return '已停用';
 };
 
-class CustomerSelectGrid extends React.Component {
+class CarrierSelectGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,12 +53,13 @@ class CustomerSelectGrid extends React.Component {
             ...newProps,
         });
     };
+
     handleSearch(e) {
         e.preventDefault();
         const payload = this.state.form.getFieldsValue();
         payload.token = localStorage.getItem("token");
         reqwest({
-            url: '/swms/basicinfo/customer/query',
+            url: '/swms/tms/carrier/query',
             method: 'get',
             data:
             `${stringify(payload)}`,
@@ -116,8 +117,8 @@ class CustomerSelectGrid extends React.Component {
                 <BaseFormItem label={"状态 等于"}>
                     {getFieldDecorator("state")(
                         <Select placeholder="请选择" showSearch={false} size="default">
-                            <Option value="normal" >正常</Option>
-                            <Option value="deleted">已删除</Option>
+                            <Option value="online" >已启用</Option>
+                            <Option value="offline">已停用</Option>
                         </Select>
                     )}
                 </BaseFormItem>
@@ -142,4 +143,4 @@ class CustomerSelectGrid extends React.Component {
     }
 };
 
-export default Form.create()(CustomerSelectGrid);
+export default Form.create()(CarrierSelectGrid);

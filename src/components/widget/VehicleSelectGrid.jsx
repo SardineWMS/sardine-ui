@@ -14,26 +14,42 @@ const columns = [{
     key: 'code',
 },
 {
-    title: '名称',
-    dataIndex: 'name',
-    key: 'name'
+    title: '车牌号',
+    dataIndex: 'vehicleNo',
+    key: 'vehicleNo'
 },
 {
     title: '状态',
     dataIndex: 'state',
     key: 'state',
     render: text => convertState(text)
+},
+{
+    title: '承运商',
+    dataIndex: 'carrier',
+    key: 'carrier',
+    render: text => "[" + text.code + "] " + text.name
 }
 ];
 
 function convertState(text) {
-    if (text == "normal")
-        return '正常';
-    if (text == "deleted")
-        return '已删除';
+    if (text == "free")
+        return '空闲';
+    if (text == "unUse")
+        return '待排车';
+    if (text == "used")
+        return '已排车';
+    if (text == "shiping")
+        return '装车中';
+    if (text == "shiped")
+        return '已装车';
+    if (text == "inAlc")
+        return '配送中';
+    if (text == "offline")
+        return '已停用';
 };
 
-class CustomerSelectGrid extends React.Component {
+class VehicleSelectGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,12 +69,13 @@ class CustomerSelectGrid extends React.Component {
             ...newProps,
         });
     };
+
     handleSearch(e) {
         e.preventDefault();
         const payload = this.state.form.getFieldsValue();
         payload.token = localStorage.getItem("token");
         reqwest({
-            url: '/swms/basicinfo/customer/query',
+            url: '/swms/tms/vehicle/query',
             method: 'get',
             data:
             `${stringify(payload)}`,
@@ -74,7 +91,7 @@ class CustomerSelectGrid extends React.Component {
         this.setState({
             data: [],
             pagination: {},
-            loading: false,
+            loading: false
         });
         this.state.onCancel();
     }
@@ -84,11 +101,6 @@ class CustomerSelectGrid extends React.Component {
         this.state.form.resetFields();
     };
 
-    onSelectChange = (selectedRowKeys, selectedRows) => {
-        this.setState({ selectedRowKeys, selectedRows });
-        this.state.onSelect(selectedRows);
-        this.setState({ selectedRowKeys: [], selectedRows: [] });
-    }
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -103,9 +115,9 @@ class CustomerSelectGrid extends React.Component {
             </BaseTwoCol>
         );
         children.push(
-            <BaseTwoCol key={"name"}>
-                <BaseFormItem label={"名称 等于"}>
-                    {getFieldDecorator("name")(
+            <BaseTwoCol key={"vehicleNo"}>
+                <BaseFormItem label={"车牌号 等于"}>
+                    {getFieldDecorator("vehicleNo")(
                         <Input placeholder="请输入" />
                     )}
                 </BaseFormItem>
@@ -116,9 +128,23 @@ class CustomerSelectGrid extends React.Component {
                 <BaseFormItem label={"状态 等于"}>
                     {getFieldDecorator("state")(
                         <Select placeholder="请选择" showSearch={false} size="default">
-                            <Option value="normal" >正常</Option>
-                            <Option value="deleted">已删除</Option>
+                            <Option value="free" >空闲</Option>
+                            <Option value="unUse">待排车</Option>
+                            <Option value="used">已排车</Option>
+                            <Option value="shiping">装车中</Option>
+                            <Option value="shiped">已装车</Option>
+                            <Option value="inAlc">配送中</Option>
+                            <Option value="offline">已停用</Option>
                         </Select>
+                    )}
+                </BaseFormItem>
+            </BaseTwoCol>
+        );
+        children.push(
+            <BaseTwoCol key={"carrierCode"}>
+                <BaseFormItem label={"承运商代码 等于"}>
+                    {getFieldDecorator("carrierCode")(
+                        <Input placeholder="请输入" />
                     )}
                 </BaseFormItem>
             </BaseTwoCol>
@@ -126,7 +152,7 @@ class CustomerSelectGrid extends React.Component {
 
         return (
             <div>
-                <Modal visible={this.state.visible} onCancel={this.handleCancel}>
+                <Modal visible={this.state.visible} onCancel={this.handleCancel} width={800}>
                     <BaseSearchPanel children={children} handleReset={this.handleReset} handleSearch={this.handleSearch} />
                     <Table
                         size="small"
@@ -142,4 +168,4 @@ class CustomerSelectGrid extends React.Component {
     }
 };
 
-export default Form.create()(CustomerSelectGrid);
+export default Form.create()(VehicleSelectGrid);

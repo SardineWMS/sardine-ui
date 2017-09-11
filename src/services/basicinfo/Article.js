@@ -87,3 +87,8 @@ export async function setArticleFixedPickBin(params) {
   const url = '/swms/basicinfo/article/setArticleFixedPickBin';
   return request(query(url, params), updateBaseNullBody(null));
 }
+
+export async function getArticleQpcByQpcStr(params) {
+  const url = "/swms/basicinfo/article/getarticleqpcbyqpcstr";
+  return request(query(url, params));
+}
