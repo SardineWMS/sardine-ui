@@ -276,6 +276,11 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
                 type: 'rtnSupplierNtcBill/genTask',
                 payload: record
             })
+        },
+        onBack() {
+            dispatch({
+                type: 'rtnSupplierNtcBill/query'
+            })
         }
     };
 
