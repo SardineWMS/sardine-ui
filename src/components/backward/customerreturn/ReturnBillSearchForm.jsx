@@ -88,7 +88,7 @@ const ReturnBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"returnorCode"}>
-            <BaseFormItem label={"退仓员代码 等于"}>
+            <BaseFormItem label={"退仓员代码 类似于"}>
                 {getFieldDecorator("returnorCode")(
                     <Input placeholder="请输入" />
                 )}
@@ -97,7 +97,7 @@ const ReturnBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"returnorName"}>
-            <BaseFormItem label={"退仓员名称 等于"}>
+            <BaseFormItem label={"退仓员名称 类似于"}>
                 {getFieldDecorator("returnorName")(
                     <Input placeholder="请输入" />
                 )}
