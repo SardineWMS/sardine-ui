@@ -160,6 +160,9 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
                 }
             }
             data.items = billItems;
+            data.sourceBill = {};
+            data.sourceBill.billType = data.sourceBillType;
+            data.sourceBill.billNumber = data.sourceBillNumber;
             if (!data.uuid) {
                 dispatch({
                     type: 'rtnSupplierNtcBill/saveBill',

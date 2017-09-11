@@ -36,7 +36,7 @@ const RtnSupplierNtcBillCreateForm = ({
                 ...getFieldsValue(),
                 ...item
             };
-            data.supplier=supplier;
+            data.supplier = supplier;
             handleSave(data);
         });
     };
@@ -53,12 +53,12 @@ const RtnSupplierNtcBillCreateForm = ({
     const children = [];
     children.push(<BaseFormItem label={"供应商："} key="supplier">
         {getFieldDecorator("supplier", {
-          rules: [{ required: true, message: '商品类别不能为空！' }],
-          initialValue: (supplier && supplier.uuid) ? "[" + supplier.code + "]" + supplier.name : null
+            rules: [{ required: true, message: '商品类别不能为空！' }],
+            initialValue: (supplier && supplier.uuid) ? "[" + supplier.code + "]" + supplier.name : null
         })(
-          <Input placeholder="请选择" suffix={<Icon type="ellipsis" onClick={() => onSupplierSelect()} />}
-            onBlur={handleEnterPressSupplier} onPressEnter={handleEnterPressSupplier} />
-          )}
+            <Input placeholder="请选择" suffix={<Icon type="ellipsis" onClick={() => onSupplierSelect()} />}
+                onBlur={handleEnterPressSupplier} onPressEnter={handleEnterPressSupplier} />
+            )}
     </BaseFormItem>);
 
     const options = [];
@@ -80,14 +80,14 @@ const RtnSupplierNtcBillCreateForm = ({
         </BaseFormItem>);
     children.push(
         <BaseFormItem label={"来源单据类型"} >
-            {getFieldDecorator("sourceBillType", { rules: [{ required: false }, { max: 100, message: '来源单据类型最大长度是100！' }], initialValue: item.sourceBillNumber })(
+            {getFieldDecorator("sourceBillType", { rules: [{ required: false }, { max: 100, message: '来源单据类型最大长度是100！' }], initialValue: item.sourceBill == null ? "" : item.sourceBill.billType })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>
     );
     children.push(
         <BaseFormItem label={"来源单据号"} >
-            {getFieldDecorator("sourceBillNumber", { rules: [{ required: false }, { max: 30, message: '来源单据号最大长度是30！' }], initialValue: item.sourceBillNumber })(
+            {getFieldDecorator("sourceBillNumber", { rules: [{ required: false }, { max: 30, message: '来源单据号最大长度是30！' }], initialValue: item.sourceBill == null ? "" : item.sourceBill.billNumber })(
                 <Input placeholder="请输入" />
             )}
         </BaseFormItem>

@@ -44,7 +44,7 @@ const RtnSupplierNtcBillViewPage = ({
         <span>{item.wrh.name + "[" + item.wrh.code + "]"}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="来源单据：" key={Guid()}>
-        <span>{item.sourceBillNumber == null ? "" : item.sourceBillType + "[" + item.sourceBillNumber + "]"}</span>
+        <span>{item.sourceBill == null ? "" : item.sourceBill.billType + "[" + item.sourceBill.billNumber + "]"}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="退货日期：" key={Guid()}>
         <span>{moment(item.returnDate).format("YYYY-MM-DD")}</span>
