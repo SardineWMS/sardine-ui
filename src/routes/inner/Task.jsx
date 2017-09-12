@@ -11,8 +11,8 @@ import RtnPutawayTaskSearchForm from '../../components/inner/task/RtnPutawayTask
 import RtnPutawayTaskSearchGrid from '../../components/inner/task/RtnPutawayTaskSearchGrid';
 import RtnShelfTaskSearchForm from '../../components/inner/task/RtnShelfTaskSearchForm';
 import RtnShelfTaskSearchGrid from '../../components/inner/task/RtnShelfTaskSearchGrid';
-import RtnHandoverTaskSearchForm from '../../components/inner/task/RtnHandoverTaskSearchForm';
-import RtnHandoverTaskSearchGrid from '../../components/inner/task/RtnHandoverTaskSearchGrid';
+import ReturnSupplierHandoverSearchForm from '../../components/inner/task/ReturnSupplierHandoverSearchForm';
+import ReturnSupplierHandoverSearchGrid from '../../components/inner/task/ReturnSupplierHandoverSearchGrid';
 import PickTaskSearchForm from '../../components/inner/task/PickTaskSearchForm';
 import PickTaskSearchGrid from '../../components/inner/task/PickTaskSearchGrid';
 import PickModal from '../../components/inner/task/PickModal';
@@ -90,7 +90,7 @@ function Task({ location, dispatch, task }) {
         },
         refresItemRealCaseQtyStr(itemIndex,childIndex,realQty,qpcStr){
             dispatch({
-                type: 'task/refresRealCaseQtyStr',
+                type: 'task/refresItemRealCaseQtyStr',
                 payload: {
                     itemIndex:itemIndex,
                     childIndex:childIndex,
@@ -177,6 +177,18 @@ function Task({ location, dispatch, task }) {
                 type: 'task/batchRtnShelfTask',
                 payload: {
                    rtnShelfTaskEntitys:tasks
+                }
+            });
+        },
+        onHandover(tasks) {
+            if (tasks.length <= 0) {
+                message.warning("请选择要交接的指令", 2, '');
+                return;
+            };
+            dispatch({
+                type: 'task/handover',
+                payload: {
+                   tasks
                 }
             });
         },
@@ -547,8 +559,8 @@ function Task({ location, dispatch, task }) {
                         <RtnShelfTaskSearchGrid {...taskListProps} />      
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="退货交接" key={TaskType.RTNHANDOVER}>
-                        <RtnHandoverTaskSearchForm {...taskSearchProps} />
-                        <RtnHandoverTaskSearchGrid {...taskListProps} />      
+                        <ReturnSupplierHandoverSearchForm {...taskSearchProps} />
+                        <ReturnSupplierHandoverSearchGrid {...taskListProps} />      
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="拣货" key={TaskType.PICK}>
                         <PickTaskSearchForm {...taskSearchProps} />

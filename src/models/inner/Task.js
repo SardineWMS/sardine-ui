@@ -2,7 +2,7 @@ import { parse } from 'qs';
 import {
     queryTask, queryStocks, saveArticleMoveRule, saveAndMoveArticleMoveRule, saveContainerMoveRule,
     saveAndMoveContainerMoveRule, articleMove, containerMove, execute,abort,putaway,rpl,batchPick,
-    rtnshelf
+    rtnshelf,queryHandoverTasks,handover
 } from '../../services/Inner/Task';
 import { getByBarcode } from '../../services/basicinfo/Container';
 import { queryUser,getByCode as getUserByCode} from '../../services/ia/User';
@@ -65,20 +65,26 @@ export default {
             yield put({
                 type: 'showLoading',
             });
+          
+            let result={};
             payload.taskType = payload.taskType? payload.taskType:'Putaway';
-            const { data } = yield call(queryTask, parse(payload));
-            if (data.status == "200") {
+            if("RtnHandover"===payload.taskType)
+                result = yield call(queryHandoverTasks, parse(payload));
+            else{
+                result = yield call(queryTask, parse(payload));
+            }
+            if (result && result.data.status == "200") {
                 yield put({
                     type: 'querySuccess',
                     payload: {
                         taskType:payload.taskType,
-                        list: data.obj.records,
+                        list: result.data.obj.records,
                         pagination: {
                             showSizeChanger: true,
                             showQuickJumper: true,
                             showTotal: total => `共 ${total} 条`,
-                            current: data.obj.page,
-                            total: data.obj.recordCount,
+                            current: result.data.obj.page,
+                            total: result.data.obj.recordCount,
                             size: 'default'
                         }
                     }
@@ -419,6 +425,27 @@ export default {
                 };
             };
         },
+        *handover({
+            payload
+        }, {
+            call, put
+        }) {
+            yield put({
+                type: 'showLoading',
+            })
+            const { data } = yield call(handover,payload);
+            if (data.status == "200") {
+                const { data } = yield call(queryTask, parse(payload));
+                if (data.status == "200") {
+                    yield put({
+                        type: 'query',
+                        payload:{
+                            taskType:payload.taskType
+                        }
+                    });
+                };
+            };
+        },
         *queryUserByPage({ payload }, { call, put }) {
             const { data } = yield call(queryUser, parse(payload));
             if(data.obj){
@@ -473,8 +500,7 @@ export default {
             if(data.obj){
                 var currentList=payload.tasks;
                 var currentTask=currentList[payload.childIndex];
-                currentTask[payload.itemIndex].realCaseQtyStr=data.obj;
-                currentList[payload.childIndex]=currentTask;
+                currentTask.items[payload.itemIndex].realCaseQtyStr=data.obj;
                 yield put({
                     type: 'showLoading'
                 })

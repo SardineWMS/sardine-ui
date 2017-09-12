@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col ,Badge} from 'antd';
+import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col ,Badge,message} from 'antd';
 const EditableCell = require('../../widget/EditableCell');
 
 function PickTaskSearchGrid({
@@ -105,10 +105,26 @@ function PickTaskSearchGrid({
     ];
 
   const expandedRowRender = (childDataSource,childIndex) => {
+    function converState(text)  {
+      if(text == "initial")
+        return "未处理";
+      if(text=="inProgress")
+        return "进行中";
+      if(text=="finished")
+        return "已完成";
+      if(text=="exception")
+        return "异常";
+      if(text=="skip")
+        return "跳过";
+      if(text=="stockOut")
+        return "缺货";
+    };
+
     const childColumns = [{
       title: '状态',
       dataIndex: 'state',
       key: 'state',
+      render: (text) => converState(text),
       width: 80
     },{
       title: '商品代码',

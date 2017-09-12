@@ -5,7 +5,7 @@ import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
 
-const RtnHandoverTaskSearchForm = ({
+const ReturnSupplierHandoverSearchForm = ({
   onSearch,
   field,
   keyword,
@@ -29,24 +29,39 @@ const RtnHandoverTaskSearchForm = ({
   const children = [];
 
   children.push(
-    <BaseTwoCol key="states">
-      <BaseFormItem  label="状态 等于">
-        {getFieldDecorator('states')(
-          <Select  mode="multiple" >
-            <Option value="待退货下架">待退货下架</Option>
-            <Option value="退货下架中">退货下架中</Option>
-            <Option value="退货下架完成">退货下架完成</Option>
-            <Option value="退货下架作废">退货下架作废</Option>
-          </Select>
+    <BaseTwoCol key="supplierCodeLike">
+      <BaseFormItem  label="供应商代码 类似于">
+        {getFieldDecorator('supplierCodeLike')(
+          <Input type="text" placeholder="供应商代码 类似于" />
         )}
       </BaseFormItem>
     </BaseTwoCol>
   );
 
   children.push(
-    <BaseTwoCol key="articleCode">
+    <BaseTwoCol key="binCodeLike">
+      <BaseFormItem  label="货位代码 类似于">
+        {getFieldDecorator('binCodeLike')(
+          <Input type="text" placeholder="货位代码 类似于" />
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
+
+  children.push(
+    <BaseTwoCol key="containerBarcodeLike">
+      <BaseFormItem  label="容器条码 类似于">
+        {getFieldDecorator('containerBarcodeLike')(
+          <Input type="text" placeholder="容器条码 类似于" />
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
+
+  children.push(
+    <BaseTwoCol key="articleCodeLike">
       <BaseFormItem  label="商品条码 类似于">
-        {getFieldDecorator('articleCode')(
+        {getFieldDecorator('articleCodeLike')(
           <Input type="text" placeholder="商品条码 类似于" />
         )}
       </BaseFormItem>
@@ -58,11 +73,11 @@ const RtnHandoverTaskSearchForm = ({
   );
 };
 
-RtnHandoverTaskSearchForm.propTypes = {
+ReturnSupplierHandoverSearchForm.propTypes = {
   form: PropTypes.object.isRequired,
   onSearch: PropTypes.func,
   field: PropTypes.string,
   keyword: PropTypes.string
 };
 
-export default Form.create()(RtnHandoverTaskSearchForm);
+export default Form.create()(ReturnSupplierHandoverSearchForm);

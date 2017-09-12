@@ -17,6 +17,11 @@ export async function queryTask(params) {
     return request(query(url, params), req);
 }
 
+export async function queryHandoverTasks(params) {
+    const url = `/swms/inner/task/queryhandovertasks`;
+    return request(query(url, params));
+}
+
 export async function queryStocks(params) {
     const url = "/swms/inner/task/queryStocks";
     return request(query(url, params));
@@ -79,4 +84,9 @@ export async function rtnshelf(params) {
 export async function batchPick(params) {
     const url = `/swms/inner/task/batchpick?toBinCode=${params.toBinCode}&toContainerBarcode=${params.toContainerBarcode}`;
     return request(addTokenToUrl(url), createBase(params.pickItemUuids));
+}
+
+export async function handover(params) {
+    const url = '/swms/inner/task/handover';
+    return request(addTokenToUrl(url), createBase(params));
 }
