@@ -22,6 +22,11 @@ export async function queryHandoverTasks(params) {
     return request(query(url, params));
 }
 
+export async function queryShipTasks(params) {
+    const url = `/swms/inner/task/queryshiptasks`;
+    return request(query(url, params));
+}
+
 export async function queryStocks(params) {
     const url = "/swms/inner/task/queryStocks";
     return request(query(url, params));

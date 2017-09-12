@@ -2,7 +2,7 @@ import { parse } from 'qs';
 import {
     queryTask, queryStocks, saveArticleMoveRule, saveAndMoveArticleMoveRule, saveContainerMoveRule,
     saveAndMoveContainerMoveRule, articleMove, containerMove, execute,abort,putaway,rpl,batchPick,
-    rtnshelf,queryHandoverTasks,handover
+    rtnshelf,queryHandoverTasks,handover,queryShipTasks
 } from '../../services/Inner/Task';
 import { getByBarcode } from '../../services/basicinfo/Container';
 import { queryUser,getByCode as getUserByCode} from '../../services/ia/User';
@@ -70,9 +70,10 @@ export default {
             payload.taskType = payload.taskType? payload.taskType:'Putaway';
             if("RtnHandover"===payload.taskType)
                 result = yield call(queryHandoverTasks, parse(payload));
-            else{
+            else if("Ship"===payload.taskType)
+                result = yield call(queryShipTasks, parse(payload));
+            else 
                 result = yield call(queryTask, parse(payload));
-            }
             if (result && result.data.status == "200") {
                 yield put({
                     type: 'querySuccess',

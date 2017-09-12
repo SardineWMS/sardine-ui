@@ -15,6 +15,8 @@ import ReturnSupplierHandoverSearchForm from '../../components/inner/task/Return
 import ReturnSupplierHandoverSearchGrid from '../../components/inner/task/ReturnSupplierHandoverSearchGrid';
 import PickTaskSearchForm from '../../components/inner/task/PickTaskSearchForm';
 import PickTaskSearchGrid from '../../components/inner/task/PickTaskSearchGrid';
+import ShipBillSearchForm from '../../components/inner/task/ShipBillSearchForm';
+import ShipBillSearchGrid from '../../components/inner/task/ShipBillSearchGrid';
 import PickModal from '../../components/inner/task/PickModal';
 import ArticleMove from '../../components/inner/task/ArticleMove';
 import ContainerMove from '../../components/inner/task/ContainerMove';
@@ -57,7 +59,8 @@ function Task({ location, dispatch, task }) {
         RTNPUTAWAY:"RtnPutaway",
         RTNSHELF:"RtnShelf",
         RTNHANDOVER:"RtnHandover",
-        MOVE:"Move"
+        MOVE:"Move",
+        SHIP:"Ship"
     };
 
     const { field, keyword } = location.query;
@@ -565,6 +568,10 @@ function Task({ location, dispatch, task }) {
                     <Tabs.TabPane tab="拣货" key={TaskType.PICK}>
                         <PickTaskSearchForm {...taskSearchProps} />
                         <PickTaskSearchGrid {...taskListProps} />      
+                    </Tabs.TabPane>
+                    <Tabs.TabPane tab="装车" key={TaskType.SHIP}>
+                        <ShipBillSearchForm {...taskSearchProps} />
+                        <ShipBillSearchGrid {...taskListProps} />      
                     </Tabs.TabPane>
                 </Tabs>
                 <WMSProgress {...batchProcessAbortTaskProps} />
