@@ -20,20 +20,20 @@ const columns = [{
 },
 {
     title: '状态',
-    dataIndex: 'state',
-    key: 'state',
+    dataIndex: 'userState',
+    key: 'userState',
     render: text => convertState(text)
 }
 ];
 
 function convertState(text) {
-    if (text == "normal")
-        return '正常';
-    if (text == "deleted")
-        return '已删除';
+    if (text == "online")
+        return '启用';
+    if (text == "offline")
+        return '停用';
 };
 
-class CustomerSelectGrid extends React.Component {
+class DriverSelectGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -53,12 +53,14 @@ class CustomerSelectGrid extends React.Component {
             ...newProps,
         });
     };
+
     handleSearch(e) {
         e.preventDefault();
         const payload = this.state.form.getFieldsValue();
         payload.token = localStorage.getItem("token");
+        payload.roleName = "司机";
         reqwest({
-            url: '/swms/basicinfo/customer/query',
+            url: '/swms/ia/user/querybypage',
             method: 'get',
             data:
             `${stringify(payload)}`,
@@ -114,10 +116,10 @@ class CustomerSelectGrid extends React.Component {
         children.push(
             <BaseTwoCol key={"state"}>
                 <BaseFormItem label={"状态 等于"}>
-                    {getFieldDecorator("state")(
+                    {getFieldDecorator("userState")(
                         <Select placeholder="请选择" showSearch={false} size="default">
-                            <Option value="normal" >正常</Option>
-                            <Option value="deleted">已删除</Option>
+                            <Option value="online">启用</Option>
+                            <Option value="offline">停用</Option>
                         </Select>
                     )}
                 </BaseFormItem>
@@ -142,4 +144,4 @@ class CustomerSelectGrid extends React.Component {
     }
 };
 
-export default Form.create()(CustomerSelectGrid);
+export default Form.create()(DriverSelectGrid);

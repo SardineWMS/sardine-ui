@@ -24,12 +24,12 @@ function ShipBillCustomerItemForm({
             dataIndex: 'orderNo',
             key: 'orderNo'
         },
-        {
-            title: '装车员',
-            dataIndex: 'shiper',
-            key: 'shiper',
-            render: (text, record) => "[" + text.code + "]" + text.name
-        },
+        // {
+        //     title: '装车员',
+        //     dataIndex: 'shiper',
+        //     key: 'shiper',
+        //     render: (text, record) => "[" + text.code + "]" + text.name
+        // },
         {
             title: '总体积',
             dataIndex: 'totalVolume',

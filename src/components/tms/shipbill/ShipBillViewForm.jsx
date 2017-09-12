@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Card, Form, Row, Col, Input, Button, Collapse, Popconfirm, Spin,Tabs  } from 'antd';
+import { Card, Form, Row, Col, Input, Button, Collapse, Popconfirm, Spin, Tabs } from 'antd';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
 import BaseCard from '../../Widget/BaseCard';
 import BaseForm from '../../Widget/BaseForm';
@@ -15,7 +15,8 @@ const TabPane = Tabs.TabPane;
 const ShipBillViewForm = ({
     shipBill = {},
     onBack,
-    onFinish
+    onFinish,
+    onEdit
 }) => {
     function converState(text) {
         if (text == "Initial")
@@ -39,17 +40,17 @@ const ShipBillViewForm = ({
         <span>{shipBill.driver.name + "[" + shipBill.driver.code + "]"}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="配送方式：" key={Guid()}>
-        {shipBill.deliveryType==='warehouse' ?
-            <span>"仓库送"</span>
+        {shipBill.deliveryType === 'warehouse' ?
+            <span>仓库送</span>
             :
-            <span>"自提"</span>
+            <span>自提</span>
         }
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="单据类型：" key={Guid()}>
-        {shipBill.method==='ManualBill' ?
-            <span>"手工单据"</span>
+        {shipBill.method === 'ManualBill' ?
+            <span>手工单据</span>
             :
-            <span>"APP"</span>
+            <span>APP</span>
         }
     </BaseFormItem>);
 
@@ -71,9 +72,10 @@ const ShipBillViewForm = ({
     </BaseFormItem>);
 
     let toolbar = [];
+    toolbar.push(<Button onClick={() => onEdit()}>编辑</Button>);
     toolbar.push(
         <Popconfirm title="确定要完成吗？" onConfirm={() => onFinish(shipBill)}>
-            <Button disabled={!(shipBill.state == "Initial" || shipBill.state == "InProgress") || (!PermissionUtil("shipBill:finish"))}>完成</Button>
+            <Button disabled={!(shipBill.state == "Initial" || shipBill.state == "InProgress") || (!PermissionUtil("shipBill:finish"))}> 完成</Button>
         </Popconfirm>
     );
     toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
@@ -95,10 +97,10 @@ const ShipBillViewForm = ({
             </BaseCard>
             <Tabs>
                 <TabPane tab="客户明细" key="1">
-                    <ShipBillCustomerItemForm {...shipBillCustomerItemProps}/>
+                    <ShipBillCustomerItemForm {...shipBillCustomerItemProps} />
                 </TabPane>
                 <TabPane tab="容器库存" key="2">
-                    <ShipBillContainerStockForm {...shipBillContainerStockProps}/>
+                    <ShipBillContainerStockForm {...shipBillContainerStockProps} />
                 </TabPane>
             </Tabs>
         </div>
