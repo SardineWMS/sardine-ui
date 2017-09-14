@@ -31,9 +31,9 @@ const BinSearchForm = ({
   const children = [];
   children.push(
     <BaseTwoCol>
-      <BaseFormItem label="代码 类似">
+      <BaseFormItem label="代码 类似于">
         {getFieldDecorator('code')(
-          <Input type="text" placeholder="代码 类似" />
+          <Input type="text" placeholder="代码 类似于" />
         )}
       </BaseFormItem>
     </BaseTwoCol>);
@@ -55,11 +55,13 @@ const BinSearchForm = ({
       <BaseFormItem label="用途 等于">
         {getFieldDecorator('usage', { initialValue: '' })(
           <Select size="large">
-            <Option value=''> 全部</Option>
-            <Option value="StorageBin">存储位</Option>
-            <Option value="PickUpStorageBin">拣货存储位</Option>
+            <Option value=''>全部</Option>
             <Option value="ReceiveStorageBin">收货暂存位</Option>
+            <Option value="PickUpStorageBin">拣货存储位</Option>
+            <Option value="StorageBin">存储位</Option>
             <Option value="CollectBin">集货位</Option>
+            <Option value="RtnReceiveTempBin">退仓收货暂存位</Option>
+            <Option value="SupplierStorageBin">供应商退货位</Option>
             <Option value="SupplierCollectBin">供应商集货位</Option>
           </Select>
         )}
