@@ -336,7 +336,7 @@ function Role({ location, dispatch, role }) {
     };
 
     return (
-        <div>
+        <div className="content-inner">
             {refreshWidget()}
         </div>
     );

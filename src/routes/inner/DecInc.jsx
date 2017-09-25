@@ -382,7 +382,7 @@ function DecInc({ location, dispatch, decinc }) {
         };
     };
 
-    return (<div>{RefreshWidget()}</div>)
+    return (<div className="content-inner">{RefreshWidget()}</div>)
 
 };
 

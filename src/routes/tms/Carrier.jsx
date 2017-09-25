@@ -209,7 +209,7 @@ function Carrier({ location, dispatch, carrier }) {
     const CarrierCreateModalGen = () => <CarrierCreateModal {...carrierCreateModalProps} />;
 
     return (
-        <div>
+        <div className="content-inner">
             <CarrierSearchForm {...carrierSearchFormProps} />
             <CarrierSearchGrid {...carrierSearchGridProps} />
             <CarrierCreateModalGen />

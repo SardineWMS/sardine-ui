@@ -585,7 +585,7 @@ function Task({ location, dispatch, task }) {
     };
 
     return (
-        <div>{refreshWidget()}</div>
+        <div className="content-inner">{refreshWidget()}</div>
     );
 };
 

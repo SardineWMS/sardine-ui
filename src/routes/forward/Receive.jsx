@@ -464,7 +464,7 @@ function Receive({ location, dispatch, receive }) {
             </div>
     };
 
-    return (<div>{RefreshWidget()}</div>)
+    return (<div className="content-inner">{RefreshWidget()}</div>)
 };
 
 Receive.propType = {
