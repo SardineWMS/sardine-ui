@@ -53,13 +53,10 @@ const DemoCreateForm = ({
                 {getFieldDecorator('code', {
                   initialValue: item.code,
                   rules: [
-                    { required: true, message: '代码未填写' }, {
-                      max: 30,
-                      message: '代码最大长度是30'
-                    }
+                    { required: true, message: '代码未填写' }, { pattern: /^[a-z0-9]{0,30}$/, message: "用户代码只能是数字和字母，且小于30位" }
                   ],
                 })(
-                  <Input type="text" />
+                  <Input type="text" disabled={item.code} />
                   )}
               </FormItem>
               <FormItem {...formItemLayout} label="姓名：" hasFeedback>
@@ -76,9 +73,42 @@ const DemoCreateForm = ({
               <FormItem {...formItemLayout} label="联系方式：" hasFeedback>
                 {getFieldDecorator('phone', {
                   initialValue: item.phone,
-                  rules: [{ required: true,message:'联系方式未填写' }, {
+                  rules: [{ required: true, message: '联系方式未填写' }, {
                     max: 30,
                     message: '联系方式最大长度是30'
+                  }],
+                })(
+                  <Input type="text"></Input>
+                  )}
+              </FormItem>
+              <FormItem {...formItemLayout} label="身份证：" hasFeedback>
+                {getFieldDecorator('id', {
+                  initialValue: item.id,
+                  rules: [{ required: false }, {
+                    pattern: /^(^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$)|(^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])((\d{4})|\d{3}[Xx])$)$/,
+                    message: '身份证号格式不正确'
+                  }],
+                })(
+                  <Input type="text"></Input>
+                  )}
+              </FormItem>
+              <FormItem {...formItemLayout} label="email：" hasFeedback>
+                {getFieldDecorator('email', {
+                  initialValue: item.email,
+                  rules: [{ required: false }, {
+                    pattern: /\w+([-+.]\w+)*@\w+([-.]\w+)*\.\w+([-.]\w+)*/,
+                    message: '邮箱格式不正确'
+                  }],
+                })(
+                  <Input type="text"></Input>
+                  )}
+              </FormItem>
+              <FormItem {...formItemLayout} label="说明：" hasFeedback>
+                {getFieldDecorator('remark', {
+                  initialValue: item.remark,
+                  rules: [{ required: false }, {
+                    max: 255,
+                    message: '说明最大长度是255'
                   }],
                 })(
                   <Input type="text"></Input>

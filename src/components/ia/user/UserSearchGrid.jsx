@@ -91,6 +91,18 @@ class UserGrid extends React.Component {
         key: 'userState',
         render: text => convertState(text)
       }, {
+        title: '身份证',
+        dataIndex: 'id',
+        key: 'id'
+      }, {
+        title: 'email',
+        dataIndex: 'email',
+        key: 'email'
+      }, {
+        title: '说明',
+        dataIndex: 'remark',
+        key: 'remark'
+      }, {
         title: '操作',
         key: 'operation',
         render: (text, record) => (
@@ -167,10 +179,9 @@ class UserGrid extends React.Component {
             () =>
               <div>
                 <Row type="flex">
-                  <Col><Button type="ghost" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("user:delete")}>批量删除</Button></Col>
-                  <Col><Button type="ghost" onClick={this.handleOnlineBatch} disabled={!PermissionUtil("user:online")}>批量启用</Button></Col>
-                  <Col><Button type="ghost" onClick={this.handleOfflineBatch} disabled={!PermissionUtil("user:offline")}>批量停用</Button></Col>
                   <Col><Button onClick={this.handleCreate} disabled={!PermissionUtil("user:create")}>新建</Button></Col>
+                  <Col><Button type="ghost" onClick={this.handleOfflineBatch} disabled={!PermissionUtil("user:offline")}>停用</Button></Col>
+                  <Col><Button type="ghost" onClick={this.handleOnlineBatch} disabled={!PermissionUtil("user:online")}>启用</Button></Col>
                   <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                 </Row>
               </div>
