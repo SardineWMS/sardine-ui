@@ -70,6 +70,10 @@ export default {
                         pagination: {
                             total: data.obj.recordCount,
                             current: data.obj.page,
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total} 条`,
+                            pageSize: payload.pageSize
                         }
                     },
                 });

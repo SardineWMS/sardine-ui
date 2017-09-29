@@ -54,19 +54,9 @@ class RoleGrid extends React.Component {
             dataIndex: 'code',
             key: 'code',
             render: (text, record) => {
-                return (<div>
-                    {!record.editable ?
-                        (<a onClick={this.handleView.bind(this, record)}>{text}</a>)
-                        :
-                        (<RowEditCell
-                            editable={record.editable}
-                            value={text}
-                            status={status}
-                            onBlur={value => handleChange(record, value, "code")}
-                        />)
-                    }
-
-                </div>)
+                return <div>
+                        <a onClick={this.handleView.bind(this, record)}>{text}</a>
+                </div>
             },
             sorter: true
         },
@@ -83,6 +73,12 @@ class RoleGrid extends React.Component {
             key: 'state'
         },
         {
+            title: '角色说明',
+            dataIndex: 'remark',
+            key: 'remark',
+            render: (text, record) => renderNameColumns(record, 'remark', text)
+        },
+        {
             title: '操作',
             key: 'operation',
             render: (text, record) => {
@@ -96,12 +92,9 @@ class RoleGrid extends React.Component {
                         </span>
                         :
                         <span>
-                            <Popconfirm title="确定要删除吗？" onConfirm={() => this.state.onDelete(record)} >
-                                <a disabled={!PermissionUtil("role:delete")}>删除</a>
-                            </Popconfirm>
                             <a onClick={() => { this.state.onEdit(record) }} disabled={(record.state === "停用") || !PermissionUtil("role:edit")}>编辑</a>
-                            <Popconfirm title={`确定要${record.state === '启用' ? '禁用' : '启用'}吗？`} onConfirm={this.handleOnlineOrOffline.bind(this, record)}>
-                                <a disabled={record.state === '启用' ? !PermissionUtil("role:offline") : !PermissionUtil("role:online")}>{record.state === '启用' ? '禁用' : '启用'}</a>
+                            <Popconfirm title={`确定要${record.state === '启用' ? '停用' : '启用'}吗？`} onConfirm={this.handleOnlineOrOffline.bind(this, record)}>
+                                <a disabled={record.state === '启用' ? !PermissionUtil("role:offline") : !PermissionUtil("role:online")}>{record.state === '启用' ? '停用' : '启用'}</a>
                             </Popconfirm>
                             <a onClick={() => { this.state.onAssign(record) }} disabled={(record.state === "停用") || !PermissionUtil("role:edit")}>分配权限</a>
                         </span>
@@ -139,8 +132,8 @@ class RoleGrid extends React.Component {
         };
 
         function handleChange(record, value, key) {
-            if ("code" == key)
-                record.code = value;
+            if ("remark" == key)
+                record.remark = value;
             if ("name" == key)
                 record.name = value;
         };
@@ -166,10 +159,9 @@ class RoleGrid extends React.Component {
                         () =>
                             <div>
                                 <Row type="flex">
-                                    <Col><Button type="ghost" onClick={this.handleRemoveBatch}>批量删除</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleOnlineBatch}>批量启用</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleOfflineBatch}>批量停用</Button></Col>
                                     <Col><Button onClick={this.handleCreate}>新建</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleOfflineBatch}>停用</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleOnlineBatch}>启用</Button></Col>
                                     <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                                 </Row>
                             </div>

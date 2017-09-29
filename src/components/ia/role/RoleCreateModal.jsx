@@ -50,10 +50,8 @@ const RoleCreateModal = ({
                         rules: [{
                             required: true,
                             message: '角色代码未填写',
-                        }, {
-                            max: 30,
-                            message: '角色代码最大长度是30'
-                        }],
+                        },
+                        { pattern: /^[a-z0-9]{0,30}$/, message: "角色代码只能是数字和字母，且小于30位" }],
                     })(<Input />)}
                 </FormItem>
                 <FormItem label="名称：" hasFeedback {...formItemLayout}>
@@ -64,6 +62,14 @@ const RoleCreateModal = ({
                         }, {
                             max: 100,
                             message: '角色名称最大长度是30'
+                        }],
+                    })(<Input />)}
+                </FormItem>
+                <FormItem label="角色描述：" hasFeedback {...formItemLayout}>
+                    {getFieldDecorator('remark', {
+                        rules: [{
+                            max: 100,
+                            message: '角色名称最大长度是100'
                         }],
                     })(<Input />)}
                 </FormItem>
