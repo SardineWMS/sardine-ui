@@ -182,7 +182,7 @@ const ArticleCreateForm = ({
       {getFieldDecorator('purchasePrice', {
         initialValue: article.purchasePrice ? article.purchasePrice : 0,
         rules: [{ required: true, message: '进价不能为空！' }, {
-          pattern: /^[0-9]{1,19}+(.[0-9]{1,3})?$/,
+          pattern: /^[0-9]{1,19}(.[0-9]{1,3})?$/,
           message: '进价格式不正确，最大24位数字，默认5位小数！'
         }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
       })(
@@ -196,7 +196,7 @@ const ArticleCreateForm = ({
       {getFieldDecorator('sellPrice', {
         initialValue: article.sellPrice ? article.sellPrice : 0,
         rules: [{ required: true, message: '售价不能为空！' }, {
-          pattern: /^[0-9]{1,19}+(.[0-9]{1,3})?$/,
+          pattern: /^[0-9]{1,19}(.[0-9]{1,3})?$/,
           message: '售价格式不正确，最大24位数字，默认5位小数！'
         }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
       })(
@@ -208,7 +208,7 @@ const ArticleCreateForm = ({
   basicChildren.push(
     <BaseFormItem label="产地 ：" key="habitat">
       {getFieldDecorator('habitat', {
-        initialValue: article.habitat ? article.habitat : 0,
+        initialValue: article.habitat ? article.habitat : '',
         rules: [{
           max: 100,
           message: '产地最大为100位！'
@@ -222,7 +222,7 @@ const ArticleCreateForm = ({
   basicChildren.push(
     <BaseFormItem label="尺寸 ：" key="size">
       {getFieldDecorator('size', {
-        initialValue: article.size ? article.size : 0,
+        initialValue: article.size ? article.size : '',
         rules: [{
           max: 100,
           message: '尺寸最大为100位！'
