@@ -35,7 +35,7 @@ const ArticleCreateForm = ({
       if (errors) {
         return;
       }
-      const data = { ...getFieldsValue(), uuid: article.uuid, version: article.version, category: category };
+      const data = { ...getFieldsValue(), uuid: article.uuid, version: article.version, category: category, companyUuid: article.companyUuid };
       onOk(data);
     });
   }
@@ -72,9 +72,25 @@ const ArticleCreateForm = ({
     <BaseFormItem label="代码 :" key="code">
       {getFieldDecorator('code', {
         initialValue: article ? article.code : null,
+        rules: [{ required: true }, {
+          pattern: /^[a-z0-9]{0,30}$/,
+          message: '商品代码只能由30位字母和数字组成！'
+        }
+        ],
+      })(
+        <Input type="text" />
+        )}
+    </BaseFormItem>
+  );
+  basicChildren.push(
+    <BaseFormItem label="第二代码 :" key="secondCode">
+      {getFieldDecorator('secondCode', {
+        initialValue: article ? article.secondCode : null,
         rules: [
-          { required: true, message: '商品代码不能为空！' },
-          { max: 30, message: '商品代码最大长度为30！' }
+          { required: false }, {
+            pattern: /^[a-z0-9]{0,30}$/,
+            message: '商品第二代码只能由30位字母和数字组成！'
+          }
         ],
       })(
         <Input type="text" />
@@ -89,6 +105,19 @@ const ArticleCreateForm = ({
         rules: [
           { required: true, message: '商品名称不能为空！' },
           { max: 100, message: '商品名称最大长度为100！' }
+        ],
+      })(
+        <Input type="text" />
+        )}
+    </BaseFormItem>
+  );
+
+  basicChildren.push(
+    <BaseFormItem label="简称 :" key="simpleName">
+      {getFieldDecorator('simpleName', {
+        initialValue: article ? article.name : null,
+        rules: [
+          { max: 100, message: '商品简称名称最大长度为100！' }
         ],
       })(
         <Input type="text" />
@@ -143,7 +172,63 @@ const ArticleCreateForm = ({
           message: '保质期最大长度是11！'
         }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
       })(
-        <InputNumber min={0} style={{width: '100%'}}/>
+        <InputNumber min={0} style={{ width: '100%' }} />
+        )}
+    </BaseFormItem>
+  );
+
+  basicChildren.push(
+    <BaseFormItem label="进价 ：" key="purchasePrice">
+      {getFieldDecorator('purchasePrice', {
+        initialValue: article.purchasePrice ? article.purchasePrice : 0,
+        rules: [{ required: true, message: '进价不能为空！' }, {
+          pattern: /^[0-9]{1,19}+(.[0-9]{1,3})?$/,
+          message: '进价格式不正确，最大24位数字，默认5位小数！'
+        }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
+      })(
+        <Input style={{ width: '100%' }} />
+        )}
+    </BaseFormItem>
+  );
+
+  basicChildren.push(
+    <BaseFormItem label="售价 ：" key="sellPrice">
+      {getFieldDecorator('sellPrice', {
+        initialValue: article.sellPrice ? article.sellPrice : 0,
+        rules: [{ required: true, message: '售价不能为空！' }, {
+          pattern: /^[0-9]{1,19}+(.[0-9]{1,3})?$/,
+          message: '售价格式不正确，最大24位数字，默认5位小数！'
+        }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
+      })(
+        <Input style={{ width: '100%' }} />
+        )}
+    </BaseFormItem>
+  );
+
+  basicChildren.push(
+    <BaseFormItem label="产地 ：" key="habitat">
+      {getFieldDecorator('habitat', {
+        initialValue: article.habitat ? article.habitat : 0,
+        rules: [{
+          max: 100,
+          message: '产地最大为100位！'
+        }]
+      })(
+        <Input style={{ width: '100%' }} />
+        )}
+    </BaseFormItem>
+  );
+
+  basicChildren.push(
+    <BaseFormItem label="尺寸 ：" key="size">
+      {getFieldDecorator('size', {
+        initialValue: article.size ? article.size : 0,
+        rules: [{
+          max: 100,
+          message: '尺寸最大为100位！'
+        }]
+      })(
+        <Input style={{ width: '100%' }} />
         )}
     </BaseFormItem>
   );
@@ -162,6 +247,18 @@ const ArticleCreateForm = ({
         )}
     </BaseFormItem>
   );
+
+  // businessChildren.push(
+  //   <BaseFormItem label="默认供应商：">
+  //     {
+  //       getFieldDecorator("supplier", {
+  //         rules: [{ required: true, message: "供应商不能为空！" }],
+  //         initialValue: item.customer ? item.customer.code : ""
+  //       })(
+  //         <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => onCustomerSelect()} />} onBlur={handleEnterPress} />
+  //         )
+  //     }
+  //   </BaseFormItem>);
 
   const toolbar = [];
   toolbar.push(<Button onClick={handleOk} key="ok"> 保存</Button>);

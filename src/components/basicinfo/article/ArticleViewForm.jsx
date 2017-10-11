@@ -28,8 +28,18 @@ const ArticleViewForm = ({
         </BaseFormItem>
     );
     children.push(
+        <BaseFormItem label="第二代码:" key="secondCode">
+            <span>{article.secondCode} </span>
+        </BaseFormItem>
+    );
+    children.push(
         <BaseFormItem label="名称：" key="name">
             <span>{article.name} </span>
+        </BaseFormItem>
+    );
+    children.push(
+        <BaseFormItem label="简称：" key="simpleName">
+            <span>{article.simpleName} </span>
         </BaseFormItem>
     );
     children.push(
@@ -51,6 +61,26 @@ const ArticleViewForm = ({
     children.push(
         <BaseFormItem label="保质期：" key="expDays">
             <span>{article.expDays}天</span>
+        </BaseFormItem>
+    );
+    children.push(
+        <BaseFormItem label="售价：" key="sellPrice">
+            <span>{article.sellPrice}</span>
+        </BaseFormItem>
+    );
+    children.push(
+        <BaseFormItem label="进价：" key="purchasePrice">
+            <span>{article.purchasePrice}</span>
+        </BaseFormItem>
+    );
+    children.push(
+        <BaseFormItem label="产地：" key="habitat">
+            <span>{article.habitat}</span>
+        </BaseFormItem>
+    );
+    children.push(
+        <BaseFormItem label="尺寸：" key="size">
+            <span>{article.size}</span>
         </BaseFormItem>
     );
     businessChildren.push(

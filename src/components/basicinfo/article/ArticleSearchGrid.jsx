@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon } from 'antd';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
 
 function ArticleSearch({
 	dataSource,
@@ -35,6 +36,15 @@ function ArticleSearch({
     key: 'name',
     sorter: true
   }, {
+    title: '简称',
+    dataIndex: 'simpleName',
+    key: 'simpleName',
+  }, {
+    title: '状态',
+    dataIndex: 'state',
+    key: 'state',
+    render: text => (text == "normal" ? '正常' : text)
+  }, {
     title: '规格',
     dataIndex: 'spec',
     key: 'spec'
@@ -44,14 +54,35 @@ function ArticleSearch({
     key: 'category',
     render: (text, record) => (text ? (<a href="/#/basicInfo/category"> {"[" + record.category.code + "]" + record.category.name} </a>) : "")
   }, {
-    title: '状态',
-    dataIndex: 'state',
-    key: 'state',
-    render: text => (text == "normal" ? '正常' : text)
-  }, {
-    title: '保质期天数',
+    title: '保质期',
     dataIndex: 'expDays',
     key: 'expDays'
+  }, {
+    title: '第二代码',
+    dataIndex: 'secondCode',
+    key: 'secondCode'
+  }, {
+    title: '备注',
+    dataIndex: 'remark',
+    key: 'remark'
+  }, {
+    title: '进价',
+    dataIndex: 'purchasePrice',
+    key: 'purchasePrice'
+  }, {
+    title: '售价',
+    dataIndex: 'sellPrice',
+    key: 'sellPrice'
+  }, {
+    title: '创建信息',
+    dataIndex: 'createInfo',
+    key: 'createInfo',
+    render: (text, record) => createInfo2String(record)
+  }, {
+    title: '最后修改信息',
+    dataIndex: 'lastModifyInfo',
+    key: 'lastModifyInfo',
+    render: (text, record) => lastModifyInfo2String(record)
   }];
 
   const menu = (
@@ -89,7 +120,9 @@ function ArticleSearch({
                 更多操作 <Icon type="down" />
               </Button>
             </Dropdown>
-            <Button onClick={handleCreate} disabled={!PermissionUtil("article:create")}>新增</Button>
+            <Button onClick={handleCreate} disabled={!PermissionUtil("article:create")}>新建</Button>
+            <Button onClick={handleCreate} disabled={!PermissionUtil("article:edit")}>停用</Button>
+            <Button onClick={handleCreate} disabled={!PermissionUtil("article:edit")}>启用</Button>
           </div>
         }
         dataSource={dataSource}
