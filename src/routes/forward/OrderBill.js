@@ -12,24 +12,24 @@ import DateModal from '../../components/forward/Order/DateModal';
 import SupplierSelectModal from '../../components/forward/Order/SupplierSelectModal';
 
 import WMSProgress from '../../components/Widget/WMSProgress';
-function OrderBill({ location, dispatch, orderBill }){
-   const {
+function OrderBill({ location, dispatch, orderBill }) {
+    const {
         list, showCreatePage, pagination, showViewPage,
-        currentItem, current,articleQpcs,wrhs,suppliers,
+        currentItem, current, articleQpcs, wrhs, suppliers,
         supplierPagination,
         batchDeleteProcessModal, deleteOrderBillEntitys,
-        batchBookRegProcessModal,bookRegOrderBillEntitys,
-        batchCheckProcessModal,checkOrderBillEntitys,
-        batchFinishProcessModal,finishOrderBillEntitys,
-        batchAbortProcessModal,abortOrderBillEntitys,
-        orderBillNext,dateModalVisible,supplierModalVisible,bookRegType,
+        batchBookRegProcessModal, bookRegOrderBillEntitys,
+        batchCheckProcessModal, checkOrderBillEntitys,
+        batchFinishProcessModal, finishOrderBillEntitys,
+        batchAbortProcessModal, abortOrderBillEntitys,
+        orderBillNext, dateModalVisible, supplierModalVisible, bookRegType,
         bookRegBills
     } = orderBill;
 
     const { field, keyword } = location.query;
 
-    const orderBillListProps={
-    	dataSource: list,
+    const orderBillListProps = {
+        dataSource: list,
         pagination: pagination,
         wrhs: wrhs,
         onPageChange(page, filters, sorter) {
@@ -39,7 +39,7 @@ function OrderBill({ location, dispatch, orderBill }){
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.field,
-                   sortDirection: sorter.order
+                    sortDirection: sorter.order
                 }
             }));
         },
@@ -53,7 +53,7 @@ function OrderBill({ location, dispatch, orderBill }){
             dispatch({
                 type: 'orderBill/onCreate',
                 payload: {
-                  currentItem: {}
+                    currentItem: {}
                 }
             });
         },
@@ -61,7 +61,7 @@ function OrderBill({ location, dispatch, orderBill }){
             dispatch({
                 type: 'orderBill/get',
                 payload: {
-                    uuid:item.uuid
+                    uuid: item.uuid
                 }
             });
         },
@@ -70,9 +70,9 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要删除的订单！", 2, '');
                 return;
             };
-            const deleteOrderBills=[];
-            orderBills.map(function(orderBill){
-                if("Initial"===orderBill.state)
+            const deleteOrderBills = [];
+            orderBills.map(function (orderBill) {
+                if ("Initial" === orderBill.state)
                     deleteOrderBills.push(orderBill);
             });
             dispatch({
@@ -87,16 +87,16 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要预约的订单！", 2, '');
                 return;
             };
-            const bookRegOrderBills=[];
-                orderBills.map(function(orderBill){
-                    if("Initial"===orderBill.state)
-                        bookRegOrderBills.push(orderBill);
+            const bookRegOrderBills = [];
+            orderBills.map(function (orderBill) {
+                if ("Initial" === orderBill.state)
+                    bookRegOrderBills.push(orderBill);
             });
             dispatch({
-                type:'orderBill/showDateModal',
-                payload:{
-                    bookRegBills:bookRegOrderBills,
-                    bookRegType:"group"
+                type: 'orderBill/showDateModal',
+                payload: {
+                    bookRegBills: bookRegOrderBills,
+                    bookRegType: "group"
                 }
             });
         },
@@ -105,10 +105,10 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要预检的订单！", 2, '');
                 return;
             };
-             const checkOrderBills=[];
-                orderBills.map(function(orderBill){
-                    if("Initial"===orderBill.state || "PreBookReg"===orderBill.state)
-                        checkOrderBills.push(orderBill);
+            const checkOrderBills = [];
+            orderBills.map(function (orderBill) {
+                if ("Initial" === orderBill.state || "PreBookReg" === orderBill.state)
+                    checkOrderBills.push(orderBill);
             });
             dispatch({
                 type: 'orderBill/batchCheckOrderBill',
@@ -122,10 +122,10 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要完成的订单！", 2, '');
                 return;
             };
-            const finishOrderBills=[];
-                orderBills.map(function(orderBill){
-                    if("Finished"!=orderBill.state && "Aborted"!=orderBill.state)
-                        finishOrderBills.push(orderBill);
+            const finishOrderBills = [];
+            orderBills.map(function (orderBill) {
+                if ("Finished" != orderBill.state && "Aborted" != orderBill.state)
+                    finishOrderBills.push(orderBill);
             });
             dispatch({
                 type: 'orderBill/batchFinishOrderBill',
@@ -139,10 +139,10 @@ function OrderBill({ location, dispatch, orderBill }){
                 message.warning("请选择要作废的订单！", 2, '');
                 return;
             };
-            const abortBills=[];
-                orderBills.map(function(orderBill){
-                    if("Initial"===orderBill.state || "PreBookReg"===orderBill.state)
-                        abortBills.push(orderBill);
+            const abortBills = [];
+            orderBills.map(function (orderBill) {
+                if ("Initial" === orderBill.state || "PreBookReg" === orderBill.state)
+                    abortBills.push(orderBill);
             });
             dispatch({
                 type: 'orderBill/batchAbortOrderBill',
@@ -165,198 +165,198 @@ function OrderBill({ location, dispatch, orderBill }){
     };
 
     const batchProcessDeleteOrderBillsProps = {
-	    showConfirmModal: batchDeleteProcessModal,
-	    records: deleteOrderBillEntitys ? deleteOrderBillEntitys : [],
-	    next: orderBillNext,
-	    actionText: '删除',
-	    entityCaption: '入库订单',
-	    batchProcess(entity) {
-	      dispatch({
-	        type: 'orderBill/remove',
-	        payload: {
-	          uuid: entity.uuid,
-	          version: entity.version
-	        }
-	      });
-	    },
-	    hideConfirmModal() {
-	      dispatch({
-	        type: 'orderBill/hideRemoveOrderBillModal'
-	      });
-	    },
-	    refreshGrid() {
-	      dispatch({
-	        type: 'orderBill/query'
-	      });
-	    }
-    };
-
-   const batchProcessBookRegOrderBillsProps = {
-	    showConfirmModal: batchBookRegProcessModal,
-	    records: bookRegOrderBillEntitys ? bookRegOrderBillEntitys : [],
-	    next: orderBillNext,
-	    actionText: '预约',
-	    entityCaption: '入库订单',
-	    batchProcess(entity) {
-	      dispatch({
-	        type: 'orderBill/gridBookReg',
-	        payload: {
-	          uuid: entity.uuid,
-	          version: entity.version,
-	          bookedDate:entity.bookedDate
-	        }
-	      });
-	    },
-	    hideConfirmModal() {
-	      dispatch({
-	        type: 'orderBill/hideBookRegOrderBillModal'
-	      });
-	    },
-	    refreshGrid() {
-	      dispatch({
-	        type: 'orderBill/query'
-	      });
-	    }
-    };
-
-    const batchProcessCheckOrderBillsProps = {
-	    showConfirmModal: batchCheckProcessModal,
-	    records: checkOrderBillEntitys ? checkOrderBillEntitys : [],
-	    next: orderBillNext,
-	    actionText: '预检',
-	    entityCaption: '入库订单',
-	    batchProcess(entity) {
-	      dispatch({
-	        type: 'orderBill/gridCheck',
-	        payload: {
-	          uuid: entity.uuid,
-	          version: entity.version
-	        }
-	      });
-	    },
-	    hideConfirmModal() {
-	      dispatch({
-	        type: 'orderBill/hideCheckOrderBillModal'
-	      });
-	    },
-	    refreshGrid() {
-	      dispatch({
-	        type: 'orderBill/query'
-	      });
-	    }
-    };
-
-    const batchProcessFinishOrderBillsProps = {
-	    showConfirmModal: batchFinishProcessModal,
-	    records: finishOrderBillEntitys ? finishOrderBillEntitys : [],
-	    next: orderBillNext,
-	    actionText: '完成',
-	    entityCaption: '入库订单',
-	    batchProcess(entity) {
-	      dispatch({
-	        type: 'orderBill/gridFinish',
-	        payload: {
-	          uuid: entity.uuid,
-	          version: entity.version
-	        }
-	      });
-	    },
-	    hideConfirmModal() {
-	      dispatch({
-	        type: 'orderBill/hideFinishOrderBillModal'
-	      });
-	    },
-	    refreshGrid() {
-	      dispatch({
-	        type: 'orderBill/query'
-	      });
-	    }
-    };
-
-    const batchProcessAbortOrderBillsProps = {
-	    showConfirmModal: batchAbortProcessModal,
-	    records: abortOrderBillEntitys ? abortOrderBillEntitys : [],
-	    next: orderBillNext,
-	    actionText: '作废',
-	    entityCaption: '入库订单',
-	    batchProcess(entity) {
-	      dispatch({
-	        type: 'orderBill/gridAbort',
-	        payload: {
-	          uuid: entity.uuid,
-	          version: entity.version
-	        }
-	      });
-	    },
-	    hideConfirmModal() {
-	      dispatch({
-	        type: 'orderBill/hideAbortOrderBillModal'
-	      });
-	    },
-	    refreshGrid() {
-	      dispatch({
-	        type: 'orderBill/query'
-	      });
-	    }
-    };
-
-    const orderBillCreateProps={
-    	item:currentItem,
-        wrhs:wrhs,
-        suppliers:suppliers,
-    	onOk(data){
-            data.items=currentItem.items;
-    		if(data.uuid){
-    			dispatch({
-		        	type: 'orderBill/edit',
-		          	payload: data
-		        });
-    		}else{
-				dispatch({
-		        	type: 'orderBill/create',
-		          	payload: data
-		        });
-    		};
-    	},
-		onCancel(formForm){
-    		if('View'.formForm){
-    			dispatch({
-		        	type: 'orderBill/backViewForm'
-		        });
-    		}else{
-				dispatch({
-		        	type: 'orderBill/backSearchForm'
-		        });
-    		};
-    	},
-        queryWrhs(){
+        showConfirmModal: batchDeleteProcessModal,
+        records: deleteOrderBillEntitys ? deleteOrderBillEntitys : [],
+        next: orderBillNext,
+        actionText: '删除',
+        entityCaption: '入库订单',
+        batchProcess(entity) {
             dispatch({
-                type: 'orderBill/queryWrhs'
-            }); 
-        },
-        querySuppliers(){
-            dispatch({
-                type: 'orderBill/querySuppliers'
-            }); 
-        },
-        getSupplier(supplierCode){
-            dispatch({
-                type: 'orderBill/getSupplier',
+                type: 'orderBill/remove',
                 payload: {
-                    supplierCode:supplierCode,
-                    currentBill:currentItem
+                    uuid: entity.uuid,
+                    version: entity.version
                 }
-            }); 
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'orderBill/hideRemoveOrderBillModal'
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'orderBill/query'
+            });
         }
     };
 
-    const orderBillViewFormProps={
-    	item:currentItem,
-    	        onEditItem(item) {
+    const batchProcessBookRegOrderBillsProps = {
+        showConfirmModal: batchBookRegProcessModal,
+        records: bookRegOrderBillEntitys ? bookRegOrderBillEntitys : [],
+        next: orderBillNext,
+        actionText: '预约',
+        entityCaption: '入库订单',
+        batchProcess(entity) {
+            dispatch({
+                type: 'orderBill/gridBookReg',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version,
+                    bookedDate: entity.bookedDate
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'orderBill/hideBookRegOrderBillModal'
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'orderBill/query'
+            });
+        }
+    };
+
+    const batchProcessCheckOrderBillsProps = {
+        showConfirmModal: batchCheckProcessModal,
+        records: checkOrderBillEntitys ? checkOrderBillEntitys : [],
+        next: orderBillNext,
+        actionText: '预检',
+        entityCaption: '入库订单',
+        batchProcess(entity) {
+            dispatch({
+                type: 'orderBill/gridCheck',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'orderBill/hideCheckOrderBillModal'
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'orderBill/query'
+            });
+        }
+    };
+
+    const batchProcessFinishOrderBillsProps = {
+        showConfirmModal: batchFinishProcessModal,
+        records: finishOrderBillEntitys ? finishOrderBillEntitys : [],
+        next: orderBillNext,
+        actionText: '完成',
+        entityCaption: '入库订单',
+        batchProcess(entity) {
+            dispatch({
+                type: 'orderBill/gridFinish',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'orderBill/hideFinishOrderBillModal'
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'orderBill/query'
+            });
+        }
+    };
+
+    const batchProcessAbortOrderBillsProps = {
+        showConfirmModal: batchAbortProcessModal,
+        records: abortOrderBillEntitys ? abortOrderBillEntitys : [],
+        next: orderBillNext,
+        actionText: '作废',
+        entityCaption: '入库订单',
+        batchProcess(entity) {
+            dispatch({
+                type: 'orderBill/gridAbort',
+                payload: {
+                    uuid: entity.uuid,
+                    version: entity.version
+                }
+            });
+        },
+        hideConfirmModal() {
+            dispatch({
+                type: 'orderBill/hideAbortOrderBillModal'
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'orderBill/query'
+            });
+        }
+    };
+
+    const orderBillCreateProps = {
+        item: currentItem,
+        wrhs: wrhs,
+        suppliers: suppliers,
+        onOk(data) {
+            data.items = currentItem.items;
+            if (data.uuid) {
+                dispatch({
+                    type: 'orderBill/edit',
+                    payload: data
+                });
+            } else {
+                dispatch({
+                    type: 'orderBill/create',
+                    payload: data
+                });
+            };
+        },
+        onCancel(formForm) {
+            if ('View'.formForm) {
+                dispatch({
+                    type: 'orderBill/backViewForm'
+                });
+            } else {
+                dispatch({
+                    type: 'orderBill/backSearchForm'
+                });
+            };
+        },
+        queryWrhs() {
+            dispatch({
+                type: 'orderBill/queryWrhs'
+            });
+        },
+        querySuppliers() {
+            dispatch({
+                type: 'orderBill/querySuppliers'
+            });
+        },
+        getSupplier(supplierCode) {
+            dispatch({
+                type: 'orderBill/getSupplier',
+                payload: {
+                    supplierCode: supplierCode,
+                    currentBill: currentItem
+                }
+            });
+        }
+    };
+
+    const orderBillViewFormProps = {
+        item: currentItem,
+        onEditItem(item) {
             dispatch({
                 type: 'orderBill/getForEdit',
                 payload: {
-                    uuid:item.uuid
+                    uuid: item.uuid
                 }
             });
         },
@@ -364,27 +364,27 @@ function OrderBill({ location, dispatch, orderBill }){
             dispatch({
                 type: 'orderBill/remove',
                 payload: {
-                    uuid:item.uuid,
-                    version:item.version
+                    uuid: item.uuid,
+                    version: item.version
                 }
             });
         },
         onBookRegItem(item) {
             bookRegBills.push(item),
-            dispatch({
-                type:'orderBill/showDateModal',
-                payload:{
-                    bookRegBills:bookRegBills,
-                    bookRegType:"single"
-                }
-            });
+                dispatch({
+                    type: 'orderBill/showDateModal',
+                    payload: {
+                        bookRegBills: bookRegBills,
+                        bookRegType: "single"
+                    }
+                });
         },
         onCheckItem(item) {
             dispatch({
                 type: 'orderBill/gridCheck',
                 payload: {
-                    uuid:item.uuid,
-                    version:item.version
+                    uuid: item.uuid,
+                    version: item.version
                 }
             });
         },
@@ -392,8 +392,8 @@ function OrderBill({ location, dispatch, orderBill }){
             dispatch({
                 type: 'orderBill/gridFinish',
                 payload: {
-                    uuid:item.uuid,
-                    version:item.version
+                    uuid: item.uuid,
+                    version: item.version
                 }
             });
         },
@@ -401,45 +401,45 @@ function OrderBill({ location, dispatch, orderBill }){
             dispatch({
                 type: 'orderBill/gridAbort',
                 payload: {
-                    uuid:item.uuid,
-                    version:item.version
+                    uuid: item.uuid,
+                    version: item.version
                 }
             });
         },
-        onBack(){
+        onBack() {
             dispatch({
                 type: 'orderBill/backSearchForm'
             });
         }
     };
 
-    const orderBillItemsProps={
-        items:currentItem.items,
-        editable:showViewPage ? false : true,
-        inProgressBill:'InProgress'===currentItem.state,
-        articleQpcs:articleQpcs,
-        onDelete(items,index) {
+    const orderBillItemsProps = {
+        items: currentItem.items,
+        editable: showViewPage ? false : true,
+        inProgressBill: 'InProgress' === currentItem.state,
+        articleQpcs: articleQpcs,
+        onDelete(items, index) {
             items.splice(index);
-            currentItem.items=items;
+            currentItem.items = items;
             dispatch({
                 type: 'orderBill/refreshCaseQtyAndAmount',
                 payload: {
-                    orderBill:currentItem,
-                    line: index+1
+                    orderBill: currentItem,
+                    line: index + 1
                 }
-            }); 
+            });
         },
         onAdd(items) {
-            const item=new Object();
-            item.line= items?items.length+1:1;
-            if(items)
+            const item = new Object();
+            item.line = items ? items.length + 1 : 1;
+            if (items)
                 items.push(item);
-            else{
-                const orderBillItems=[];
+            else {
+                const orderBillItems = [];
                 orderBillItems.push(item);
-                items=orderBillItems; 
+                items = orderBillItems;
             };
-            currentItem.items=items;
+            currentItem.items = items;
             dispatch({
                 type: 'orderBill/showEditPage',
                 payload: {
@@ -447,52 +447,52 @@ function OrderBill({ location, dispatch, orderBill }){
                 }
             });
         },
-        getArticle(items,index){
+        getArticle(items, index) {
             dispatch({
                 type: 'orderBill/getArticle',
                 payload: {
-                    currentBill:currentItem,
+                    currentBill: currentItem,
                     items: items,
                     index: index
                 }
             });
         },
-        refreshCaseQtyAndAmount(items,line){
-            currentItem.items=items;
+        refreshCaseQtyAndAmount(items, line) {
+            currentItem.items = items;
             dispatch({
                 type: 'orderBill/refreshCaseQtyAndAmount',
                 payload: {
-                    orderBill:currentItem,
+                    orderBill: currentItem,
                     line: line
                 }
-            }); 
+            });
         }
     };
 
-    const dateModalProps={
-        orderBills:bookRegBills,
-        visible:dateModalVisible,
-        onOk(orderBills){
-            if(showViewPage){
+    const dateModalProps = {
+        orderBills: bookRegBills,
+        visible: dateModalVisible,
+        onOk(orderBills) {
+            if (showViewPage) {
                 dispatch({
                     type: 'orderBill/bookReg',
                     payload: {
-                      uuid: orderBills[0].uuid,
-                      version: orderBills[0].version,
-                      bookedDate:orderBills[0].bookedDate
+                        uuid: orderBills[0].uuid,
+                        version: orderBills[0].version,
+                        bookedDate: orderBills[0].bookedDate
                     }
                 });
-            }else{
-                if(bookRegType==="single"){
+            } else {
+                if (bookRegType === "single") {
                     dispatch({
                         type: 'orderBill/gridBookReg',
                         payload: {
-                          uuid: orderBills[0].uuid,
-                          version: orderBills[0].version,
-                          bookedDate:orderBills[0].bookedDate
+                            uuid: orderBills[0].uuid,
+                            version: orderBills[0].version,
+                            bookedDate: orderBills[0].bookedDate
                         }
                     });
-                }else{
+                } else {
                     dispatch({
                         type: 'orderBill/batchBookRegOrderBill',
                         payload: {
@@ -502,24 +502,24 @@ function OrderBill({ location, dispatch, orderBill }){
                 };
             };
         },
-        onCancel(){
+        onCancel() {
             dispatch({
                 type: 'orderBill/hideDateModal'
             });
         }
     };
 
-    const supplierModalProps={
-        visible:supplierModalVisible,
+    const supplierModalProps = {
+        visible: supplierModalVisible,
         suppliers: suppliers,
         supplierPagination: supplierPagination,
-        onOk(suppliers){
-            currentItem.supplier=suppliers[0];
+        onOk(suppliers) {
+            currentItem.supplier = suppliers[0];
             dispatch({
                 type: 'orderBill/hideSupplierModal'
             });
         },
-        onCancel(){
+        onCancel() {
             dispatch({
                 type: 'orderBill/hideSupplierModal'
             });
@@ -527,38 +527,38 @@ function OrderBill({ location, dispatch, orderBill }){
     };
 
 
-    function  RefreshWidget(){
-            if(showViewPage){
-                return  (
-                    <div>
-                        <OrderBillView {...orderBillViewFormProps}/>
-                        <OrderBillItems {...orderBillItemsProps}/>
-                        <DateModal {...dateModalProps}/>
-                    </div>
-                );
-            }else if(showCreatePage){
-                return  (
-                    <div>
-                        <OrderBillCreateForm {...orderBillCreateProps}/>
-                        <OrderBillItems {...orderBillItemsProps}/>
-                        <SupplierSelectModal {...supplierModalProps}/>
-                    </div>
-                );
-            }
-            else{
-                return(
-                        <div>
-                            <OrderBillSearchForm {...orderBillSearchProps} />
-                            <OrderBillSearchGrid {...orderBillListProps} />
-                            <DateModal {...dateModalProps}/>
-                            <WMSProgress {...batchProcessBookRegOrderBillsProps} />
-                            <WMSProgress {...batchProcessCheckOrderBillsProps} />
-                            <WMSProgress {...batchProcessFinishOrderBillsProps} />
-                            <WMSProgress {...batchProcessAbortOrderBillsProps} />
-                            <WMSProgress {...batchProcessDeleteOrderBillsProps} />
-                        </div>
-                        );
-            };
+    function RefreshWidget() {
+        if (showViewPage) {
+            return (
+                <div>
+                    <OrderBillView {...orderBillViewFormProps} />
+                    <OrderBillItems {...orderBillItemsProps} />
+                    <DateModal {...dateModalProps} />
+                </div>
+            );
+        } else if (showCreatePage) {
+            return (
+                <div>
+                    <OrderBillCreateForm {...orderBillCreateProps} />
+                    <OrderBillItems {...orderBillItemsProps} />
+                    <SupplierSelectModal {...supplierModalProps} />
+                </div>
+            );
+        }
+        else {
+            return (
+                <div>
+                    <OrderBillSearchForm {...orderBillSearchProps} />
+                    <OrderBillSearchGrid {...orderBillListProps} />
+                    <DateModal {...dateModalProps} />
+                    <WMSProgress {...batchProcessBookRegOrderBillsProps} />
+                    <WMSProgress {...batchProcessCheckOrderBillsProps} />
+                    <WMSProgress {...batchProcessFinishOrderBillsProps} />
+                    <WMSProgress {...batchProcessAbortOrderBillsProps} />
+                    <WMSProgress {...batchProcessDeleteOrderBillsProps} />
+                </div>
+            );
+        };
     };
 
     return (
@@ -571,7 +571,7 @@ OrderBill.propTypes = {
 };
 
 function mapStateToProps({ orderBill }) {
-    return {orderBill};
+    return { orderBill };
 };
 
 export default connect(mapStateToProps)(OrderBill);

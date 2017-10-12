@@ -3,7 +3,7 @@ import {
     querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle,
     getOrderBillByBillNo, refreshCaseQtyAndAmount, queryWrhs
 } from '../../services/forward/OrderBill';
-import {getbycode,querybypage as querySuppliers} from '../../services/basicinfo/Supplier';
+import { getbycode, querybypage as querySuppliers } from '../../services/basicinfo/Supplier';
 import { message } from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -80,15 +80,11 @@ export default {
     effects: {
         *query({ payload }, { call, put }) {
             const { data } = yield call(querybypage, parse(payload));
-            if(data){
-                data.obj.records.map(function (orderBill) {
-                    orderBill.expireDate = moment(orderBill.expireDate);
-                    orderBill.bookedDate = moment(orderBill.bookedDate);
-                });
+            if (data) {
                 yield put({
-                type: 'querySuccess',
-                payload: {
-                    list: data.obj.records,
+                    type: 'querySuccess',
+                    payload: {
+                        list: data.obj.records,
                         pagination: {
                             total: data.obj.recordCount,
                             current: data.obj.page,
@@ -97,10 +93,10 @@ export default {
                             showTotal: total => `共 ${total}条`,
                             size: 'default'
                         },
-                }
-                }); 
+                    }
+                });
             }
- 
+
         },
 
         *get({ payload }, { call, put }) {
@@ -109,7 +105,7 @@ export default {
             });
             if (orderBill) {
                 orderBill.data.obj.expireDate = moment(orderBill.data.obj.expireDate);
-                if(orderBill.data.obj.bookedDate != null)
+                if (orderBill.data.obj.bookedDate != null)
                     orderBill.data.obj.bookedDate = moment(orderBill.data.obj.bookedDate);
 
                 yield put({
@@ -140,7 +136,6 @@ export default {
         },
 
         *onCreate({ payload }, { call, put }) {
-            yield put({ type: 'showLoading' });
             const { data } = yield call(queryWrhs, parse(payload));
             yield put({
                 type: 'showCreatePage',
@@ -151,7 +146,6 @@ export default {
         },
 
         *create({ payload }, { call, put }) {
-            yield put({ type: 'showLoading' });
             const { data } = yield call(create, parse(payload));
             yield put({
                 type: 'get',
@@ -162,7 +156,6 @@ export default {
         },
 
         *edit({ payload }, { call, put }) {
-            yield put({ type: 'showLoading' });
             const { data } = yield call(edit, parse(payload));
             yield put({
                 type: 'get',
@@ -279,9 +272,6 @@ export default {
         },
 
         *getArticle({ payload }, { call, put }) {
-            yield put({
-                type: 'showLoading'
-            });
             const orderBillItems = payload.items;
             const param = { articleCode: orderBillItems[payload.index].article.code }
             const { data } = yield call(getArticle, parse(param))
@@ -290,13 +280,17 @@ export default {
                 article.uuid = data.obj.uuid;
                 article.code = data.obj.code;
                 article.name = data.obj.name;
+                const price = data.obj.purchasePrice;
                 orderBillItems[payload.index].article = article;
+                orderBillItems[payload.index].price = price;
                 const qpcs = [];
                 data.obj.qpcs.map(function (articleQpc) {
                     const qpcInfo = new Object();
                     qpcInfo.munit = articleQpc.munit;
                     qpcInfo.qpcStr = articleQpc.qpcStr;
                     qpcs.push(qpcInfo);
+                    if (articleQpc.default_)
+                        orderBillItems[payload.index].qpcStr = articleQpc.qpcStr;
                 });
                 payload.currentBill.items = orderBillItems;
                 yield put({
@@ -327,7 +321,6 @@ export default {
         },
 
         *refreshCaseQtyAndAmount({ payload }, { call, put }) {
-            yield put({ type: 'showLoading' });
             const { data } = yield call(refreshCaseQtyAndAmount, parse(payload));
             if (data) {
                 data.obj.expireDate = moment(data.obj.expireDate);
@@ -379,14 +372,14 @@ export default {
             };
         },
         *getSupplier({ payload }, { call, put }) {
-            const supplier = yield call(getbycode,{supplierCode:payload.supplierCode});
+            const supplier = yield call(getbycode, { supplierCode: payload.supplierCode });
             if (supplier) {
-                const orderBill=payload.currentBill;
+                const orderBill = payload.currentBill;
                 const supplierUcn = new Object();
                 supplierUcn.uuid = supplier.data.obj.uuid;
                 supplierUcn.code = supplier.data.obj.code;
                 supplierUcn.name = supplier.data.obj.name;
-                orderBill.supplier= supplierUcn;
+                orderBill.supplier = supplierUcn;
                 yield put({
                     type: 'showEditPage',
                     payload: {

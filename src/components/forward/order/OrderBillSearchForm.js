@@ -31,7 +31,7 @@ const OrderBillSearchForm = ({
     
     const children = [];
     children.push(
-        <BaseTwoCol key={Guid()}>
+        <BaseTwoCol key={"billNumber"}>
             <BaseFormItem label={"单号 类似于"} >
                 {getFieldDecorator("billNumber")(
                     <Input placeholder="请输入" />
@@ -61,7 +61,7 @@ const OrderBillSearchForm = ({
         </BaseTwoCol>);
 
     children.push(
-        <BaseTwoCol key={Guid()}>
+        <BaseTwoCol key={"supplier"}>
             <BaseFormItem label={"供应商 类似于"} >
                 {getFieldDecorator("supplier")(
                     <Input placeholder="请输入" />
@@ -70,9 +70,29 @@ const OrderBillSearchForm = ({
         </BaseTwoCol>
     );
     children.push(
-        <BaseTwoCol key={Guid()}>
+        <BaseTwoCol key={"wrh"}>
             <BaseFormItem label={"仓位 类似于"} >
                 {getFieldDecorator("wrh")(
+                    <Input placeholder="请输入" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+
+    children.push(
+        <BaseTwoCol key={"articleCode"}>
+            <BaseFormItem label={"商品 包含于"} >
+                {getFieldDecorator("articleCode")(
+                    <Input placeholder="请输入" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+
+    children.push(
+        <BaseTwoCol key={"sourceBillNumber"}>
+            <BaseFormItem label={"来源单号 类似于"} >
+                {getFieldDecorator("sourceBillNumber")(
                     <Input placeholder="请输入" />
                 )}
             </BaseFormItem>

@@ -71,8 +71,6 @@ export async function refreshCaseQtyAndAmount(params) {
   const url = "/swms/in/order/refreshcaseqtyandamount";
   const newUrl=url+`?line=` + params.line;
 
-  console.log(params);
-
   var req = new Object();
   req.method = 'put';
   req.headers = {
