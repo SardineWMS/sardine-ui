@@ -95,20 +95,37 @@ export default {
             const { data } = yield call(getArticleInfo, {
                 articleCode: payload.record.article.code,
             });
-            if (data) {
-                payload.record.article.uuid = data.obj.uuid;
-                payload.record.article.name = data.obj.name;
+            if (data.status == "200") {
                 const qpcs = [];
-                for (var qpc of data.obj.qpcs) {
-                    qpcs.push(qpc);
-                };
-                for (var item of payload.dataSource) {
-                    if (item.line == payload.record.line) {
-                        item.article.uuid = data.obj.uuid;
-                        item.article.name = data.obj.name;
-                        item.articleSpec = data.obj.spec;
-                        item.qpcs = qpcs;
+                if (data.obj != null) {
+                    payload.record.article.uuid = data.obj.uuid;
+                    payload.record.article.name = data.obj.name;
+                    for (var qpc of data.obj.qpcs) {
+                        qpcs.push(qpc);
+                        if (qpc.default_) {
+                            payload.record.qpcStr = qpc.qpcStr;
+                            payload.record.munit = qpc.munit;
+                        }
                     };
+                    // for (var item of payload.dataSource) {
+                    //     if (item.line == payload.record.line) {
+                    payload.record.article.uuid = data.obj.uuid;
+                    payload.record.article.name = data.obj.name;
+                    payload.record.articleSpec = data.obj.spec;
+                    payload.record.qpcs = qpcs;
+                    payload.record.price = data.obj.sellPrice;
+                    //     };
+                    // };
+                } else {
+                    const code = payload.record.article.code;
+                    payload.record.article.name = "";
+                    payload.record.article.uuid = "";
+                    payload.record.articleSpec = "";
+                    payload.record.qpcs = [];
+                    payload.record.price = 0;
+                    payload.record.qpcStr = "";
+                    payload.record.munit = "";
+                    // payload.record = { ...{} };
                 };
 
                 yield put({
@@ -118,7 +135,8 @@ export default {
                         qpcs: qpcs
                     }
                 });
-            };
+
+            }
         },
 
         *refreshMunit({ payload }, { call, put }) {

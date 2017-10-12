@@ -72,7 +72,7 @@ const AlcNtcBillCreateForm = ({
 
     children.push(<BaseFormItem label={"来源单据类型："}>
         {getFieldDecorator("sourceBillType", {
-            rules: [{ required: true, message: '请输入来源单据类型！' }, {
+            rules: [{
                 max: 100, message: '来源单据类型最大长度是100！'
             }],
             initialValue: item.sourceBillType
@@ -83,7 +83,7 @@ const AlcNtcBillCreateForm = ({
 
     children.push(<BaseFormItem label={"来源单据单号："}>
         {getFieldDecorator("sourceBillNumber", {
-            rules: [{ required: true, message: '请输入来源单据单号！' }, {
+            rules: [{
                 max: 30, message: '来源单据单号最大长度是30！'
             }],
             initialValue: item.sourceBillNumber
@@ -119,7 +119,7 @@ const AlcNtcBillCreateForm = ({
     children.push(
         <BaseFormItem label={"配送方式："}>
             {getFieldDecorator("deliveryMode", {
-                rules: [{ required: true, message: '请选择配送方式！' }], initialValue: item.deliveryMode
+                rules: [{ required: true, message: '请选择配送方式！' }], initialValue: item.deliveryMode == null ? "warehouseDelivery" : item.deliveryMode
             })(
                 <Select placeholder="请选择：" onChange={(value) => onSelectWrh(value)}>
                     <Option value="warehouseDelivery">仓库配送</Option>

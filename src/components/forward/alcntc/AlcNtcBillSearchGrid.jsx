@@ -79,6 +79,17 @@ class AlcNtcBillSearchGrid extends React.Component {
             sorter: true
         },
         {
+            title: '状态',
+            dataIndex: 'state',
+            key: 'state',
+            render: text => convertState(text)
+        },
+        {
+            title: '作业号',
+            dataIndex: 'taskBillNumber',
+            key: 'taskBillNumber'
+        },
+        {
             title: '客户',
             dataIndex: 'customer',
             key: 'customer',
@@ -96,10 +107,9 @@ class AlcNtcBillSearchGrid extends React.Component {
             render: (text) => text.name + '[' + text.code + ']'
         },
         {
-            title: '状态',
-            dataIndex: 'state',
-            key: 'state',
-            render: text => convertState(text)
+            title: '总件数',
+            dataIndex: 'totalCaseQtyStr',
+            key: 'totalCaseQtyStr',
         },
         {
             title: '配送方式',
@@ -108,10 +118,10 @@ class AlcNtcBillSearchGrid extends React.Component {
             render: text => convertMode(text)
         },
         {
-            title: '作业号',
-            dataIndex: 'taskBillNumber',
-            key: 'taskBillNumber'
-        }
+            title: '配送原因',
+            dataIndex: 'deliveryReason',
+            key: 'deliveryReason'
+        },
         ];
         const { selectedRowKeys } = this.state;
         const rowSelection = {
@@ -135,9 +145,7 @@ class AlcNtcBillSearchGrid extends React.Component {
                             <div>
                                 <Row type="flex">
                                     <Col><Button onClick={this.state.onCreate} disabled={!PermissionUtil("alcNtcBill:create")}>新建</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("alcNtcBill:delete")}>批量删除</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleAbordBatch} disabled={!PermissionUtil("alcNtcBill:edit")}>批量作废</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleFinishBatch} disabled={!PermissionUtil("alcNtcBill:edit")}>批量完成</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleAbordBatch} disabled={!PermissionUtil("alcNtcBill:edit")}>作废</Button></Col>
                                     <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                                 </Row>
                             </div>

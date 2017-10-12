@@ -87,6 +87,13 @@ const AlcNtcBillSearchForm = ({
             )}
         </BaseFormItem>
     </BaseTwoCol>);
+    children.push(<BaseTwoCol key={"articleCode"}>
+        <BaseFormItem label="商品代码 包含于">
+            {getFieldDecorator("articleCode")(
+                <Input placeholder="请输入" />
+            )}
+        </BaseFormItem>
+    </BaseTwoCol>);
     /*children.push(<BaseTwoCol key={"deliverySystem"}>
         <BaseFormItem label="配送体系 等于">
             {getFieldDecorator("deliverySystem")(
