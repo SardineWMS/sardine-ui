@@ -28,10 +28,12 @@ function Vehicle({ location, dispatch, vehicle }) {
 
     const vehicleSearchFormProps = {
         onSearch(fieldsValue) {
-            dispatch({
-                type: 'vehicle/query',
-                payload: fieldsValue
-            });
+            dispatch(routerRedux.push({
+                pathname: '/tms/vehicle',
+                query: {
+                    ...fieldsValue
+                }
+            }));
         }
     };
 
@@ -42,6 +44,7 @@ function Vehicle({ location, dispatch, vehicle }) {
             dispatch(routerRedux.push({
                 pathname: '/tms/vehicle',
                 query: {
+                    ...location.query,
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.columnKey,

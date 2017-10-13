@@ -35,8 +35,8 @@ const VehicleCreate = ({
     const children = [];
     children.push(
         <BaseFormItem label={"代码"} key="code">
-            {getFieldDecorator("code", { rules: [{ required: true, message: '代码不能为空' }, { max: 30, message: '代码最大长度是30！' }], initialValue: item.code })(
-                <Input placeholder="请输入" />
+            {getFieldDecorator("code", { rules: [{ required: true, message: '代码不能为空' }, { pattern: /^[a-z0-9]{0,30}$/, message: "车辆代码只能是数字和字母，且小于30位" }], initialValue: item.code })(
+                <Input placeholder="请输入" disabled={item.code} />
             )}
         </BaseFormItem>
     );

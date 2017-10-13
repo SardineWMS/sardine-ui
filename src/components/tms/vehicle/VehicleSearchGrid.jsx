@@ -107,8 +107,8 @@ class VehicleSearchGrid extends React.Component {
                             <div>
                                 <Row type="flex">
                                     <Col><Button onClick={() => this.state.onCreate()} disabled={!PermissionUtil("vehicle:create")}>新建</Button></Col>
-                                    <Col><Button onClick={this.handleOnlineBatch} disabled={!PermissionUtil("vehicle:edit")}>批量启用</Button></Col>
-                                    <Col><Button onClick={this.handleOfflineBatch} disabled={!PermissionUtil("vehicle:edit")}>批量禁用 </Button></Col>
+                                    <Col><Button onClick={this.handleOfflineBatch} disabled={!PermissionUtil("vehicle:edit")}>停用</Button></Col>
+                                    <Col><Button onClick={this.handleOnlineBatch} disabled={!PermissionUtil("vehicle:edit")}>启用 </Button></Col>
                                     <Col><Button type="primary" onClick={() => this.state.onCreateVehicleType()} disabled={!PermissionUtil("carrier:edit")}>新建车型</Button></Col>
                                     <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                                 </Row>

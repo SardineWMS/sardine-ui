@@ -71,6 +71,15 @@ const VehicleSearchForm = ({
             </BaseFormItem>
         </BaseTwoCol>
     );
+    children.push(
+        <BaseTwoCol key={"carrierCode"}>
+            <BaseFormItem label={"承运商代码 等于"}>
+                {getFieldDecorator("carrierCode")(
+                    <Input placeholder="请输入" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
 
 
 

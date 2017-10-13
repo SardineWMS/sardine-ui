@@ -7,6 +7,7 @@ import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import Guid from '../../../utils/Guid';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
 
 const VehicleView = ({
     item = {},
@@ -47,6 +48,8 @@ const VehicleView = ({
 
     let extendFormItems = [];
     extendFormItems.push(<BaseFormItem label="状态：" key={Guid()}><span>{convertState(item.state)}</span></BaseFormItem>);
+    extendFormItems.push(<BaseFormItem label="操作信息：" key={Guid()}><span>{createInfo2String(item)}</span></BaseFormItem>);
+    extendFormItems.push(<BaseFormItem label="最后修改信息：" key={Guid()}><span>{lastModifyInfo2String(item)}</span></BaseFormItem>);
 
     let toolbar = [];
     toolbar.push(<Button onClick={() => showEdit(item)} key={Guid()} disabled={!item.state == 'free' ? true : !PermissionUtil("vehicle:edit")}>编辑</Button>);
