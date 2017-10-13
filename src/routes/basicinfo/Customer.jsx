@@ -26,20 +26,13 @@ function Customer({ location, dispatch, customer }) {
             dispatch(routerRedux.push({
                 pathname: '/basicInfo/customer',
                 query: {
+                    ...location.query,
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.columnKey,
                     order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
                 }
             }));
-        },
-        onSearch() {
-            dispatch({
-                type: 'customer/query',
-                payload: {
-
-                }
-            });
         },
         onCreate() {
             dispatch({
@@ -113,18 +106,12 @@ function Customer({ location, dispatch, customer }) {
         keyword,
         searchExpand,
         onSearch(fieldsValue) {
-            dispatch({
-                type: 'customer/query',
-                payload: fieldsValue
-            });
-        },
-        onToggle(expand) {
-            dispatch({
-                type: 'customer/toggle',
-                payload: {
-                    searchExpand: !expand,
+            dispatch(routerRedux.push({
+                pathname: '/basicInfo/customer',
+                query: {
+                    ...fieldsValue
                 }
-            });
+            }));
         }
     };
 

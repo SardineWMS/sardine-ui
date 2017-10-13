@@ -199,9 +199,6 @@ export default {
         cancelShoWItemSuccess(state, action) {
             return { ...state, showEditPage: false, ...action.payload };
         },
-        toggle(state, action) {
-            return { ...state, ...action.payload };
-        },
         batchDeleteCustomer(state, action) {
             return { ...state, ...action.payload, batchDeleteProcessModal: true };
         },
