@@ -15,7 +15,7 @@ import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 
 function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
-    const { showPage, showCustomerSelectModal, currentItem, wrhs, rtnNtcBillItems, qpcs, list, pagination, batchDeleteProcessModal, deleteRtnNtcBillEntitys, batchAbortProcessModal, abortRtnNtcBillEntitys,
+    const { showPage, showCustomerSelectModal, currentItem, rtnNtcBillItems, qpcs, list, pagination, batchDeleteProcessModal, deleteRtnNtcBillEntitys, batchAbortProcessModal, abortRtnNtcBillEntitys,
         batchGenRtnBillProcessModal, genRtnBillRtnNtcBillEntitys, batchFinishProcessModal, finishRtnNtcBillEntitys, rtnNtcBillNext } = rtnNtcBill;
 
     const returnNtcBillSearchGridProps = {
@@ -113,7 +113,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
 
     const returnNtcBillCreateFormProps = {
         item: currentItem,
-        wrhs,
         onCustomerSelect() {
             dispatch({
                 type: 'rtnNtcBill/showCustomerModal'
@@ -177,12 +176,9 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
                     };
                 };
             };
-
-            for (var wrh of wrhs) {
-                if (wrh.uuid == data.wrh) {
-                    data.wrh = wrh;
-                }
-            }
+            const wrhUuid = data.wrh;
+            data.wrh = {};
+            data.wrh.uuid = wrhUuid;
             data.items = rtnNtcBillItems;
             if (!data.uuid) {
                 dispatch({

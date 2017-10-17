@@ -120,10 +120,9 @@ class ReturnNtcBillSearchGrid extends React.Component {
                             <div>
                                 <Row type="flex">
                                     <Col><Button onClick={this.state.onCreate} disabled={!PermissionUtil("rtnNtcBill:create")}>新建</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("rtnNtcBill:delete")}>批量删除</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleAbortBatch} disabled={!PermissionUtil("rtnNtcBill:edit")}>批量作废</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleGenRtnBillBatch} disabled={!PermissionUtil("rtnNtcBill:edit")}>批量生成退仓单</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleFinishBatch} disabled={!PermissionUtil("rtnNtcBill:edit")}>批量完成</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleAbortBatch} disabled={!PermissionUtil("rtnNtcBill:edit")}>作废</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleFinishBatch} disabled={!PermissionUtil("rtnNtcBill:edit")}>完成</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleGenRtnBillBatch} disabled={!PermissionUtil("rtnNtcBill:edit")}>生成退仓单</Button></Col>
                                     <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                                 </Row>
                             </div>

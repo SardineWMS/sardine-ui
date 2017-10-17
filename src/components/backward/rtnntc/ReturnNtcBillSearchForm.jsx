@@ -3,6 +3,7 @@ import { Form, Input, Select, DatePicker } from 'antd';
 import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
+import WrhSelect from '../../widget/WrhSelect';
 
 const Option = Select.Option;
 
@@ -82,16 +83,7 @@ const ReturnNtcBillSearchForm = ({
         <BaseTwoCol key={"wrhCode"}>
             <BaseFormItem label={"仓位 等于"}>
                 {getFieldDecorator("wrhCode")(
-                    <Input placeholder="请输入" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
-    children.push(
-        <BaseTwoCol key={"dateLessThan"}>
-            <BaseFormItem label={"退货日期 小于等于"}>
-                {getFieldDecorator("dateLessThan")(
-                    <DatePicker style={{ width: 290.5 }} size="large" />
+                    <WrhSelect />
                 )}
             </BaseFormItem>
         </BaseTwoCol>
@@ -106,8 +98,17 @@ const ReturnNtcBillSearchForm = ({
         </BaseTwoCol>
     );
     children.push(
+        <BaseTwoCol key={"dateLessThan"}>
+            <BaseFormItem label={"退货日期 小于等于"}>
+                {getFieldDecorator("dateLessThan")(
+                    <DatePicker style={{ width: 290.5 }} size="large" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+    children.push(
         <BaseTwoCol key={"articleName"}>
-            <BaseFormItem label={"商品名称 包含于"}>
+            <BaseFormItem label={"商品名称 等于"}>
                 {getFieldDecorator("articleName")(
                     <Input placeholder="请输入" />
                 )}
@@ -116,7 +117,7 @@ const ReturnNtcBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"articleCode"}>
-            <BaseFormItem label={"商品代码 包含于"}>
+            <BaseFormItem label={"商品代码 等于"}>
                 {getFieldDecorator("articleCode")(
                     <Input placeholder="请输入" />
                 )}
@@ -125,7 +126,7 @@ const ReturnNtcBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"supplierName"}>
-            <BaseFormItem label={"供应商名称 包含于"}>
+            <BaseFormItem label={"供应商名称 等于"}>
                 {getFieldDecorator("supplierName")(
                     <Input placeholder="请输入" />
                 )}
@@ -134,7 +135,7 @@ const ReturnNtcBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"supplierCode"}>
-            <BaseFormItem label={"供应商代码 包含于"}>
+            <BaseFormItem label={"供应商代码 等于"}>
                 {getFieldDecorator("supplierCode")(
                     <Input placeholder="请输入" />
                 )}

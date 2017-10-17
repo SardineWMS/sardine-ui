@@ -1,5 +1,4 @@
 import { parse } from 'qs';
-import { queryWrhs } from '../../services/basicinfo/Bin.js';
 import { getByCode as getCustomerByCode } from '../../services/basicinfo/Customer.js';
 import { message } from 'antd';
 import { getByCode as getArticleInfo } from '../../services/basicinfo/Article.js';
@@ -23,7 +22,6 @@ export default {
         },
         showPage: '',
         showCustomerSelectModal: false,
-        wrhs: [],
         rtnNtcBillItems: [],//明细集合
         qpcs: [],
         batchDeleteProcessModal: false,
@@ -79,26 +77,22 @@ export default {
         },
 
         *showCreate({ payload }, { call, put }) {
-            const { data } = yield call(queryWrhs, {});
-            if (data.status === '200') {
-                const currentItem = {};
-                if (payload.rtnNtcBillItems.length === 0) {
-                    const nullObj = {};
-                    nullObj.line = 1;
-                    nullObj.editable = true;
-                    payload.rtnNtcBillItems.push(nullObj);
-                    currentItem.totalCaseQtyStr = 0;
-                    currentItem.totalAmount = 0;
-                }
-                yield put({
-                    type: 'showCreateSuccess',
-                    payload: {
-                        wrhs: data.obj,
-                        rtnNtcBillItems: payload.rtnNtcBillItems,
-                        currentItem: currentItem
-                    }
-                })
+            const currentItem = {};
+            if (payload.rtnNtcBillItems.length === 0) {
+                const nullObj = {};
+                nullObj.line = 1;
+                nullObj.editable = true;
+                payload.rtnNtcBillItems.push(nullObj);
+                currentItem.totalCaseQtyStr = 0;
+                currentItem.totalAmount = 0;
             }
+            yield put({
+                type: 'showCreateSuccess',
+                payload: {
+                    rtnNtcBillItems: payload.rtnNtcBillItems,
+                    currentItem: currentItem
+                }
+            })
         },
 
         *getCustomerByCode({ payload }, { call, put }) {
@@ -139,18 +133,21 @@ export default {
                 payload.record.article.uuid = data.obj.uuid;
                 payload.record.article.name = data.obj.name;
                 let qpcs = [];
-                qpcs = data.obj.qpcs;
+                data.obj.qpcs.map(function (articleQpc) {
+                    const qpcInfo = new Object();
+                    qpcInfo.munit = articleQpc.munit;
+                    qpcInfo.qpcStr = articleQpc.qpcStr;
+                    qpcs.push(qpcInfo);
+                    if (articleQpc.default_) {
+                        payload.record.qpcStr = articleQpc.qpcStr;
+                        payload.record.munit = articleQpc.munit;
+                    }
+                });
                 let suppliers = [];
                 suppliers = data.obj.articleSuppliers;
-                for (var item of payload.list) {
-                    if (item.line == payload.record.line) {
-                        item.article.uuid = data.obj.uuid;
-                        item.article.name = data.obj.name;
-                        item.qpcs = qpcs;
-                        item.suppliers = suppliers;
-                    };
-                };
-
+                payload.record.qpcs = qpcs;
+                payload.record.suppliers = suppliers;
+                payload.record.price = data.obj.purchasePrice;
                 yield put({
                     type: 'showCreateSuccess',
                     payload: {
@@ -206,11 +203,6 @@ export default {
             if (payload.record.supplier.uuid == null) {
                 message.warning("供应商不是该商品供应商，请重新输入", 2);
             }
-            for (var item of payload.dataSource) {
-                if (item.line == payload.record.line) {
-                    item.supplier = payload.record.supplier;
-                }
-            };
             yield put({
                 type: 'showCreateSuccess',
                 payload: {

@@ -59,10 +59,14 @@ function ReturnNtcBillViewItem({
             key: 'line'
         },
         {
-            title: '商品',
-            dataIndex: 'article',
-            key: 'article',
-            render: (text, record) => "[" + text.code + "]" + text.name
+            title: '商品代码',
+            dataIndex: 'article.code',
+            key: 'articleCode',
+        },
+        {
+            title: '商品名称',
+            dataIndex: 'article.name',
+            key: 'articleName',
         },
         {
             title: '规格',

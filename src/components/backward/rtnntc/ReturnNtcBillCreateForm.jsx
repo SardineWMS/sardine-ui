@@ -6,6 +6,7 @@ import ToolbarPanel from '../../Widget/ToolbarPanel';
 import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
 const EditableCell = require('../../Widget/EditableCell');
+import WrhSelect from '../../widget/WrhSelectWithUuid';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -23,7 +24,6 @@ const ReturnNtcBillCreateForm = ({
         getFieldsValue
     },
     onCustomerSelect,
-    wrhs = [],
     onEnterCustomer
 }) => {
     function handleCreate() {
@@ -61,22 +61,12 @@ const ReturnNtcBillCreateForm = ({
             }
         </BaseFormItem>
     );
-    const options = [];
-    if (wrhs != null) {
-        console.log("仓位");
-        console.dir(wrhs);
-        for (var wrh of wrhs) {
-            options.push(<Option value={wrh.uuid}>{wrh.name + "[" + wrh.code + "]"}</Option>)
-        };
-    };
     children.push(
         <BaseFormItem label={"仓位："}>
             {getFieldDecorator("wrh", {
                 rules: [{ required: true, message: "仓位不能为空！" }], initialValue: item.wrh ? item.wrh.code : null
             })(
-                <Select placeholder="请选择：">
-                    {options}
-                </Select>
+                <WrhSelect />
                 )
             }
         </BaseFormItem>);
