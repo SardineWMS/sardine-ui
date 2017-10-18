@@ -1,13 +1,17 @@
 import React, { PropTypes } from 'react';
-import { Button, Input, Form, Select, Card, Icon } from 'antd';
+import { Button, Input, Form, Select, Card, Icon, DatePicker } from 'antd';
 import BaseCard from '../../Widget/BaseCard';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
+import WrhSelect from '../../Widget/WrhSelectWithUuid';
+import CustomerModal from '../../Widget/CustomerModal';
 import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
 const EditableCell = require('../../Widget/EditableCell');
 import PermissionUtil from '../../../utils/PermissionUtil';
-
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 const Option = Select.Option;
 
 const AlcNtcBillCreateForm = ({
@@ -19,8 +23,6 @@ const AlcNtcBillCreateForm = ({
         validateFields,
         getFieldsValue
     },
-    wrhs,
-    checkCustomer,
     onSelectWrh
 }) => {
     function handleCreate() {
@@ -35,37 +37,22 @@ const AlcNtcBillCreateForm = ({
             handleSave(data);
         });
     };
-
-    function refreshCustomer(e) {
-        item.customer = {};
-        item.customer.code = e.target.value;
-        checkCustomer(e.target.value);
-    };
-
     const children = [];
     children.push(<BaseFormItem label={"客户："}>
         {getFieldDecorator("customer.code", {
             rules: [{ required: true, message: '请输入客户！' }],
-            initialValue: item.customer ? item.customer.name : ''
+            initialValue: item.customer ? item.customer : ''
         })(
-            <Input placeholder="请输入：" onBlur={(e) => refreshCustomer(e)} />
+            <CustomerModal />
             )}
     </BaseFormItem>);
 
-    const options = [];
-    if (wrhs != null) {
-        for (var wrh of wrhs) {
-            options.push(<Option value={wrh.uuid}>{wrh.name + "[" + wrh.code + "]"}</Option>)
-        };
-    };
     children.push(
         <BaseFormItem label={"仓位："}>
-            {getFieldDecorator("wrh", {
-                rules: [{ required: true, message: '请选择仓位！' }], initialValue: item.wrh ? item.wrh.name + "[" + item.wrh.code + "]" : null
+            {getFieldDecorator("wrh.uuid", {
+                rules: [{ required: true, message: '请选择仓位！' }], initialValue: item.wrh ? item.wrh.uuid : null
             })(
-                <Select placeholder="请选择：" onChange={(value) => onSelectWrh(value)}>
-                    {options}
-                </Select>
+                <WrhSelect />
                 )
             }
         </BaseFormItem>);
@@ -133,6 +120,14 @@ const AlcNtcBillCreateForm = ({
                 )
             }
         </BaseFormItem>);
+    children.push(<BaseFormItem label={"配货时间："}>
+        {getFieldDecorator("alcDate", {
+            rules: [{ required: true, message: '请输入配货时间！' }],
+            initialValue: item.alcDate ? moment(item.alcDate) : ''
+        })(
+            <DatePicker style={{ width: 272.25 }} />
+            )}
+    </BaseFormItem>);
 
     const totalCaseQtyStrForm = [];
     totalCaseQtyStrForm.push(<BaseFormItem label={"总件数："}>

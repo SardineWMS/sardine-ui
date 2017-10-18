@@ -23,7 +23,6 @@ export default {
         showPage: '',
         billItems: [],//当前单据明细集合
         qpcs: [],//货品规格及计量单位集合
-        wrhs: [],//仓位
         batchDeleteProcessModal: false,
         deleteAlcNtcBillEntitys: [],
         batchFinishProcessModal: false,
@@ -79,14 +78,12 @@ export default {
             const currentItem = {};
             currentItem.totalCaseQtyStr = 0;
             currentItem.totalAmount = 0;
-            const { data } = yield call(queryWrhs, {});
 
             yield put({
                 type: 'createSuccess',
                 payload: {
                     billItems: list,
-                    currentItem: currentItem,
-                    wrhs: data.obj
+                    currentItem: currentItem
                 }
             });
         },

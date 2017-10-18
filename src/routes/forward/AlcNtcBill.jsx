@@ -16,7 +16,7 @@ import AlcNtcBillViewItem from '../../components/forward/alcntc/AlcNtcBillViewIt
 import WMSProgress from '../../components/Widget/WMSProgress';
 
 function AlcNtcBill({ location, dispatch, alcNtc }) {
-    const { list, pagination, showPage, billItems, currentItem, wrhs,
+    const { list, pagination, showPage, billItems, currentItem,
         deleteAlcNtcBillEntitys,
         finishAlcNtcBillEntitys,
         abortAlcNtcBillEntitys,
@@ -100,25 +100,15 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
 
     const alcNtcBillCreateFormProps = {
         item: currentItem,
-        wrhs: wrhs,
-        checkCustomer(value) {
-            dispatch({
-                type: 'alcNtc/checkCustomer',
-                payload: {
-                    value, currentItem
-                }
-            });
-        },
         onSelectWrh() { },
         handleSave(data) {
-            if (data.uuid) {
-                data.wrh = currentItem.wrh;
-            } else {
-                for (var wrh of wrhs) {
-                    if (wrh.uuid == data.wrh)
-                        data.wrh = wrh;
-                };
-            };
+            // if (data.uuid) {
+            //     data.wrh = currentItem.wrh;
+            // } else {
+            //     const wrh = {};
+            //     wrh.uuid = data.wrh;
+            //     data.wrh = wrh;
+            // };
             data.items = billItems;
             if (data.items.length > 1) {
                 for (let i = 0; i < data.items.length; i++) {
