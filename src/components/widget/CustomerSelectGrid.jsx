@@ -56,7 +56,8 @@ class CustomerSelectGrid extends React.Component {
     handleSearch(e) {
         e.preventDefault();
         const payload = this.state.form.getFieldsValue();
-        payload.token = localStorage.getItem("token");
+        payload.token = 'token'
+        payload.pageSize = 0;
         reqwest({
             url: '/swms/basicinfo/customer/query',
             method: 'get',
@@ -64,9 +65,11 @@ class CustomerSelectGrid extends React.Component {
             `${stringify(payload)}`,
             type: 'json',
         }).then((data) => {
-            this.setState({
-                data: data.obj.records,
-            })
+            if (data.status == "200")
+                this.setState({
+                    data: data.obj.records,
+                }); else
+                message.error("查询客户列表失败", 2)
         })
     };
 
