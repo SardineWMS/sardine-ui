@@ -45,11 +45,11 @@ const CarrierCreateModal = ({
                         rules: [{
                             required: true,
                             message: '承运商代码未填写',
-                        }, {
-                            max: 30,
-                            message: '承运商代码最大长度是30！'
-                        }],
-                    })(<Input />)}
+                        },{ pattern:/^[a-zA-Z0-9]{0,6}$/,
+                            message:'承运商最大长度为6,且只能为字母数字'
+                        }
+                    ],
+                    })(<Input disabled={item.code}/>)}
                 </BaseFormItem>
                 <BaseFormItem label="名称：">
                     {getFieldDecorator('name', {

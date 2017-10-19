@@ -38,12 +38,11 @@ class Carrier extends React.Component {
     render() {
         function convertState(text) {
             if (text == "online")
-                return '已启用';
+                return '正常';
             if (text == "offline")
-                return '已停用';
+                return '停用';
         };
-
-
+        
         const columns = [{
             title: '代码',
             dataIndex: 'code',
@@ -104,10 +103,9 @@ class Carrier extends React.Component {
                         () =>
                             <div>
                                 <Row type="flex">
-                                    <Col><Button onClick={this.state.onCreate} disabled={!PermissionUtil("carrier:create")}>新建</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("carrier:delete")}>批量删除</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleOnlineBatch} disabled={!PermissionUtil("carrier:edit")}>批量启用</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleOfflineBatch} disabled={!PermissionUtil("carrier:edit")}>批量禁用 </Button></Col>
+                                    <Col><Button type="primary" onClick={this.state.onCreate} disabled={!PermissionUtil("carrier:create")}>新建</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleOnlineBatch} disabled={!PermissionUtil("carrier:edit")}>启用</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleOfflineBatch} disabled={!PermissionUtil("carrier:edit")}>禁用 </Button></Col>
                                     <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                                 </Row>
                             </div>
