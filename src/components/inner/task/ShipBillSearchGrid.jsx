@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col,message } from 'antd';
+import { browserHistory } from 'react-router'
 const EditableCell = require('../../widget/EditableCell');
 
 
@@ -7,8 +8,8 @@ function ShipBillSearchGrid({
 	dataSource,
 	pagination,
 	onPageChange,
-	onHandover,
 	onAbortBatch,
+  onShipBatch,
 	selectedRowKeys = []
 }) {
 
@@ -66,6 +67,11 @@ function ShipBillSearchGrid({
 	function handlerAbortBatch() {
 	      onAbortBatch(selectedRowKeys);
 	};
+
+  function handlerShipBatch(){
+    var json=JSON.stringify(selectedRowKeys);
+    window.location.href=`/#/tms/shipBill?type=showEdit&key=${json}`;
+ };
   
   	const rowSelection = {
 		onChange: (selectedRowKeys, selectedRows) => {
@@ -94,6 +100,7 @@ function ShipBillSearchGrid({
 	    rowSelection={rowSelection}
 	    title={() =>
 	      <div>
+          <Button onClick={handlerShipBatch}>批量装车</Button>
 	        <Button onClick={handlerAbortBatch}>批量作废</Button>
 	      </div>}
 	  />

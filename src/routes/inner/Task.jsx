@@ -133,6 +133,18 @@ function Task({ location, dispatch, task }) {
                 }
             });
         },
+        onShipBatch(tasks) {
+            if (tasks.length <= 0) {
+                message.warning("请选择要装车的指令", 2, '');
+                return;
+            };
+            const shipBill=new Object();
+            shipBill.containerStocks=tasks;
+            dispatch({
+                type: 'shipBill/query'
+    
+            });
+        },
         onPutAway(tasks) {
             if (tasks.length <= 0) {
                 message.warning("请选择要上架的指令", 2, '');
@@ -191,7 +203,7 @@ function Task({ location, dispatch, task }) {
             dispatch({
                 type: 'task/handover',
                 payload: {
-                   tasks
+                  returnHandoverItems: tasks
                 }
             });
         },

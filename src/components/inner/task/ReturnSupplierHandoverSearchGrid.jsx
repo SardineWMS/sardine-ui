@@ -22,7 +22,7 @@ function ReturnSupplierHandoverSearchGrid({
     title: '商品',
     dataIndex: 'article',
     key: 'article',
-    render: (text,record) =>text? "["+text.code+"]"+text.name+"," + record.articleSpec:text,
+    render: (text,record) =>text? "["+text.code+"]"+text.name+"," + record.spec:text,
     width: 150
   },{
     title: '包装',

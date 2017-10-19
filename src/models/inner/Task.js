@@ -407,23 +407,30 @@ export default {
                 yield put({
                     type: 'hidePickModal'
                 })
-                const { data } = yield call(queryTask, parse(payload));
-                if (data.status == "200") {
-                    yield put({
-                        type: 'querySuccess',
-                        payload: {
-                            list: data.obj.records,
-                            pagination: {
-                                showSizeChanger: true,
-                                showQuickJumper: true,
-                                showTotal: total => `共 ${total} 条`,
-                                current: data.obj.page,
-                                total: data.obj.recordCount,
-                                size: 'default'
-                            }
-                        }
-                    });
-                };
+                // const { data } = yield call(queryTask, parse(payload));
+                // if (data.status == "200") {
+                //     yield put({
+                //         type: 'querySuccess',
+                //         payload: {
+                //             list: data.obj.records,
+                //             pagination: {
+                //                 showSizeChanger: true,
+                //                 showQuickJumper: true,
+                //                 showTotal: total => `共 ${total} 条`,
+                //                 current: data.obj.page,
+                //                 total: data.obj.recordCount,
+                //                 size: 'default'
+                //             }
+                //         }
+                //     });
+                // };
+
+                yield put({
+                    type: 'query',
+                    payload:{
+                        taskType:payload.taskType
+                    }
+                });
             };
         },
         *handover({
@@ -436,7 +443,7 @@ export default {
             })
             const { data } = yield call(handover,payload);
             if (data.status == "200") {
-                const { data } = yield call(queryTask, parse(payload));
+                const { data } = yield call(queryHandoverTasks, parse(payload));
                 if (data.status == "200") {
                     yield put({
                         type: 'query',
