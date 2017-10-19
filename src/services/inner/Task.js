@@ -93,5 +93,5 @@ export async function batchPick(params) {
 
 export async function handover(params) {
     const url = '/swms/inner/task/handover';
-    return request(addTokenToUrl(url), createBase(params));
+    return request(addTokenToUrl(url), createBase(params.returnHandoverItems));
 }

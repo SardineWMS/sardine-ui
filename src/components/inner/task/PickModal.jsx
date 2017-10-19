@@ -43,16 +43,6 @@ const PickModal = ({
     return (
         <Modal {...modalOpts}>
             <Form horizontal>
-                {/* 
-                <BaseFormItem label="拣货员" >
-                  {getFieldDecorator('picker', {
-                    initialValue: (currentPicker && currentPicker.uuid) ?currentPicker.code+"["+currentPicker.name+"]":null
-                  })(
-                    <Input placeholder="请选择" suffix={<Icon type="ellipsis" onClick={() => queryPickers()} />}  
-                    onBlur={handleEnterPress} onPressEnter={handleEnterPress} />
-                  )}
-                </BaseFormItem>
-                */}
                 <BaseFormItem label="目标货位">
                     {getFieldDecorator('toBinCode', {
                         rules: [{ required: true, message: '目标货位不能为空' }],

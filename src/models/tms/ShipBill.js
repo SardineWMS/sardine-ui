@@ -38,10 +38,22 @@ export default {
         }) {
             history.listen(location => {
                 if (location.pathname === '/tms/shipBill') {
-                    dispatch({
-                        type: 'query',
-                        payload: location.query,
-                    });
+                    if(location.query.type == 'showEdit'){
+                        dispatch({
+                             type: 'showEdit',
+                             payload:{
+                                containerStocks: JSON.parse(location.query.key)
+                             }
+                        });
+                    }
+                    else
+                    {
+                        dispatch({
+                            type: 'query',
+                            payload: location.query
+                        });   
+                    }
+       
                 };
             });
         }
