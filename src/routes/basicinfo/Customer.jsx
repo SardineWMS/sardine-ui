@@ -11,9 +11,9 @@ import WMSProgress from '../../components/Widget/NewProgress';
 function Customer({ location, dispatch, customer }) {
     const {
         list, showCreatePage, pagination, showViewPage, currentItem, current,
-        showEditPage, searchExpand, batchDeleteProcessModal, deleteCustomerEntitys,
+        showEditPage, searchExpand, batchOfflineProcessModal, offlineCustomerEntitys,
         customerNext,
-        batchRecoverProcessModal, recoverCustomerEntitys
+        batchOnlineProcessModal, onlineCustomerEntitys
     } = customer;
 
     const { field, keyword } = location.query
@@ -53,10 +53,10 @@ function Customer({ location, dispatch, customer }) {
                 payload: { currentItem: item }
             });
         },
-        onDelete(customer) {
+        onOffline(customer) {
             let token = localStorage.getItem("token");
             dispatch({
-                type: 'customer/gridRemove',
+                type: 'customer/gridOffline',
                 payload: {
                     uuid: customer.uuid,
                     version: customer.version,
@@ -64,10 +64,10 @@ function Customer({ location, dispatch, customer }) {
                 }
             });
         },
-        onRecover(customer) {
+        onOnline(customer) {
             let token = localStorage.getItem("token");
             dispatch({
-                type: 'customer/gridRecover',
+                type: 'customer/gridOnline',
                 payload: {
                     uuid: customer.uuid,
                     version: customer.version,
@@ -75,27 +75,27 @@ function Customer({ location, dispatch, customer }) {
                 }
             });
         },
-        onRemoveBatch(customers) {
+        onOfflineBatch(customers) {
             if (customers.length <= 0) {
-                message.warning("请选择要删除的客户！", 2, '');//延时2秒
+                message.warning("请选择要停用的客户！", 2, '');//延时2秒
                 return;
             };
             dispatch({
-                type: 'customer/batchDeleteCustomer',
+                type: 'customer/batchOfflineCustomer',
                 payload: {
-                    deleteCustomerEntitys: customers
+                    offlineCustomerEntitys: customers
                 }
             });
         },
-        onRecoverBatch(customers) {
+        onOnlineBatch(customers) {
             if (customers.length <= 0) {
-                message.warning("请选择要恢复的客户！", 2, '');
+                message.warning("请选择要启用的客户！", 2, '');
                 return;
             };
             dispatch({
-                type: 'customer/batchRecoverCustomer',
+                type: 'customer/batchOnlineCustomer',
                 payload: {
-                    recoverCustomerEntitys: customers
+                    onlineCustomerEntitys: customers
                 }
             });
         },
@@ -164,10 +164,10 @@ function Customer({ location, dispatch, customer }) {
             });
         },
         backAndRefreshPage() { },
-        onRemove(customer) {
+        onOnline(customer) {
             let token = localStorage.getItem("token");
             dispatch({
-                type: 'customer/remove',
+                type: 'customer/online',
                 payload: {
                     uuid: customer.uuid,
                     version: customer.version,
@@ -175,10 +175,10 @@ function Customer({ location, dispatch, customer }) {
                 }
             });
         },
-        onRecover(customer) {
+        onOffline(customer) {
             let token = localStorage.getItem("token");
             dispatch({
-                type: 'customer/recover',
+                type: 'customer/offline',
                 payload: {
                     uuid: customer.uuid,
                     version: customer.version,
@@ -195,17 +195,17 @@ function Customer({ location, dispatch, customer }) {
         },
     };
 
-    const batchProcessDeleteCustomerProps = {
-        showConfirmModal: batchDeleteProcessModal,
-        records: deleteCustomerEntitys ? deleteCustomerEntitys : [],
+    const batchProcessOfflineCustomerProps = {
+        showConfirmModal: batchOfflineProcessModal,
+        records: offlineCustomerEntitys ? offlineCustomerEntitys : [],
         next: customerNext,
-        actionText: '删除',
+        actionText: '停用',
         entityCaption: '客户',
-        url: '/swms/basicinfo/customer/remove',
-        canSkipState: 'deleted',
+        url: '/swms/basicinfo/customer/offline',
+        canSkipState: 'offline',
         hideConfirmModal() {
             dispatch({
-                type: 'customer/hideDeleteCustomerModal'
+                type: 'customer/hideOfflineCustomerModal'
             });
         },
         refreshGrid() {
@@ -218,17 +218,17 @@ function Customer({ location, dispatch, customer }) {
         }
     };
 
-    const batchProcessRecoverCustomerProps = {
-        showConfirmModal: batchRecoverProcessModal,
-        records: recoverCustomerEntitys ? recoverCustomerEntitys : [],
+    const batchProcessOnlineCustomerProps = {
+        showConfirmModal: batchOnlineProcessModal,
+        records: onlineCustomerEntitys ? onlineCustomerEntitys : [],
         next: customerNext,
-        actionText: '恢复',
+        actionText: '启用',
         entityCaption: '客户',
-        url: '/swms/basicinfo/customer/recover',
-        canSkipState: 'normal',
+        url: '/swms/basicinfo/customer/online',
+        canSkipState: 'online',
         hideConfirmModal() {
             dispatch({
-                type: 'customer/hideRecoverCustomerModal'
+                type: 'customer/hideOnlineCustomerModal'
             });
         },
         refreshGrid() {
@@ -267,8 +267,8 @@ function Customer({ location, dispatch, customer }) {
                         <div>
                             <CustomerForm {...customerSearchProps} />
                             <CustomerGridGen />
-                            <WMSProgress {...batchProcessDeleteCustomerProps} />
-                            <WMSProgress {...batchProcessRecoverCustomerProps} />
+                            <WMSProgress {...batchProcessOfflineCustomerProps} />
+                            <WMSProgress {...batchProcessOnlineCustomerProps} />
                         </div>
                     );
                 };

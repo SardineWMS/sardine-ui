@@ -10,23 +10,24 @@ import BaseFormItem from '../../Widget/BaseFormItem';
 import Guid from '../../../utils/Guid';
 import PermissionUtil from '../../../utils/PermissionUtil';
 
-const CustomerView = ({ item = {},
+const CustomerView = ({
+    item = {},
     onBack,
-    onRemove,
-    onRecover,
+    onOffline,
+    onOnline,
     showEdit
 }) => {
 
     const code = item.code;
-    let removeRight = false;
-    let recoverRight = false;
-    if (item.state === "normal") {
-        removeRight = false;
-        recoverRight = true;
+    let offlineRight = false;
+    let onlineRight = false;
+    if (item.state === "online") {
+        offlineRight = false;
+        onlineRight = true;
     };
-    if (item.state === "deleted") {
-        removeRight = true;
-        recoverRight = false;
+    if (item.state === "offline") {
+        offlineRight = true;
+        onlineRight = false;
     };
 
     function convertType(text) {
@@ -37,10 +38,10 @@ const CustomerView = ({ item = {},
     };
 
     function convertState(text) {
-        if (text == "normal")
+        if (text == "online")
             return '正常';
-        if (text = "deleted")
-            return '已删除';
+        if (text = "offline")
+            return '停用';
     };
 
     let basicFormItems = [];
@@ -64,14 +65,16 @@ const CustomerView = ({ item = {},
     stateFormItems.push(<BaseFormItem label="状态：" key={Guid()}>
         <span>{convertState(item.state)}</span>
     </BaseFormItem>);
+    stateFormItems.push(<BaseFormItem label="操作信息：" key={Guid()}><span>{createInfo2String(item)}</span></BaseFormItem>);
+    stateFormItems.push(<BaseFormItem label="最后修改信息：" key={Guid()}><span>{lastModifyInfo2String(item)}</span></BaseFormItem>);
 
     let toolbar = [];
     toolbar.push(<Button onClick={() => showEdit(item)} key={Guid()} disabled={!PermissionUtil("customer:edit")}>编辑</Button>);
-    toolbar.push(<Popconfirm title="确定要删除吗？" onConfirm={() => onRemove(item)} key={Guid()}>
-        <Button disabled={removeRight || (!PermissionUtil("customer:delete"))} >删除</Button>
+    toolbar.push(<Popconfirm title="确定要停用吗？" onConfirm={() => onOffline(item)} key={Guid()}>
+        <Button disabled={offlineRight || (!PermissionUtil("customer:edit"))} >停用</Button>
     </Popconfirm>);
-    toolbar.push(<Popconfirm title="确定要恢复吗？" onConfirm={() => onRecover(item)} key={Guid()}>
-        <Button disabled={recoverRight || (!PermissionUtil("customer:delete"))}>恢复</Button>
+    toolbar.push(<Popconfirm title="确定要启用吗？" onConfirm={() => onOnline(item)} key={Guid()}>
+        <Button disabled={onlineRight || (!PermissionUtil("customer:edit"))}>启用</Button>
     </Popconfirm>);
     toolbar.push(<Button onClick={() => onBack()} key={Guid()}>返回</Button>);
 

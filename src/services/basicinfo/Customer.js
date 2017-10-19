@@ -19,13 +19,13 @@ export async function get(params) {
     return request(query(url, params));
 }
 
-export async function remove(params) {
-    const url = "/swms/basicinfo/customer/remove";
+export async function offline(params) {
+    const url = "/swms/basicinfo/customer/offline";
     return request(query(url, params), updateBaseNullBody(null));
 }
 
-export async function recover(params) {
-    const url = "/swms/basicinfo/customer/recover";
+export async function online(params) {
+    const url = "/swms/basicinfo/customer/online";
     return request(query(url, params), updateBaseNullBody(null));
 }
 

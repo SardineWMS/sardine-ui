@@ -1,7 +1,7 @@
 import {
     parse
 } from 'qs';
-import { queryCustomer, create, get, remove, recover, updateCustomer } from '../../services/basicinfo/Customer';
+import { queryCustomer, create, get, offline, online, updateCustomer } from '../../services/basicinfo/Customer';
 export default {
     namespace: 'customer',
 
@@ -20,10 +20,10 @@ export default {
         showViewPage: false,
         showEditPage: false,
         searchExpand: false,
-        batchDeleteProcessModal: false,
-        deleteCustomerEntitys: [],
-        batchRecoverProcessModal: false,
-        recoverCustomerEntitys: []
+        batchOfflineProcessModal: false,
+        onlineCustomerEntitys: [],
+        batchOnlineProcessModal: false,
+        onlinesCustomerEntitys: []
     },
 
     subscriptions: {
@@ -87,8 +87,8 @@ export default {
             };
         },
 
-        *remove({ payload }, { call, put }) {
-            yield call(remove, {
+        *offline({ payload }, { call, put }) {
+            yield call(offline, {
                 uuid: payload.uuid,
                 version: payload.version,
                 token: payload.token
@@ -102,8 +102,8 @@ export default {
             });
         },
 
-        *recover({ payload }, { call, put }) {
-            yield call(recover, {
+        *online({ payload }, { call, put }) {
+            yield call(online, {
                 uuid: payload.uuid,
                 version: payload.version,
                 token: payload.token
@@ -133,8 +133,8 @@ export default {
             };
         },
 
-        *gridRemove({ payload }, { call, put }) {
-            yield call(remove, {
+        *gridOffline({ payload }, { call, put }) {
+            yield call(offline, {
                 uuid: payload.uuid,
                 version: payload.version,
                 token: payload.token
@@ -145,8 +145,8 @@ export default {
             });
         },
 
-        *gridRecover({ payload }, { call, put }) {
-            yield call(recover, {
+        *gridOnline({ payload }, { call, put }) {
+            yield call(online, {
                 uuid: payload.uuid,
                 version: payload.version,
                 token: payload.token
@@ -199,17 +199,17 @@ export default {
         cancelShoWItemSuccess(state, action) {
             return { ...state, showEditPage: false, ...action.payload };
         },
-        batchDeleteCustomer(state, action) {
-            return { ...state, ...action.payload, batchDeleteProcessModal: true };
+        batchOfflineCustomer(state, action) {
+            return { ...state, ...action.payload, batchOfflineProcessModal: true };
         },
-        hideDeleteCustomerModal(state, action) {
-            return { ...state, batchDeleteProcessModal: false };
+        hideOfflineCustomerModal(state, action) {
+            return { ...state, batchOfflineProcessModal: false };
         },
-        batchRecoverCustomer(state, action) {
-            return { ...state, ...action.payload, batchRecoverProcessModal: true };
+        batchOnlineCustomer(state, action) {
+            return { ...state, ...action.payload, batchOnlineProcessModal: true };
         },
-        hideRecoverCustomerModal(state, action) {
-            return { ...state, batchRecoverProcessModal: false };
+        hideOnlineCustomerModal(state, action) {
+            return { ...state, batchOnlineProcessModal: false };
         },
         refreshGridData(state, action) {
             return { ...state, ...action.payload };

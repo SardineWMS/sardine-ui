@@ -2,26 +2,27 @@ import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 import hasPermission from '../../../utils/PermissionUtil';
 import {printPreview, print} from '../../../utils/PrintUtil';
+import {createInfo2String,lastModifyInfo2String}from '../../../utils/OperatorInfoUtils';
 
 function CustomerGrid({
   dataSource,
   onPageChange,
-  onRemoveBatch,
-  onRecoverBatch,
+  onOfflineBatch,
+  onOnlineBatch,
   onEdit,
-  onDelete,
-  onRecover,
+  onOffline,
+  ononline,
   onCreate,
   onViewItem,
   pagination,
   selectedRowKeys = []
 }) {
 
-  function handleRemoveBatch() {
-    onRemoveBatch(selectedRowKeys);
+  function handleOfflineBatch() {
+    onOfflineBatch(selectedRowKeys);
   };
-  function handleRecoverBatch() {
-    onRecoverBatch(selectedRowKeys);
+  function handleOnlineBatch() {
+    onOnlineBatch(selectedRowKeys);
   };
 
   function onPrintPreview() {
@@ -40,10 +41,10 @@ function CustomerGrid({
   };
 
   function convertState(text) {
-    if (text == "normal")
+    if (text == "online")
       return '正常';
-    if (text = "deleted")
-      return '已删除';
+    if (text == "offline")
+      return '停用';
   };
 
   const columns = [{
@@ -52,33 +53,54 @@ function CustomerGrid({
     key: 'code',
     render: (text, record) => <a onClick={() => { onViewItem(record) }}>{text}</a>,
     sorter: true,
-    width: 180
+    width: 80
   },
   {
     title: '名称',
     dataIndex: 'name',
     key: 'name',
     sorter: true,
-    width: 200
+    width: 180
+  },
+  {
+    title:'简称',
+    dataIndex:'simpleName',
+    key:'simpleName',
+    width:80
   },
   {
     title: '状态',
     dataIndex: 'state',
     key: 'state',
     render: text => convertState(text),
-    width: 100
+    width: 80
   },
   {
     title: '联系方式',
     dataIndex: 'phone',
     key: 'phone',
-    width: 200
+    width: 100
   },
   {
     title: '地址',
     dataIndex: 'address',
-    key: 'address'
-  }];
+    key: 'address',
+    width: 170
+  },
+  {
+    title: '创建人信息',
+    dataIndex: 'createInfo',
+    key: 'createInfo',
+    width:200,
+    render:(text,record)=>createInfo2String(record),
+  },{
+    title: '最后修改人信息',
+    dataIndex: 'lastModifyInfo',
+    key: 'lastModifyInfo',
+    width:200,
+    render: (text, record) => lastModifyInfo2String(record),
+  }
+];
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -109,12 +131,10 @@ function CustomerGrid({
         title={() =>
           <div>
             <Row type="flex">
-              <Col><Button type="ghost" onClick={handleRemoveBatch} disabled={!hasPermission("customer:delete")}>批量删除</Button></Col>
-              <Col><Button type="ghost" onClick={handleRecoverBatch} disabled={!hasPermission("customer:delete")}>批量恢复</Button></Col>
-              <Col><Button onClick={onCreate} disabled={!hasPermission("customer:create")}>新建</Button></Col>
-              <Col><span style={{ marginLeft: 8 }}>{selectedRowKeys.length > 0 ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
-              <Col><Button onClick={onPrintPreview} >打印预览</Button></Col>
-              
+              <Col><Button type="primary" onClick={onCreate} disabled={!hasPermission("customer:create")}>新建</Button></Col>
+              <Col><Button type="ghost" onClick={handleOnlineBatch} disabled={!hasPermission("customer:edit")}>启用</Button></Col>
+              <Col><Button type="ghost" onClick={handleOfflineBatch} disabled={!hasPermission("customer:edit")}>停用</Button></Col>            
+              <Col><span style={{ marginLeft: 8 }}>{selectedRowKeys.length > 0 ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>             
             </Row>
           </div>} />
     </div>
@@ -124,11 +144,11 @@ function CustomerGrid({
 CustomerGrid.propTypes = {
   dataSource: PropTypes.array,
   onPageChange: PropTypes.func,
-  onRemoveBatch: PropTypes.func,
-  onRecoverBatch: PropTypes.func,
+  onOfflineBatch: PropTypes.func,
+  onOnlineBatch: PropTypes.func,
   onEdit: PropTypes.func,
-  onDelete: PropTypes.func,
-  onRecover: PropTypes.func,
+  onOffline: PropTypes.func,
+  onOnline: PropTypes.func,
   onCreate: PropTypes.func,
   onViewItem: PropTypes.func,
   pagination: PropTypes.any

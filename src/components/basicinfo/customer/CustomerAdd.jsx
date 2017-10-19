@@ -36,9 +36,9 @@ const CustomerAddForm = ({
             {getFieldDecorator("code", {
                 rules: [{ required: true, message: '代码不能为空！' }, {
                     max: 30, message: '代码最大长度30！'
-                }], initialValue: item.code
+                },{ pattern:/^[a-zA-Z0-9]{0,6}$/,message:"代码长度最大为6,且只能为数字和字母"}], initialValue: item.code
             })(
-                <Input placeholder="请输入" />
+                <Input placeholder="请输入" disabled={item.code} />
                 )}
         </BaseFormItem>
     );
@@ -54,6 +54,17 @@ const CustomerAddForm = ({
         </BaseFormItem>
     );
     children.push(
+        <BaseFormItem label={"简称"} key="simpleName">
+        {getFieldDecorator("simpleName",{
+            rules:[{required:true,message:'简称不能为空！'},{
+                max:100,message:'长度最大为100！'
+            }],initialValue:item.simpleName
+        })(
+            <Input placeholder="请输入"/>
+        )}
+        </BaseFormItem>
+    );
+    children.push(
         <BaseFormItem label={"类型"} key="type">
             {getFieldDecorator("type", { rules: [{ required: true, message: '客户类型不能为空！' }], initialValue: item.type })(
                 <Select placeholder="请选择" showSearch={false} size="large">
@@ -61,6 +72,17 @@ const CustomerAddForm = ({
                     <Option value="shop">精品店</Option>
                 </Select>
             )}
+        </BaseFormItem>
+    );
+    children.push(
+        <BaseFormItem label={"联系人"} key="contacter">
+        {getFieldDecorator("contacter",{
+            rules:[{ required:false},{
+                max:30,message:'联系人最大长度100！'
+            }],initialValue:item.contacter
+        })(
+            <Input placeholder="请输入"/>
+        )}
         </BaseFormItem>
     );
     children.push(
