@@ -51,8 +51,14 @@ const CustomerView = ({
     basicFormItems.push(<BaseFormItem label="名称：" key={Guid()}>
         <span>{item.name}</span>
     </BaseFormItem>);
+    basicFormItems.push(<BaseFormItem label="简称：" key={Guid()}>
+        <span>{item.simpleName}</span>
+    </BaseFormItem>);
     basicFormItems.push(<BaseFormItem label="类型：" key={Guid()}>
         <span>{convertType(item.type)}</span>
+    </BaseFormItem>);
+    basicFormItems.push(<BaseFormItem label="联系人：" key={Guid()}>
+        <span>{item.contacter}</span>
     </BaseFormItem>);
     basicFormItems.push(<BaseFormItem label="联系方式：" key={Guid()}>
         <span>{item.phone}</span>
@@ -69,7 +75,7 @@ const CustomerView = ({
     stateFormItems.push(<BaseFormItem label="最后修改信息：" key={Guid()}><span>{lastModifyInfo2String(item)}</span></BaseFormItem>);
 
     let toolbar = [];
-    toolbar.push(<Button onClick={() => showEdit(item)} key={Guid()} disabled={!PermissionUtil("customer:edit")}>编辑</Button>);
+    toolbar.push(<Button type="primary" onClick={() => showEdit(item)} key={Guid()} disabled={!PermissionUtil("customer:edit")}>编辑</Button>);
     toolbar.push(<Popconfirm title="确定要停用吗？" onConfirm={() => onOffline(item)} key={Guid()}>
         <Button disabled={offlineRight || (!PermissionUtil("customer:edit"))} >停用</Button>
     </Popconfirm>);

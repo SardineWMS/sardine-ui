@@ -78,7 +78,7 @@ const CustomerAddForm = ({
         <BaseFormItem label={"联系人"} key="contacter">
         {getFieldDecorator("contacter",{
             rules:[{ required:false},{
-                max:30,message:'联系人最大长度100！'
+                max:30,message:'联系人最大长度30！'
             }],initialValue:item.contacter
         })(
             <Input placeholder="请输入"/>
