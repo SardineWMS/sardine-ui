@@ -7,43 +7,29 @@ function PickTaskSearchGrid({
   pagination,
   onPageChange,
   onAbortBatch,
-  onRpl,
   refresItemRealCaseQtyStr,
+  onPick,
   selectedRowKeys = []
 }) {
-
-  function handlerExecuteParentTask() {
-    console.log({selectedRowKeys});
-  };
-
-  function handlerExecuteChildTask(test) {
-    console.log({test});
-  };
-
-  function handleMenuClick(e) {
-    if (e.key == "1")
-      onArticleMove();
-    else
-      onContainerMove();
-  };
 
   function handlerAbortBatch() {
       onAbortBatch(selectedRowKeys);
   };
 
-  function handlerPutAway() {
-        console.log({selectedRowKeys});
-
-     // onPutAway(selectedRowKeys);
-  };
-
-  function handlerRpl() {
-      onRpl(selectedRowKeys);
-  };
-
   function handlerPick() {
-      onPick(selectedRowKeys);
-  };
+    const pickItemUuids=[];
+    for (var i = 0; i < selectedRowKeys.length; i++) {
+      const currentRow= selectedRowKeys[i];
+      if(currentRow.billNumber){
+        currentRow.items.map(function (item){
+          pickItemUuids.push(item);
+        });
+      }else{
+        pickItemUuids.push(currentRow);
+      }
+    }
+    onPick(pickItemUuids);
+   };
 
   const parentColumns = [{
         title: '单号',
@@ -256,6 +242,7 @@ function PickTaskSearchGrid({
         expandedRowRender={(record,index) => expandedRowRender(record.items,index)}
         title={() =>
           <div>
+            <Button onClick={handlerPick}>批量拣货</Button>
             <Button onClick={handlerAbortBatch}>批量作废</Button>
           </div>}
       />
