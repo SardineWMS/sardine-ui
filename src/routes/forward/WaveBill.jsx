@@ -11,6 +11,9 @@ import WaveBillSelectAlcNtcModal from '../../components/forward/wave/WaveBillSel
 import WaveBillView from '../../components/forward/wave/WaveBillView';
 import WMSProgress from '../../components/Widget/WMSProgress';
 import { removeByValue } from '../../utils/ArrayUtils';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 
 function WaveBill({ location, dispatch, waveBill }) {
@@ -71,6 +74,11 @@ function WaveBill({ location, dispatch, waveBill }) {
                 select.line = length + i + 1;
                 select.alcNtcBillState = selectedAlcNtcs[i].state;
                 select.customer = selectedAlcNtcs[i].customer;
+                for (let j = 0; j < allInitialAlcNtcList.length; j++) {
+                    if (select.ntcBillNumber == allInitialAlcNtcList[j].billNumber) {
+                        allInitialAlcNtcList.splice(j, 1);
+                    }
+                }
                 selectedAlcNtcList.push(select);
                 selectedAlcNtcList.sort(function (a, b) {
                     return a.line - b.line;
@@ -79,9 +87,29 @@ function WaveBill({ location, dispatch, waveBill }) {
             dispatch({
                 type: 'waveBill/hideSelectModal',
                 payload: {
-                    selectedAlcNtcList: selectedAlcNtcList
+                    selectedAlcNtcList: selectedAlcNtcList,
+                    allInitialAlcNtcList
                 }
             })
+        },
+        onSearch(fieldsValue) {
+            if (fieldsValue.alcDateLessThan != null) {
+                fieldsValue.alcDateLessThan = moment(fieldsValue.alcDateLessThan).format("YYYY-MM-DD");
+            }
+            if (fieldsValue.alcDateMoreThan != null) {
+                fieldsValue.alcDateMoreThan = fieldsValue.alcDateMoreThan.format("YYYY-MM-DD");
+            }
+            dispatch({
+                type: 'waveBill/showSelectModal',
+
+                payload: {
+                    ...fieldsValue, waveType, selectedAlcNtcList: selectedAlcNtcList,
+                    waveType: waveType,
+                    allRemoveAlcNtcList: allRemoveAlcNtcList,
+                    isUpdate: isUpdate,
+                    existAlcNtcList: existAlcNtcList
+                }
+            });
         }
     };
 

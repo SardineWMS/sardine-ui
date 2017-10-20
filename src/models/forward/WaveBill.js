@@ -83,38 +83,32 @@ export default {
                 message.warning("请先选择波次类型", 2);
                 return;
             }
-            const { data } = yield call(queryAlcNtcBill, { state: 'initial' });
+            const { data } = yield call(queryAlcNtcBill, { ...payload, state: 'initial' });
             if (data.status == '200') {
                 let initialAlcNtcBill = [];//所有初始+当前波次单明细中包含的
                 initialAlcNtcBill = data.obj.records;
                 let allAlcNtcBill = [];
                 for (var exist of payload.existAlcNtcList) {
-                    // let obj = {};
-                    // obj.billNumber = exist.alcNtcBillNumber;
-                    // obj.state = exist.alcNtcBillState;
-                    // obj.customer = exist.customer;
-                    // obj.deliverySystem = exist.deliverySystem;
+                    let obj = {};
+                    obj.billNumber = exist.ntcBillNumber;
+                    obj.state = exist.ntcBillState;
+                    obj.customer = exist.customer;
+                    obj.deliverySystem = exist.deliverySystem;
                     // 避免出现别名现象，可以使用es6 的析构赋值。
-                    initialAlcNtcBill.push({ ...exist });
+                    initialAlcNtcBill.push(obj);
                 }
 
                 for (var alcNtc of initialAlcNtcBill) {
-                    if (alcNtc.deliverySystem !== undefined) {
-                        if (payload.waveType === 'normal') {
-                            if (alcNtc.deliverySystem == 'tradition') {
-                                allAlcNtcBill.push(alcNtc);
-                            }
-                        } else if (payload.waveType === 'eCommerce') {
-                            if (alcNtc.deliverySystem == "eCommerce")
-                                allAlcNtcBill.push(alcNtc);
-                        }
+                    if (payload.waveType === 'normal') {
+                        allAlcNtcBill.push(alcNtc);
+                    } else if (payload.waveType === 'eCommerce') {
+                        allAlcNtcBill.push(alcNtc);
                     }
                 }
-                for (var select of payload.selectedAlcNtcList) {
-                    for (var bill of initialAlcNtcBill) {
-                        if (select.alcNtcBillNumber != bill.billNumber) {
-                            allAlcNtcBill.push(alcNtc);
-                            break;
+                for (let i = 0; i < allAlcNtcBill.length; i++) {
+                    for (let j = 0; j < payload.selectedAlcNtcList.length; j++) {
+                        if (allAlcNtcBill[i].billNumber == payload.selectedAlcNtcList[j].ntcBillNumber) {
+                            allAlcNtcBill.splice(i, 1);
                         }
                     }
                 }
@@ -174,7 +168,7 @@ export default {
         *edit({ payload }, { call, put }) {
             const { data } = yield call(getWaveBill, { uuid: payload.uuid });
             const existAlcNtcList = [];
-            for (var exist of data.obj.items)
+            for (var exist of data.obj.ntcItems)
                 existAlcNtcList.push(exist);
             if (data.status === '200') {
                 const serialArch = yield call(querySerialArch, {});
@@ -182,7 +176,7 @@ export default {
                     type: 'showCreate',
                     payload: {
                         currentItem: data.obj,
-                        selectedAlcNtcList: data.obj.items,
+                        selectedAlcNtcList: data.obj.ntcItems,
                         existAlcNtcList: existAlcNtcList,//不能直接使用data.obj.items赋值，避免别名机制
                         isUpdate: true,
                         serialArchList: serialArch.data.obj,
@@ -212,19 +206,8 @@ export default {
             }
             for (let i = 0; i < payload.selectedAlcNtcList.length; i++) {
                 for (let j = 0; j < payload.removes.length; j++) {
-                    if (payload.selectedAlcNtcList[i].alcNtcBillNumber == payload.removes[j].alcNtcBillNumber)
+                    if (payload.selectedAlcNtcList[i].ntcBillNumber == payload.removes[j].ntcBillNumber)
                         payload.selectedAlcNtcList.splice(i, 1);
-                    // if (payload.allRemoveAlcNtcList.length == 0) {
-                    //     payload.allRemoveAlcNtcList.push(payload.removes[i]);
-                    // }
-                    // if (payload.allRemoveAlcNtcList.length > 0) {
-                    //     for (var allRemove of payload.allRemoveAlcNtcList) {
-                    //         // if (payload.removes[i] === undefined)
-                    //         //     continue;
-                    //         if (payload.removes[j].alcNtcBillNumber != allRemove.alcNtcBillNumber)
-                    //             payload.allRemoveAlcNtcList.push(payload.removes[i]);
-                    //     }
-                    // }
                 }
             }
             payload.selectedAlcNtcList.sort(compare("line"))
@@ -237,7 +220,6 @@ export default {
                 type: 'showCreate',
                 payload: {
                     selectedAlcNtcList: payload.selectedAlcNtcList,
-                    // allRemoveAlcNtcList: payload.allRemoveAlcNtcList
                 }
             })
         }

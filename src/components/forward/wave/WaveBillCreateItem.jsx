@@ -27,20 +27,23 @@ function WaveBillCreateItem({
             return '初始';
         if (text == 'inAlc')
             return '配送中';
+        if (text == 'used')
+            return '已使用';
     };
     const columns = [
         {
             title: '行号',
             dataIndex: 'line',
-            key: 'line'
+            key: 'line',
+            render: (text, record, index) => { return index + 1 }
         }, {
             title: '出库通知单单号',
             dataIndex: 'ntcBillNumber',
             key: 'ntcBillNumber',
         }, {
             title: '状态',
-            dataIndex: 'alcNtcBillState',
-            key: 'alcNtcBillState',
+            dataIndex: 'ntcBillState',
+            key: 'ntcBillState',
             render: (text, record) => convertState(text)
         }, {
             title: '客户',

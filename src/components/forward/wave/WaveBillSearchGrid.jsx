@@ -106,7 +106,7 @@ class WaveBillSearchGrid extends React.Component {
                             <div>
                                 <Row type="flex">
                                     <Col><Button onClick={this.state.onCreate} disabled={!PermissionUtil("waveBill:create")}>新建</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("waveBill:delete")}>批量删除</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("waveBill:delete")}>删除</Button></Col>
                                     <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                                 </Row>
                             </div>

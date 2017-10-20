@@ -12,9 +12,9 @@ class WrhSelectWithUuid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
+            value: '',
             ...props,
             wrhs: [],
-            value: '',
         };
         this.handleChange = this.handleChange.bind(this);
     };
