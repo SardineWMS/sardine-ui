@@ -117,7 +117,6 @@ export default {
       yield put({ type: 'showLoading' });
       const { data } = yield call(remove, {
         uuid: payload.uuid,
-        token: localStorage.getItem("token"),
         version: payload.version
       });
       if (data) {
@@ -138,7 +137,6 @@ export default {
       yield put({ type: 'showLoading' });
       const { data } = yield call(recover, {
         uuid: payload.uuid,
-        token: localStorage.getItem("token"),
         version: payload.version
       });
       if (data) {
@@ -160,7 +158,6 @@ export default {
       yield put({ type: 'showLoading' });
       const { data } = yield call(recover, {
         uuid: payload.uuid,
-        token: payload.token,
         version: payload.version
       });
       if (data) {
@@ -188,7 +185,6 @@ export default {
       yield put({ type: 'showLoading' });
       const { data } = yield call(remove, {
         uuid: payload.uuid,
-        token: payload.token,
         version: payload.version
       });
       if (data) {

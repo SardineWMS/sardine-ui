@@ -31,12 +31,12 @@ export async function edit(params) {
 
 export async function remove(params) {
   const url=`/swms/basicinfo/supplier/remove?${qs.stringify(params)}`;
-  return request(url,deleteBase(params));
+  return request(addTokenToUrl(url),deleteBase(params));
 }
 
 export async function recover(params) {
   const url=`/swms/basicinfo/supplier/recover?${qs.stringify(params)}`;
-  return request(url,updateBaseNullBody(params));
+  return request(addTokenToUrl(url),updateBaseNullBody(params));
 }
 
 
