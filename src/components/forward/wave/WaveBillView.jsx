@@ -16,7 +16,9 @@ const WaveBillView = ({
     onBack,
     onEdit,
     onDelete,
-    onAudit
+    onStart,
+    onConfirm,
+    onRollBack
 }) => {
     function convertState(text) {
         if (text == "initial")
@@ -67,12 +69,13 @@ const WaveBillView = ({
         <Button key={Guid()} onClick={() => onEdit(item)} disabled={(item.state != 'initial') || (!PermissionUtil("waveBill:edit"))}>编辑</Button>
     );
     toolbar.push(
-        <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(item)}>
-            <Button disabled={(item.state != 'initial') || (!PermissionUtil("waveBill:delete"))}>删除</Button>
+        <Popconfirm title="确定要删除吗？" disabled={(item.state != 'initial') || (!PermissionUtil("waveBill:delete"))} onConfirm={() => onDelete(item)}>
+            <Button >删除</Button>
         </Popconfirm>
     );
-    toolbar.push(<Button onClick={() => onAudit(item)}>启动</Button >)
-    toolbar.push(<Button onClick={() => onAudit(item)}>回滚</Button >)
+    toolbar.push(<Button disabled={(item.state != 'initial') || (!PermissionUtil("waveBill:start"))} onClick={() => onStart(item)}>启动</Button >)
+    toolbar.push(<Button disabled={((item.state != 'started') && (item.state != 'exception')) || (!PermissionUtil("waveBill:start"))} onClick={() => onRollBack(item)}>回滚</Button >)
+    toolbar.push(<Button disabled={(item.state != 'started') || (!PermissionUtil("waveBill:start"))}  onClick={() => onConfirm(item)}>确认</Button >)
 
     const waveBillViewItemProps = {
         dataSource: item.ntcItems

@@ -3,7 +3,7 @@ import { queryAlcNtcBill } from '../../services/forward/AlcNtcBill';
 import { removeByValue } from '../../utils/ArrayUtils';
 import { message } from 'antd';
 import { querySerialArch } from '../../services/tms/SerialArch';
-import { insert, getWaveBill, queryWaveBill, update, remove } from '../../services/forward/WaveBill';
+import { insert, getWaveBill, queryWaveBill, update, remove,start,confirm,rollBack } from '../../services/forward/WaveBill';
 
 export default {
     namespace: 'waveBill',
@@ -192,6 +192,42 @@ export default {
                 yield put({
                     type: 'query',
                     payload: {}
+                })
+            }
+        },
+
+        *start({ payload }, { call, put }) {
+            const { data } = yield call(start, { uuid: payload.uuid, version: payload.version });
+            if (data.status === '200') {
+                yield put({
+                    type: 'viewWaveBill',
+                    payload: {
+                         uuid: payload.uuid 
+                    }
+                })
+            }
+        },
+
+        *confirm({ payload }, { call, put }) {
+            const { data } = yield call(confirm, { uuid: payload.uuid, version: payload.version });
+            if (data.status === '200') {
+                yield put({
+                    type: 'viewWaveBill',
+                    payload: {
+                         uuid: payload.uuid 
+                    }
+                })
+            }
+        },
+
+        *rollBack({ payload }, { call, put }) {
+            const { data } = yield call(rollBack, { uuid: payload.uuid, version: payload.version });
+            if (data.status === '200') {
+                yield put({
+                    type: 'viewWaveBill',
+                    payload: {
+                         uuid: payload.uuid 
+                    }
                 })
             }
         },

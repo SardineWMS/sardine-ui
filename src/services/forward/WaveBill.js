@@ -26,3 +26,18 @@ export async function remove(params) {
     const url = '/swms/out/wave/remove';
     return request(query(url, params), deleteBase(params));
 }
+
+export async function start(params) {
+    const url = '/swms/out/wave/start';
+    return request(query(url, params), updateBaseNullBody(params));
+}
+
+export async function confirm(params) {
+    const url = '/swms/out/wave/confirm';
+    return request(query(url, params), updateBaseNullBody(params));
+}
+
+export async function rollBack(params) {
+    const url = '/swms/out/wave/rollBack';
+    return request(query(url, params), updateBaseNullBody(params));
+}

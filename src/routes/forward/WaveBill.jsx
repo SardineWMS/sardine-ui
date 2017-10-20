@@ -207,6 +207,24 @@ function WaveBill({ location, dispatch, waveBill }) {
                 payload: data
             })
         },
+        onStart(data) {
+            dispatch({
+                type: 'waveBill/start',
+                payload: data
+            })
+        },
+        onConfirm(data) {
+            dispatch({
+                type: 'waveBill/confirm',
+                payload: data
+            })
+        },
+        onRollBack(data) {
+            dispatch({
+                type: 'waveBill/rollBack',
+                payload: data
+            })
+        },
         onBack() {
             dispatch({
                 type: 'waveBill/query',
