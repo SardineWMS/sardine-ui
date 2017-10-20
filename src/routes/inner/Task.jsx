@@ -375,7 +375,8 @@ function Task({ location, dispatch, task }) {
                 payload:{
                     pickItemUuids:pickItemUuids,
                     toBinCode:data.toBinCode,
-                    toContainerBarcode:data.toContainerBarcode
+                    toContainerBarcode:data.toContainerBarcode,
+                    taskType:taskType
                    // picker:currentUser
                 }
             });
