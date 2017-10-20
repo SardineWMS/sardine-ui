@@ -4,7 +4,7 @@
     "index": "./src/index.js"
   },
   "dependencies": {
-    "antd": "^2.11.0",
+    "antd": "^2.13.6",
     "async-validator": "^1.7.1",
     "babel-plugin-import": "^1.1.0",
     "babel-polyfill": "^6.16.0",
