@@ -1,27 +1,10 @@
 import React, { PropTypes } from 'react';
-import { Table, Popconfirm, Pagination, Button } from 'antd';
-import RowEditCell from '../../Widget/RowEditCell';
-import RowEditCellDatePicker from '../../Widget/RowEditCellDatePicker';
-import styles from '../../Widget/EditTable.less';
+import { Table, Pagination } from 'antd';
 
-function WaveBillViewItem({
-	dataSource,
-    pagination,
-    onPageChange
+function WaveBillAlcNtcItem({
+	dataSource
 }) {
 
-    function handleCreate(e) {
-        e.preventDefault();
-        onCreate();
-    };
-
-    function handleRemoveBatch() {
-        onRemoveBatch(suppliers);
-    };
-
-    function handleRecoverBatch() {
-        onRecoverBatch(suppliers);
-    };
     function convertState(text) {
         if (text == "initial")
             return '初始';
@@ -39,20 +22,6 @@ function WaveBillViewItem({
             return '已交接';
         if (text == 'used')
             return '已使用';
-    };
-
-    function handleChange(record, value, key) {
-        if (key === 'produceDate') {
-            record.produceDate = value;
-            calculateValidDate();
-        };
-        if (key === 'receivedQty')
-            record.receivedQty = value;
-
-        if (key === 'validDate')
-            record.validDate = value;
-        if (key === 'containerBarcode')
-            record.containerBarcode = value;
     };
 
     const columns = [
@@ -86,25 +55,16 @@ function WaveBillViewItem({
             <Table size="small" bordered
                 columns={columns}
                 dataSource={dataSource}
-                onChange={onPageChange}
-                pagination={pagination}
                 rowKey={record => record.uuid}
             />
         </div>
     );
 };
 
-WaveBillViewItem.propTypes = {
+WaveBillAlcNtcItem.propTypes = {
     onPageChange: PropTypes.func,
     dataSource: PropTypes.array,
-    loading: PropTypes.any,
-    pagination: PropTypes.any,
-    onCreate: PropTypes.func,
-    onRecoverBatch: PropTypes.func,
-    onRemoveBatch: PropTypes.func,
-    onViewItem: PropTypes.func,
-    onEditItem: PropTypes.func,
-    onRemoveItem: PropTypes.func
+    pagination: PropTypes.any
 };
 
-export default WaveBillViewItem;
+export default WaveBillAlcNtcItem;

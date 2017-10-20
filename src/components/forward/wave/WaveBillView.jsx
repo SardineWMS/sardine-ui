@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Card, Form, Row, Col, Input, Button, Collapse, Popconfirm, Spin } from 'antd';
+import { Card, Form, Row, Col, Input, Button, Collapse, Popconfirm, Spin, Tabs } from 'antd';
 import timeStamp2datetime from '../../../utils/DateUtils';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
@@ -9,7 +9,9 @@ import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import Guid from '../../../utils/Guid';
 import PermissionUtil from '../../../utils/PermissionUtil';
-import WaveBillViewItem from './WaveBillViewItem';
+import WaveBillAlcNtcItem from './WaveBillAlcNtcItem';
+import WaveBillPickupItem from './WaveBillPickupItem';
+const TabPane = Tabs.TabPane;
 
 const WaveBillView = ({
     item = {},
@@ -81,6 +83,14 @@ const WaveBillView = ({
         dataSource: item.ntcItems
     };
 
+    const waveBillPickupItem = {
+        dataSource: item.pickItems
+    };
+
+    const waveBillRplItem = {
+        dataSource: item.rplItems
+    };
+
     return (
         <div>
             <ToolbarPanel children={toolbar} />
@@ -89,7 +99,19 @@ const WaveBillView = ({
                 <BaseForm items={operateForm} />
             </BaseCard>
             <BaseCard single={true} title="明细">
-                <BaseForm items={<WaveBillViewItem {...waveBillViewItemProps} />} />
+                <Tabs defaultActiveKey="1">
+                    <TabPane key="1" tab="配单">
+                        <BaseForm items={<WaveBillAlcNtcItem {...waveBillViewItemProps} />} />
+                    </TabPane>
+                    {item.pickItems.length >= 1 ?
+                        <TabPane key="2" tab="拣货单">
+                            <BaseForm items={<WaveBillPickupItem {...waveBillPickupItem} />} />
+                        </TabPane> : <div />}
+                    {item.rplItems.length >= 1 ?
+                        <TabPane key="3" tab="补货单">
+                            <BaseForm items={<WaveBillPickupItem {...waveBillRplItem} />}></BaseForm>
+                        </TabPane> : <div />}
+                </Tabs>
             </BaseCard>
             <RemarkCard />
         </div>
