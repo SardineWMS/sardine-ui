@@ -46,18 +46,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
                 payload: record
             })
         },
-        onRemoveBatch(records) {
-            if (records.length <= 0) {
-                message.error("请选择要删除的退仓通知单！", 2, '');
-                return;
-            };
-            dispatch({
-                type: 'rtnNtcBill/batchDeleteRtnNtcBill',
-                payload: {
-                    deleteRtnNtcBillEntitys: records
-                }
-            })
-        },
         onAbortBatch(records) {
             if (records.length <= 0) {
                 message.error("请选择要作废的退仓通知单！", 2, '');
@@ -266,14 +254,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
                     record, dataSource, currentItem
                 }
             })
-        },
-        onRemoveItem(record, dataSource) {
-            dispatch({
-                type: 'rtnNtcBill/removeItem',
-                payload: {
-                    record, dataSource, currentItem
-                }
-            });
         }
     };
 
@@ -282,12 +262,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
         onEdit(record) {
             dispatch({
                 type: 'rtnNtcBill/showEdit',
-                payload: record
-            })
-        },
-        onDelete(record) {
-            dispatch({
-                type: 'rtnNtcBill/remove',
                 payload: record
             })
         },
@@ -313,37 +287,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
             dispatch({
                 type: 'rtnNtcBill/query',
             })
-        }
-    };
-
-    const batchProcessDeleteRtnNtcBillProps = {
-        showConfirmModal: batchDeleteProcessModal,
-        records: deleteRtnNtcBillEntitys ? deleteRtnNtcBillEntitys : [],
-        next: rtnNtcBillNext,
-        actionText: '删除',
-        entityCaption: '退仓通知单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'rtnNtcBill/remove',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token"),
-                }
-            });
-        },
-        hideConfirmModal() {
-            dispatch({
-                type: 'rtnNtcBill/hideDeleteRtnNtcBillModal'
-            });
-        },
-        refreshGrid() {
-            dispatch({
-                type: 'rtnNtcBill/query',
-                payload: {
-                    token: localStorage.getItem("token")
-                }
-            });
         }
     };
 

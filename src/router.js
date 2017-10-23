@@ -7,6 +7,7 @@ import {
 } from 'dva/router';
 import NotFound from './routes/NotFound';
 import Login from './routes/Login';
+import EntityLog from './routes/log/EntityLog';
 import Register from './routes/Register';
 import Home from './routes/home/Home';
 import App from './routes/app';
@@ -49,6 +50,7 @@ export default function ({
     <Router history={history}>
       <Route path="/" component={App}>
         <IndexRedirect to="/home" />
+        <Route path="/inner/entitylog" component={EntityLog} />
         <Route path="/ia/user" component={User} />
         <Route path="/home" component={Home} />
         <Route path="/login" component={Login} />

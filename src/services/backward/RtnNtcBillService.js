@@ -22,11 +22,6 @@ export async function updateRtnNtcBill(params) {
     return request(addTokenToUrl(url), updateBase(params));
 }
 
-export async function remove(params) {
-    const url = "/swms/rtn/ntc/remove";
-    return request(query(url, params), deleteBase(params));
-}
-
 export async function finish(params) {
     const url = "/swms/rtn/ntc/finish";
     return request(query(url, params), updateBaseNullBody(null));

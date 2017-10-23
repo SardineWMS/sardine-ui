@@ -1,5 +1,5 @@
 import { parse } from 'qs';
-import { queryBill, insertBill, getRtnSupplierNtcBill, updateBill, abort, remove, finish,genTask } from '../../services/backward/RtnSupplierNtcBillService';
+import { queryBill, insertBill, getRtnSupplierNtcBill, updateBill, abort, finish,genTask } from '../../services/backward/RtnSupplierNtcBillService';
 import modelExtend from 'dva-model-extend';
 import { pageModel } from '../../utils/BaseModel';
 import { queryWrhs } from '../../services/basicinfo/Bin.js';
@@ -333,17 +333,6 @@ export default modelExtend(pageModel, {
 
         *gridAbort({ payload }, { call, put }) {
             yield call(abort, { uuid: payload.uuid, version: payload.version });
-        },
-
-        *remove({ payload }, { call, put }) {
-            yield call(remove, {
-                uuid: payload.uuid,
-                version: payload.version
-            });
-            yield put({
-                type: 'query',
-                payload: {}
-            })
         },
 
         *gridFinish({ payload }, { call, put }) {
