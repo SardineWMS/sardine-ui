@@ -40,13 +40,12 @@ const SupplierSearchForm = ({
     <BaseTwoCol key='state'>
       <BaseFormItem label="状态 类似于">
         {getFieldDecorator('state', {
-          initialValue: "all"
+          initialValue: ""
         })(
-          <Select showSearch={false} size="default"
-            style={{ width: 400 }} >
-            <Option value="all">全部</Option>
-            <Option value="normal">正常</Option>
-            <Option value="deleted">已删除</Option>
+          <Select showSearch={false} size="large">
+            <Option value="">全部</Option>
+            <Option value="online">正常</Option>
+            <Option value="offline">停用  </Option>
           </Select>
           )}
       </BaseFormItem>

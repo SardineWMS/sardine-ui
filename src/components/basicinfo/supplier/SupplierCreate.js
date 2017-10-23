@@ -37,10 +37,10 @@ const SupplierCreate = ({
         initialValue: item.code,
         rules: [
           { required: true, message: '代码未填写' },
-          { max: 30, message: '代码最大长度是30！' }
+          { pattern: /^[a-zA-Z0-9]{0,6}$/, message: '代码最大长度是6,且只能为字母数字！' }
         ],
       })(
-        <Input type="text" />
+        <Input type="text" placeholder="请输入" disabled={item.code} />
         )}
     </BaseFormItem>
   );
@@ -54,27 +54,75 @@ const SupplierCreate = ({
           { max: 100, message: '姓名最大长度是100！' }
         ],
       })(
-        <Input type="text" />
+        <Input type="text" placeholder="请输入"/>
         )}
     </BaseFormItem>
   );
 
   children.push(
-    <BaseFormItem label="联系方式：" >
-      {getFieldDecorator('phone', {
-        initialValue: item.phone, rules: [{ max: 30, message: '联系方式最大长度是30！' }]
+    <BaseFormItem label = "简称 :">
+      {getFieldDecorator('simpleName', {
+        initialValue: item.simpleName, rules: [{ max: 30, message: '简称最大长度是30！' }]
       })(
-        <Input type="text" />
+        <Input type="text" placeholder="请输入"/>
+        )}
+    </BaseFormItem>
+  );
+  children.push(
+    <BaseFormItem label = "联系人 :">
+      {getFieldDecorator('contacter', {
+        initialValue: item.contacter, rules: [{ max: 100, message: '联系人最大长度是100！' }]
+      })(
+        <Input type="text" placeholder="请输入"/>
         )}
     </BaseFormItem>
   );
 
+  children.push(
+    <BaseFormItem label="联系方式 :" >
+      {getFieldDecorator('phone', {
+        initialValue: item.phone, rules: [{ max: 30, message: '联系方式最大长度是30！' }]
+      })(
+        <Input type="text" placeholder="请输入"/>
+        )}
+    </BaseFormItem>
+  );
+  children.push(
+    <BaseFormItem label="EMAIL :" >
+      {getFieldDecorator('eMail', {
+        initialValue: item.eMail, rules: [{ max: 30, message: 'eMail最大长度是30！' },
+      {
+        pattern:/^([a-zA-Z0-9-_])+@([a-zA-Z0-9]+[-.])+([a-zA-z]{3})$/,message:"输入邮箱格式不正确"
+      }]
+      })(
+        <Input type="text" placeholder="请输入"/>
+        )}
+    </BaseFormItem>
+  );
+  children.push(
+    <BaseFormItem label="邮编 :" >
+      {getFieldDecorator('zCode', {
+        initialValue: item.zCode, rules: [{ pattern : /^[0-9]{6}$/, message: "邮编为6位数字！"}]
+      })(
+        <Input type="text" placeholder="请输入"/>
+        )}
+    </BaseFormItem>
+  );
+  children.push(
+    <BaseFormItem label="传真 :" >
+      {getFieldDecorator('fax', {
+        initialValue: item.fax, rules: [{ max :11, message: '传真最大长度11位！'}]
+      })(
+        <Input type="text" placeholder="请输入"/>
+        )}
+    </BaseFormItem>
+  );
   if (item.uuid) {
     console.log("item", item);
     children.push(<BaseFormItem label="存储区域：">
       {
         getFieldDecorator('storageArea', { initialValue: item.storageArea, rules: [{ max: 30, message: '存储区域最大长度是30！' }] })(
-          <Input type="text" />
+          <Input type="text" placeholder="请输入" />
         )
       }
     </BaseFormItem>

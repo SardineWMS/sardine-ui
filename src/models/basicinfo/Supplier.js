@@ -154,14 +154,14 @@ export default {
       };
     },
     *recoverBatch({ payload }, { call, put }) {
-      yield put({ type: 'hideModal' });
-      yield put({ type: 'showLoading' });
+      // yield put({ type: 'hideModal' });
+      //yield put({ type: 'showLoading' });
       const { data } = yield call(recover, {
         uuid: payload.uuid,
         version: payload.version
       });
       if (data) {
-        const result = yield call(querybypage);
+        const {result} = yield call(querybypage,parse(payload));
         if (result) {
           yield put({
             type: 'querySuccess',
@@ -181,14 +181,14 @@ export default {
       };
     },
     *removeBatch({ payload }, { call, put }) {
-      yield put({ type: 'hideModal' });
-      yield put({ type: 'showLoading' });
+     // yield put({ type: 'hideModal' });
+      //yield put({ type: 'showLoading' });
       const { data } = yield call(remove, {
         uuid: payload.uuid,
         version: payload.version
       });
       if (data) {
-        const result = yield call(querybypage);
+        const {result} = yield call(querybypage,parse(payload));
         if (result) {
           yield put({
             type: 'querySuccess',
@@ -200,6 +200,7 @@ export default {
                             showTotal: total => `共 ${total}条`,
                             current: data.obj.page,
                             total: data.obj.recordCount,
+                            //pageSize:payload.pageSize
                             size: 'default'
                         }
             }

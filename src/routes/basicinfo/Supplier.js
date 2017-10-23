@@ -188,8 +188,9 @@ function Supplier({dispatch, supplier, location}) {
     showConfirmModal: batchRemoveProcessModal,
     records: removeSupplierEntitys ? removeSupplierEntitys : [],
     next: supplierNext,
-    actionText: '删除',
+    actionText: '停用',
     entityCaption: '供应商',
+    canSkipState:'offline',
     batchProcess(entity) {
       dispatch({
         type: 'supplier/removeBatch',
@@ -219,8 +220,9 @@ function Supplier({dispatch, supplier, location}) {
     showConfirmModal: batchRecoverProcessModal,
     records: recoverSupplierEntitys ? recoverSupplierEntitys : [],
     next: supplierNext,
-    actionText: '恢复',
+    actionText: '启用',
     entityCaption: '供应商',
+    canSkipState:'online',
     batchProcess(entity) {
       dispatch({
         type: 'supplier/recoverBatch',

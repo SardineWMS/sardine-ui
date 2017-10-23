@@ -1,6 +1,7 @@
 import React, { PropTypes } from 'react';
 import { Table, Popconfirm, Pagination, Button } from 'antd';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils'
 
 function SupplierSerachGrid({
 	loading,
@@ -14,7 +15,7 @@ function SupplierSerachGrid({
 	onRecoverItem,
 	onRemoveBatch,
 	onRecoverBatch,
-	suppliers = []
+	selectedRowKeys = []
 }) {
 
 	function handleCreate(e) {
@@ -23,11 +24,11 @@ function SupplierSerachGrid({
 	};
 
 	function handleRemoveBatch() {
-		onRemoveBatch(suppliers);
+		onRemoveBatch(selectedRowKeys);
 	};
 
 	function handleRecoverBatch() {
-		onRecoverBatch(suppliers);
+		onRecoverBatch(selectedRowKeys);
 	};
 
 	const columns = [
@@ -36,65 +37,105 @@ function SupplierSerachGrid({
 			dataIndex: 'code',
 			key: 'code',
 			render: (text, record) => <p><a onClick={() => onViewItem(record)} disabled={!PermissionUtil("supplier:view")}>{text}</a></p>,
-			width: 150
+			width: 50
 		},
 		{
 			title: '姓名',
 			dataIndex: 'name',
 			key: 'name',
-			width: 300
+			width: 100
+		}, {
+			title: '简称',
+			dataIndex: 'simpleName',
+			key: 'simpleName',
+			width: 100
 		},
 		{
 			title: '状态',
 			dataIndex: 'state',
 			key: 'state',
-			render: (text) => text == "normal" ? "正常" : "已删除",
-			width: 150
+			render: (text) => text == "online" ? "正常" : "停用",
+			width: 50
 		},
 		{
 			title: '联系方式',
 			dataIndex: 'phone',
 			key: 'phone',
-			width: 300
+			width: 100
+		}, {
+			title: '联系人',
+			dataIndex: 'contacter',
+			key: 'contacter',
+			width: 100
 		},
 		{
 			title: '地址',
 			dataIndex: 'address',
 			key: 'address',
-			width: 400
-		},
-		
+			width: 200
+		}, {
+			title: 'EMAIL',
+			dataIndex: 'eMail',
+			key: 'eMail',
+			width: 100
+		}, {
+			title: '邮编',
+			dataIndex: 'zCode',
+			key: 'zCode',
+			width: 80
+		},{
+			title: '传真',
+			dataIndex: 'fax',
+			key: 'fax',
+			width: 80
+		},{
+			title: '创建信息',
+			dataIndex: 'createInfo',
+			key: 'createInfo',
+			width: 100,
+			render:(text,record)=>createInfo2String(record),
+		},{
+			title: '最后修改信息',
+			dataIndex: 'lastModifyInfo',
+			key: 'lastModifyInfo',
+			width: 100,
+			render:(text,record)=>lastModifyInfo2String(record),
+		}
+
 	];
 
 	const rowSelection = {
-		onChange: (selectedRowKeys, selectedRows) => {
+		onChange: (selectedRowsKeys, selectedRows) => {
 		},
 		onSelect: (record, selected, selectedRows) => {
-			suppliers = selectedRows;
+			selectedRowKeys = selectedRows;			
 		},
 		onSelectAll: (selected, selectedRows, changeRows) => {
-			suppliers = selectedRows;
+			selectedRowKeys = selectedRows;			
 		},
 		getCheckboxProps: record => ({
-			disabled: record.name === 'Disabled User',
+		//disabled: record.name === 'Disabled User',
 		}),
 	};
 
 	//bordered 有边的；
 	return (
 		<div>
-			<Table size="small" bordered rowSelection={rowSelection}
+			<Table 
+			 	size="small"
+				bordered 
+			 	rowSelection={rowSelection}
 				columns={columns}
 				title={
 					() =>
 						<div>
-							<Button onClick={handleRemoveBatch} disabled={!PermissionUtil("supplier:edit")}> 批量删除</Button>
-							<Button onClick={handleRecoverBatch} disabled={!PermissionUtil("supplier:edit")}> 批量恢复</Button>
-							<Button onClick={handleCreate} disabled={!PermissionUtil("supplier:create")}> 新建</Button>
+							<Button type="primary" onClick={handleCreate} disabled={!PermissionUtil("supplier:create")}> 新建</Button>
+							<Button onClick={handleRecoverBatch} disabled={!PermissionUtil("supplier:edit")}> 启用</Button>
+							<Button onClick={handleRemoveBatch} disabled={!PermissionUtil("supplier:edit")}> 停用</Button>
 						</div>
 				}
 				dataSource={dataSource}
-				loading={loading}
+				//loading={loading}
 				onChange={onPageChange}
 				pagination={pagination}
 				rowKey={record => record.uuid}
