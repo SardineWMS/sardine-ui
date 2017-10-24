@@ -12,7 +12,6 @@ class RtnSupplierNtcBillSearchGrid extends React.Component {
             selectedRowKeys: [],
             selectedRows: []
         };
-        this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
         this.handleFinishBatch = this.handleFinishBatch.bind(this);
         this.handleAbortBatch = this.handleAbortBatch.bind(this);
         this.handleGenUnshelveTaskBatch = this.handleGenUnshelveTaskBatch.bind(this);
@@ -26,9 +25,6 @@ class RtnSupplierNtcBillSearchGrid extends React.Component {
     };
     onSelectChange = (selectedRowKeys, selectedRows) => {
         this.setState({ selectedRowKeys, selectedRows });
-    };
-    handleRemoveBatch() {
-        this.state.onRemoveBatch(this.state.selectedRows);
     };
     handleFinishBatch() {
         this.state.onFinishBatch(this.state.selectedRows);
@@ -113,10 +109,9 @@ class RtnSupplierNtcBillSearchGrid extends React.Component {
                             <div>
                                 <Row type="flex">
                                     <Col><Button onClick={this.state.onCreate} disabled={!PermissionUtil("rtnsupplierntcbill:create")}>新建</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("rtnsupplierntcbill:delete")}>批量删除</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleAbortBatch} disabled={!PermissionUtil("rtnsupplierntcbill:edit")}>批量作废</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleGenUnshelveTaskBatch} disabled={!PermissionUtil("rtnsupplierntcbill:edit")}>批量生成下架指令</Button></Col>
-                                    <Col><Button type="ghost" onClick={this.handleFinishBatch} disabled={!PermissionUtil("rtnsupplierntcbill:edit")}>批量完成</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleAbortBatch} disabled={!PermissionUtil("rtnsupplierntcbill:edit")}>作废</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleFinishBatch} disabled={!PermissionUtil("rtnsupplierntcbill:edit")}>完成</Button></Col>
+                                    <Col><Button type="ghost" onClick={this.handleGenUnshelveTaskBatch} disabled={!PermissionUtil("rtnsupplierntcbill:edit")}>生成下架指令</Button></Col>
                                     <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                                 </Row>
                             </div>

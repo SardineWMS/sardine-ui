@@ -17,6 +17,7 @@ const app = dva({
 });
 app.use(createLoading());
 
+app.model(require('./models/log/Entitylog'));
 app.model(require('./models/ia/User'));
 app.model(require('./models/app'));
 app.model(require('./models/basicinfo/Category'));

@@ -1,45 +1,21 @@
-import React from 'react';
-import { Table, Button, Pagination } from 'antd';
+import React, { PropTypes } from 'react';
+import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
+import { timeStamp2datetime } from '../../utils/DateUtils';
 
-class EntityLogGrid extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      dataSource: [],
-      pagination: {
-        total: 0,
-        current: 0
-      }
-    };
-    this.refreshGridOnPage = this.refreshGridOnPage.bind(this);
-    this.handleCancel = this.handleCancel.bind(this);
+function EntityLogGrid({
+  dataSource,
+  onPageChange,
+  pagination
+}) {
 
-    this.props.onPageChange();
-  };
-
-  componentWillReceiveProps(newProps) {
-    this.setState({
-      dataSource: newProps.dataSource,
-      pagination: newProps.pagination
-    });
-  };
-
-  refreshGridOnPage() {
-    this.props.onPageChange(page);
-  };
-
-  handleCancel() {
-    this.props.onBack();
-  };
-
-  render() {
-    const columns = [{
+  const columns = [{
       title: '操作人',
       dataIndex: 'operateInfo'
     },
     {
       title: '操作时间',
-      dataIndex: 'time'
+      dataIndex: 'time',
+      render: text => timeStamp2datetime(text)
     }, {
       title: '事件',
       dataIndex: 'event'
@@ -48,25 +24,33 @@ class EntityLogGrid extends React.Component {
       dataIndex: 'message'
     }];
 
-    return (
-      <div>
-        <Table
-          size="small"
-          columns={columns}
-          dataSource={this.state.dataSource}
-          onChange={this.refreshGridOnPage}
-          pagination={this.state.pagination}
-          rowKey={record => record.uuid}
-          title={
-            () =>
-              <div>
-                <Button onClick={this.handleCancel}>返回</Button>
-              </div>
-          }
-        />
-      </div>
-    );
-  };
+    function onBack() {
+      window.history.go(-1); 
+    };
+
+  return (
+    <div>
+      <Table
+        size="small"
+        bordered
+        columns={columns}
+        dataSource={dataSource}
+        onChange={onPageChange}
+        pagination={pagination}
+        rowKey={record => record.uuid}
+        title={() =>
+          <div>
+            <Row type="flex">
+              <Col><Button type="primary" onClick={onBack} >返回</Button></Col>
+            </Row>
+          </div>}
+       />
+    </div>
+  );
+};
+
+EntityLogGrid.propTypes = {
+
 };
 
 export default EntityLogGrid;
