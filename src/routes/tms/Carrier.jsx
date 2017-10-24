@@ -6,7 +6,7 @@ import { message } from 'antd';
 import CarrierSearchForm from '../../components/tms/carrier/CarrierSearchForm';
 import CarrierSearchGrid from '../../components/tms/carrier/CarrierSearchGrid';
 import CarrierCreateModal from '../../components/tms/carrier/CarrierCreateModal';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
 
 function Carrier({ location, dispatch, carrier }) {
     const { modalVisible, modalType, list, pagination, currentItem,
@@ -16,15 +16,19 @@ function Carrier({ location, dispatch, carrier }) {
         batchDeleteProcessModal,
         batchOnlineProcessModal,
         batchOfflineProcessModal,
-        carrierNext
+        carrierNext,
+        searchExpand
 } = carrier;
 
     const carrierSearchFormProps = {
+        searchExpand,
         onSearch(fieldsValue) {
-            dispatch({
-                type: 'carrier/query',
-                payload: fieldsValue
-            });
+            dispatch(routerRedux.push({
+                pathname:'/tms/carrier',
+                query:{
+                    ...fieldsValue
+                }
+            }));
         }
     };
 
@@ -52,6 +56,7 @@ function Carrier({ location, dispatch, carrier }) {
             dispatch(routerRedux.push({
                 pathname: '/tms/carrier',
                 query: {
+                    ...location.query,
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.columnKey,
@@ -150,16 +155,18 @@ function Carrier({ location, dispatch, carrier }) {
         next: carrierNext,
         actionText: '启用',
         entityCaption: '承运商',
-        batchProcess(entity) {
-            dispatch({
-                type: 'carrier/gridOnline',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token")
-                }
-            });
-        },
+        url:'swms/tms/carrier/online',
+        canSkipState:'online',
+        // batchProcess(entity) {
+        //     dispatch({
+        //         type: 'carrier/gridOnline',
+        //         payload: {
+        //             uuid: entity.uuid,
+        //             version: entity.version,
+        //             token: localStorage.getItem("token")
+        //         }
+        //     });
+        // },
         hideConfirmModal() {
             dispatch({
                 type: 'carrier/hideOnlineCarrierModal'
@@ -179,18 +186,20 @@ function Carrier({ location, dispatch, carrier }) {
         showConfirmModal: batchOfflineProcessModal,
         records: offlineCarrierEntitys ? offlineCarrierEntitys : [],
         next: carrierNext,
-        actionText: '禁用',
+        actionText: '停用',
         entityCaption: '承运商',
-        batchProcess(entity) {
-            dispatch({
-                type: 'carrier/gridOffline',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token")
-                }
-            });
-        },
+        url:'swms/tms/carrier/offline',
+        canSkipState:'',
+        // batchProcess(entity) {
+        //     dispatch({
+        //         type: 'carrier/gridOffline',
+        //         payload: {
+        //             uuid: entity.uuid,
+        //             version: entity.version,
+        //             token: localStorage.getItem("token")
+        //         }
+        //     });
+        // },
         hideConfirmModal() {
             dispatch({
                 type: 'carrier/hideOfflineCarrierModal'
