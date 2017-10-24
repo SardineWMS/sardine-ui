@@ -18,7 +18,8 @@ function ShipBillCreateItem({
     calculateCaseQtyStr,
     onAddItem,
     onRemoveBatch,
-    selectedRowKeys = []
+    selectedRowKeys = [],
+    fetchShipperName
 }) {
 
     function onCellChange(index, record) {
@@ -29,6 +30,14 @@ function ShipBillCreateItem({
             calculateCaseQtyStr(record, dataSource)
         };
     };
+    function onShipChange(index, record) {
+        return (value) => {
+            if (dataSource[index]["shipper"].code == value)
+                return;
+            record.shipper.code = value;
+            fetchShipperName(record, dataSource);
+        }
+    }
     const columns = [
         {
             title: '行号',
@@ -83,6 +92,26 @@ function ShipBillCreateItem({
             title: '容器',
             dataIndex: 'containerBarcode',
             key: 'containerBarcode'
+        }, {
+            title: '装车员代码',
+            dataIndex: 'shipper.code',
+            key: 'shipperCode',
+            render: (text, record, index) => {
+                if (text == null) {
+                    text = localStorage.getItem("loginCode");
+                    record.shipper.name = localStorage.getItem("loginName");
+                }
+                return (<RowEditCell
+                    editable={true}
+                    value={text}
+                    status={status}
+                    onBlur={onShipChange(index, record)}
+                />)
+            }
+        }, {
+            title: '装车员名称',
+            dataIndex: 'shipper.name',
+            key: 'shipperName',
         }, {
             title: '生产日期',
             dataIndex: 'productionDate',

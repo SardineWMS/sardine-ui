@@ -3,6 +3,8 @@ import { Form, Input, Select } from 'antd';
 import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
+import DriverModal from './DriverModalForSearch';
+import UserModalForSearch from './UserModalForSearch';
 
 const Option = Select.Option;
 
@@ -39,7 +41,7 @@ const ShipBillSearchForm = ({
     children.push(
         <BaseTwoCol key={"state"}>
             <BaseFormItem label={"状态 等于"}>
-                {getFieldDecorator("state",{ initialValue:"all"})(
+                {getFieldDecorator("state", { initialValue: "all" })(
                     <Select placeholder="请选择" showSearch={false} size="default">
                         <Option value="all">全部</Option>
                         <Option value="Initial" >初始</Option>
@@ -80,7 +82,7 @@ const ShipBillSearchForm = ({
     children.push(
         <BaseTwoCol key={"deliveryType"}>
             <BaseFormItem label={"配送方式 等于"}>
-                {getFieldDecorator("deliveryType",{ initialValue:"all"})(
+                {getFieldDecorator("deliveryType", { initialValue: "all" })(
                     <Select placeholder="请选择" showSearch={false} size="default">
                         <Option value="all">全部</Option>
                         <Option value="warehouse" >仓库送</Option>
@@ -93,7 +95,7 @@ const ShipBillSearchForm = ({
     children.push(
         <BaseTwoCol key={"operateMethod"}>
             <BaseFormItem label={"单据类型 等于"}>
-                {getFieldDecorator("operateMethod",{ initialValue:"all"})(
+                {getFieldDecorator("operateMethod", { initialValue: "all" })(
                     <Select placeholder="请选择" showSearch={false} size="default">
                         <Option value="all">全部</Option>
                         <Option value="ManualBill" >手工单据</Option>
@@ -105,18 +107,9 @@ const ShipBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"driverCode"}>
-            <BaseFormItem label={"司机代码 类似于"}>
+            <BaseFormItem label={"司机代码 等于"}>
                 {getFieldDecorator("driverCode")(
-                    <Input placeholder="请输入" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
-    children.push(
-        <BaseTwoCol key={"driverName"}>
-            <BaseFormItem label={"司机名称 类似于"}>
-                {getFieldDecorator("driverName")(
-                    <Input placeholder="请输入" />
+                    <DriverModal />
                 )}
             </BaseFormItem>
         </BaseTwoCol>
@@ -132,18 +125,9 @@ const ShipBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"shiperCode"}>
-            <BaseFormItem label={"装车员代码 类似于"}>
+            <BaseFormItem label={"装车员代码 等于"}>
                 {getFieldDecorator("shiperCode")(
-                    <Input placeholder="请输入" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
-    children.push(
-        <BaseTwoCol key={"shiperName"}>
-            <BaseFormItem label={"装车员名称 类似于"}>
-                {getFieldDecorator("shiperName")(
-                    <Input placeholder="请输入" />
+                    <UserModalForSearch />
                 )}
             </BaseFormItem>
         </BaseTwoCol>

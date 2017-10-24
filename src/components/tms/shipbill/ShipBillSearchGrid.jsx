@@ -44,17 +44,16 @@ function ShipBillSearchGrid({
                 sorter: true
             },
             {
-                title: '车牌号',
-                dataIndex: 'vehicleNum',
-                key: 'vehicleNum',
-                render: (text, record) => <a onClick={() => { onViewVehicle(record) }}>{text}</a>,
-                sorter: true
-            },
-            {
                 title: '单据类型',
                 dataIndex: 'method',
                 key: 'method',
                 render: text => 'ManualBill' ? "手持终端" : "APP"
+            },
+            {
+                title: '配送体系',
+                dataIndex: 'deliverySystem',
+                key: 'deliverySystem',
+                render: text => 'deliverySystem' ? "传统体系" : "电商体系"
             },
             {
                 title: '配送方式',
@@ -67,6 +66,13 @@ function ShipBillSearchGrid({
                 dataIndex: 'driver',
                 key: 'driver',
                 render: text => ("[" + text.code + "]" + text.name)
+            },
+            {
+                title: '车牌号',
+                dataIndex: 'vehicleNum',
+                key: 'vehicleNum',
+                render: (text, record) => <a onClick={() => { onViewVehicle(record) }}>{text}</a>,
+                sorter: true
             },
             {
                 title: '客户数',
@@ -106,9 +112,9 @@ function ShipBillSearchGrid({
                 title={
                     () =>
                         <div>
-                            <Button onClick={handlerFinishBatch} disabled={(!PermissionUtil("shipBill:finish"))}> 批量完成</Button>
-                            &nbsp;
                             <Button onClick={() => onCreate()}>新建</Button>
+                            <Button onClick={handlerFinishBatch} disabled={(!PermissionUtil("shipBill:finish"))}> 完成</Button>
+                            <Button onClick={handlerFinishBatch} disabled={(!PermissionUtil("shipBill:finish"))}>作废</Button>
                         </div>
                 }
                 dataSource={dataSource}

@@ -151,6 +151,12 @@ function ShipBill({ location, dispatch, shipBill }) {
         },
         handleSave(data) {
             data.containerStocks = billItems;
+            for (let i = 0; i < billItems.length; i++) {
+                if (billItems[i].shipper.name == null) {
+                    message.error("第" + (i + 1) + "行，装车员不能为空");
+                    return;
+                }
+            }
             data.customerItems = [];
             if (data.uuid)
                 dispatch({
@@ -202,7 +208,8 @@ function ShipBill({ location, dispatch, shipBill }) {
             vehicleNum = data.vehicleNo;
             const carrier = data.carrier;
             currentShipBill.carrier = carrier;
-            currentShipBill.vehicleNum = vehicleNum
+            currentShipBill.vehicleNum = vehicleNum;
+            currentShipBill.driver = data.driver;
             dispatch({
                 type: 'shipBill/hideVehicleModal',
                 payload: { currentShipBill: currentShipBill }
@@ -230,6 +237,14 @@ function ShipBill({ location, dispatch, shipBill }) {
             dispatch({
                 type: 'shipBill/removeBatch',
                 payload: { lists, billItems, currentShipBill }
+            })
+        },
+        fetchShipperName(record, list) {
+            dispatch({
+                type: 'shipBill/fetchShipperName',
+                payload: {
+                    record, list
+                }
             })
         }
     };

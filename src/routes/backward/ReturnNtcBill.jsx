@@ -402,7 +402,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
                             return <div>
                                 <ReturnNtcBillSearchForm {...rtnNtcBillSearchFormProps} />
                                 <ReturnNtcBillSearchGrid {...returnNtcBillSearchGridProps} />
-                                <WMSProgress {...batchProcessDeleteRtnNtcBillProps} />
                                 <WMSProgress {...batchProcessAbortRtnNtcBillProps} />
                                 <WMSProgress {...batchProcessGenRtnBillRtnNtcBillProps} />
                                 <WMSProgress {...batchProcessFinishRtnNtcBillProps} />
