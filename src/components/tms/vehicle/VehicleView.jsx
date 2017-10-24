@@ -45,6 +45,9 @@ const VehicleView = ({
     basicFormItems.push(<BaseFormItem label="承运商：" key={Guid()}>
         <span>{"[" + item.carrier.code + "]" + item.carrier.name}</span>
     </BaseFormItem>);
+    basicFormItems.push(<BaseFormItem label="司机：" key={Guid()}>
+        <span>{"[" + item.driver.code + "]" + item.driver.name}</span>
+    </BaseFormItem>);
 
     let extendFormItems = [];
     extendFormItems.push(<BaseFormItem label="状态：" key={Guid()}><span>{convertState(item.state)}</span></BaseFormItem>);
