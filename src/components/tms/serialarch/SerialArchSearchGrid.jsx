@@ -82,7 +82,7 @@ class SerialArchSearchGrid extends React.Component {
 
         const createMenu = (
             <Menu onClick={this.handleClick}>
-                <Menu.Item key="1">新增线路体系</Menu.Item>
+                {/* <Menu.Item key="1">新增线路体系</Menu.Item> */}
                 <Menu.Item key="2">新增线路</Menu.Item>
                 <Menu.Item key="3">添加门店</Menu.Item>
             </Menu>

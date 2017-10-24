@@ -1,5 +1,5 @@
 import React from 'react';
-import { Tree, Input } from 'antd';
+import { Tree, Input, Button } from 'antd';
 
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
@@ -121,7 +121,6 @@ class SerialArchTree extends React.Component {
         });
         return (
             <div>
-                <Search style={{ width: 200 }} placeholder="Search" onChange={this.onChange} />
                 <Tree
                     onExpand={this.onExpand}
                     expandedKeys={expandedKeys}
