@@ -25,6 +25,8 @@ export default {
         showPage: '',
         batchFinishProcessModal: false,
         finishShipBillEntitys: [],
+        batchAbortProcessModal: false,
+        abortShipBillEntitys: [],
         showCarrierModal: false,
         showDriverModal: false,
         billItems: [],
@@ -349,6 +351,12 @@ export default {
         },
         hideFinishShipBillModal(state, action) {
             return { ...state, batchFinishProcessModal: false };
+        },
+        batchAbortShipBill(state, action) {
+            return { ...state, ...action.payload, batchAbortProcessModal: true }
+        },
+        hideAbortShipBillModal(state, action) {
+            return { ...state, ...action.payload, batchAbortProcessModal: false }
         },
         showCreatePage(state, action) {
             return { ...state, ...action.payload, showPage: 'create' }

@@ -11,12 +11,17 @@ function ShipBillSearchGrid({
     onViewVehicle,
     onFinishBatch,
     selectedRowKeys = [],
-    onCreate
+    onCreate,
+    onAbortBarch
 }) {
 
     function handlerFinishBatch() {
         onFinishBatch(selectedRowKeys);
     };
+
+    function handlerAbortBatch() {
+        onAbortBarch(selectedRowKeys);
+    }
 
     function converState(text) {
         if (text == "Initial")
@@ -25,6 +30,8 @@ function ShipBillSearchGrid({
             return "装车中";
         if (text == "Finished")
             return "已完成";
+        if (text == "Abort")
+            return '已作废';
     };
 
     const columns =
@@ -114,7 +121,7 @@ function ShipBillSearchGrid({
                         <div>
                             <Button onClick={() => onCreate()}>新建</Button>
                             <Button onClick={handlerFinishBatch} disabled={(!PermissionUtil("shipBill:finish"))}> 完成</Button>
-                            <Button onClick={handlerFinishBatch} disabled={(!PermissionUtil("shipBill:finish"))}>作废</Button>
+                            <Button onClick={handlerAbortBatch} disabled={(!PermissionUtil("shipBill:edit"))}>作废</Button>
                         </div>
                 }
                 dataSource={dataSource}

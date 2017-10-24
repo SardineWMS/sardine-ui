@@ -9,21 +9,23 @@ import ShipBillViewForm from '../../components/tms/shipbill/ShipBillViewForm';
 import ShipBillCreateForm from '../../components/tms/shipbill/ShipBillCreateForm';
 import ShipBillCreateItem from '../../components/tms/shipbill/ShipBillCreateItem';
 import ShipBillCreateItemModal from '../../components/tms/shipbill/ShipBillCreateItemModal';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
 import DriverSelectGrid from '../../components/widget/DriverSelectGrid';
 import VehicleSelectGrid from '../../components/widget/VehicleSelectGrid';
 
 function ShipBill({ location, dispatch, shipBill }) {
     const { list, pagination, currentShipBill, finishShipBillEntitys,
-        batchFinishProcessModal, shipBillNext, showPage, showCarrierModal, showDriverModal, billItems, showVehicleModal, showCreateItemModal
+        batchFinishProcessModal, abortShipBillEntitys, batchAbortProcessModal, shipBillNext, showPage, showCarrierModal, showDriverModal, billItems, showVehicleModal, showCreateItemModal
 } = shipBill;
 
     const shipBillSearchFormProps = {
         onSearch(fieldsValue) {
-            dispatch({
-                type: 'shipBill/query',
-                payload: fieldsValue
-            });
+            dispatch(routerRedux.push({
+                pathname: '/tms/shipBill',
+                query: {
+                    ...fieldsValue
+                }
+            }));
         }
     };
 
@@ -31,15 +33,16 @@ function ShipBill({ location, dispatch, shipBill }) {
         dataSource: list,
         pagination: pagination,
         onPageChange(page, filters, sorter) {
-            dispatch({
-                type: 'shipBill/query',
-                payload: {
+            dispatch(routerRedux.push({
+                pathname: '/tms/shipBill',
+                query: {
+                    ...location.query,
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.columnKey,
-                    order: (sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
-                },
-            })
+                    order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
+                }
+            }));
         },
         onFinishBatch(shipBills) {
             if (shipBills.length <= 0) {
@@ -52,6 +55,18 @@ function ShipBill({ location, dispatch, shipBill }) {
                     finishShipBillEntitys: shipBills
                 }
             });
+        },
+        onAbortBarch(shipBills) {
+            if (shipBills.lengt <= 0) {
+                message.warning("请选择要作废的装车单", 2);
+                return;
+            }
+            dispatch({
+                type: 'shipBill/batchAbortShipBill',
+                payload: {
+                    abortShipBillEntitys: shipBills
+                }
+            })
         },
         onViewShipBill(shipBillUuid) {
             dispatch({
@@ -84,18 +99,34 @@ function ShipBill({ location, dispatch, shipBill }) {
         next: shipBillNext,
         actionText: '完成',
         entityCaption: '装车单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'shipBill/gridFinish',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version
-                }
-            });
-        },
+        url: '/swms/tms/shipbill/finish',
+        canSkipState: 'Finished',
         hideConfirmModal() {
             dispatch({
                 type: 'shipBill/hideFinishShipBillModal',
+            });
+        },
+        refreshGrid() {
+            dispatch({
+                type: 'shipBill/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
+        }
+    };
+
+    const batchProcessAbortShipBillProps = {
+        showConfirmModal: batchAbortProcessModal,
+        records: abortShipBillEntitys ? abortShipBillEntitys : [],
+        next: shipBillNext,
+        actionText: '作废',
+        entityCaption: '装车单',
+        url: '/swms/tms/shipbill/abort',
+        canSkipState: 'Abort',
+        hideConfirmModal() {
+            dispatch({
+                type: 'shipBill/hideAbortShipBillModal',
             });
         },
         refreshGrid() {
@@ -276,11 +307,13 @@ function ShipBill({ location, dispatch, shipBill }) {
                 <ShipBillSearchForm {...shipBillSearchFormProps} />
                 <ShipBillSearchGrid {...shipBillSearchGridProps} />
                 <WMSProgress {...batchProcessFinishShipBillProps} />
+                <WMSProgress {...batchProcessAbortShipBillProps} />
             </div>);
         }
     };
 
     const ShipBillCreateItemGen = () => <ShipBillCreateItem {...shipBillCreateItemProps} />;
+    const ShipBillSearchGridGen = () => <ShipBillSearchGrid {...shipBillSearchGridProps} />;
 
     return (
         <div className="content-inner">
@@ -301,8 +334,9 @@ function ShipBill({ location, dispatch, shipBill }) {
                         default:
                             return <div>
                                 <ShipBillSearchForm {...shipBillSearchFormProps} />
-                                <ShipBillSearchGrid {...shipBillSearchGridProps} />
+                                <ShipBillSearchGridGen />
                                 <WMSProgress {...batchProcessFinishShipBillProps} />
+                                <WMSProgress {...batchProcessAbortShipBillProps} />
                             </div>
                     }
                 })()
