@@ -10,7 +10,7 @@ import ArticleEditableQpcStr from '../../components/basicinfo/Article/ArticleEdi
 import ArticleEditableBarcode from '../../components/basicinfo/Article/ArticleEditableBarcode';
 import SetFixedPickBinModal from '../../components/basicinfo/Article/SetFixedPickBinModal';
 import CategorySelectModal from '../../components/basicinfo/Article/CategorySelectModal';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
 import { message } from 'antd';
 
 function Article({ location, dispatch, article }) {
@@ -33,7 +33,12 @@ function Article({ location, dispatch, article }) {
 		categoryPagination,
 		category,
 		showLable,
-		firstInFirstOut
+		firstInFirstOut,
+		batchOnlineProcessModal,
+		onlineArticleEntitys,
+		batchOfflineProcessModal,
+		offlineArticleEntitys,
+		customerNext
 	} = article;
 
 	const { field, keyword } = location.query;
@@ -95,6 +100,30 @@ function Article({ location, dispatch, article }) {
 				}
 			})
 		},
+		onOnline(articles) {
+			if (articles.length <= 0) {
+				message.warning("请选择要启用的商品！", 2);
+				return;
+			}
+			dispatch({
+				type: 'article/batchOnlineArticle',
+				payload: {
+					onlineArticleEntitys: articles
+				}
+			})
+		},
+		onOffline(articles) {
+			if (articles.length <= 0) {
+				message.warning("请选择要停用的商品！", 2);
+				return;
+			}
+			dispatch({
+				type: 'article/batchOfflineArticle',
+				payload: {
+					offlineArticleEntitys: articles
+				}
+			})
+		}
 	}
 
 	const setFixedPickBinModalProps = {
@@ -451,10 +480,57 @@ function Article({ location, dispatch, article }) {
 				}
 			});
 		}
-	}
+	};
+
+	const batchProcessOfflineArticleProps = {
+		showConfirmModal: batchOfflineProcessModal,
+		records: offlineArticleEntitys ? offlineArticleEntitys : [],
+		next: articleNext,
+		actionText: '停用',
+		entityCaption: '商品',
+		url: '/swms/basicinfo/article/offline',
+		canSkipState: 'offline',
+		hideConfirmModal() {
+			dispatch({
+				type: 'article/hideOfflineArticleModal'
+			});
+		},
+		refreshGrid() {
+			dispatch({
+				type: 'article/query',
+				payload: {
+					token: localStorage.getItem("token")
+				}
+			});
+		}
+	};
+
+	const batchProcessOnlineArticleProps = {
+		showConfirmModal: batchOnlineProcessModal,
+		records: onlineArticleEntitys ? onlineArticleEntitys : [],
+		next: articleNext,
+		actionText: '启用',
+		entityCaption: '商品',
+		url: '/swms/basicinfo/article/online',
+		canSkipState: 'online',
+		hideConfirmModal() {
+			dispatch({
+				type: 'article/hideOnlineArticleModal'
+			});
+		},
+		refreshGrid() {
+			dispatch({
+				type: 'article/query',
+				payload: {
+					token: localStorage.getItem("token")
+				}
+			});
+		}
+	};
 
 	const CreateFormGen = () => <ArticleCreateForm {...createFormProps} />;
 	const CategorySelectModalGen = () => <CategorySelectModal {...categorySelectModalProps} />
+	const ArticleSearchGridGen = () => <ArticleSearchGrid {...articleSearchGridProps} />;
 
 	function refreshWidget() {
 		if (showCreate) {
@@ -475,9 +551,11 @@ function Article({ location, dispatch, article }) {
 		else {
 			return (<div>
 				<ArticleSearchForm {...articleSearchFormProps} />
-				<ArticleSearchGrid {...articleSearchGridProps} />
+				<ArticleSearchGridGen />
 				<SetFixedPickBinModal {...setFixedPickBinModalProps} />
 				<WMSProgress {...batchProcesssetFixedPickBinProps} />
+				<WMSProgress {...batchProcessOnlineArticleProps} />
+				<WMSProgress {...batchProcessOfflineArticleProps} />
 			</div>);
 		}
 	}

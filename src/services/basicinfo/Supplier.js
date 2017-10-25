@@ -30,13 +30,13 @@ export async function edit(params) {
 }
 
 export async function remove(params) {
-  const url=`/swms/basicinfo/supplier/remove?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url),deleteBase(params));
+  const url="/swms/basicinfo/supplier/remove";
+  return request(query(url,params),updateBaseNullBody(null));
 }
 
 export async function recover(params) {
-  const url=`/swms/basicinfo/supplier/recover?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url),updateBaseNullBody(params));
+  const url="/swms/basicinfo/supplier/recover";
+  return request(query(url,params),updateBaseNullBody(null));
 }
 
 

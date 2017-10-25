@@ -1,6 +1,7 @@
 import { parse } from 'qs';
 import { querybypage, get, finish, insert, update, getByBillNumber, calculateVolume, calculateWeight } from '../../services/tms/ShipBill.js';
 import { getByCode as getArticleInfo, getArticleQpcByQpcStr } from '../../services/basicinfo/Article.js';
+import { getByCode as getUserInfo } from '../../services/ia/user.js';
 import { getBinByWrhAndUsage } from '../../services/basicinfo/Bin.js';
 import { qtyToCaseQtyStr, caseQtyStrAdd } from '../../services/common/common.js';
 import { message } from 'antd';
@@ -24,6 +25,8 @@ export default {
         showPage: '',
         batchFinishProcessModal: false,
         finishShipBillEntitys: [],
+        batchAbortProcessModal: false,
+        abortShipBillEntitys: [],
         showCarrierModal: false,
         showDriverModal: false,
         billItems: [],
@@ -38,22 +41,21 @@ export default {
         }) {
             history.listen(location => {
                 if (location.pathname === '/tms/shipBill') {
-                    if(location.query.type == 'showEdit'){
+                    if (location.query.type == 'showEdit') {
                         dispatch({
-                             type: 'showEdit',
-                             payload:{
+                            type: 'showEdit',
+                            payload: {
                                 containerStocks: JSON.parse(location.query.key)
-                             }
+                            }
                         });
                     }
-                    else
-                    {
+                    else {
                         dispatch({
                             type: 'query',
                             payload: location.query
-                        });   
+                        });
                     }
-       
+
                 };
             });
         }
@@ -184,6 +186,18 @@ export default {
             yield put({
                 type: 'showCreatePage'
             })
+        },
+
+        *fetchShipperName({ payload }, { call, put }) {
+            const { data } = yield call(getUserInfo, { userCode: payload.record.shipper.code });
+            if (data.status === "200") {
+                if (data.obj == null)
+                    message.error("用户不存在，请重新输入新的装车员", 2);
+                payload.record.shipper.name = (data.obj == null ? null : data.obj.name);
+                yield put({
+                    type: 'showCreatePage'
+                })
+            }
         },
 
         *saveNew({ payload }, { call, put }) {
@@ -337,6 +351,12 @@ export default {
         },
         hideFinishShipBillModal(state, action) {
             return { ...state, batchFinishProcessModal: false };
+        },
+        batchAbortShipBill(state, action) {
+            return { ...state, ...action.payload, batchAbortProcessModal: true }
+        },
+        hideAbortShipBillModal(state, action) {
+            return { ...state, ...action.payload, batchAbortProcessModal: false }
         },
         showCreatePage(state, action) {
             return { ...state, ...action.payload, showPage: 'create' }

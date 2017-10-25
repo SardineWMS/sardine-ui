@@ -6,6 +6,7 @@ import ToolbarPanel from '../../Widget/ToolbarPanel';
 import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
 const EditableCell = require('../../Widget/EditableCell');
+import UserModal from '../../widget/UserModal'
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
@@ -33,8 +34,8 @@ const ReturnBillCreateForm = ({
                 return;
             let data = {};
             data = {
-                ...getFieldsValue(),
-                ...item
+                ...item,
+                ...getFieldsValue()
             };
             handleSave(data);
         });
@@ -63,14 +64,6 @@ const ReturnBillCreateForm = ({
             }
         </BaseFormItem>
     );
-    // const options = [];
-    // if (wrhs != null) {
-    //     console.log("仓位");
-    //     console.dir(wrhs);
-    //     for (var wrh of wrhs) {
-    //         options.push(<Option value={wrh.uuid}>{wrh.name + "[" + wrh.code + "]"}</Option>)
-    //     };
-    // };
     children.push(<BaseFormItem label={"客户："}>
         <label>{item.customer == null ? '' : "[" + item.customer.code + "]" + item.customer.name}</label>
     </BaseFormItem>);
@@ -79,7 +72,14 @@ const ReturnBillCreateForm = ({
     </BaseFormItem>)
     children.push(
         <BaseFormItem label={"退仓员："} >
-            <label>{item.returnor == null ? "[" + localStorage.getItem("loginCode") + "]" + localStorage.getItem("loginName") : "[" + item.returnor.code + "]" + item.returnor.name}</label>
+            {
+                getFieldDecorator("returnor.code", {
+                    rules: [{ required: true, message: "退仓员不能为空！" }],
+                    initialValue: item.returnor ? item.returnor.code : localStorage.getItem("loginCode")
+                })(
+                    <UserModal />
+                    )
+            }
         </BaseFormItem>
     );
 

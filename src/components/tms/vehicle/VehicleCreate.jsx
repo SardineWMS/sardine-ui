@@ -7,6 +7,7 @@ import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
 import PermissionUtil from '../../../utils/PermissionUtil';
 import Panel from '../../Widget/Panel';
+import DriverModal from './DriverModal';
 
 const Option = Select.Option;
 
@@ -81,6 +82,17 @@ const VehicleCreate = ({
             </Select>
         )}
     </BaseFormItem>);
+
+    children.push(
+        <BaseFormItem label={"司机"} key="driver">
+            {getFieldDecorator("driver.code", {
+                rules: [{ required: true, message: '请选择司机!' }],
+                initialValue: item.driver == null ? null : item.driver
+            })(
+                <DriverModal />
+                )}
+        </BaseFormItem>
+    );
 
     const toolbar = [];
     toolbar.push(<Button onClick={() => onCancel()} key={Guid()}>取消</Button>);

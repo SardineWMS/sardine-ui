@@ -83,20 +83,57 @@ const ShipBillCreateForm = ({
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label="配送方式：">
+        <BaseFormItem label="配送体系：">
             {
-                getFieldDecorator("deliveryType", {
-                    rules: [{ required: true, message: "配送方式不能为空！" }],
-                    initialValue: item.deliveryType ? item.deliveryType : ""
+                getFieldDecorator("deliverySystem", {
+                    rules: [{ required: true, message: "配送体系不能为空！" }],
+                    initialValue: item.deliverySystem ? item.deliverySystem : "tradition"
                 })(
                     <Select placeholder="请选择：">
-                        <Option value='warehouse'>仓库送</Option>
-                        <Option value='pickByOneSelf'>自提</Option>
+                        <Option value='tradition'>传统体系</Option>
+                        <Option value='eCommerce'>电商体系</Option>
                     </Select>
                     )
             }
         </BaseFormItem>
     );
+    if (getFieldsValue(["deliverySystem"]).deliverySystem == 'tradition')
+        children.push(
+            <BaseFormItem label="配送方式：">
+                {
+                    getFieldDecorator("deliveryType", {
+                        rules: [{ required: true, message: "配送方式不能为空！" }],
+                        initialValue: item.deliveryType ? item.deliveryType : "warehouse"
+                    })(
+                        <Select placeholder="请选择：">
+                            <Option value='warehouse'>仓库送</Option>
+                            <Option value='pickByOneSelf'>自提</Option>
+                        </Select>
+                        )
+                }
+            </BaseFormItem>
+        );
+    else
+        children.push(
+            <BaseFormItem label="配送方式：">
+                {
+                    getFieldDecorator("deliveryType", {
+                        rules: [{ required: true, message: "配送方式不能为空！" }],
+                        initialValue: item.deliveryType ? item.deliveryType : "sf"
+                    })(
+                        <Select placeholder="请选择：">
+                            <Option value="sf">顺丰</Option>
+                            <Option value="st">申通</Option>
+                            <Option value="yt">圆通</Option>
+                            <Option value="zt">中通</Option>
+                            <Option value="ht">汇通</Option>
+                            <Option value="yd">韵达</Option>
+                        </Select>
+                        )
+                }
+            </BaseFormItem>
+        );
+
     children.push(
         <BaseFormItem label="单据类型：">
             {

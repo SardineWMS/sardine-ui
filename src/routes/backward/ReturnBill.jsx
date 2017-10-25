@@ -89,10 +89,10 @@ function ReturnBill({ location, dispatch, rtnBill }) {
         },
         onSelect(data) {
             const current = {};
-            current.returnNtcBillNumber = data[0].billNumber;
+            current.returnNtcBillNumber = data.billNumber;
             dispatch({
                 type: 'rtnBill/onReturnNtcBillSelect',
-                payload: data[0].billNumber
+                payload: data.billNumber
             })
         }
     };
@@ -106,10 +106,7 @@ function ReturnBill({ location, dispatch, rtnBill }) {
         },
         handleSave(data) {
             data.items = billItems;
-            data.returnor = {};
-            data.returnor.uuid = localStorage.getItem("loginId");
-            data.returnor.code = localStorage.getItem("loginCode");
-            data.returnor.name = localStorage.getItem("loginName");
+
             if (data.uuid) {
                 dispatch({
                     type: 'rtnBill/update',
@@ -368,6 +365,7 @@ function ReturnBill({ location, dispatch, rtnBill }) {
 
     const ReturnBillCreateItemGen = () => <ReturnBillCreateItem {...returnBillCreateItemProps} />;
     const ReturnBillSearchGridGen = () => <ReturnBillSearchGrid {...returnBillSearchGridProps} />;
+    const BatchModifyReturnContainerGen = () => <BatchModifyReturnContainer {...batchModifyReturnContainerProps} />;
 
     return (
         <div className="content-inner">
@@ -382,7 +380,7 @@ function ReturnBill({ location, dispatch, rtnBill }) {
                                 <ReturnBillCreateItemGen />
                                 <ReturnNtcBillSelectGrid {...returnNtcBillSelectGridProps} />
                                 <BatchModifyReturnType {...batchModifyReturnTypeProps} />
-                                <BatchModifyReturnContainer {...batchModifyReturnContainerProps} />
+                                <BatchModifyReturnContainerGen />
                                 <BatchModifyProductionDate {...batchModifyProductionDateProps} />
                             </div>
                         default:

@@ -62,7 +62,7 @@ const SerialArchLineCreateModal = ({
     return (
         <Modal {...modalOpts}>
             <Form horizontal>
-                <BaseFormItem label="线路体系：">
+                {/* <BaseFormItem label="线路体系：">
                     {getFieldDecorator('serialArchUuid', {
                         initialValue: item.code,
                         rules: [{
@@ -70,7 +70,7 @@ const SerialArchLineCreateModal = ({
                             message: '线路体系不能为空',
                         }],
                     })(<Select>{options}</Select>)}
-                </BaseFormItem>
+                </BaseFormItem> */}
                 <BaseFormItem label="代码：">
                     {getFieldDecorator('code', {
                         initialValue: item.code,

@@ -7,7 +7,6 @@ import reqwest from 'reqwest';
 import {
     parse, stringify
 } from 'qs';
-import Guid from '../../utils/Guid';
 const columns = [{
     title: '代码',
     dataIndex: 'code',
@@ -27,13 +26,13 @@ const columns = [{
 ];
 
 function convertState(text) {
-    if (text == "normal")
-        return '正常';
-    if (text == "deleted")
-        return '已删除';
+    if (text == "online")
+        return '启用';
+    if (text == "offline")
+        return '停用';
 };
 
-class CustomerSelectGrid extends React.Component {
+class UserSelectGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -59,7 +58,7 @@ class CustomerSelectGrid extends React.Component {
         payload.token = 'token'
         payload.pageSize = 0;
         reqwest({
-            url: '/swms/basicinfo/customer/query',
+            url: '/swms/ia/user/querybypage',
             method: 'get',
             data:
             `${stringify(payload)}`,
@@ -69,7 +68,7 @@ class CustomerSelectGrid extends React.Component {
                 this.setState({
                     data: data.obj.records,
                 }); else
-                message.error("查询客户列表失败", 2)
+                message.error("查询用户列表失败", 2)
         })
     };
 
@@ -119,8 +118,8 @@ class CustomerSelectGrid extends React.Component {
                 <BaseFormItem label={"状态 等于"}>
                     {getFieldDecorator("state")(
                         <Select placeholder="请选择" showSearch={false} size="default">
-                            <Option value="normal" >正常</Option>
-                            <Option value="deleted">已删除</Option>
+                            <Option value="online" >启用</Option>
+                            <Option value="offline">停用</Option>
                         </Select>
                     )}
                 </BaseFormItem>
@@ -145,4 +144,4 @@ class CustomerSelectGrid extends React.Component {
     }
 };
 
-export default Form.create()(CustomerSelectGrid);
+export default Form.create()(UserSelectGrid);

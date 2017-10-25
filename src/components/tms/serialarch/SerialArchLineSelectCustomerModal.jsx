@@ -3,8 +3,9 @@ import { Table, Form, Popconfirm, Button, Modal } from 'antd';
 import RowEditCellForModal from '../../Widget/RowEditCellForModal';
 import styles from '../../less/EditTable.less';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import SerialArchLineSearchCustomer from './SerialArchLineSearchCustomer';
 
-const SerialArchLineSelectCustomerModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave, selectedRowKeys = [], onOk }) => {
+const SerialArchLineSelectCustomerModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave, selectedRowKeys = [], onOk, onSearch }) => {
     const columns = [
         {
             title: '客户代码',
@@ -68,7 +69,12 @@ const SerialArchLineSelectCustomerModal = ({ dataSource, visible, onEdit, onCanc
         })
     };
 
+    const searchProps = {
+        onSearch: onSearch
+    };
+
     return (<Modal {...modalOpts}>
+        <SerialArchLineSearchCustomer {...searchProps} />
         <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false} rowSelection={rowSelection}></Table>
     </Modal>);
 };

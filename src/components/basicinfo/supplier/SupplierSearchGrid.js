@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Table, Popconfirm, Pagination, Button } from 'antd';
+import { Table, Popconfirm, Pagination, Button,Row,Col,Spin } from 'antd';
 import PermissionUtil from '../../../utils/PermissionUtil';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils'
 
@@ -118,6 +118,7 @@ function SupplierSerachGrid({
 		}),
 	};
 
+	const hasSelected = selectedRowKeys.length > 0;
 	//bordered 有边的；
 	return (
 		<div>
@@ -129,9 +130,12 @@ function SupplierSerachGrid({
 				title={
 					() =>
 						<div>
-							<Button type="primary" onClick={handleCreate} disabled={!PermissionUtil("supplier:create")}> 新建</Button>
-							<Button onClick={handleRecoverBatch} disabled={!PermissionUtil("supplier:edit")}> 启用</Button>
-							<Button onClick={handleRemoveBatch} disabled={!PermissionUtil("supplier:edit")}> 停用</Button>
+							<Row type="flex">
+							<Col><Button type="primary" onClick={handleCreate} disabled={!PermissionUtil("supplier:create")}> 新建</Button></Col>
+							<Col><Button onClick={handleRecoverBatch} disabled={!PermissionUtil("supplier:edit")}> 启用</Button></Col>
+							<Col><Button onClick={handleRemoveBatch} disabled={!PermissionUtil("supplier:edit")}> 停用</Button></Col>
+							<Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
+							</Row>	
 						</div>
 				}
 				dataSource={dataSource}

@@ -204,6 +204,7 @@ function Vehicle({ location, dispatch, vehicle }) {
             currentItem.carrier = {};
             currentItem.carrier.uuid = data.carrier;
             currentItem.remark = data.remark;
+            currentItem.driver = data.driver;
             if (currentItem.uuid) {
                 dispatch({
                     type: 'vehicle/update',

@@ -196,6 +196,9 @@ export default {
                             article.expDays = item.expDays == null ? article.expDays : item.expDays;
                             article.qpcStrs = qpcStrs;
                             article.price = item.price;
+                            // article.qpcStr = item.qpcStr;
+                            // article.munit = item.munit;
+                            // article.supplier = item.supplier;
                             break;
                         }
                     }

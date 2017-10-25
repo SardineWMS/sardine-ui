@@ -1,14 +1,15 @@
 import React, { PropTypes } from 'react';
 import { routerRedux } from 'dva/router';
 import { connect } from 'dva';
+import { message } from 'antd';
 import SupplierSearchForm from '../../components/basicinfo/Supplier/SupplierSearchForm';
 import SupplierSearchGrid from '../../components/basicinfo/Supplier/SupplierSearchGrid';
 import SupplierView from '../../components/basicinfo/Supplier/SupplierView';
 import SupplierCreate from '../../components/basicinfo/Supplier/SupplierCreate';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
 import EntityLogGrid from '../../components/Log/EntityLogGrid';
 
-function Supplier({dispatch, supplier, location}) {
+function Supplier({ dispatch, supplier, location }) {
   const {
     list,
     total,
@@ -19,6 +20,7 @@ function Supplier({dispatch, supplier, location}) {
     showView,
     showLog,
     logList,
+    searchExpand,
     batchRecoverProcessModal,
     recoverSupplierEntitys,
     batchRemoveProcessModal,
@@ -27,15 +29,16 @@ function Supplier({dispatch, supplier, location}) {
   } = supplier;
 
   const token = localStorage.getItem("token");
-  const {field, keyword} = location.query;
+  const { field, keyword } = location.query;
 
   const supplierSearchGridProps = {
     dataSource: list,
     pagination: pagination,
-    onPageChange(page, filters,sorter) {
+    onPageChange(page, filters, sorter) {
       dispatch(routerRedux.push({
         pathname: '/basicInfo/supplier',
         query: {
+          ...location.query,
           page: page.current,
           pageSize: page.pageSize,
           sort: sorter.columnKey,
@@ -54,6 +57,10 @@ function Supplier({dispatch, supplier, location}) {
     },
 
     onRemoveBatch(suppliers) {
+      if (suppliers.length <= 0) {
+        message.warning("请选择要停用的供应商！", 2, '');
+        return;
+      };
       dispatch({
         type: 'supplier/batchRemoveSupplier',
         payload: {
@@ -63,6 +70,10 @@ function Supplier({dispatch, supplier, location}) {
     },
 
     onRecoverBatch(suppliers) {
+      if (suppliers.length <= 0) {
+        message.warning("请选择要启用的供应商！", 2, '');
+        return;
+      };
       dispatch({
         type: 'supplier/batchRecoverSupplier',
         payload: {
@@ -102,7 +113,7 @@ function Supplier({dispatch, supplier, location}) {
 
     onRecoverItem(supplier) {
       dispatch({
-        type: 'supplier/recover',
+        type: 'supplier/recover', //根据这个路径 找models的effects中对应的方法
         payload: {
           uuid: supplier.uuid,
           version: supplier.version,
@@ -116,11 +127,14 @@ function Supplier({dispatch, supplier, location}) {
     field,
     keyword,
     token,
+    searchExpand,
     onSearch(fieldsValue) {
-      dispatch({
-        type: 'supplier/query',  //根据这个路径 找modes的effects中对应的方法
-        payload: fieldsValue
-      });
+      dispatch(routerRedux.push({
+        pathname: '/basicInfo/supplier',
+        query: {
+          ...fieldsValue
+        }
+      }));
     }
   };
 
@@ -190,17 +204,18 @@ function Supplier({dispatch, supplier, location}) {
     next: supplierNext,
     actionText: '停用',
     entityCaption: '供应商',
-    canSkipState:'offline',
-    batchProcess(entity) {
-      dispatch({
-        type: 'supplier/removeBatch',
-        payload: {
-          uuid: entity.uuid,
-          version: entity.version,
-          token: localStorage.getItem("token")
-        }
-      });
-    },
+    url: '/swms/basicinfo/supplier/remove',
+    canSkipState: 'remove',
+    // batchProcess(entity) {
+    //   dispatch({
+    //     type: 'supplier/removeBatch',
+    //     payload: {
+    //       uuid: entity.uuid,
+    //       version: entity.version,
+    //       token: localStorage.getItem("token")
+    //     }
+    //   });
+    // },
     hideConfirmModal() {
       dispatch({
         type: 'supplier/hideRemoveSupplierModal'
@@ -222,17 +237,18 @@ function Supplier({dispatch, supplier, location}) {
     next: supplierNext,
     actionText: '启用',
     entityCaption: '供应商',
-    canSkipState:'online',
-    batchProcess(entity) {
-      dispatch({
-        type: 'supplier/recoverBatch',
-        payload: {
-          uuid: entity.uuid,
-          version: entity.version,
-          token: localStorage.getItem("token")
-        }
-      });
-    },
+    url: '/swms/basicinfo/supplier/recover',
+    canSkipState: 'recover',
+    // batchProcess(entity) {
+    //   dispatch({
+    //     type: 'supplier/recoverBatch',
+    //     payload: {
+    //       uuid: entity.uuid,
+    //       version: entity.version,
+    //       token: localStorage.getItem("token")
+    //     }
+    //   });
+    // },
     hideConfirmModal() {
       dispatch({
         type: 'supplier/hideRecoverSupplierModal'
@@ -248,38 +264,39 @@ function Supplier({dispatch, supplier, location}) {
     }
   };
 
-   const logGridProps = {
-      dataSource:logList,
-      pagination: pagination,
-      onPageChange(page) {
+  const logGridProps = {
+    dataSource: logList,
+    pagination: pagination,
+    onPageChange(page) {
       dispatch({
         type: 'supplier/queryLog',
-        payload:{  
-          entityUuid:currentItem.uuid
+        payload: {
+          entityUuid: currentItem.uuid
         }
       });
-      },
+    },
 
-     onBack(){
+    onBack() {
       dispatch({
         type: 'supplier/showViewPage'
       });
     }
   };
 
+  const SupplierSearchGridGen = () => <SupplierSearchGrid{...supplierSearchGridProps} />;
 
   function refreshWidget() {
     if (showCreate)
       return (<SupplierCreate {...createFormProps} />);
     if (showView)
       return (<SupplierView {...viewFormProps} />);
-    if(showLog)
+    if (showLog)
       return (<EntityLogGrid {...logGridProps} />);
     else {
       return (
         <div>
           <SupplierSearchForm {...supplierSearchFormProps} />
-          <SupplierSearchGrid {...supplierSearchGridProps} />
+          <SupplierSearchGridGen />
           <WMSProgress {...batchProcessRemoveSupplierProps} />
           <WMSProgress {...batchProcessRecoverSupplierProps} />
         </div>
@@ -303,7 +320,7 @@ Supplier.propTypes = {
   showView: PropTypes.bool
 };
 
-function mapStateToProps({supplier}) {
+function mapStateToProps({ supplier }) {
   return { supplier };
 };
 export default connect(mapStateToProps)(Supplier);

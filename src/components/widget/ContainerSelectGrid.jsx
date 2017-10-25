@@ -1,53 +1,55 @@
 import React, { PropTypes } from 'react';
-import { Table, Row, Col, Modal, Form, Input, Select, message } from 'antd';
+import { Table, message, Row, Col, Modal, Form, Input, Select } from 'antd';
 import BaseSearchPanel from './BaseSearchPanel';
 import BaseTwoCol from './BaseTwoCol';
 import BaseFormItem from './BaseFormItem';
 import reqwest from 'reqwest';
+import ContainerTypeSelect from './ContainerTypeSelect';
 import {
     parse, stringify
 } from 'qs';
 import Guid from '../../utils/Guid';
 const columns = [{
-    title: '单号',
-    dataIndex: 'billNumber',
-    key: 'billNumber',
+    title: '容器条码',
+    dataIndex: 'barcode',
+    key: 'barcode',
+},
+{
+    title: '容器类型',
+    dataIndex: 'containerType.name',
+    key: 'containerType'
 },
 {
     title: '状态',
     dataIndex: 'state',
     key: 'state',
     render: text => convertState(text)
-},
-{
-    title: '客户',
-    dataIndex: 'customer',
-    key: 'customer',
-    render: text => "[" + text.code + "]" + text.name
-},
-{
-    title: '仓位',
-    dataIndex: 'wrh',
-    key: 'wrh',
-    render: text => "[" + text.code + "]" + text.name
-},
+}
 ];
 
 function convertState(text) {
-    if (text == "initial")
-        return '初始';
-    if (text == "inProgress")
-        return '进行中';
+    if (text == "STACONTAINERIDLE")
+        return '空闲';
+    if (text == "STACONTAINERLOCK")
+        return '锁定';
+    if (text == 'STACONTAINERSTKINING')
+        return '收货中';
+    if (text == 'STACONTAINERUSEING')
+        return '已使用';
+    if (text == 'STACONTAINERPICKING')
+        return '拣货中';
+    if (text == 'STACONTAINERPUTAWAYING')
+        return '上架中';
 };
 
-class ReturnNtcBillSelectGrid extends React.Component {
+class ContainerSelectGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             ...props,
             data: [],
             pagination: {},
-            loading: false
+            loading: false,
         };
         this.handleSearch = this.handleSearch.bind(this);
         this.handleReset = this.handleReset.bind(this);
@@ -60,47 +62,31 @@ class ReturnNtcBillSelectGrid extends React.Component {
             ...newProps,
         });
     };
-
     handleSearch(e) {
         e.preventDefault();
         const payload = this.state.form.getFieldsValue();
-        payload.token = localStorage.getItem("token");
+        payload.token = 'token'
         payload.pageSize = 0;
-        if (payload.state == null)
-            reqwest({
-                url: '/swms/rtn/ntc/queryBillWithInitialAndInProgress',
-                method: 'get',
-                data:
-                `${stringify(payload)}`,
-                type: 'json',
-            }).then((data) => {
-                if (data.status == "200")
-                    this.setState({
-                        data: data.obj.records,
-                    });
-                else message.error("查询退仓通知单失败", 2);
-            });
-        else
-            reqwest({
-                url: '/swms/rtn/ntc/query',
-                method: 'get',
-                data:
-                `${stringify(payload)}`,
-                type: 'json',
-            }).then((data) => {
-                if (data.status == "200")
-                    this.setState({
-                        data: data.obj.records,
-                    })
-                else message.error("查询退仓通知单失败", 2);
-            });
+        reqwest({
+            url: '/swms/basicinfo/container/querybypage',
+            method: 'get',
+            data:
+            `${stringify(payload)}`,
+            type: 'json',
+        }).then((data) => {
+            if (data.status == "200")
+                this.setState({
+                    data: data.obj.records,
+                }); else
+                message.error("查询容器列表失败", 2)
+        })
     };
 
     handleCancel() {
         this.setState({
             data: [],
             pagination: {},
-            loading: false
+            loading: false,
         });
         this.state.onCancel();
     }
@@ -110,13 +96,19 @@ class ReturnNtcBillSelectGrid extends React.Component {
         this.state.form.resetFields();
     };
 
+    onSelectChange = (selectedRowKeys, selectedRows) => {
+        this.setState({ selectedRowKeys, selectedRows });
+        this.state.onSelect(selectedRows);
+        this.setState({ selectedRowKeys: [], selectedRows: [] });
+    }
+
     render() {
         const { getFieldDecorator } = this.props.form;
         const children = [];
         children.push(
-            <BaseTwoCol key={"billNumber"}>
-                <BaseFormItem label={"单号 等于"}>
-                    {getFieldDecorator("billNumber")(
+            <BaseTwoCol key={"barcode"}>
+                <BaseFormItem label={"条码 类似于"}>
+                    {getFieldDecorator("barcode")(
                         <Input placeholder="请输入" />
                     )}
                 </BaseFormItem>
@@ -127,33 +119,30 @@ class ReturnNtcBillSelectGrid extends React.Component {
                 <BaseFormItem label={"状态 等于"}>
                     {getFieldDecorator("state")(
                         <Select placeholder="请选择" showSearch={false} size="default">
-                            <Option value="initial" >初始</Option>
-                            <Option value="inProgress">进行中</Option>
+                            <Option value="STACONTAINERIDLE" >空闲</Option>
+                            <Option value="STACONTAINERLOCK">锁定</Option>
+                            <Option value="STACONTAINERSTKINING">收货中</Option>
+                            <Option value="STACONTAINERUSEING">已使用</Option>
+                            <Option value="STACONTAINERPICKING">拣货中</Option>
+                            <Option value="STACONTAINERPUTAWAYING">上架中</Option>
                         </Select>
                     )}
                 </BaseFormItem>
             </BaseTwoCol>
         );
         children.push(
-            <BaseTwoCol key={"code"}>
-                <BaseFormItem label={"客户代码 等于"}>
-                    {getFieldDecorator("code")(
-                        <Input placeholder="请输入" />
+            <BaseTwoCol key={"typeCode"}>
+                <BaseFormItem label={"类型 等于"}>
+                    {getFieldDecorator("typeCode")(
+                        <ContainerTypeSelect />
                     )}
                 </BaseFormItem>
             </BaseTwoCol>
         );
 
-        const { selectedRowKeys } = this.state;
-        const rowSelection = {
-            type: 'radio',
-            selectedRowKeys,
-            onChange: this.onSelectChange
-        };
-
         return (
             <div>
-                <Modal visible={this.state.visible} onCancel={this.handleCancel} title={"退仓通知单"} width={800}>
+                <Modal visible={this.state.visible} onCancel={this.handleCancel}>
                     <BaseSearchPanel children={children} handleReset={this.handleReset} handleSearch={this.handleSearch} />
                     <Table
                         size="small"
@@ -169,4 +158,4 @@ class ReturnNtcBillSelectGrid extends React.Component {
     }
 };
 
-export default Form.create()(ReturnNtcBillSelectGrid);
+export default Form.create()(ContainerSelectGrid);

@@ -163,6 +163,12 @@ function SerialArch({ location, dispatch, serialArch }) {
                 type: 'serialArch/addCustomer',
                 payload: data
             });
+        },
+        onSearch(field) {
+            dispatch({
+                type: 'serialArch/searchCustomer',
+                payload: field
+            })
         }
     };
 

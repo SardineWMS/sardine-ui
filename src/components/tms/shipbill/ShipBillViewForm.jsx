@@ -8,6 +8,7 @@ import Guid from '../../../utils/Guid';
 import PermissionUtil from '../../../utils/PermissionUtil';
 import ShipBillCustomerItemForm from './ShipBillCustomerItemForm';
 import ShipBillContainerStockForm from './ShipBillContainerStockForm';
+import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
 
 const TabPane = Tabs.TabPane;
 
@@ -69,6 +70,12 @@ const ShipBillViewForm = ({
     </BaseFormItem>);
     extendForm.push(<BaseFormItem label="总金额：" key={Guid()}>
         <span>{shipBill.totalAmount}</span>
+    </BaseFormItem>);
+    extendForm.push(<BaseFormItem label="创建信息：" key={Guid()}>
+        <span>{createInfo2String(shipBill)}</span>
+    </BaseFormItem>);
+    extendForm.push(<BaseFormItem label="最后修改信息：" key={Guid()}>
+        <span>{createInfo2String(shipBill)}</span>
     </BaseFormItem>);
 
     let toolbar = [];

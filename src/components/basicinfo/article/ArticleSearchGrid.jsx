@@ -12,13 +12,25 @@ function ArticleSearch({
   onSetFixedPickBinItem,
   pagination,
   onPageChange,
-  selectedRowKeys = []
+  selectedRowKeys = [],
+  onOnline,
+  onOffline
 }) {
 
   function handleCreate(e) {
     e.preventDefault();
     onCreate();
   };
+
+  function handleOnline(e) {
+    e.preventDefault();
+    onOnline(selectedRowKeys);
+  };
+
+  function handleOffline(e) {
+    e.preventDefault();
+    onOffline(selectedRowKeys);
+  }
 
   function handleSetFixedPickBinBatch() {
     onSetFixedPickBinBatch(selectedRowKeys);
@@ -43,7 +55,7 @@ function ArticleSearch({
     title: '状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => (text == "normal" ? '正常' : text)
+    render: text => (text == "online" ? '正常' : '停用')
   }, {
     title: '规格',
     dataIndex: 'spec',
@@ -121,8 +133,8 @@ function ArticleSearch({
               </Button>
             </Dropdown>
             <Button onClick={handleCreate} disabled={!PermissionUtil("article:create")}>新建</Button>
-            <Button onClick={handleCreate} disabled={!PermissionUtil("article:edit")}>停用</Button>
-            <Button onClick={handleCreate} disabled={!PermissionUtil("article:edit")}>启用</Button>
+            <Button onClick={handleOffline} disabled={!PermissionUtil("article:edit")}>停用</Button>
+            <Button onClick={handleOnline} disabled={!PermissionUtil("article:edit")}>启用</Button>
           </div>
         }
         dataSource={dataSource}

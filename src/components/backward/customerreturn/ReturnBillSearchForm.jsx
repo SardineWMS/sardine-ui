@@ -3,6 +3,8 @@ import { Form, Input, Select, DatePicker } from 'antd';
 import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
+import WrhSelect from '../../widget/WrhSelect';
+import UserModalForSearch from '../../widget/UserModalForSearch';
 
 const Option = Select.Option;
 
@@ -81,25 +83,16 @@ const ReturnBillSearchForm = ({
         <BaseTwoCol key={"wrhCode"}>
             <BaseFormItem label={"仓位 等于"}>
                 {getFieldDecorator("wrhCode")(
-                    <Input placeholder="请输入" />
+                    <WrhSelect />
                 )}
             </BaseFormItem>
         </BaseTwoCol>
     );
     children.push(
         <BaseTwoCol key={"returnorCode"}>
-            <BaseFormItem label={"退仓员代码 类似于"}>
+            <BaseFormItem label={"退仓员代码 等于"}>
                 {getFieldDecorator("returnorCode")(
-                    <Input placeholder="请输入" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
-    children.push(
-        <BaseTwoCol key={"returnorName"}>
-            <BaseFormItem label={"退仓员名称 类似于"}>
-                {getFieldDecorator("returnorName")(
-                    <Input placeholder="请输入" />
+                    <UserModalForSearch />
                 )}
             </BaseFormItem>
         </BaseTwoCol>
@@ -135,6 +128,15 @@ const ReturnBillSearchForm = ({
         <BaseTwoCol key={"supplierName"}>
             <BaseFormItem label={"供应商名称 包含"}>
                 {getFieldDecorator("supplierName")(
+                    <Input placeholder="请输入" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+    children.push(
+        <BaseTwoCol key={"containerBarcode"}>
+            <BaseFormItem label={"容器条码 等于"}>
+                {getFieldDecorator("containerBarcode")(
                     <Input placeholder="请输入" />
                 )}
             </BaseFormItem>
