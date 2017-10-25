@@ -18,7 +18,7 @@ import {
   addArticleBarcode,
   setArticleFixedPickBin,
 } from '../../services/basicinfo/Article';
-import {queryCategory, getCategoryByCode} from '../../services/basicinfo/Category';
+import { queryCategory, getCategoryByCode } from '../../services/basicinfo/Category';
 
 export default {
   namespace: 'article',
@@ -52,7 +52,12 @@ export default {
       size: 'default'
     },
     showLable: false,
-    firstInFirstOut: true
+    firstInFirstOut: true,
+    batchOnlineProcessModal: false,
+    onlineArticleEntitys: [],
+    batchOfflineProcessModal: false,
+    offlineArticleEntitys: [],
+    customerNext: {}
   },
 
   subscriptions: {
@@ -106,7 +111,7 @@ export default {
         })
       }
     },
-    *showCreateAndqueryLastLower({payload}, {
+    *showCreateAndqueryLastLower({ payload }, {
       call,
       put
     }) {
@@ -133,7 +138,7 @@ export default {
         })
       }
     },
-    *showEditAndqueryLastLower({payload}, {
+    *showEditAndqueryLastLower({ payload }, {
       call,
       put
     }) {
@@ -175,14 +180,14 @@ export default {
           type: 'showCategorySelectModal',
           payload: {
             categoryList: data.obj,
-/*            categoryPagination: {
-              showSizeChanger: false,
-              showQuickJumper: true,
-              showTotal: total => `共 ${total} 条`,
-              current: data.obj.page,
-              total: data.obj.recordCount,
-              size: 'default'
-            },*/
+            /*            categoryPagination: {
+                          showSizeChanger: false,
+                          showQuickJumper: true,
+                          showTotal: total => `共 ${total} 条`,
+                          current: data.obj.page,
+                          total: data.obj.recordCount,
+                          size: 'default'
+                        },*/
             currentArticle: payload.article
           },
         })
@@ -197,7 +202,7 @@ export default {
       })
       const {
         data
-      } = yield call(getCategoryByCode, {code :payload.categoryCode})
+      } = yield call(getCategoryByCode, { code: payload.categoryCode })
       if (data) {
         yield put({
           type: 'showEditPage',
@@ -659,6 +664,19 @@ export default {
         modalVisible: false
       }
     },
+
+    batchOnlineArticle(state, action) {
+      return { ...state, ...action.payload, batchOnlineProcessModal: true }
+    },
+    hideOnlineArticleModal(state, action) {
+      return { ...state, batchOnlineProcessModal: false }
+    },
+    batchOfflineArticle(state, action) {
+      return { ...state, ...action.payload, batchOfflineProcessModal: true }
+    },
+    hideOfflineArticleModal(state, action) {
+      return { ...state, batchOfflineProcessModal: false }
+    }
 
   },
 
