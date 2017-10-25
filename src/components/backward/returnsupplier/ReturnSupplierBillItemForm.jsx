@@ -17,10 +17,16 @@ function ReturnSupplierBillItemForm({
             key: 'line'
         },
         {
-            title: '商品',
+            title: '商品代码',
             dataIndex: 'article',
-            key: 'article',
-            render: (text, record) => "[" + text.code + "]" + text.name
+            key: 'articleCode',
+            render: (text, record) =>  text.code 
+        },
+        {
+            title: '商品名称',
+            dataIndex: 'article',
+            key: 'articleName',
+            render: (text, record) => text.name
         },
         {
             title: '规格',

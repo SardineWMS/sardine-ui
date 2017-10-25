@@ -7,7 +7,7 @@ import BaseFormItem from '../../Widget/BaseFormItem';
 import Guid from '../../../utils/Guid';
 import PermissionUtil from '../../../utils/PermissionUtil';
 import ReturnSupplierBillItemForm from './ReturnSupplierBillItemForm';
-
+import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
 const TabPane = Tabs.TabPane;
 
 
@@ -24,6 +24,11 @@ const ReturnSupplierBillViewForm = ({
         if (text == "Finished")
             return "已完成";
     };
+
+    function viewLog(){
+        window.location.href=`/#/inner/entitylog?key=${returnSupplierBill.uuid}`;
+    };
+
     let basicForm = [];
     basicForm.push(<BaseFormItem label="单号：" key={Guid()}>
         <span>{returnSupplierBill.billNumber}</span>
@@ -47,17 +52,20 @@ const ReturnSupplierBillViewForm = ({
             <span>"APP"</span>
         }
     </BaseFormItem>);
-
-    let extendForm = [];
-    extendForm.push(<BaseFormItem label="状态：" key={Guid()}>
-        <span>{converState(returnSupplierBill.state)}</span>
-    </BaseFormItem>);
-    extendForm.push(<BaseFormItem label="总件数：" key={Guid()}>
+    basicForm.push(<BaseFormItem label="总件数：" key={Guid()}>
         <span>{returnSupplierBill.totalCaseQty}</span>
     </BaseFormItem>);
-    extendForm.push(<BaseFormItem label="总金额：" key={Guid()}>
+    basicForm.push(<BaseFormItem label="总金额：" key={Guid()}>
         <span>{returnSupplierBill.totalAmount}</span>
     </BaseFormItem>);
+
+    let stateForm = [];
+    stateForm.push(<BaseFormItem label="状态：" key={Guid()}>
+        <span>{converState(returnSupplierBill.state)}</span>
+    </BaseFormItem>);
+    stateForm.push(<BaseFormItem label="操作信息：" key={Guid()}><span>{createInfo2String(returnSupplierBill)}</span></BaseFormItem>);
+    stateForm.push(<BaseFormItem label="最后修改信息：" key={Guid()}><span>{lastModifyInfo2String(returnSupplierBill)}</span></BaseFormItem>);
+    stateForm.push(<BaseFormItem label="日志：" key={Guid()}><span><a onClick={() => viewLog()} >详情</a></span></BaseFormItem>);
 
     let toolbar = [];
     toolbar.push(
@@ -77,7 +85,7 @@ const ReturnSupplierBillViewForm = ({
             <ToolbarPanel children={toolbar} />
             <BaseCard single={false} title="供应商退货单信息">
                 <BaseForm items={basicForm} />
-                <BaseForm items={extendForm} />
+                <BaseForm items={stateForm} />
             </BaseCard>
             <BaseCard single={true} title="供应商退货单明细">
                 <BaseForm items={<ReturnSupplierBillItemForm {...returnSupplierBillItemProps}/>} />

@@ -104,7 +104,7 @@ function ReturnSupplierBillSearchGrid({
                 title={
                     () =>
                         <div>
-                            <Button onClick={handlerFinishBatch} disabled={(!PermissionUtil("returnSupplierBill:finish"))}> 批量完成</Button>
+                            <Button onClick={handlerFinishBatch} disabled={(!PermissionUtil("returnSupplierBill:finish"))}> 完成</Button>
                         </div>
                 }
                 dataSource={dataSource}
