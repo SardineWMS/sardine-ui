@@ -3,6 +3,7 @@ import { Form, Input, InputNumber, Modal, Row, Col, Select } from 'antd';
 const FormItem = Form.Item;
 const Option = Select.Option;
 import BaseFormItem from '../../Widget/BaseFormItem';
+import ContainerModal from '../../widget/ContainerModal';
 
 const BatchModifyReturnContainer = ({
     visible,
@@ -43,7 +44,7 @@ const BatchModifyReturnContainer = ({
                             required: true,
                             message: '请选择容器',
                         }],
-                    })(<Input />)}
+                    })(<ContainerModal />)}
                 </BaseFormItem>
             </Form>
         </Modal>

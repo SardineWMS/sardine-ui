@@ -1,21 +1,23 @@
 import React, { PropTypes } from 'react';
 import { Table, message, Row, Col, Modal, Form, Input, Select } from 'antd';
-import BaseSearchPanel from '../../widget/BaseSearchPanel';
-import BaseTwoCol from '../../widget/BaseTwoCol';
-import BaseFormItem from '../../widget/BaseFormItem';
+import BaseSearchPanel from './BaseSearchPanel';
+import BaseTwoCol from './BaseTwoCol';
+import BaseFormItem from './BaseFormItem';
 import reqwest from 'reqwest';
+import ContainerTypeSelect from './ContainerTypeSelect';
 import {
     parse, stringify
 } from 'qs';
+import Guid from '../../utils/Guid';
 const columns = [{
-    title: '代码',
-    dataIndex: 'code',
-    key: 'code',
+    title: '容器条码',
+    dataIndex: 'barcode',
+    key: 'barcode',
 },
 {
-    title: '名称',
-    dataIndex: 'name',
-    key: 'name'
+    title: '容器类型',
+    dataIndex: 'containerType.name',
+    key: 'containerType'
 },
 {
     title: '状态',
@@ -26,13 +28,21 @@ const columns = [{
 ];
 
 function convertState(text) {
-    if (text == "online")
-        return '启用';
-    if (text == "offline")
-        return '停用';
+    if (text == "STACONTAINERIDLE")
+        return '空闲';
+    if (text == "STACONTAINERLOCK")
+        return '锁定';
+    if (text == 'STACONTAINERSTKINING')
+        return '收货中';
+    if (text == 'STACONTAINERUSEING')
+        return '已使用';
+    if (text == 'STACONTAINERPICKING')
+        return '拣货中';
+    if (text == 'STACONTAINERPUTAWAYING')
+        return '上架中';
 };
 
-class UserSelectGrid extends React.Component {
+class ContainerSelectGrid extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -58,7 +68,7 @@ class UserSelectGrid extends React.Component {
         payload.token = 'token'
         payload.pageSize = 0;
         reqwest({
-            url: '/swms/ia/user/querybypage',
+            url: '/swms/basicinfo/container/querybypage',
             method: 'get',
             data:
             `${stringify(payload)}`,
@@ -68,7 +78,7 @@ class UserSelectGrid extends React.Component {
                 this.setState({
                     data: data.obj.records,
                 }); else
-                message.error("查询用户列表失败", 2)
+                message.error("查询容器列表失败", 2)
         })
     };
 
@@ -96,18 +106,9 @@ class UserSelectGrid extends React.Component {
         const { getFieldDecorator } = this.props.form;
         const children = [];
         children.push(
-            <BaseTwoCol key={"code"}>
-                <BaseFormItem label={"代码 类似于"}>
-                    {getFieldDecorator("code")(
-                        <Input placeholder="请输入" />
-                    )}
-                </BaseFormItem>
-            </BaseTwoCol>
-        );
-        children.push(
-            <BaseTwoCol key={"name"}>
-                <BaseFormItem label={"名称 等于"}>
-                    {getFieldDecorator("name")(
+            <BaseTwoCol key={"barcode"}>
+                <BaseFormItem label={"条码 类似于"}>
+                    {getFieldDecorator("barcode")(
                         <Input placeholder="请输入" />
                     )}
                 </BaseFormItem>
@@ -118,9 +119,22 @@ class UserSelectGrid extends React.Component {
                 <BaseFormItem label={"状态 等于"}>
                     {getFieldDecorator("state")(
                         <Select placeholder="请选择" showSearch={false} size="default">
-                            <Option value="online" >启用</Option>
-                            <Option value="offline">停用</Option>
+                            <Option value="STACONTAINERIDLE" >空闲</Option>
+                            <Option value="STACONTAINERLOCK">锁定</Option>
+                            <Option value="STACONTAINERSTKINING">收货中</Option>
+                            <Option value="STACONTAINERUSEING">已使用</Option>
+                            <Option value="STACONTAINERPICKING">拣货中</Option>
+                            <Option value="STACONTAINERPUTAWAYING">上架中</Option>
                         </Select>
+                    )}
+                </BaseFormItem>
+            </BaseTwoCol>
+        );
+        children.push(
+            <BaseTwoCol key={"typeCode"}>
+                <BaseFormItem label={"类型 等于"}>
+                    {getFieldDecorator("typeCode")(
+                        <ContainerTypeSelect />
                     )}
                 </BaseFormItem>
             </BaseTwoCol>
@@ -144,4 +158,4 @@ class UserSelectGrid extends React.Component {
     }
 };
 
-export default Form.create()(UserSelectGrid);
+export default Form.create()(ContainerSelectGrid);

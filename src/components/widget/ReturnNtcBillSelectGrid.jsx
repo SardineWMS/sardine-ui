@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Table, message, Popconfirm, Button, Row, Col, Card, Spin, Modal, Form, Input, Select } from 'antd';
+import { Table, Row, Col, Modal, Form, Input, Select, message } from 'antd';
 import BaseSearchPanel from './BaseSearchPanel';
 import BaseTwoCol from './BaseTwoCol';
 import BaseFormItem from './BaseFormItem';
@@ -47,9 +47,7 @@ class ReturnNtcBillSelectGrid extends React.Component {
             ...props,
             data: [],
             pagination: {},
-            loading: false,
-            selectedRowKeys: [],
-            selectedRows: []
+            loading: false
         };
         this.handleSearch = this.handleSearch.bind(this);
         this.handleReset = this.handleReset.bind(this);
@@ -63,15 +61,11 @@ class ReturnNtcBillSelectGrid extends React.Component {
         });
     };
 
-    // componentDidMount() {
-    //     this.handleSearch();
-    // };
-
     handleSearch(e) {
         e.preventDefault();
-        // this.state.onSearch(this.state.form.getFieldsValue());
         const payload = this.state.form.getFieldsValue();
         payload.token = localStorage.getItem("token");
+        payload.pageSize = 0;
         if (payload.state == null)
             reqwest({
                 url: '/swms/rtn/ntc/queryBillWithInitialAndInProgress',
@@ -80,9 +74,11 @@ class ReturnNtcBillSelectGrid extends React.Component {
                 `${stringify(payload)}`,
                 type: 'json',
             }).then((data) => {
-                this.setState({
-                    data: data.obj.records,
-                })
+                if (data.status == "200")
+                    this.setState({
+                        data: data.obj.records,
+                    });
+                else message.error("查询退仓通知单失败", 2);
             });
         else
             reqwest({
@@ -92,9 +88,11 @@ class ReturnNtcBillSelectGrid extends React.Component {
                 `${stringify(payload)}`,
                 type: 'json',
             }).then((data) => {
-                this.setState({
-                    data: data.obj.records,
-                })
+                if (data.status == "200")
+                    this.setState({
+                        data: data.obj.records,
+                    })
+                else message.error("查询退仓通知单失败", 2);
             });
     };
 
@@ -102,9 +100,7 @@ class ReturnNtcBillSelectGrid extends React.Component {
         this.setState({
             data: [],
             pagination: {},
-            loading: false,
-            selectedRowKeys: [],
-            selectedRows: []
+            loading: false
         });
         this.state.onCancel();
     }
@@ -113,12 +109,6 @@ class ReturnNtcBillSelectGrid extends React.Component {
         e.preventDefault();
         this.state.form.resetFields();
     };
-
-    onSelectChange = (selectedRowKeys, selectedRows) => {
-        this.setState({ selectedRowKeys, selectedRows });
-        this.state.onSelect(selectedRows);
-        this.setState({ selectedRowKeys: [], selectedRows: [] });
-    }
 
     render() {
         const { getFieldDecorator } = this.props.form;
@@ -163,7 +153,7 @@ class ReturnNtcBillSelectGrid extends React.Component {
 
         return (
             <div>
-                <Modal visible={this.state.visible} onCancel={this.handleCancel}>
+                <Modal visible={this.state.visible} onCancel={this.handleCancel} title={"退仓通知单"} width={800}>
                     <BaseSearchPanel children={children} handleReset={this.handleReset} handleSearch={this.handleSearch} />
                     <Table
                         size="small"
@@ -171,7 +161,7 @@ class ReturnNtcBillSelectGrid extends React.Component {
                         dataSource={this.state.data}
                         rowKey={record => record.uuid}
                         bordered
-                        rowSelection={rowSelection}
+                        onRowClick={(record, index) => this.state.onSelect(record)}
                     />
                 </Modal>
             </div>

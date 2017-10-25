@@ -4,7 +4,7 @@ import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import DriverModal from './DriverModalForSearch';
-import UserModalForSearch from './UserModalForSearch';
+import UserModalForSearch from '../../widget/UserModalForSearch';
 
 const Option = Select.Option;
 

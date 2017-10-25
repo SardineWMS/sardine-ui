@@ -63,6 +63,12 @@ const ReturnBillViewPage = ({
     extendForm.push(<BaseFormItem label="总金额：" key={Guid()}>
         <span>{item.totalAmount}</span>
     </BaseFormItem>);
+    extendForm.push(<BaseFormItem label="创建信息：" key={Guid()}>
+        <span>{createInfo2String(item)}</span>
+    </BaseFormItem>);
+    extendForm.push(<BaseFormItem label="最后修改信息：" key={Guid()}>
+        <span>{lastModifyInfo2String(item)}</span>
+    </BaseFormItem>);
 
     const ReturnBillViewPage = {
         dataSource: item.items

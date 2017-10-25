@@ -112,9 +112,9 @@ function ReturnBillGrid({
         title={() =>
           <div>
             <Row type="flex">
-              <Col><Button type="ghost" onClick={handleRemoveBatch} disabled={!hasPermission("storeRtnBill:delete")}>批量删除</Button></Col>
-              <Col><Button type="ghost" onClick={handleAuditBatch} disabled={!hasPermission("storeRtnBill:edit")}>批量审核</Button></Col>
               <Col><Button onClick={() => onCreate()} disabled={!hasPermission("storeRtnBill:create")}>新建</Button></Col>
+              <Col><Button type="ghost" onClick={handleRemoveBatch} disabled={!hasPermission("storeRtnBill:delete")}>删除</Button></Col>
+              <Col><Button type="ghost" onClick={handleAuditBatch} disabled={!hasPermission("storeRtnBill:edit")}>审核</Button></Col>
               <Col><span style={{ marginLeft: 8 }}>{selectedRowKeys.length > 0 ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
             </Row>
           </div>} />
