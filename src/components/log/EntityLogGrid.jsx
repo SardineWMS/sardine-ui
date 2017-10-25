@@ -25,6 +25,7 @@ function EntityLogGrid({
     }];
 
     function onBack() {
+      console.log(window.history.toString());
       window.history.go(-1); 
     };
 

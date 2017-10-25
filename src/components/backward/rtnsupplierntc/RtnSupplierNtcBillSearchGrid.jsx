@@ -53,6 +53,7 @@ class RtnSupplierNtcBillSearchGrid extends React.Component {
             title: '单号',
             dataIndex: 'billNumber',
             key: 'billNumber',
+            width: 200,
             render: (text, record) => <a onClick={() => { this.state.onViewItem(record) }} disabled={!PermissionUtil("rtnsupplierntcbill:view")}>{text}</a>,
             sorter: true
         },
@@ -60,30 +61,35 @@ class RtnSupplierNtcBillSearchGrid extends React.Component {
             title: '状态',
             dataIndex: 'state',
             key: 'state',
+            width: 100,
             render: text => convertState(text)
         },
         {
             title: '供应商',
             dataIndex: 'supplier',
             key: 'supplier',
+            width: 150,
             render: (text, record) => "[" + text.code + "]" + text.name
         },
         {
             title: '仓位',
             dataIndex: 'wrh',
             key: 'wrh',
+            width: 150,
             render: (text, record) => "[" + text.code + "]" + text.name
         },
         {
             title: '来源单据',
             dataIndex: 'sourceBill',
             key: 'sourceBill',
-            render: (text, record) => record.sourceBillNumber == null ? "" : record.sourceBillType + "[" + record.sourceBillNumber + "]"
+            width: 200,
+            render: (text, record) => text == null ? "" : text.billType + "[" + text.billNumber + "]"
         },
         {
             title: '退货日期',
-            dataIndex: 'returnDate',
-            key: 'returnDate',
+            dataIndex: 'rtnDate',
+            key: 'rtnDate',
+            width: 100,
             render: (text, record) => moment(text).format("YYYY-MM-DD")
         }
         ];

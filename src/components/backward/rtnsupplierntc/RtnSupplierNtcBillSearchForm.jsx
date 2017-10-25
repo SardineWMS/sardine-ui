@@ -88,15 +88,6 @@ const RtnSupplierNtcBillSearchForm = ({
         </BaseTwoCol>
     );
     children.push(
-        <BaseTwoCol key={"dateLessThan"}>
-            <BaseFormItem label={"退货日期 小于等于"}>
-                {getFieldDecorator("dateLessThan")(
-                    <DatePicker style={{ width: 290.5 }} size="large" />
-                )}
-            </BaseFormItem>
-        </BaseTwoCol>
-    );
-    children.push(
         <BaseTwoCol key={"dateMoreThan"}>
             <BaseFormItem label={"退货日期 大于等于"}>
                 {getFieldDecorator("dateMoreThan")(
@@ -106,8 +97,17 @@ const RtnSupplierNtcBillSearchForm = ({
         </BaseTwoCol>
     );
     children.push(
+        <BaseTwoCol key={"dateLessThan"}>
+            <BaseFormItem label={"退货日期 小于"}>
+                {getFieldDecorator("dateLessThan")(
+                    <DatePicker style={{ width: 290.5 }} size="large" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+    children.push(
         <BaseTwoCol key={"articleName"}>
-            <BaseFormItem label={"商品名称 包含于"}>
+            <BaseFormItem label={"商品名称 类似于"}>
                 {getFieldDecorator("articleName")(
                     <Input placeholder="请输入" />
                 )}
@@ -116,7 +116,7 @@ const RtnSupplierNtcBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"articleCode"}>
-            <BaseFormItem label={"商品代码 包含于"}>
+            <BaseFormItem label={"商品代码 类似于"}>
                 {getFieldDecorator("articleCode")(
                     <Input placeholder="请输入" />
                 )}
@@ -125,7 +125,7 @@ const RtnSupplierNtcBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"supplierName"}>
-            <BaseFormItem label={"供应商名称 包含于"}>
+            <BaseFormItem label={"供应商名称 类似于"}>
                 {getFieldDecorator("supplierName")(
                     <Input placeholder="请输入" />
                 )}

@@ -37,6 +37,8 @@ export default {
 
   	effects: {
 	    *query({ payload }, { call, put }) {
+    	if(!payload.entityUuid)
+    		return;
 	      const { data } = yield call(queryEntityLogs, parse(payload));
 	      if (data.status == '200') {
 	        yield put({

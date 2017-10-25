@@ -92,7 +92,7 @@ const RtnSupplierNtcBillViewPage = ({
     toolbar.push(<Button onClick={() => onGenTask(item)} disabled={!(item.state == "Initial") && PermissionUtil("rtnNtcBill:edit")}>生成下架指令</Button >);
     toolbar.push(<Button onClick={() => onFinish(item)} disabled={!(item.state == "Initial") && PermissionUtil("rtnNtcBill:edit")}>完成</Button>);
     toolbar.push(<Button onClick={() => onAbort(item)} disabled={!(item.state == "Initial") && PermissionUtil("rtnNtcBill:edit")}>作废</Button>);
-    toolbar.push(<Button onClick={() => onBack()} disabled={!(item.state == "Initial") && PermissionUtil("rtnNtcBill:edit")}>返回</Button>);
+    toolbar.push(<Button onClick={() => onBack()} >返回</Button>);
 
     return (
         <div>

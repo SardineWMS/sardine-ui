@@ -15,7 +15,6 @@ const RtnSupplierNtcBillCreateItem = ({
     onPageChange,
     getArticleInfo,
     refreshMunit,
-    getSupplierInfo,
     onAddItem,
     calculateCaseQtyStr,
     refreshAmount,
@@ -118,7 +117,6 @@ const RtnSupplierNtcBillCreateItem = ({
         return (<RowEditCell
             editable={true}
             value={text}
-            status={status}
             onBlur={value => handleChange(record, value, key)}
             autoFocus={false}
         />);
@@ -126,8 +124,6 @@ const RtnSupplierNtcBillCreateItem = ({
 
     function handleChange(record, value, key) {
         if (key === "articleCode") {
-            // if (value == null)
-            //     return;
             record.article == null ? record.article = {} : record.article;
             record.article.code = value;
             getArticleInfo(record, dataSource);
@@ -135,11 +131,6 @@ const RtnSupplierNtcBillCreateItem = ({
         if (key === 'qpcStr') {
             record.qpcStr = value;
             refreshMunit(record, dataSource);
-        };
-        if (key === "supplierCode") {
-            record.supplier == null ? record.supplier = {} : record.supplier;
-            record.supplier.code = value;
-            getSupplierInfo(record, dataSource);
         };
         if (key === "qty") {
             record.qty = value;

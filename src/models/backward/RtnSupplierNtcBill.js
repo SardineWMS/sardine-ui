@@ -8,6 +8,7 @@ import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, caseQtyStrSubtract } from '
 import { removeByValue } from '../../utils/ArrayUtils';
 import { getbycode as getSupplier, querybypage as querySuppliers } from '../../services/basicinfo/Supplier';
 import { message } from 'antd';
+import { timeStamp2date } from '../../utils/DateUtils';
 
 export default modelExtend(pageModel, {
     namespace: 'rtnSupplierNtcBill',
@@ -43,7 +44,13 @@ export default modelExtend(pageModel, {
     effects: {
         *query({ payload }, { call, put }) {
             const { data } = yield call(queryBill, parse(payload));
-            if (data.status === '200') {
+            if (data.status === '200' ) {
+                if(data.obj.records){
+                    data.obj.records.map(function item(){
+                        item.rtnDate=timeStamp2date(item.rtnDate);
+                    });                    
+                }
+
                 yield put({
                     type: 'querySuccess',
                     payload: {
@@ -138,7 +145,6 @@ export default modelExtend(pageModel, {
                 for (var key in payload.record) {
                     if (payload.record.hasOwnProperty(key)) {
                         delete payload.record[key];
-
                     }
                 }
                 yield put({
@@ -160,13 +166,17 @@ export default modelExtend(pageModel, {
                 }
                 payload.record.article.uuid = data.obj.uuid;
                 payload.record.article.name = data.obj.name;
+                payload.record.price = data.obj.purchasePrice;
                 let qpcs = [];
                 qpcs = data.obj.qpcs;
+                if(qpcs){
+                    payload.record.qpcStr = qpcs[0].qpcStr;
+                    payload.record.munit = qpcs[0].munit;
+                }
                 let suppliers = [];
                 suppliers = data.obj.articleSuppliers;
                 payload.record.qpcs = qpcs;
                 payload.suppliers = suppliers;
-
                 yield put({
                     type: 'showCreateSuccess',
                 });
