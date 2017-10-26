@@ -203,8 +203,11 @@ const AcceptanceBillItemForm = ({
 	let qpcStrOptions = [];
 
 	function renderSelectColumns(record, key, text) {
-		if (typeof text != 'undefined' && typeof text.code != 'undefined')
+		if (typeof text != 'undefined' && typeof text.code != 'undefined'){
 			text = text.code;
+			if("supplier"===key)
+				text="["+record.supplier.code+"]"+record.supplier.name;
+		}
 		if (key === "binCode") {
 			binCodeOptions.splice(0, binCodeOptions.length);
 			stocks.map(function (stock) {

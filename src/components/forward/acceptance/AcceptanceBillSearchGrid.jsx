@@ -59,15 +59,22 @@ function AcceptanceBillSearchGrid({
                 sorter: true
             },
             {
+                title: '状态',
+                dataIndex: 'state',
+                key: 'state',
+                render: text => converState(text)
+            },
+            {
                 title: '客户',
                 dataIndex: 'customer',
                 key: 'customer',
                 render: text => ("[" + text.code + "]" + text.name)
             },
             {
-                title: '领用原因',
-                dataIndex: 'acceptanceReason',
-                key: 'acceptanceReason'
+                title: '来源单据',
+                dataIndex: 'sourceBill',
+                key: 'sourceBill',
+                render: (text, record)  => (record.sourceBillNumber? "[" + record.sourceBillType + "]" + record.sourceBillNumber:null)
             },
             {
                 title: '仓位',
@@ -76,10 +83,9 @@ function AcceptanceBillSearchGrid({
                 render: text => ("[" + text.code + "]" + text.name)
             },
             {
-                title: '状态',
-                dataIndex: 'state',
-                key: 'state',
-                render: text => converState(text)
+                title: '总件数',
+                dataIndex: 'totalCaseQtyStr',
+                key: 'totalCaseQtyStr'
             },
             {
                 title: '配送体系',
@@ -91,6 +97,11 @@ function AcceptanceBillSearchGrid({
                 title: '配送方式',
                 dataIndex: 'deliveryType',
                 key: 'deliveryType'
+            },
+            {
+                title: '领用原因',
+                dataIndex: 'acceptanceReason',
+                key: 'acceptanceReason'
             }
         ];
 

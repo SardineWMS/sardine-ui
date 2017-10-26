@@ -7,6 +7,8 @@ import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import Guid from '../../../utils/Guid';
+import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
 
 const AcceptanceBillViewForm = ({
 	acceptanceBill = {},
@@ -33,6 +35,11 @@ const AcceptanceBillViewForm = ({
 		if (text == "Aborted")
 			return "已作废";
 	};
+
+    function viewLog(){
+        window.location.href=`/#/inner/entitylog?key=${acceptanceBill.uuid}`;
+    };
+
 
 	function codeAddName(code, name) {
 		return "[" + code + "]" + name;
@@ -77,28 +84,32 @@ const AcceptanceBillViewForm = ({
 		</BaseFormItem>
 	);
 
-	compositiveChildren.push(
-		<BaseFormItem label="状态 :">
-			<span> {converState(acceptanceBill.state)} </span>
-		</BaseFormItem>
-	);
-	compositiveChildren.push(
+	baseChildren.push(
 		<BaseFormItem label="总件数 :">
 			<span> {acceptanceBill.totalCaseQtyStr} </span>
 		</BaseFormItem>
 	);
-	compositiveChildren.push(
+	baseChildren.push(
 		<BaseFormItem label="总金额 :">
 			<span> {acceptanceBill.totalAmount} </span>
 		</BaseFormItem>
 	);
 
-	compositiveChildren.push(
+	baseChildren.push(
 		<BaseFormItem label="配货总数 :">
 			<span> {acceptanceBill.alcTotalCaseQtyStr} </span>
 		</BaseFormItem>
 	);
 
+  let stateForm = [];
+	stateForm.push(
+		<BaseFormItem label="状态 :">
+			<span> {converState(acceptanceBill.state)} </span>
+		</BaseFormItem>
+	);
+    stateForm.push(<BaseFormItem label="操作信息：" key={Guid()}><span>{createInfo2String(acceptanceBill)}</span></BaseFormItem>);
+    stateForm.push(<BaseFormItem label="最后修改信息：" key={Guid()}><span>{lastModifyInfo2String(acceptanceBill)}</span></BaseFormItem>);
+    stateForm.push(<BaseFormItem label="日志：" key={Guid()}><span><a onClick={() => viewLog()} >详情</a></span></BaseFormItem>);
 
 	const colChildren = [];
 	colChildren.push(
@@ -108,7 +119,7 @@ const AcceptanceBillViewForm = ({
 	);
 	colChildren.push(
 		<Col span={12} key='col2'>
-			{compositiveChildren}
+			{stateForm}
 		</Col>
 	);
 
