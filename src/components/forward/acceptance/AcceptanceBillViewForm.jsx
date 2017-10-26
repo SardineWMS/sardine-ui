@@ -116,24 +116,21 @@ const AcceptanceBillViewForm = ({
 	const toolbar = [];
 	toolbar.push(<Button onClick={() => onEdit(acceptanceBill)}
 		disabled={(acceptanceBill.state != 'Initial') || (!PermissionUtil("acceptanceBill:edit"))}> 编辑</Button>);
-	toolbar.push(<Button onClick={() => onDelete(acceptanceBill)}
-		disabled={(acceptanceBill.state != 'Initial') || (!PermissionUtil("acceptanceBill:delete"))}> 删除</Button>);
+	toolbar.push(<Button onClick={() => onAbort(acceptanceBill)}
+		disabled={(acceptanceBill.state != 'Initial') || (!PermissionUtil("acceptanceBill:abort"))}> 作废</Button>);
 	toolbar.push(<Button onClick={() => onApprove(acceptanceBill)}
 		disabled={(acceptanceBill.state != 'Initial') || (!PermissionUtil("acceptanceBill:approve"))}> 批准</Button>);
 	toolbar.push(<Button onClick={() => onBeginAlc(acceptanceBill)}
 		disabled={(acceptanceBill.state != 'Approved') || (!PermissionUtil("acceptanceBill:alc"))}> 配货</Button>);
-	toolbar.push(<Button onClick={() => onFinish(acceptanceBill)}
-		disabled={((acceptanceBill.state != 'Approved') && (acceptanceBill.state != 'Initial')) || (!PermissionUtil("acceptanceBill:finesh"))}> 完成</Button>);
-	toolbar.push(<Button onClick={() => onAbort(acceptanceBill)}
-		disabled={(acceptanceBill.state != 'Initial') || (!PermissionUtil("acceptanceBill:abort"))}> 作废</Button>);
 	toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
 
 	return (
 		<div>
 			<ToolbarPanel children={toolbar} />
-			<Card title="基本信息" single={true}>
+			<BaseCard title="基本信息" single={true}>
 				<BaseForm items={colChildren} />
-			</Card>
+			</BaseCard>
+            <RemarkCard remark={acceptanceBill.remark} />
 		</div>
 	);
 };

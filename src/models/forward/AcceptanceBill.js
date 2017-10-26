@@ -1,11 +1,14 @@
 import { parse } from 'qs';
 import {
-    querybypage, get, create, edit, remove, finish, abort,
+    querybypage, get, create, edit, abort,
      queryWrhs, refreshCaseQtyAndAmount, approve, beginalc
 } from '../../services/forward/AcceptanceBill';
 import { queryStockExtendInfo } from '../../services/common/common.js';
 import {queryCustomer,getByCode as getCustomer} from '../../services/basicinfo/Customer';
 import { message } from 'antd';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 export default {
     namespace: 'acceptanceBill',
@@ -29,14 +32,10 @@ export default {
             size: 'default'
         },
         showPage: '',
-        batchDeleteProcessModal: false,
-        deleteAcceptanceBillEntitys: [],
         batchApproveProcessModal: false,
         approveAcceptanceBillEntitys: [],
         batchAlcProcessModal: false,
         alcAcceptanceBillEntitys: [],
-        batchFinishProcessModal: false,
-        finishAcceptanceBillEntitys: [],
         batchAbortProcessModal: false,
         abortAcceptanceBillEntitys: [],
         customerModalVisible: false,
@@ -96,7 +95,8 @@ export default {
             yield put({
                 type: 'showCreatePage',
                 payload: {
-                    wrhs: data.obj
+                    wrhs: data.obj,
+                    currentAcceptanceBill:{}
                 }
             });
         },
@@ -178,29 +178,6 @@ export default {
             });
         },
 
-        *finishItem({ payload }, { call, put }) {
-            yield call(finish, {
-                uuid: payload.uuid,
-                version: payload.version
-            });
-            yield put({
-                type: 'get',
-                payload: {
-                    uuid: payload.uuid
-                }
-            });
-        },
-
-        *finishGrid({ payload }, { call, put }) {
-            yield call(finish, {
-                uuid: payload.uuid,
-                version: payload.version
-            });
-            yield put({
-                type: 'query',
-            });
-        },
-
         *abortItem({ payload }, { call, put }) {
             yield call(abort, {
                 uuid: payload.uuid,
@@ -216,17 +193,6 @@ export default {
 
         *abortGrid({ payload }, { call, put }) {
             yield call(abort, {
-                uuid: payload.uuid,
-                version: payload.version
-            });
-            yield put({
-                type: 'query'
-            });
-        },
-
-
-        *remove({ payload }, { call, put }) {
-            yield call(remove, {
                 uuid: payload.uuid,
                 version: payload.version
             });
@@ -294,7 +260,20 @@ export default {
             });
             if (stocks) {
                 const acceptanceBill = payload.acceptanceBill;
-                acceptanceBill.items[payload.index].article = stocks.data.obj[0].article;
+                const acceptanceItem=payload.acceptanceBill.items[payload.index];
+                const stock=stocks.data.obj[0];
+                acceptanceItem.article = stock.article;
+                acceptanceItem.binCode=stock.binCode;
+                acceptanceItem.containerBarCode=stock.containerBarcode;
+                acceptanceItem.supplier=stock.supplier;
+                acceptanceItem.qpcStr=stock.qpcStr;
+                acceptanceItem.munit = stock.munit;
+                acceptanceItem.price = stock.price;
+                acceptanceItem.stockQty = stock.qty;
+                acceptanceItem.productionDate = moment(stock.productionDate);
+                acceptanceItem.validDate = moment(stock.validDate);
+                acceptanceItem.stockBatch = stock.stockBatch;
+                payload.acceptanceBill.items[payload.index]=acceptanceItem;
                 yield put({
                     type: 'showEditPage',
                     payload: {
@@ -386,19 +365,6 @@ export default {
                 showPage: 'search'
             };
         },
-        batchRemoveAcceptanceBill(state, action) {
-            return {
-                ...state,
-                ...action.payload,
-                batchDeleteProcessModal: true
-            };
-        },
-        hideRemoveAcceptanceBillModal(state) {
-            return {
-                ...state,
-                batchDeleteProcessModal: false
-            };
-        },
         batchApproveAcceptanceBill(state, action) {
             return {
                 ...state,
@@ -423,19 +389,6 @@ export default {
             return {
                 ...state,
                 batchAlcProcessModal: false
-            };
-        },
-        batchFinishAcceptanceBill(state, action) {
-            return {
-                ...state,
-                ...action.payload,
-                batchFinishProcessModal: true
-            };
-        },
-        hideFinishAcceptanceBillModal(state) {
-            return {
-                ...state,
-                batchFinishProcessModal: false
             };
         },
         batchAbortAcceptanceBill(state, action) {

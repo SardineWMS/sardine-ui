@@ -5,6 +5,7 @@ import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
 import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
+import Panel from '../../Widget/Panel';
 const EditableCell = require('../../Widget/EditableCell');
 
 const Option = Select.Option;
@@ -91,7 +92,7 @@ const AcceptanceBillCreateForm = ({
 
     baseChildren.push(<BaseFormItem label={"来源单据类型："} key="sourceBillType">
         {getFieldDecorator("sourceBillType", {
-            rules: [{ required: true },{max:100,message:'来源单据类型最大长度是100！'}],
+            rules: [{max:100,message:'来源单据类型最大长度是100！'}],
             initialValue: acceptanceBill.sourceBillType
         })(
             <Input placeholder="请输入：" />
@@ -100,7 +101,7 @@ const AcceptanceBillCreateForm = ({
 
     baseChildren.push(<BaseFormItem label={"来源单据单号："}  key="sourceBillNumber">
         {getFieldDecorator("sourceBillNumber", {
-            rules: [{ required: true },{
+            rules: [{
                 max:30,message:'来源单据单号最大长度是30！'
             }],
             initialValue: acceptanceBill.sourceBillNumber
@@ -123,7 +124,7 @@ const AcceptanceBillCreateForm = ({
     baseChildren.push(
         <BaseFormItem label={"配送体系："} key="deliverySystem">
             {getFieldDecorator("deliverySystem", {
-                rules: [{ required: true }], initialValue: acceptanceBill.deliverySystem
+                rules: [{ required: true }], initialValue: acceptanceBill.deliverySystem ? acceptanceBill.deliverySystem : "tradition"
             })(
                 <Select placeholder="请选择：" onChange={(value) => onSelectDeliverySystem(value)}>
                     <Option value="tradition">传统体系</Option>
@@ -134,14 +135,20 @@ const AcceptanceBillCreateForm = ({
         </BaseFormItem>);
 
     baseChildren.push(<BaseFormItem label={"配送方式："} key="deliveryType">
-        {getFieldDecorator("deliveryType", {
-            rules: [{ required: true },{
-                max:100,message:'配送方式最大长度是100！'
-            }],
-            initialValue: acceptanceBill.deliveryType
-        })(
-            <Input placeholder="请输入：" />
-            )}
+           {getFieldDecorator("deliveryType", {
+                rules: [{ required: true, message: '请选择配送方式！' }], initialValue: acceptanceBill.deliveryType == null ? "仓库配送" : acceptanceBill.deliveryType
+            })(
+                <Select placeholder="请选择：">
+                    <Option value="仓库配送">仓库配送</Option>
+                    <Option value="顺丰">顺丰</Option>
+                    <Option value="申通">申通</Option>
+                    <Option value="圆通">圆通</Option>
+                    <Option value="中通">中通</Option>
+                    <Option value="汇通">汇通</Option>
+                    <Option value="韵达">韵达</Option>
+                </Select>
+                )
+            }
     </BaseFormItem>);
 
     compositiveChildren.push(<BaseFormItem label={"总件数："} key="totalCaseQtyStr">
@@ -175,6 +182,15 @@ const AcceptanceBillCreateForm = ({
             <BaseCard title="基本信息" single={true}>
                 <BaseForm items={colChildren} />
             </BaseCard>
+            <Panel title="说明">
+                <Form.Item>
+                    {getFieldDecorator('remark', {
+                        initialValue: acceptanceBill.remark, rules: [{ max: 255, message: '说明最大长度是255！' }]
+                    })(
+                        <Input type="textarea" autosize={{ minRows: 4 }} />
+                        )}
+                </Form.Item>
+            </Panel>
         </div>
     );
 };

@@ -15,10 +15,8 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
    const {
         list,pagination, showPage,
         currentAcceptanceBill, current,
-        batchDeleteProcessModal, deleteAcceptanceBillEntitys,
         batchApproveProcessModal,approveAcceptanceBillEntitys,
         batchAlcProcessModal,alcAcceptanceBillEntitys,
-        batchFinishProcessModal,finishAcceptanceBillEntitys,
         batchAbortProcessModal,abortAcceptanceBillEntitys,
         acceptanceBillNext,wrhs,customers,customerModalVisible,
         customerPagination,stocks,customer
@@ -48,10 +46,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         },
         onCreate() {
             dispatch({
-                type: 'acceptanceBill/onCreate',
-                payload: {
-                  currentAcceptanceBill: {}
-                }
+                type: 'acceptanceBill/onCreate'
             });
         },
         onViewAcceptanceBill(acceptanceBill) {
@@ -59,30 +54,6 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                 type: 'acceptanceBill/get',
                 payload: {
                     uuid:acceptanceBill.uuid
-                }
-            });
-        },
-        onDeleteBatch(acceptanceBills) {
-            if (acceptanceBills.length <= 0) {
-                message.warning("请选择要删除的领用单！", 2, '');
-                return;
-            };
-            dispatch({
-                type: 'acceptanceBill/batchRemoveAcceptanceBill',
-                payload: {
-                    deleteAcceptanceBillEntitys: acceptanceBills
-                }
-            });
-        },
-        onFinishBatch(acceptanceBills) {
-            if (acceptanceBills.length <= 0) {
-                message.warning("请选择要完成的领用单！", 2, '');
-                return;
-            };
-            dispatch({
-                type: 'acceptanceBill/batchFinishAcceptanceBill',
-                payload: {
-                    finishAcceptanceBillEntitys: acceptanceBills
                 }
             });
         },
@@ -143,7 +114,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
             acceptanceBill.items=currentAcceptanceBill.items;
             if(acceptanceBill.uuid){
                 dispatch({
-                    type: 'acceptanceBill/edit',
+                    type: 'acceptanceBill/editItem',
                     payload: acceptanceBill
                 });
             }else{
@@ -198,15 +169,15 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
     };
 
     let items=[];
-    if(currentAcceptanceBill.items)
+    if(currentAcceptanceBill && currentAcceptanceBill.items)
         items=currentAcceptanceBill.items;
     else
-      {
+    {
         const item=new Object();
         item.line=1;
         items.push(item);
         currentAcceptanceBill.items=items;
-      };
+    };
     const acceptanceBillItemProps={ 
         acceptanceBillItems:items,
         stocks:stocks,
@@ -273,15 +244,6 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                 }
             });
         },
-        onDelete(acceptanceBill){
-            dispatch({
-                type: 'acceptanceBill/remove',
-                payload: {
-                    uuid: acceptanceBill.uuid,
-                    version:acceptanceBill.version
-                }
-            });
-        },
         onApprove(acceptanceBill){
             dispatch({
                 type: 'acceptanceBill/approveItem',
@@ -294,15 +256,6 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
          onBeginAlc(acceptanceBill){
             dispatch({
                 type: 'acceptanceBill/beginAlcItem',
-                payload: {
-                    uuid: acceptanceBill.uuid,
-                    version:acceptanceBill.version
-                }
-            });
-        },
-        onFinish(acceptanceBill){
-            dispatch({
-                type: 'acceptanceBill/finishItem',
                 payload: {
                     uuid: acceptanceBill.uuid,
                     version:acceptanceBill.version
@@ -325,32 +278,6 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         }
     };
 
-    const batchDeleteAcceptanceBillsProps = {
-        showConfirmModal: batchDeleteProcessModal,
-        records: deleteAcceptanceBillEntitys ? deleteAcceptanceBillEntitys : [],
-        next: acceptanceBillNext,
-        actionText: '删除',
-        entityCaption: '领用单',
-        batchProcess(acceptanceBill) {
-          dispatch({
-            type: 'acceptanceBill/remove',
-            payload: {
-              uuid: acceptanceBill.uuid,
-              version: acceptanceBill.version
-            }
-          });
-        },
-        hideConfirmModal() {
-          dispatch({
-            type: 'acceptanceBill/hideRemoveAcceptanceBillModal'
-          });
-        },
-        refreshGrid() {
-          dispatch({
-            type: 'acceptanceBill/query'
-          });
-        }
-    };
 
     const batchApproveAcceptanceBillsProps = {
         showConfirmModal: batchApproveProcessModal,
@@ -397,33 +324,6 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         hideConfirmModal() {
           dispatch({
             type: 'acceptanceBill/hideAlcAcceptanceBillModal'
-          });
-        },
-        refreshGrid() {
-          dispatch({
-            type: 'acceptanceBill/query'
-          });
-        }
-    };
-
-    const batchFinishAcceptanceBillsProps = {
-        showConfirmModal: batchFinishProcessModal,
-        records: finishAcceptanceBillEntitys ? finishAcceptanceBillEntitys : [],
-        next: acceptanceBillNext,
-        actionText: '完成',
-        entityCaption: '领用单',
-        batchProcess(acceptanceBill) {
-          dispatch({
-            type: 'acceptanceBill/finishGrid',
-            payload: {
-              uuid: acceptanceBill.uuid,
-              version: acceptanceBill.version
-            }
-          });
-        },
-        hideConfirmModal() {
-          dispatch({
-            type: 'acceptanceBill/hideFinishAcceptanceBillModal'
           });
         },
         refreshGrid() {
@@ -487,10 +387,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                                 <div>
                                     <AcceptanceBillSearchForm {...acceptanceBillSearchProps} />
                                     <AcceptanceBillSearchGrid {...acceptanceBillListProps} />
-                                    <WMSProgress {...batchDeleteAcceptanceBillsProps} />
-                                    <WMSProgress {...batchApproveAcceptanceBillsProps} />
                                     <WMSProgress {...batchBeginAlcAcceptanceBillsProps} />
-                                    <WMSProgress {...batchFinishAcceptanceBillsProps} />
                                     <WMSProgress {...batchAbortAcceptanceBillsProps} />
                                 </div>
                             )

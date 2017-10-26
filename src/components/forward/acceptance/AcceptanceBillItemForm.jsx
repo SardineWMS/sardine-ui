@@ -23,6 +23,12 @@ const AcceptanceBillItemForm = ({
 	refreshStockInfo,
 	refreshCaseQtyAndAmount
 }) => {
+	function converDate(text) {
+		if (text == null || text == undefined)
+			return null;
+		return moment(text).format('YYYY-MM-DD');
+	}
+
 	const columns = [];
 
 	columns.push({
@@ -84,7 +90,8 @@ const AcceptanceBillItemForm = ({
 		title: '生产日期',
 		key: 'productionDate',
 		dataIndex: 'productionDate',
-		width: 150
+		width: 150,
+		render: text => converDate(text)
 	});
 
 	columns.push({
@@ -98,13 +105,15 @@ const AcceptanceBillItemForm = ({
 		title: '价格',
 		key: 'price',
 		dataIndex: 'price',
-		width: 70
+		width: 70,
+		render: (text, record, index) => renderRowEditableCell(record, "price", text)
 	});
 	columns.push({
 		title: '库存数量',
 		key: 'stockQty',
 		dataIndex: 'stockQty',
-		width: 70
+		width: 70,
+		render: (text, record) => typeof record.stockQty != 'undefined'?record.stockQty:text
 	});
 
 	if (editable) {
@@ -180,12 +189,12 @@ const AcceptanceBillItemForm = ({
 	};
 
 	function handleChange(record, key, text) {
-		if ("articleCode" === key) {
+		if (typeof text != 'undefined' &&"articleCode" === key) {
 			queryStocks(text, record.line - 1);
 		} else if ("qty" === key) {
 			record.qty = text;
 			refreshCaseQtyAndAmount(record);
-		};
+		}
 	};
 
 	let binCodeOptions = [];
@@ -219,13 +228,13 @@ const AcceptanceBillItemForm = ({
 		return (<RowEditCellSelect
 			editable={editable}
 			options={options}
-			onFocus={value => handlerSelectFocus(record, value, key)}
+			onFocus={() => handlerSelectFocus(record, key)}
 			onChange={value => handlerSelect(record, value, key)}
 			value={text}
 		/>);
 	};
 
-	function handlerSelectFocus(record, value, key) {
+	function handlerSelectFocus(record, key) {
 		if (key === "containerBarCode") {
 			containerBarCodeOptions.splice(0, containerBarCodeOptions.length);
 			stocks.map(function (stock) {
@@ -266,10 +275,16 @@ const AcceptanceBillItemForm = ({
 			record.supplier = value;
 		} else if (key === "qpcStr") {
 			record.qpcStr = value;
-			stocks.map(function (stock) {
+			stockSelect(record);
+			refreshStockInfo(record);
+		};
+	};
+	
+	function stockSelect(record){
+		stocks.map(function (stock) {
 				if (stock.binCode === record.binCode && stock.containerBarcode === record.containerBarCode &&
 					stock.supplier.uuid === record.supplier.uuid && stock.qpcStr === value) {
-					record.munit = stock.measureUnit;
+					record.munit = stock.munit;
 					record.price = stock.price;
 					record.stockQty = stock.qty;
 					var produceDate = moment(stock.productionDate);
@@ -278,11 +293,8 @@ const AcceptanceBillItemForm = ({
 					record.stockBatch = stock.stockBatch;
 				};
 			});
-			refreshStockInfo(record);
-		};
 	};
-
-
+	
 
 	return (
 		<div>

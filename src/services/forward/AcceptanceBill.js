@@ -1,6 +1,6 @@
 import request from '../../utils/request';
 import qs from 'qs';
-import { query, createBase, addTokenToUrl, updateBaseNullBody, updateBase, deleteBase } from '../../utils/BaseService.js';
+import { query, createBase, addTokenToUrl, updateBaseNullBody, updateBase } from '../../utils/BaseService.js';
 
 export async function querybypage(params) {
   if (params == null)
@@ -24,11 +24,6 @@ export async function edit(params) {
   return request(addTokenToUrl(url), updateBase(params));
 }
 
-export async function remove(params) {
-  const url = `/swms/out/acceptance/remove?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url), deleteBase(params));
-}
-
 export async function approve(params) {
   const url = `/swms/out/acceptance/approve?${qs.stringify(params)}`;
   return request(addTokenToUrl(url), updateBaseNullBody(params));
@@ -36,11 +31,6 @@ export async function approve(params) {
 
 export async function beginalc(params) {
   const url = `/swms/out/acceptance/beginalc?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url), updateBaseNullBody(params));
-}
-
-export async function finish(params) {
-  const url = `/swms/out/acceptance/finish?${qs.stringify(params)}`;
   return request(addTokenToUrl(url), updateBaseNullBody(params));
 }
 
