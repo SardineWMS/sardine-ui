@@ -13,7 +13,7 @@ import AlcNtcBillCreateForm from '../../components/forward/alcntc/AlcNtcBillCrea
 import AlcNtcBillCreateItem from '../../components/forward/alcntc/AlcNtcBillCreateItem';
 import AlcNtcBillView from '../../components/forward/alcntc/AlcNtcBillView';
 import AlcNtcBillViewItem from '../../components/forward/alcntc/AlcNtcBillViewItem';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
 
 function AlcNtcBill({ location, dispatch, alcNtc }) {
     const { list, pagination, showPage, billItems, currentItem,
@@ -31,8 +31,9 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
         pagination: pagination,
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
-                pathname: '/forward/alcNtc',
+                pathname: '/forward/alcNtcBill',
                 query: {
+                    ...location.query,
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.field,
@@ -91,10 +92,12 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
 
     const alcNtcBillSearchFormProps = {
         onSearch(fieldsValue) {
-            dispatch({
-                type: 'alcNtc/query',
-                payload: fieldsValue
-            });
+            dispatch(routerRedux.push({
+                pathname: '/forward/alcNtcBill',
+                query: {
+                    ...fieldsValue
+                }
+            }));
         }
     };
 
@@ -215,6 +218,17 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                 type: 'alcNtc/gridAudit',
                 payload: item
             });
+        },
+        onBack() {
+            dispatch({
+                type: 'alcNtc/query'
+            })
+        },
+        onAbort(item) {
+            dispatch({
+                type: 'alcNtc/abort',
+                payload: item
+            })
         }
     };
 
@@ -290,16 +304,8 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
         next: alcNtcBillNext,
         actionText: '作废',
         entityCaption: '配单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'alcNtc/gridAbort',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token")
-                }
-            });
-        },
+        url: '/swms/out/alcNtc/abort',
+        canSkipState: 'aborted',
         hideConfirmModal() {
             dispatch({
                 type: 'alcNtc/hideAbortAlcNtcBillModal'

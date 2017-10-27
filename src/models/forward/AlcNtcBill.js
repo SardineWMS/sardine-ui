@@ -60,7 +60,11 @@ export default {
                         list: data.obj.records,
                         pagination: {
                             total: data.obj.recordCount,
-                            current: data.obj.page
+                            current: data.obj.page,
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            size: 'default'
                         },
                         currentItem: {},
                         billItems: []
@@ -231,9 +235,11 @@ export default {
                         payload.currentItem.totalAmount = 0;
                     }
                     else {
-                        const { data } = yield call(caseQtyStrSubtract, { subStr: payload.currentItem.totalCaseQtyStr, subedStr: item.caseQtyStr });
-                        payload.currentItem.totalCaseQtyStr = data.obj;
-                        payload.currentItem.totalAmount = Number.parseFloat(payload.currentItem.totalAmount) - Number.parseFloat(item.amount);
+                        if ((item.caseQtyStr == null || item.caseQtyStr == "") == false) {
+                            const { data } = yield call(caseQtyStrSubtract, { subStr: payload.currentItem.totalCaseQtyStr, subedStr: item.caseQtyStr });
+                            payload.currentItem.totalCaseQtyStr = data.obj;
+                            payload.currentItem.totalAmount = Number.parseFloat(payload.currentItem.totalAmount) - Number.parseFloat(item.amount);
+                        }
                     };
                 };
             };
@@ -355,6 +361,14 @@ export default {
                 type: 'query',
                 payload: {}
             });
+        },
+
+        *abort({ payload }, { call, put }) {
+            yield call(abort, { uuid: payload.uuid, version: payload.version });
+            yield put({
+                type: 'viewAlcNtc',
+                payload: payload
+            })
         }
 
     },

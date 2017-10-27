@@ -51,6 +51,8 @@ class AlcNtcBillSearchGrid extends React.Component {
                 return '配送中';
             if (text == 'handover')
                 return '已交接';
+            if (text == "used")
+                return '已使用';
         };
 
         function convertMode(text) {

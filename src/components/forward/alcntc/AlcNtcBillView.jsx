@@ -16,7 +16,8 @@ const AlcNtcBillView = ({
     onBack,
     onEdit,
     onDelete,
-    onAudit
+    onAudit,
+    onAbort
 }) => {
     function convertState(text) {
         if (text == "initial")
@@ -33,7 +34,26 @@ const AlcNtcBillView = ({
             return '配送中';
         if (text == 'handover')
             return '已交接';
+        if (text == "used")
+            return '已使用';
     };
+
+    function convertDeliveryMode(text) {
+        if (text == "warehouseDelivery")
+            return "仓库配送";
+        if (text == "sf")
+            return "顺丰";
+        if (text == "st")
+            return "申通";
+        if (text == "yt")
+            return "圆通";
+        if (text == "zt")
+            return '中通';
+        if (text == "ht")
+            return '汇通';
+        if (text == "yd")
+            return '韵达';
+    }
 
     let basicForm = [];
     basicForm.push(<BaseFormItem label="单号：" key={Guid()}>
@@ -50,7 +70,7 @@ const AlcNtcBillView = ({
         <span>{"[" + item.sourceBillNumber + "]" + item.sourceBillType}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="配送方式：" key={Guid()}>
-        <span>{item.deliveryMode}</span>
+        <span>{convertDeliveryMode(item.deliveryMode)}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="配送原因：" key={Guid()}>
         <span>{item.deliveryReason}</span>
@@ -82,15 +102,22 @@ const AlcNtcBillView = ({
 
     let toolbar = [];
     toolbar.push(
+        <Button onClick={() => onBack()}>返回</Button>
+    )
+    toolbar.push(
         <Button key={Guid()} onClick={() => onEdit(item)} disabled={(item.state != 'initial') || (!PermissionUtil("alcNtcBill:edit"))}>编辑</Button>
     );
     toolbar.push(
+        <Button onClick={() => onAbort(item)} disabled={item.state != 'initial' || (!PermissionUtil("alcNtcBill:edit"))}>作废</Button>
+    )
+    /**
+    toolbar.push(
         <Popconfirm title="确定要删除吗？" onConfirm={() => onDelete(item)}>
-            <Button disabled={(item.state != 'initial') || (!PermissionUtil("decIncBill:audit"))}>删除</Button>
+            <Button disabled={!((item.state == 'initial') || (item.state == 'aborted')) || (!PermissionUtil("alcNtcBill:delete"))}>删除</Button>
         </Popconfirm>
     );
     toolbar.push(<Button onClick={() => onAudit(item)} disabled={(item.state != 'initial') || (!PermissionUtil("alcNtcBill:edit"))}>审核</Button >)
-
+    */
     const articleItemProps = {
         dataSource: item.items
     };
@@ -103,7 +130,7 @@ const AlcNtcBillView = ({
                 <BaseForm items={operateForm} />
             </BaseCard>
             <BaseCard single={true} title="商品明细">
-                <BaseForm items={<ArticleItemGrid {...articleItemProps} />} />
+                <ArticleItemGrid {...articleItemProps} />
             </BaseCard>
             <RemarkCard />
         </div>
