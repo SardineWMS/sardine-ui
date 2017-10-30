@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Table, Popconfirm, Pagination, Button,Row,Col,Spin } from 'antd';
+import { Table, Popconfirm, Pagination, Button, Row, Col, Spin } from 'antd';
 import PermissionUtil from '../../../utils/PermissionUtil';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils'
 
@@ -36,85 +36,62 @@ function SupplierSerachGrid({
 			title: '代码',
 			dataIndex: 'code',
 			key: 'code',
-			render: (text, record) => <p><a onClick={() => onViewItem(record)} disabled={!PermissionUtil("supplier:view")}>{text}</a></p>,
-			width: 50
+			render: (text, record) => <p><a onClick={() => onViewItem(record)} disabled={!PermissionUtil("supplier:view")}>{text}</a></p>
 		},
 		{
-			title: '姓名',
+			title: '名称',
 			dataIndex: 'name',
-			key: 'name',
-			width: 100
+			key: 'name'
 		}, {
 			title: '简称',
 			dataIndex: 'simpleName',
-			key: 'simpleName',
-			width: 100
+			key: 'simpleName'
 		},
 		{
 			title: '状态',
 			dataIndex: 'state',
 			key: 'state',
-			render: (text) => text == "online" ? "正常" : "停用",
-			width: 50
+			render: (text) => text == "online" ? "正常" : "停用"
 		},
 		{
 			title: '联系方式',
 			dataIndex: 'phone',
-			key: 'phone',
-			width: 100
+			key: 'phone'
 		}, {
 			title: '联系人',
 			dataIndex: 'contacter',
-			key: 'contacter',
-			width: 100
+			key: 'contacter'
 		},
 		{
 			title: '地址',
 			dataIndex: 'address',
-			key: 'address',
-			width: 200
+			key: 'address'
 		}, {
 			title: 'EMAIL',
 			dataIndex: 'eMail',
-			key: 'eMail',
-			width: 100
+			key: 'eMail'
 		}, {
 			title: '邮编',
 			dataIndex: 'zCode',
-			key: 'zCode',
-			width: 80
-		},{
+			key: 'zCode'
+		}, {
 			title: '传真',
 			dataIndex: 'fax',
-			key: 'fax',
-			width: 80
-		},{
-			title: '创建信息',
-			dataIndex: 'createInfo',
-			key: 'createInfo',
-			width: 100,
-			render:(text,record)=>createInfo2String(record),
-		},{
-			title: '最后修改信息',
-			dataIndex: 'lastModifyInfo',
-			key: 'lastModifyInfo',
-			width: 100,
-			render:(text,record)=>lastModifyInfo2String(record),
+			key: 'fax'
 		}
-
 	];
 
 	const rowSelection = {
 		onChange: (selectedRowsKeys, selectedRows) => {
 		},
 		onSelect: (record, selected, selectedRows) => {
-			selectedRowKeys = selectedRows;			
+			selectedRowKeys = selectedRows;
 		},
 		onSelectAll: (selected, selectedRows, changeRows) => {
-			selectedRowKeys = selectedRows;			
+			selectedRowKeys = selectedRows;
 		},
 		getCheckboxProps: record => ({
-		//disabled: record.name === 'Disabled User',
+			//disabled: record.name === 'Disabled User',
 		}),
 	};
 
@@ -122,20 +99,20 @@ function SupplierSerachGrid({
 	//bordered 有边的；
 	return (
 		<div>
-			<Table 
-			 	size="small"
-				bordered 
-			 	rowSelection={rowSelection}
+			<Table
+				size="small"
+				bordered
+				rowSelection={rowSelection}
 				columns={columns}
 				title={
 					() =>
 						<div>
 							<Row type="flex">
-							<Col><Button type="primary" onClick={handleCreate} disabled={!PermissionUtil("supplier:create")}> 新建</Button></Col>
-							<Col><Button onClick={handleRecoverBatch} disabled={!PermissionUtil("supplier:edit")}> 启用</Button></Col>
-							<Col><Button onClick={handleRemoveBatch} disabled={!PermissionUtil("supplier:edit")}> 停用</Button></Col>
-							<Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
-							</Row>	
+								<Col><Button type="primary" onClick={handleCreate} disabled={!PermissionUtil("supplier:create")}> 新建</Button></Col>
+								<Col><Button onClick={handleRecoverBatch} disabled={!PermissionUtil("supplier:edit")}> 启用</Button></Col>
+								<Col><Button onClick={handleRemoveBatch} disabled={!PermissionUtil("supplier:edit")}> 停用</Button></Col>
+								<Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
+							</Row>
 						</div>
 				}
 				dataSource={dataSource}
