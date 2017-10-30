@@ -75,7 +75,7 @@ const ReceiveBillView = ({
                 <BaseForm items={extendForm} />
             </BaseCard>
             <BaseCard single={true} title="商品明细">
-                <BaseForm items={<ArticleItemGrid {...articleItemProps} />} />
+                <ArticleItemGrid {...articleItemProps} />}
             </BaseCard>
             <RemarkCard />
         </div>
