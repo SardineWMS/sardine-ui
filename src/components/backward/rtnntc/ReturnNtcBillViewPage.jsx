@@ -38,13 +38,13 @@ const ReturnNtcBillViewPage = ({
         <span>{item.billNumber}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="客户：" key={Guid()}>
-        <span>{item.customer.name + "[" + item.customer.code + "]"}</span>
+        <span>{"[" + item.customer.code + "]" + item.customer.name}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="仓位：" key={Guid()}>
-        <span>{item.wrh.name + "[" + item.wrh.code + "]"}</span>
+        <span>{"[" + item.wrh.code + "]" + item.wrh.name}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="来源单据：" key={Guid()}>
-        <span>{item.sourceBillNumber == null ? "" : item.sourceBillType + "[" + item.sourceBillNumber + "]"}</span>
+        <span>{item.sourceBillNumber == null ? "" : "[" + item.sourceBillNumber + "]" + item.sourceBillType}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="退货日期：" key={Guid()}>
         <span>{moment(item.returnDate).format("YYYY-MM-DD")}</span>
