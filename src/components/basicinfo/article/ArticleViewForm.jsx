@@ -85,7 +85,7 @@ const ArticleViewForm = ({
     );
     businessChildren.push(
         <BaseFormItem label="状态：" key="state">
-            <span>{article.state == "normal" ? "正常" : article.state} </span>
+            <span>{article.state == "online" ? "正常" : "停用"} </span>
         </BaseFormItem>
     );
     businessChildren.push(

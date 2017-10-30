@@ -85,25 +85,7 @@ function ArticleSearch({
     title: '售价',
     dataIndex: 'sellPrice',
     key: 'sellPrice'
-  }, {
-    title: '创建信息',
-    dataIndex: 'createInfo',
-    key: 'createInfo',
-    render: (text, record) => createInfo2String(record)
-  }, {
-    title: '最后修改信息',
-    dataIndex: 'lastModifyInfo',
-    key: 'lastModifyInfo',
-    render: (text, record) => lastModifyInfo2String(record)
-  }];
-
-  const menu = (
-    <Menu>
-      <Menu.Item key="1">1st menu item</Menu.Item>
-      <Menu.Item key="2">2nd menu item</Menu.Item>
-      <Menu.Item key="3">3d menu item</Menu.Item>
-    </Menu>
-  );
+  }, ];
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {
@@ -127,11 +109,6 @@ function ArticleSearch({
         rowSelection={rowSelection}
         title={() =>
           <div>
-            <Dropdown overlay={menu}>
-              <Button type="ghost" style={{ marginLeft: 8 }}>
-                更多操作 <Icon type="down" />
-              </Button>
-            </Dropdown>
             <Button onClick={handleCreate} disabled={!PermissionUtil("article:create")}>新建</Button>
             <Button onClick={handleOffline} disabled={!PermissionUtil("article:edit")}>停用</Button>
             <Button onClick={handleOnline} disabled={!PermissionUtil("article:edit")}>启用</Button>
