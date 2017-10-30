@@ -14,7 +14,8 @@ import ReceiveBillItemGrid from '../../components/forward/receive/ReceiveBillIte
 import ReceiveBillView from '../../components/forward/receive/ReceiveBillView.jsx';
 import ReceiveBillSearch from '../../components/forward/receive/ReceiveBillSearchForm.jsx';
 import { removeByValue } from '../../utils/ArrayUtils.js';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
+import WMSProgressForRemove from '../../components/widget/NewProgressForRemove';
 
 function Receive({ location, dispatch, receive }) {
     const {
@@ -381,16 +382,8 @@ function Receive({ location, dispatch, receive }) {
         next: receiveBillNext,
         actionText: '删除',
         entityCaption: '收货单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'receive/gridRemove',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token")
-                }
-            });
-        },
+        url: '/swms/in/receive/remove',
+        canSkipState: '',
         hideConfirmModal() {
             dispatch({
                 type: 'receive/hideDeleteReceiveBillModal'
@@ -412,16 +405,8 @@ function Receive({ location, dispatch, receive }) {
         next: receiveBillNext,
         actionText: '完成',
         entityCaption: '收货单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'receive/gridAudit',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token")
-                }
-            });
-        },
+        url: '/swms/in/receive/audit',
+        canSkipState: 'Audited',
         hideConfirmModal() {
             dispatch({
                 type: 'receive/hideFinishReceiveBillModal'
@@ -459,7 +444,7 @@ function Receive({ location, dispatch, receive }) {
             return <div>
                 <ReceiveBillSearch {...receiveBillSearchProps} />
                 <ReceiveGrid {...receiveListProps} />
-                <WMSProgress {...batchProcessDeleteReceiveBillProps} />
+                <WMSProgressForRemove {...batchProcessDeleteReceiveBillProps} />
                 <WMSProgress {...batchProcessFinishReceiveBillProps} />
             </div>
     };
