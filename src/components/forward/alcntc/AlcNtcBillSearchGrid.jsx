@@ -99,8 +99,9 @@ class AlcNtcBillSearchGrid extends React.Component {
         },
         {
             title: '来源单据',
-            dataIndex: 'souceBillNumber',
-            key: 'souceBillNumber'
+            dataIndex: 'sourceBillNumber',
+            key: 'sourceBillNumber',
+            render: (text, record) => record.sourceBillType + "[" + record.sourceBillNumber + "]"
         },
         {
             title: '仓位',
