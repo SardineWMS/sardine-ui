@@ -78,7 +78,7 @@ const ReturnNtcBillCreateForm = ({
         </BaseFormItem>
     );
     children.push(
-        <BaseFormItem label={"来源单据号"} >
+        <BaseFormItem label={"来源单号"} >
             {getFieldDecorator("sourceBillNumber", { rules: [{ required: false }, { max: 30, message: '来源单据号最大长度是30！' }], initialValue: item.sourceBillNumber })(
                 <Input placeholder="请输入" />
             )}
