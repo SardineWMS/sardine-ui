@@ -47,11 +47,9 @@ const PickAreaCreateForm = ({
     basic.push(
         <BaseFormItem label={"代码"} key="code">
             {getFieldDecorator("code", {
-                rules: [{ required: true, message: '代码不能为空' }, {
-                    max: 30, message: '代码最大长度是30！'
-                }], initialValue: item.code
+                rules: [{ required: true, message: '代码不能为空' }, { pattern: /^[0-9]{0,30}$/, message: "代码长度最大为30,且只能输入数字" }], initialValue: item.code
             })(
-                <Input placeholder="请输入" />
+                <Input placeholder="请输入" disabled={item.code} />
                 )}
         </BaseFormItem>
     );
