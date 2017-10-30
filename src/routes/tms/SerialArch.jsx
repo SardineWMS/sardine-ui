@@ -8,11 +8,10 @@ import SerialArchSearchGrid from '../../components/tms/serialarch/SerialArchSear
 import SerialArchCreateModal from '../../components/tms/serialarch/SerialArchCreateModal';
 import SerialArchLineCreateModal from '../../components/tms/serialarch/SerialArchLineCreateModal';
 import SerialArchLineSelectCustomerModal from '../../components/tms/serialarch/SerialArchLineSelectCustomerModal';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgressForRemove';
 
 function SerialArch({ location, dispatch, serialArch }) {
-    const { showCreateModal, treeData, pagination, showCreateLineModal, showAddCustomerModal, currentLine, list, customers, batchRemoveProcessModal, removeCustomerEntitys, customerNext, postponeCustomerEntitys, stickCustomerEntitys, batchStickProcessModal,
-        batchPostponeProcessModal, currentLineCode } = serialArch;
+    const { showCreateModal, treeData, pagination, showCreateLineModal, showAddCustomerModal, currentLine, list, customers, batchRemoveProcessModal, removeCustomerEntitys, customerNext, currentLineCode, customerPagination } = serialArch;
 
     const serialArchCreateModalProps = {
         visible: showCreateModal,
@@ -85,28 +84,16 @@ function SerialArch({ location, dispatch, serialArch }) {
                 payload: { record, lineCode: currentLineCode }
             });
         },
-        onPostponeBatch(customers) {
-            if (customers.length <= 0) {
-                message.warning("请选择要该线路要置后的客户", 2, '');
-                return;
-            };
+        onPostpone(record) {
             dispatch({
-                type: 'serialArch/batchPostpone',
-                payload: {
-                    postponeCustomerEntitys: customers
-                }
+                type: 'serialArch/postponeCustomer',
+                payload: { record, lineCode: currentLineCode }
             });
         },
-        onStickBatch(customers) {
-            if (customers.length <= 0) {
-                message.warning("请选择要该线路要置后的客户", 2, '');
-                return;
-            };
+        onStick(record) {
             dispatch({
-                type: 'serialArch/batchStick',
-                payload: {
-                    stickCustomerEntitys: customers
-                }
+                type: 'serialArch/stickCustomer',
+                payload: { record, lineCode: currentLineCode }
             });
         }
     };
@@ -120,6 +107,14 @@ function SerialArch({ location, dispatch, serialArch }) {
                     type: 'serialArch/getLine',
                     payload: { lineCode: code }
                 });
+        },
+        onRemoveLine(code) {
+            dispatch({
+                type: 'serialArch/removeLine',
+                payload: {
+                    code: code
+                }
+            })
         }
     };
 
@@ -144,6 +139,7 @@ function SerialArch({ location, dispatch, serialArch }) {
     const serialArchLineSelectCustomerModalProps = {
         visible: showAddCustomerModal,
         dataSource: customers,
+        pagination: customerPagination,
         onCancel() {
             dispatch({
                 type: 'serialArch/hideAddCustomer'
@@ -167,7 +163,7 @@ function SerialArch({ location, dispatch, serialArch }) {
         onSearch(field) {
             dispatch({
                 type: 'serialArch/searchCustomer',
-                payload: field
+                payload: { field, currentLine }
             })
         }
     };
@@ -178,16 +174,8 @@ function SerialArch({ location, dispatch, serialArch }) {
         next: customerNext,
         actionText: '踢出线路',
         entityCaption: '客户',
-        batchProcess(entity) {
-            dispatch({
-                type: 'serialArch/gridRemoveCustomer',
-                payload: {
-                    customerUuid: entity.customer.uuid,
-                    lineUuid: currentLine,
-                    lineCode: currentLineCode
-                }
-            });
-        },
+        url: '/swms/tms/serialarch/removeCustomer',
+        canSkipState: '',
         hideConfirmModal() {
             dispatch({
                 type: 'serialArch/hideRemoveCustomerModal'
@@ -198,68 +186,6 @@ function SerialArch({ location, dispatch, serialArch }) {
                 type: 'serialArch/getLine',
                 payload: {
                     lineCode: currentLineCode
-                }
-            });
-        }
-    };
-    const batchProcessStickCustomerProps = {
-        showConfirmModal: batchStickProcessModal,
-        records: stickCustomerEntitys ? stickCustomerEntitys : [],
-        next: customerNext,
-        actionText: '置顶',
-        entityCaption: '客户',
-        batchProcess(entity) {
-            dispatch({
-                type: 'serialArch/stickCustomer',
-                payload: {
-                    customerUuid: entity.customer.uuid,
-                    lineUuid: currentLine,
-                    order: entity.order,
-                    lineCode: currentLineCode
-                }
-            });
-        },
-        hideConfirmModal() {
-            dispatch({
-                type: 'serialArch/hideStickCustomerModal'
-            });
-        },
-        refreshGrid() {
-            dispatch({
-                type: 'serialArch/getLine',
-                payload: {
-                    lineCode: currentLineCode
-                }
-            });
-        }
-    };
-    const batchProcessPostponeCustomerProps = {
-        showConfirmModal: batchPostponeProcessModal,
-        records: postponeCustomerEntitys ? postponeCustomerEntitys : [],
-        next: customerNext,
-        actionText: '置后',
-        entityCaption: '客户',
-        batchProcess(entity) {
-            dispatch({
-                type: 'serialArch/postponeCustomer',
-                payload: {
-                    customerUuid: entity.customer.uuid,
-                    lineUuid: currentLine,
-                    order: entity.order,
-                    lineCode: currentLineCode
-                }
-            });
-        },
-        hideConfirmModal() {
-            dispatch({
-                type: 'serialArch/hidePostponeCustomerModal'
-            });
-        },
-        refreshGrid() {
-            dispatch({
-                type: 'serialArch/getLine',
-                payload: {
-                    lineCode: currentLineCode,
                 }
             });
         }
@@ -278,10 +204,8 @@ function SerialArch({ location, dispatch, serialArch }) {
                     <SerialArchSearchGrid {...SerialArchSearchGridProps} />
                     <SerialArchCreateModalGen />
                     <SerialArchLineCreateModalGen />
-                    <SerialArchLineSelectCustomerModalGen />
+                    <SerialArchLineSelectCustomerModal {...serialArchLineSelectCustomerModalProps} />
                     <WMSProgress {...batchProcessRemoveCustomerProps} />
-                    <WMSProgress {...batchProcessStickCustomerProps} />
-                    <WMSProgress {...batchProcessPostponeCustomerProps } />
                 </Content>
             </Layout>
         </div>

@@ -5,7 +5,7 @@ import styles from '../../less/EditTable.less';
 import PermissionUtil from '../../../utils/PermissionUtil';
 import SerialArchLineSearchCustomer from './SerialArchLineSearchCustomer';
 
-const SerialArchLineSelectCustomerModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave, selectedRowKeys = [], onOk, onSearch }) => {
+const SerialArchLineSelectCustomerModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onAdd, onDelete, onSave, selectedRowKeys = [], onOk, onSearch, pagination }) => {
     const columns = [
         {
             title: '客户代码',
@@ -16,6 +16,11 @@ const SerialArchLineSelectCustomerModal = ({ dataSource, visible, onEdit, onCanc
             title: '客户名称',
             dataIndex: 'name',
             render: (text, record) => renderColumns(record, "binTypeName", text)
+        },
+        {
+            title: '状态',
+            dataIndex: 'state',
+            render: text => text == 'online' ? '正常' : '停用'
         }
     ];
 
@@ -75,7 +80,7 @@ const SerialArchLineSelectCustomerModal = ({ dataSource, visible, onEdit, onCanc
 
     return (<Modal {...modalOpts}>
         <SerialArchLineSearchCustomer {...searchProps} />
-        <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={false} rowSelection={rowSelection}></Table>
+        <Table bordered dataSource={dataSource} columns={columns} size="small" pagination={pagination} rowSelection={rowSelection}></Table>
     </Modal>);
 };
 

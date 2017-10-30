@@ -70,3 +70,8 @@ export async function querySerialArch(params) {
     const url = "/swms/tms/serialarch/querySerialArch";
     return request(query(url, params));
 }
+
+export async function removeLine(params) {
+    const url = "/swms/tms/serialarch/removeline";
+    return request(query(url, params), deleteBase(params))
+}

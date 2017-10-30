@@ -12,8 +12,6 @@ class SerialArchSearchGrid extends React.Component {
             selectedRows: []
         };
         this.handleRemoveBatch = this.handleRemoveBatch.bind(this);
-        this.handleStickBatch = this.handleStickBatch.bind(this);
-        this.handlePostponeBatch = this.handlePostponeBatch.bind(this);
         this.handleClick = this.handleClick.bind(this);
     };
     componentWillReceiveProps(newProps) {
@@ -28,12 +26,6 @@ class SerialArchSearchGrid extends React.Component {
     };
     handleRemoveBatch() {
         this.state.onRemoveBatch(this.state.selectedRows);
-    };
-    handleStickBatch() {
-        this.state.onStickBatch(this.state.selectedRows);
-    };
-    handlePostponeBatch() {
-        this.state.onPostponeBatch(this.state.selectedRows);
     };
     handleClick({ key }) {
         if (key == 1)
@@ -70,7 +62,11 @@ class SerialArchSearchGrid extends React.Component {
             render: (text, record) => <div>
                 <a onClick={() => this.state.onUp(record)}><Icon type="caret-up" style={{ fontSize: 16, color: '#08c' }} /></a>
                 <a onClick={() => this.state.onDown(record)}><Icon type="caret-down" style={{ fontSize: 16, color: '#08c' }} /></a>
-            </div>
+                &nbsp;&nbsp;&nbsp;
+                <a onClick={() => this.state.onStick(record)} disabled={!PermissionUtil("vehicle:edit")}>置顶</a>
+                &nbsp;
+                <a onClick={() => this.state.onPostpone(record)} disabled={!PermissionUtil("vehicle:edit")}>置后</a>
+            </div >
         }
         ];
         const { selectedRowKeys } = this.state;
@@ -104,8 +100,8 @@ class SerialArchSearchGrid extends React.Component {
                                 <Row type="flex">
                                     <Col><Dropdown overlay={createMenu}><Button type="ghost" style={{ marginLeft: 8 }}>新增<Icon type="down" /></Button>
                                     </Dropdown></Col>
-                                    <Col><Button onClick={this.handleStickBatch} disabled={!PermissionUtil("vehicle:edit")}>置顶</Button></Col>
-                                    <Col><Button onClick={this.handlePostponeBatch} disabled={!PermissionUtil("vehicle:edit")}>置后</Button></Col>
+                                    <Col></Col>
+                                    <Col></Col>
                                     <Col><Button type="primary" onClick={this.handleRemoveBatch} disabled={!PermissionUtil("carrier:edit")}>踢出线路</Button></Col>
                                     <Col><span style={{ marginLeft: 8 }}>{hasSelected ? `已选中${selectedRowKeys.length}条` : ''}</span></Col>
                                 </Row>

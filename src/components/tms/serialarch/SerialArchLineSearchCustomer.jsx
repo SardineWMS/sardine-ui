@@ -1,8 +1,9 @@
 import React, { PropTypes } from 'react';
-import { Form, Input } from 'antd';
+import { Form, Input, Select } from 'antd';
 import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
+const Option = Select.Option;
 
 const SerialArchSearchCustomer = ({
     onSearch,
@@ -41,6 +42,19 @@ const SerialArchSearchCustomer = ({
             </BaseFormItem>
         </BaseTwoCol>
     );
+    children.push(<BaseTwoCol key={"state"}>
+        <BaseFormItem label={"状态 等于"}>
+            {
+                getFieldDecorator("state")(
+                    <Select>
+                        <Option key="online">正常</Option>
+                        <Option key="offline">停用</Option>
+                    </Select>
+                )
+            }
+        </BaseFormItem>
+    </BaseTwoCol>
+    )
 
     return (
         <BaseSearchPanel children={children} handleReset={handleReset} handleSearch={handleSearch} />

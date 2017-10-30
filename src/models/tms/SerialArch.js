@@ -1,5 +1,5 @@
 import { parse } from 'qs';
-import { createSerialArch, queryTreeData, createLine, getLineByCode, addCustomer, queryCustomerWithoutLine, getLine, removeCustomer, upOrder, downOrder, stickCustomer, postponeCustomer, queryCustomerByLine } from '../../services/tms/SerialArch';
+import { createSerialArch, queryTreeData, createLine, getLineByCode, addCustomer, queryCustomerWithoutLine, getLine, removeCustomer, upOrder, downOrder, stickCustomer, postponeCustomer, queryCustomerByLine, removeLine } from '../../services/tms/SerialArch';
 import { queryCustomer } from '../../services/basicinfo/customer';
 export default {
     namespace: 'serialArch',
@@ -13,10 +13,6 @@ export default {
         customers: [],
         batchRemoveProcessModal: false,
         removeCustomerEntitys: [],
-        batchStickProcessModal: false,
-        stickCustomerEntitys: [],
-        batchPostponeProcessModal: false,
-        postponeCustomerEntitys: [],
         pagination: {
             showSizeChanger: true,
             showQuickJumper: true,
@@ -25,7 +21,15 @@ export default {
             total: null,
             size: 'default'
         },
-        currentLineCode: ''
+        currentLineCode: '',
+        customerPagination: {
+            showSizeChanger: true,
+            showQuickJumper: true,
+            showTotal: total => `共 ${total}条`,
+            current: 1,
+            total: null,
+            size: 'small'
+        }
     },
     subscriptions: {
         setup({
@@ -104,11 +108,19 @@ export default {
         },
         *showAddCustomer({ payload }, { call, put }) {
             const { data } = yield call(queryCustomerWithoutLine, { lineUuid: payload });
-            if (data) {
+            if (data.status == "200") {
                 yield put({
                     type: 'showAddCustomerSuccess',
                     payload: {
-                        customers: data.obj.records
+                        customers: data.obj.records,
+                        pagination: {
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            current: data.obj.page,
+                            total: data.obj.recordCount,
+                            size: 'small'
+                        },
                     }
                 });
             };
@@ -162,9 +174,9 @@ export default {
         },
         *stickCustomer({ payload }, { call, put }) {
             const { data } = yield call(stickCustomer, {
-                customerUuid: payload.customerUuid,
-                lineUuid: payload.lineUuid,
-                order: payload.order
+                customerUuid: payload.record.customer.uuid,
+                lineUuid: payload.record.serialArchLineUuid,
+                order: payload.record.order
             });
             if (data) {
                 yield put({
@@ -175,9 +187,9 @@ export default {
         },
         *postponeCustomer({ payload }, { call, put }) {
             const { data } = yield call(postponeCustomer, {
-                customerUuid: payload.customerUuid,
-                lineUuid: payload.lineUuid,
-                order: payload.order
+                customerUuid: payload.record.customer.uuid,
+                lineUuid: payload.record.serialArchLineUuid,
+                order: payload.record.order
             });
             if (data) {
                 yield put({
@@ -185,6 +197,25 @@ export default {
                     payload: { lineCode: payload.lineCode }
                 });
             };
+        },
+        *removeLine({ payload }, { call, put }) {
+            const { data } = yield call(removeLine, parse(payload));
+            if (data.status == "200") {
+                yield put({
+                    type: 'query',
+                })
+            }
+        },
+        *searchCustomer({ payload }, { call, put }) {
+            const { data } = yield call(queryCustomerWithoutLine, { ...payload.field, lineUuid: payload.currentLine });
+            if (data.status == "200") {
+                yield put({
+                    type: 'showAddCustomerSuccess',
+                    payload: {
+                        customers: data.obj.records
+                    }
+                })
+            }
         }
     },
 
@@ -211,7 +242,7 @@ export default {
             return { ...state, showAddCustomerModal: false };
         },
         showCustomerList(state, action) {
-            return { ...state, ...action.payload, showAddCustomerModal: false};
+            return { ...state, ...action.payload, showAddCustomerModal: false };
         },
         batchRemoveFromLine(state, action) {
             return { ...state, ...action.payload, batchRemoveProcessModal: true };
@@ -225,11 +256,8 @@ export default {
         hidePostponeCustomerModal(state) {
             return { ...state, batchPostponeProcessModal: false };
         },
-        batchStick(state, action) {
-            return { ...state, ...action.payload, batchStickProcessModal: true };
-        },
-        hideStickCustomerModal(state) {
-            return { ...state, batchStickProcessModal: false };
+        refresh(state, action) {
+            return { ...state, ...action.payload }
         }
     }
 }

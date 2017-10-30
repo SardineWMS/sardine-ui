@@ -1,5 +1,6 @@
 import React from 'react';
 import { Tree, Input, Button } from 'antd';
+import ReactDOM from 'react-dom';
 
 const TreeNode = Tree.TreeNode;
 const Search = Input.Search;
@@ -72,11 +73,24 @@ class SerialArchTree extends React.Component {
         };
     };
 
+    componentDidMount() {
+        this.getContainer();
+    };
+
     componentWillReceiveProps(newProps) {
         this.setState({
             data: newProps.data
         });
     };
+
+    componentWillUnmount() {
+        if (this.cmContainer) {
+            ReactDOM.unmountComponentAtNode(this.cmContainer);
+            document.body.removeChild(this.cmContainer);
+            this.cmContainer = null;
+        }
+    };
+
     onExpand = (expandedKeys) => {
         this.setState({
             expandedKeys,
@@ -97,6 +111,44 @@ class SerialArchTree extends React.Component {
             autoExpandParent: true
         });
     };
+    onMouseEnter = (info) => {
+        this.renderCommand(info);
+    };
+
+    onRemove = (code, e) => {
+        e.preventDefault();
+        if (this.cmContainer)
+            ReactDOM.unmountComponentAtNode(this.cmContainer);
+        this.props.onRemoveLine(code)
+    }
+    onMouseLeave = (info) => {
+        // if (this.cmContainer)
+        //     ReactDOM.unmountComponentAtNode(this.cmContainer);
+    };
+    renderCommand = (info) => {
+        if (this.toolTip) {
+            ReactDOM.unmountComponentAtNode(this.cmContainer);
+            this.toolTip = null;
+        }
+        this.toolTip = (
+            <Button onClick={this.onRemove.bind(this, info.node.props.eventKey)}>删除</Button>);
+
+        const container = this.getContainer();
+        Object.assign(this.cmContainer.style, {
+            position: 'absolute',
+            left: `${info.event.pageX}px`,
+            top: `${info.event.pageY}px`,
+        });
+        ReactDOM.render(this.toolTip, container);
+    };
+
+    getContainer() {
+        if (!this.cmContainer) {
+            this.cmContainer = document.createElement('div');
+            document.body.appendChild(this.cmContainer);
+        }
+        return this.cmContainer;
+    };
     render() {
         const { searchValue, expandedKeys, autoExpandParent, data } = this.state;
         const loop = data => data.map((item) => {
@@ -112,20 +164,25 @@ class SerialArchTree extends React.Component {
             ) : <span>{item.key}</span>;
             if (item.children) {
                 return (
-                    <TreeNode key={item.key} title={title}>
-                        {loop(item.children)}
-                    </TreeNode>
+                    <div>
+                        <TreeNode key={item.key} title={title}>
+                            {loop(item.children)}
+                        </TreeNode>
+                        <Button>删除</Button>
+                    </div>
                 );
             };
             return <TreeNode key={item.key} title={title} />;
         });
         return (
-            <div>
+            <div onMouseLeave={this.onMouseLeave}>
                 <Tree
                     onExpand={this.onExpand}
                     expandedKeys={expandedKeys}
                     autoExpandParent={autoExpandParent}
                     onSelect={this.state.onSelect}
+                    onRightClick={() => { alert(1113334) }}
+                    onMouseEnter={this.onMouseEnter}
                 >
                     {!this.state.data || this.state.data.length == 0 ? [] : loop(this.state.data)}
                 </Tree>
