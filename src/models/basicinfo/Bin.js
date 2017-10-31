@@ -11,7 +11,10 @@ import {
   deleteBin,
   queryWrhs,
   queryZones,
-  queryBinTypes
+  queryBinTypes,
+  closeWrh,
+  releaseWrh,
+  queryBinStockInfo
 } from '../../services/basicinfo/Bin';
 import { queryBinType, deleteBinType, create, update } from '../../services/basicinfo/BinType';
 
@@ -30,7 +33,11 @@ export default {
     shelfModalVisible: false,
     binModalVisible: false,
     binTypeList: [],
+    binStockInfos:[],
     binTypeModalVisible: false,
+    closeWrhModalVisible: false,
+    releaseWrhModalVisible:false,
+    showStockInfoPage:false,
     pagination: {
       showSizeChanger: true,
       showQuickJumper: true,
@@ -51,11 +58,7 @@ export default {
         if (location.pathname === '/basicInfo/bin') {
           dispatch({
             type: 'queryBin',
-            payload: {
-              token: localStorage.getItem("token"),
-              fieldsvalue
-            },
-
+            payload: location.query,
           });
         };
       });
@@ -89,7 +92,61 @@ export default {
               total: data.obj.pageData.recordCount,
               size: 'default'
             },
+            binStockInfos:[],
           },
+        });
+      };
+    },
+    *queryBinStock({ payload }, { call, put }) {
+      const { data } = yield call(queryBinStockInfo, { binCode: payload.code });
+      if (data) {
+        yield put({
+          type: 'showStockInfo',
+          payload: {
+            binStockInfos: data.obj
+          }
+        });
+      };
+    },
+    * queryWrhAndShowCloseWrhModal({
+      payload
+    }, {
+      call,
+        put
+    }) {
+      yield put({
+        type: 'showLoading'
+      });
+      const {
+        data
+      } = yield call(queryWrhs, parse(payload));
+      if (data) {
+        yield put({
+          type: 'showCloseWrhModal',
+          payload: {
+            wrhs: data.obj
+          }
+        });
+      };
+    },
+    * queryWrhAndShowReleaseWrhModal({
+      payload
+    }, {
+      call,
+        put
+    }) {
+      yield put({
+        type: 'showLoading'
+      });
+      const {
+        data
+      } = yield call(queryWrhs, parse(payload));
+      if (data) {
+        yield put({
+          type: 'showReleaseWrhModal',
+          payload: {
+            wrhs: data.obj
+          }
         });
       };
     },
@@ -135,6 +192,7 @@ export default {
         });
       };
     },
+
     * queryBinTypesAndShowBinModal({
       payload
     }, {
@@ -171,10 +229,12 @@ export default {
       yield call(createWrh, payload);
       const {
         data
-      } = yield call(queryBin,
-          payload: {
+      } = yield call(
+          queryBin,//parse(payload)
+          payload:{
             token: payload.token
-          });
+          }
+        );
       if (data) {
         yield put({
           type: 'querySuccess',
@@ -209,10 +269,90 @@ export default {
       yield call(createZone, payload);
       const {
         data
-      } = yield call(queryBin,
+      } = yield call(queryBin,//parse(payload)
+          payload:
+          {
+            token: payload.token
+          }
+        );
+      if (data) {
+        yield put({
+          type: 'querySuccess',
+          payload: {
+            list: data.obj.pageData.records,
+            treeData: data.obj.treeData,
+            pagination: {
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
+              current: data.obj.pageData.page,
+              total: data.obj.pageData.recordCount,
+              size: 'default'
+            },
+          }
+        });
+      };
+    },
+
+    * closeWrh({
+      payload
+    }, {
+      call,
+        put
+    }) {
+      yield put({
+        type: 'hideCloseWrhModal'
+      });
+      yield put({
+        type: 'showLoading'
+      });
+      yield call(closeWrh, payload);
+      const {
+        data
+      } = yield call(queryBin,//parse(payload)
           payload: {
             token: payload.token
-          });
+          }
+        );
+      if (data) {
+        yield put({
+          type: 'querySuccess',
+          payload: {
+            list: data.obj.pageData.records,
+            treeData: data.obj.treeData,
+            pagination: {
+              showSizeChanger: true,
+              showQuickJumper: true,
+              showTotal: total => `共 ${total} 条`,
+              current: data.obj.pageData.page,
+              total: data.obj.pageData.recordCount,
+              size: 'default'
+            },
+          }
+        });
+      };
+    },
+
+    * releaseWrh({
+      payload
+    }, {
+      call,
+        put
+    }) {
+      yield put({
+        type: 'hideReleaseWrhModal'
+      });
+      yield put({
+        type: 'showLoading'
+      });
+      yield call(releaseWrh, payload);
+      const {
+        data
+      } = yield call(queryBin,//parse(payload)
+          payload: {
+            token: payload.token
+          }
+        );
       if (data) {
         yield put({
           type: 'querySuccess',
@@ -360,6 +500,15 @@ export default {
         type: 'queryBinType',
         payload: {}
       });
+    },
+    *toViewArticle({ payload }, { call, put }) {
+      yield put(routerRedux.push({
+        pathname: '/basicInfo/article',
+        query: {
+          type: 'getAndView',
+          key: payload.article.uuid
+        }
+      }));
     }
   },
 
@@ -374,7 +523,8 @@ export default {
       return {
         ...state,
         ...action.payload,
-        loading: false
+        loading: false,
+        showStockInfoPage:false
       };
     },
     showWrhModal(state, action) {
@@ -401,6 +551,32 @@ export default {
       return {
         ...state,
         zoneModalVisible: false
+      };
+    },
+    showCloseWrhModal(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+        closeWrhModalVisible: true
+      };
+    },
+    hideCloseWrhModal(state) {
+      return {
+        ...state,
+        closeWrhModalVisible: false
+      };
+    },
+    showReleaseWrhModal(state, action) {
+      return {
+        ...state,
+        ...action.payload,
+        releaseWrhModalVisible: true
+      };
+    },
+    hideReleaseWrhModal(state) {
+      return {
+        ...state,
+        releaseWrhModalVisible: false
       };
     },
     showPathModal(state, action) {
@@ -454,6 +630,7 @@ export default {
         batchCreateBinProcessModal: false
       };
     },
+
     hideDeleteBinModal(state) {
       return {
         ...state,
@@ -496,6 +673,9 @@ export default {
         ...state,
         next: true
       };
+    },
+    showStockInfo(state, action) {
+      return { ...state, ...action.payload, showStockInfoPage: true };
     },
     queryBinTypeSuccess(state, action) {
       return { ...state, ...action.payload, binTypeModalVisible: true };

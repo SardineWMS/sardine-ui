@@ -13,13 +13,17 @@ import BinTree from '../../components/basicinfo/Bin/BinTree';
 import BinSearchForm from '../../components/basicinfo/Bin/BinSearchForm';
 import WMSProgress from '../../components/Widget/WMSProgress';
 import BinTypeModal from '../../components/basicinfo/Bin/BinTypeModal';
+import CloseWrhModal from '../../components/basicinfo/Bin/CloseWrhModal';
+import ReleaseWrhModal from '../../components/basicinfo/Bin/ReleaseWrhModal';
+import BinStockInfo from '../../components/basicinfo/Bin/BinStockInfo';
 
 function Bin({ location, dispatch, bin }) {
   const { list, wrhModalVisible, zoneModalVisible, shelfModalVisible, pathModalVisible, binModalVisible, treeData,
     wrhs, zones, batchCreatePathProcessModal, batchCreateShelfProcessModal, batchCreateBinProcessModal, pathNext,
     shelfNext, binNext, pathEntitys, shelfEntitys, binEntitys, binTypes, deleteBinEntitys, batchDeleteBinProcessModal, binTypeList,
-    binTypeModalVisible, pagination
-    } = bin;
+    binTypeModalVisible, pagination, searchExpand, closeWrhModalVisible, releaseWrhModalVisible,showStockInfoPage,
+    binStockInfos
+  } = bin;
 
   const { field, keyword } = location.query
 
@@ -59,6 +63,44 @@ function Bin({ location, dispatch, bin }) {
     onCancel() {
       dispatch({
         type: 'bin/hideZoneModal'
+      });
+    },
+  };
+
+  const CloseWrhModalProps = {
+    visible: closeWrhModalVisible,
+    wrhs: wrhs,
+    onOk(data) {
+      dispatch({
+        type: 'bin/closeWrh',
+        payload: {
+          wrhUuid: data.wrh,
+          binScope: data.binScope
+        }
+      });
+    },
+    onCancel() {
+      dispatch({
+        type: 'bin/hideCloseWrhModal'
+      });
+    },
+  };
+
+  const ReleaseWrhModalProps = {
+    visible: releaseWrhModalVisible,
+    wrhs: wrhs,
+    onOk(data) {
+      dispatch({
+        type: 'bin/releaseWrh',
+        payload: {
+          wrhUuid: data.wrh,
+          binScope: data.binScope
+        }
+      });
+    },
+    onCancel() {
+      dispatch({
+        type: 'bin/hideReleaseWrhModal'
       });
     },
   };
@@ -229,15 +271,16 @@ function Bin({ location, dispatch, bin }) {
     list: list,
     field,
     keyword,
+    searchExpand,
     onSearch(fieldsValue) {
-      dispatch({
-        type: 'bin/queryBin',
-        payload: {
-          code: fieldsValue.code,
-          usage: fieldsValue.usage,
-          state: fieldsValue.state
+      dispatch(routerRedux.push(
+        {
+          pathname: '/basicInfo/bin',
+          query: {
+            ...fieldsValue
+          }
         }
-      });
+      ));
     },
   };
 
@@ -270,14 +313,24 @@ function Bin({ location, dispatch, bin }) {
     dataSource: list,
     pagination: pagination,
     onPageChange(page, filters, sorter) {
-      dispatch({
-        type: 'bin/queryBin',
-        payload: {
-          page: page.current,
-          pageSize: page.pageSize,
-          sort: sorter.columnKey,
-          order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+      dispatch(routerRedux.push(
+        {
+          pathname: '/basicInfo/bin',
+          query: {
+            ...location.query,
+            page: page.current,
+            pageSize: page.pageSize,
+            sort: sorter.columnKey,
+            order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
+          }
         }
+      )
+      );
+    },
+    onShowStock(record) {
+      dispatch({
+        type: 'bin/queryBinStock',
+        payload: record
       });
     },
     onCreateWrh() {
@@ -288,6 +341,16 @@ function Bin({ location, dispatch, bin }) {
     onCreateZone() {
       dispatch({
         type: 'bin/queryWrhsAndShowZoneModal'
+      });
+    },
+    onCloseWrh() {
+      dispatch({
+        type: 'bin/queryWrhAndShowCloseWrhModal'
+      });
+    },
+    onReleaseWrh() {
+      dispatch({
+        type: 'bin/queryWrhAndShowReleaseWrhModal'
       });
     },
     onCreateShelf() {
@@ -315,10 +378,7 @@ function Bin({ location, dispatch, bin }) {
     },
     onCreateBinType() {
       dispatch({
-        type: 'bin/queryBinType',
-        payload: {
-
-        }
+        type: 'bin/queryBinType'
       });
     }
   };
@@ -372,8 +432,8 @@ function Bin({ location, dispatch, bin }) {
       if (record.code == null || record.code == '') {
         message.error("代码不能为空", 2);
         return;
-      } else if (record.code.length > 30) {
-        message.error("代码最大长度是30", 2);
+      } else if (/^[0-9A-Za-z]{0,6}$/.test(record.code) == false) {
+        message.error("代码最大长度是6且只能为数字字母组合", 2);
         return;
       };
       if (record.name == null || record.name == '') {
@@ -381,6 +441,25 @@ function Bin({ location, dispatch, bin }) {
         return;
       } else if (record.name.length > 100) {
         message.error("名称最大长度是100！", 2);
+        return;
+      };
+      if (record.length == null || record.length == '') {
+        message.error("长度不能为空", 2);
+        return;
+      };
+      if (record.width == null || record.width == '') {
+        message.error("宽度不能为空", 2);
+        return;
+      };
+      if (record.height == null || record.height == '') {
+        message.error("高度不能为空", 2);
+        return;
+      };
+      if (record.plotRatio == null || record.plotRatio == '') {
+        message.error("容积率不能为空", 2);
+        return;
+      } else if (record.plotRatio > 100 || record.plotRatio <= 0) {
+        message.error("容积率不能大于100且不能小于等于0");
         return;
       };
       if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(record.bearing) == false) {
@@ -400,6 +479,18 @@ function Bin({ location, dispatch, bin }) {
     }
   };
 
+  const binStockInfoProps = {
+    dataSource: binStockInfos,
+    onViewArticle(record) {
+      dispatch(
+        {
+          type: 'bin/toViewArticle',
+          payload: record
+        }
+      );
+    }
+  };
+
   const CreateWrhModalGen = () =>
     <CreateWrhModal {...CreateWrhModalProps} />;
   const CreateZoneModalGen = () =>
@@ -410,28 +501,42 @@ function Bin({ location, dispatch, bin }) {
     <CreatePathModal {...CreatePathModalProps} />;
   const CreateBinModalGen = () =>
     <CreateBinModal {...CreateBinModalProps} />;
+  const CloseWrhModalGen = () =>
+    <CloseWrhModal {...CloseWrhModalProps} />;
+  const ReleaseWrhModalGen = () =>
+    <ReleaseWrhModal {...ReleaseWrhModalProps} />;
 
-  return (
-    <div className="content-inner">
-      <Layout style={{ padding: '0 0', background: '#fff' }}>
-        <Sider width={210} style={{ background: '#fff', padding: '0 5px' }}>
-          <BinTree {...binTreeProps} />
-        </Sider>
-        <Content style={{ padding: '0 0 0 5px', minHeight: 280 }}>
-          <BinSearchForm {...binSearchFormProps} />
-          <BinSearch {...binSearchProps} />
-          <CreateWrhModalGen />
-          <CreateZoneModalGen />
-          <CreateShelfModalGen />
-          <CreatePathModalGen />
-          <CreateBinModalGen />
-          <BinTypeModal {...binTypeModalProps} />
-          <WMSProgress {...batchProcessPathModalProps} />
-          <WMSProgress {...batchProcessShelfModalProps} />
-          <WMSProgress {...batchProcessBinModalProps} />
-          <WMSProgress {...batchProcessDeleteBinModalProps} />
-        </Content>
-      </Layout>
+  if (showStockInfoPage == false) {
+    return (
+      <div className="content-inner">
+        <Layout style={{ padding: '0 0', background: '#fff' }}>
+          <Sider width={210} style={{ background: '#fff', padding: '0 5px' }}>
+            <BinTree {...binTreeProps} />
+          </Sider>
+          <Content style={{ padding: '0 0 0 5px', minHeight: 280 }}>
+            <BinSearchForm {...binSearchFormProps} />
+            <BinSearch {...binSearchProps} />
+            <CreateWrhModalGen />
+            <CreateZoneModalGen />
+            <CreateShelfModalGen />
+            <CreatePathModalGen />
+            <CreateBinModalGen />
+            <CloseWrhModalGen />
+            <ReleaseWrhModalGen />
+            <BinTypeModal {...binTypeModalProps} />
+            <WMSProgress {...batchProcessPathModalProps} />
+            <WMSProgress {...batchProcessShelfModalProps} />
+            <WMSProgress {...batchProcessBinModalProps} />
+            <WMSProgress {...batchProcessDeleteBinModalProps} />
+          </Content>
+        </Layout>
+      </div>
+    );
+  }
+
+  else return (
+    <div>
+      <BinStockInfo {...binStockInfoProps} />
     </div>
   );
 };

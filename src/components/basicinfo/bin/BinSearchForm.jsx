@@ -33,7 +33,7 @@ const BinSearchForm = ({
     <BaseTwoCol>
       <BaseFormItem label="代码 类似于">
         {getFieldDecorator('code')(
-          <Input type="text" placeholder="代码 类似于" />
+          <Input type="text" placeholder="" />
         )}
       </BaseFormItem>
     </BaseTwoCol>);
@@ -45,6 +45,7 @@ const BinSearchForm = ({
             <Option value=''> 全部</Option>
             <Option value="free">空闲</Option>
             <Option value="using" initialValue>已使用</Option>
+            <Option value="closeLock">异常锁定</Option>
           </Select>
         )}
       </BaseFormItem>

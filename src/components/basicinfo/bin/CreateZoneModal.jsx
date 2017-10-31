@@ -17,7 +17,7 @@ const CreateZoneModal = ({
     validateFields((errors) => {
       if (errors) {
         return;
-      }
+      };
       const data = {
         ...getFieldsValue()
       };

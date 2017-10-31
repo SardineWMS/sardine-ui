@@ -14,6 +14,8 @@ function BinSearch({
   onPageChange,
   onShowStock,
   onCreateBinType,
+  onCloseWrh,
+  onReleaseWrh,
   pagination,
   selectBins = []
 }) {
@@ -47,15 +49,25 @@ function BinSearch({
     onDeleteBin(selectBins);
   };
 
-  function handleShowStock(e) {
-    e.preventDefault();
-    onShowStock();
-  };
+  // function handleShowStock(e) {
+  //   e.preventDefault();
+  //   onShowStock();
+  // };
 
   function handleCreateBinType(e) {
     e.preventDefault();
     onCreateBinType();
   };
+
+  function handleCloseWrh(e){
+    e.preventDefault();
+    onCloseWrh();
+  };
+
+  function handleReleaseWrh(e){
+    e.preventDefault();
+    onReleaseWrh();
+  }
 
   const onClick = function ({ key, e }) {
     // e.preventDefault();
@@ -89,6 +101,15 @@ function BinSearch({
       return '退仓收货暂存位';
   };
 
+  function convertState(text) {
+    if(text == "free")
+      return '空闲';
+    if(text == "using" )
+      return '已使用';
+    if(text == "closeLock")
+      return '异常锁定';
+  }
+
   const columns = [{
     title: '代码',
     dataIndex: 'code',
@@ -98,7 +119,7 @@ function BinSearch({
     title: '货位状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => (text == "free" ? '空闲' : '使用中')
+    render: text => convertState(text)
   }, {
     title: '货位用途',
     dataIndex: 'usage',
@@ -114,7 +135,7 @@ function BinSearch({
     key: 'operation',
     render: (text, record) => (
       <p>
-        <a onClick={() => onShowStock(record.code)}> 库存详细信息 </a>
+        <a onClick={() => onShowStock(record)}> 库存详细信息 </a>
       </p>
     )
   }
@@ -159,13 +180,15 @@ function BinSearch({
               </Button>
             </Dropdown>
             <Button onClick={handleDeleteBin} disabled={!PermissionUtil("bin:delete")}>删除</Button>
-            <Button onClick={handleCreateBinType} disabled={!PermissionUtil("bin:createType")}>新建货位类型</Button>
+            <Button type="primary" onClick={handleCreateBinType} disabled={!PermissionUtil("bin:createType")}>新建货位类型</Button>
+          <Button type="primary" onClick={handleCloseWrh}>封仓</Button>
+          <Button type="primary" onClick={handleReleaseWrh}>解仓</Button>
           </div>
         }
         dataSource={dataSource}
         onChange={onPageChange}
         rowSelection={rowSelection}
-        rowKey={record => record.uuid}
+        rowKey={record => record.code}
         pagination={pagination}
       />
     </div>
@@ -182,6 +205,8 @@ BinSearch.propTypes = {
   onCreateBin: PropTypes.func,
   onDeleteBin: PropTypes.func,
   onShowStock: PropTypes.func,
+  onCloseWrh: PropTypes.func,
+  onReleaseWrh:PropTypes.func,
   pagination: PropTypes.any
 };
 

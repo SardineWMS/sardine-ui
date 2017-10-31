@@ -44,6 +44,28 @@ export async function createZone(params) {
   });
 }
 
+export async function closeWrh(params) {
+  return request(`/swms/basicinfo/bin/closeWrh?${addTokenToParamsAndStringify(params)}`, {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: null,
+  });
+}
+
+export async function releaseWrh(params) {
+  return request(`/swms/basicinfo/bin/releaseWrh?${addTokenToParamsAndStringify(params)}`, {
+    method: 'put',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: null,
+  });
+}
+
 export async function createPath(params) {
   return request(`/swms/basicinfo/bin/insertPath?${addTokenToParamsAndStringify(params)}`, {
     method: 'put',
@@ -96,4 +118,8 @@ export async function getBinByCode(params) {
 export async function getBinByWrhAndUsage(params) {
   const url = '/swms/basicinfo/bin/getbinbywrhandusage';
   return request(query(url, params));
+}
+
+export async function queryBinStockInfo(params){
+  return request(query('/swms/basicinfo/bin/queryBinStockInfo',params));
 }

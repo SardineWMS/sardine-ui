@@ -9,15 +9,34 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
         {
             title: '代码',
             dataIndex: 'code',
-            render: (text, record) => renderColumns(record, "binTypeCode", text)
+            render: (text, record) => renderColumns(record, "code", text),
         },
         {
             title: '名称',
             dataIndex: 'name',
-            render: (text, record) => renderColumns(record, "binTypeName", text)
+            render: (text, record) => renderColumns(record, "name", text)
+        }, {
+            title: '长(cm)',
+            dataIndex: 'length',
+            render: (text, record) => renderColumns(record, "length", text)
         },
         {
-            title: '承重',
+            title: '宽(cm)',
+            dataIndex: 'width',
+            render: (text, record) => renderColumns(record, "width", text)
+        },
+        {
+            title: '高(cm)',
+            dataIndex: 'height',
+            render: (text, record) => renderColumns(record, "height", text)
+        },
+        {
+            title: '容积率(%)',
+            dataIndex: 'plotRatio',
+            render: (text, record) => renderColumns(record, "plotRatio", text)
+        },
+        {
+            title: '承重(kg)',
             dataIndex: 'bearing',
             render: (text, record) => renderColumns(record, "bearing", text)
         }, {
@@ -56,15 +75,23 @@ const BinTypeModal = ({ dataSource, visible, onEdit, onCancel, onCancelEdit, onA
             value={text}
             status={status}
             onChange={value => handleChange(record, value, key)}
-            onBlur={() => { }}
+            //onBlur={() => { }}
         />);
     };
 
     function handleChange(record, value, key) {
-        if ("binTypeCode" == key)
+        if ("code" == key)
             record.code = value;
-        if ("binTypeName" == key)
+        if ("name" == key)
             record.name = value;
+        if ("length" == key)
+            record.length = value;
+        if ("width" == key)
+            record.width = value;
+        if ("height" == key)
+            record.height = value;
+        if ("plotRatio" == key)
+            record.plotRatio = value;
         if ("bearing" == key)
             record.bearing = value;
     };
