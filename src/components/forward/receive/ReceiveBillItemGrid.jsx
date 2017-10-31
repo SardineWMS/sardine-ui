@@ -77,6 +77,10 @@ function ReceiveBillItemGrid({
         return (value) => {
             if (dataSource[index]["receiveQty"] == value)
                 return;
+            if (/^\d+$/.test(value) == false) {
+                message.warning("数量只能是整数");
+                return;
+            }
             record.receiveQty = value;
             calculateCaseQtyStr(record, dataSource)
         };

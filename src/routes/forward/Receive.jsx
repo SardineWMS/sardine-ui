@@ -161,6 +161,7 @@ function Receive({ location, dispatch, receive }) {
         },
         handleSave(data) {
             data.items = orderItems;
+
             data.totalAmount = currentItem.totalAmount;
             for (var item of data.items) {
                 item.qty = item.receiveQty;
@@ -170,14 +171,18 @@ function Receive({ location, dispatch, receive }) {
             data.receiver.code = localStorage.getItem("loginCode");
             data.receiver.name = localStorage.getItem("loginName");
             data.method = "ManualBill";
-            if (data.items.length > 1) {
+            if (data.items.length > 0) {
                 for (let i = 0; i < data.items.length; i++) {
                     if (data.items[i].article == null) {
                         message.error("第" + parseInt(i + 1) + "行明细中，商品不能为空", 2, '');
                         return;
                     };
-                    if (data.items[i].receiveQty == null) {
+                    if (data.items[i].receiveQty == null || data.items[i].receiveQty == "") {
                         message.error("第" + parseInt(i + 1) + "行明细中，收货数量不能为空", 2, '');
+                        return;
+                    };
+                    if (data.items[i].receiveCaseQtyStr == null || data.items[i].receiveCaseQtyStr == "") {
+                        message.error("第" + parseInt(i + 1) + "行明细中，收货件数不能为空", 2, '');
                         return;
                     };
                     if (data.items[i].produceDate == null) {
