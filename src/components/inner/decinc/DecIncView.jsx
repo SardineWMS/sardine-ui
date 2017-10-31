@@ -25,6 +25,10 @@ const DecIncView = ({
             return '已审核';
     };
 
+    function viewLog(){
+        window.location.href=`/#/inner/entitylog?key=${item.uuid}`;
+    };
+
     let basicForm = [];
     basicForm.push(<BaseFormItem label="单号：" key={Guid()}>
         <span>{item.billNumber}</span>
@@ -32,27 +36,28 @@ const DecIncView = ({
     basicForm.push(<BaseFormItem label="单据类型：" key={Guid()}>
         <span>{item.type == "Inc" ? '溢余' : '损耗'}</span>
     </BaseFormItem>);
-
     basicForm.push(<BaseFormItem label="仓位：" key={Guid()}>
         <span>{item.wrh.name + "[" + item.wrh.code + "]"}</span>
     </BaseFormItem>);
-
+    basicForm.push(<BaseFormItem label="总件数：" key={Guid()}>
+        <span>{item.totalCaseQtyStr}</span>
+    </BaseFormItem>);
+    basicForm.push(<BaseFormItem label="总金额：" key={Guid()}>
+        <span>{item.totalAmount}</span>
+    </BaseFormItem>);
 
     let operateForm = [];
     operateForm.push(<BaseFormItem label="状态：" key={Guid()}>
         <span>{convertState(item.state)}</span>
     </BaseFormItem>);
-    /*operateForm.push(<BaseFormItem label="创建人：" key={Guid()}>
+    operateForm.push(<BaseFormItem label="创建人：" key={Guid()}>
         <span>{createInfo2String(item)}</span>
     </BaseFormItem>)
     operateForm.push(<BaseFormItem label="最后修改人 ：" key={Guid()}>
         <span>{lastModifyInfo2String(item)}</span>
-    </BaseFormItem>)*/
-    operateForm.push(<BaseFormItem label="总件数：" key={Guid()}>
-        <span>{item.totalCaseQtyStr}</span>
-    </BaseFormItem>);
-    operateForm.push(<BaseFormItem label="总金额：" key={Guid()}>
-        <span>{item.totalAmount}</span>
+    </BaseFormItem>)
+    operateForm.push(<BaseFormItem label="日志：" key={Guid()}>
+        <span><a onClick={() => viewLog()} >详情</a></span>
     </BaseFormItem>);
 
 
@@ -82,7 +87,7 @@ const DecIncView = ({
             <BaseCard single={true} title="商品明细">
                 <BaseForm items={<ArticleItemGrid {...articleItemProps} />} />
             </BaseCard>
-            <RemarkCard />
+            <RemarkCard remark={item.remark}/>
         </div>
     );
 };

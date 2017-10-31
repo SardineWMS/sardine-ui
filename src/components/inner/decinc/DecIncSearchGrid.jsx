@@ -44,30 +44,33 @@ class DecIncInvSearchGrid extends React.Component {
                 this.state.onViewItem(record)
             }} disabled={!PermissionUtil("decIncBill:view")}>{text}</a>
         }, {
-            title: '类型',
-            dataIndex: 'type',
-            key: 'type',
-            render: text => text == 'Inc' ? '溢余' : '损耗'
-        }, {
             title: '状态',
             dataIndex: 'state',
             key: 'state',
             render: text => (text == "Initial" ? '未审核' : '已审核')
+        }, {
+            title: '类型',
+            dataIndex: 'type',
+            key: 'type',
+            render: text => text == 'Inc' ? '溢余' : '损耗'
         }, {
             title: '仓位',
             dataIndex: 'wrh',
             key: 'wrh',
             render: text => text.name + "[" + text.code + "]"
         }, {
-            title: '创建人',
-            dataIndex: 'createInfo',
-            key: 'createInfo',
-            render: (text, record) => createInfo2StringWithoutTime(record),
+            title: '来源类型',
+            dataIndex: 'sourceBillType',
+            key: 'sourceBillType'
         }, {
-            title: '最后修改人',
-            dataIndex: 'lastModifyInfo',
-            key: 'lastModifyInfo',
-            render: (text, record) => lastModifyInfo2StringWithoutTime(record)
+            title: '来源单据',
+            dataIndex: 'sourceBillNumber',
+            key: 'sourceBillNumber'
+        }, {
+            title: '损溢人',
+            dataIndex: 'operator',
+            key: 'operator',
+            render: text => text.name + "[" + text.code + "]"
         }];
 
         const { selectedRowKeys } = this.state;
@@ -89,11 +92,11 @@ class DecIncInvSearchGrid extends React.Component {
                     rowSelection={rowSelection}
                     title={() => <div>
                         <Row type="flex">
-                            <Col>
-                                <Button onClick={this.handleRemoveBatch}>批量删除</Button>
-                            </Col>
-                            <Col><Button onClick={this.handleFinishBatch}>批量审核</Button></Col>
                             <Col><Button onClick={() => this.state.onCreate()}>新建</Button></Col>
+                            <Col>
+                                <Button onClick={this.handleRemoveBatch}>删除</Button>
+                            </Col>
+                            <Col><Button onClick={this.handleFinishBatch}>审核</Button></Col>
                         </Row>
                     </div>}
                 />

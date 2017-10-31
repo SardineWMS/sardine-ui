@@ -48,10 +48,19 @@ function ReceiveBillItemGrid_View({
             key: 'line'
         },
         {
+            title: '货位',
+            dataIndex: 'binCode',
+            key: 'binCode'
+        },
+        {
+            title: '容器',
+            dataIndex: 'containerBarCode',
+            key: 'containerBarCode'
+        },
+        {
             title: '商品代码',
             dataIndex: 'article.code',
-            key: 'articleCode',
-            render: (text, record) => <p><a onClick={() => onViewItem(record)}>{text}</a></p>
+            key: 'articleCode'
         },
         {
             title: '商品名称',
@@ -64,6 +73,16 @@ function ReceiveBillItemGrid_View({
             key: 'qpcStr'
         },
         {
+            title: '单位',
+            dataIndex: 'measureUnit',
+            key: 'measureUnit'
+        },
+        {
+            title: '单价',
+            dataIndex: 'price',
+            key: 'price'
+        },
+        {
             title: '数量',
             dataIndex: 'qty',
             key: 'qty'
@@ -72,16 +91,6 @@ function ReceiveBillItemGrid_View({
             title: '件数',
             dataIndex: 'caseQtyStr',
             key: 'caseQtyStr'
-        },
-        {
-            title: '容器',
-            dataIndex: 'containerBarCode',
-            key: 'containerBarCode'
-        },
-        {
-            title: '货位',
-            dataIndex: 'binCode',
-            key: 'binCode'
         },
         {
             title: '生产日期',
@@ -104,6 +113,11 @@ function ReceiveBillItemGrid_View({
             title: '损溢原因',
             dataIndex: 'reason',
             key: 'reason'
+        },{
+            title: '供应商',
+            dataIndex: 'supplier',
+            key: 'supplier',
+            render:text =>  text.name + "[" + text.code + "]"
         }
 
     ];

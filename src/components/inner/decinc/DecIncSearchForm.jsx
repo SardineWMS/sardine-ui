@@ -4,6 +4,8 @@ const Option = Select.Option;
 import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
+import WrhSelect from '../../widget/WrhSelectWithUuid';
+const UserModalForSearch = require('../../Widget/UserModalForSearch');
 
 const DecIncInvSearchForm = ({
   onSearch,
@@ -56,6 +58,51 @@ const DecIncInvSearchForm = ({
                         <Option value="Initial">未审核</Option>
                         <Option value="Audited">已审核</Option>
                     </Select>
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+    children.push(
+        <BaseTwoCol>
+            <BaseFormItem label="仓位 等于">
+                {getFieldDecorator('wrh')(
+                    <WrhSelect/>
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+    children.push(
+        <BaseTwoCol>
+            <BaseFormItem label="损溢人 等于">
+                {getFieldDecorator('operator')(
+                    <UserModalForSearch/>
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+    children.push(
+        <BaseTwoCol>
+            <BaseFormItem label="货位 类似于">
+                {getFieldDecorator('binCode')(
+                    <Input type="text" placeholder="货位 类似于" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+    children.push(
+        <BaseTwoCol>
+            <BaseFormItem label="商品代码 类似于">
+                {getFieldDecorator('articleCode')(
+                    <Input type="text" placeholder="商品代码 类似于" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+    children.push(
+        <BaseTwoCol>
+            <BaseFormItem label="容器 类似于">
+                {getFieldDecorator('containerBarcode')(
+                    <Input type="text" placeholder="容器 类似于" />
                 )}
             </BaseFormItem>
         </BaseTwoCol>

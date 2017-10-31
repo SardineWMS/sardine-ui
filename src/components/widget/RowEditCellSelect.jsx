@@ -12,6 +12,7 @@ class RowEditCellSelect extends React.Component {
             options: this.props.options,
             defaultValue: this.props.defaultValue
         };
+
     };
     handleChange(e) {
         const value = e;
@@ -19,7 +20,8 @@ class RowEditCellSelect extends React.Component {
         this.state.onChange(value);
     };
     handleFocus() {
-        this.props.onFocus();
+        if(this.props.onFocus)
+            this.props.onFocus();
     };
     componentWillReceiveProps(newProps) {
         this.setState({
