@@ -170,7 +170,46 @@ const ArticleCreateForm = ({
         rules: [{ required: true, message: '保质期不能为空！' }, {
           pattern: /^[0-9]{0,11}$/,
           message: '保质期最大长度是11！'
-        }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
+        }]
+      })(
+        <InputNumber min={0} style={{ width: '100%' }} />
+        )}
+    </BaseFormItem>
+  );
+  basicChildren.push(
+    <BaseFormItem label="收货控制天数 ：" key="stkLmtDays">
+      {getFieldDecorator('stkLmtDays', {
+        initialValue: article.stkLmtDays ? article.stkLmtDays : 0,
+        rules: [{ required: true, message: '收货控制天数不能为空！' }, {
+          pattern: /^[0-9]{0,11}$/,
+          message: '收货控制天数最大长度是11！'
+        }]
+      })(
+        <InputNumber min={0} style={{ width: '100%' }} />
+        )}
+    </BaseFormItem>
+  );
+  basicChildren.push(
+    <BaseFormItem label="好退控制天数 ：" key="goodsRtnLmtDays">
+      {getFieldDecorator('goodsRtnLmtDays', {
+        initialValue: article.goodsRtnLmtDays ? article.goodsRtnLmtDays : 0,
+        rules: [{ required: true, message: '好退控制天数不能为空！' }, {
+          pattern: /^[0-9]{0,11}$/,
+          message: '好退控制天数最大长度是11！'
+        }]
+      })(
+        <InputNumber min={0} style={{ width: '100%' }} />
+        )}
+    </BaseFormItem>
+  );
+  basicChildren.push(
+    <BaseFormItem label="配货控制天数 ：" key="alcLmtDays">
+      {getFieldDecorator('alcLmtDays', {
+        initialValue: article.alcLmtDays ? article.alcLmtDays : 0,
+        rules: [{ required: true, message: '配货控制天数不能为空！' }, {
+          pattern: /^[0-9]{0,11}$/,
+          message: '配货控制天数最大长度是11！'
+        }]
       })(
         <InputNumber min={0} style={{ width: '100%' }} />
         )}
@@ -182,9 +221,9 @@ const ArticleCreateForm = ({
       {getFieldDecorator('purchasePrice', {
         initialValue: article.purchasePrice ? article.purchasePrice : 0,
         rules: [{ required: true, message: '进价不能为空！' }, {
-          pattern: /^[0-9]{1,19}(.[0-9]{1,3})?$/,
+          pattern: /^[0-9]{1,24}(.[0-9]{1,5})?$/,
           message: '进价格式不正确，最大24位数字，默认5位小数！'
-        }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
+        }]
       })(
         <Input style={{ width: '100%' }} />
         )}
@@ -196,9 +235,9 @@ const ArticleCreateForm = ({
       {getFieldDecorator('sellPrice', {
         initialValue: article.sellPrice ? article.sellPrice : 0,
         rules: [{ required: true, message: '售价不能为空！' }, {
-          pattern: /^[0-9]{1,19}(.[0-9]{1,3})?$/,
+          pattern: /^[0-9]{1,24}(.[0-9]{1,5})?$/,
           message: '售价格式不正确，最大24位数字，默认5位小数！'
-        }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式，待antd版本更新修复
+        }]//这里在使用max：11 时，无论输入什么数字，都会校验失败，所有此处使用正则表达式
       })(
         <Input style={{ width: '100%' }} />
         )}
@@ -244,6 +283,27 @@ const ArticleCreateForm = ({
           <Select.Option value="PickUpBin">拣货位</Select.Option>
           <Select.Option value="PreChoosePickUp">优先考虑拣货位</Select.Option>
         </Select>
+        )}
+    </BaseFormItem>
+  );
+
+  businessChildren.push(
+    <BaseFormItem label={"存储区域"} key="storageArea">
+      {getFieldDecorator("storageArea", { initialValue: article.storageArea, rules: [{ pattern: /^\d{2,8}(\((\d\/)*\d\))*$|^\d{2,8}\-\d{2,8}(\((\d\/)*\d\))*$/, message: '输入不匹配，请重新输入' }], validateTrigger: 'onChange' })(
+        <Input placeholder="样例：020310(1/2/3),0208-0210(4/5)" />
+      )}
+    </BaseFormItem>
+  );
+  businessChildren.push(
+    <BaseFormItem label="固定拣货位 ：" key="fixedPickBin">
+      {getFieldDecorator('fixedPickBin', {
+        initialValue: article.fixedPickBin ? article.fixedPickBin : '',
+        rules: [{
+          max: 30,
+          message: '固定拣货位最大为30位！'
+        }]
+      })(
+        <Input style={{ width: '100%' }} />
         )}
     </BaseFormItem>
   );

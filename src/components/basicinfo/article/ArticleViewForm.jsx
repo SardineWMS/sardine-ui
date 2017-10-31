@@ -64,6 +64,21 @@ const ArticleViewForm = ({
         </BaseFormItem>
     );
     children.push(
+        <BaseFormItem label="收货控制天数：" key="stkLmtDays">
+            <span>{article.stkLmtDays}天</span>
+        </BaseFormItem>
+    );
+    children.push(
+        <BaseFormItem label="好退控制天数：" key="goodsRtnLmtDays">
+            <span>{article.goodsRtnLmtDays}天</span>
+        </BaseFormItem>
+    );
+    children.push(
+        <BaseFormItem label="配货控制天数：" key="alcLmtDays">
+            <span>{article.alcLmtDays}天</span>
+        </BaseFormItem>
+    );
+    children.push(
         <BaseFormItem label="售价：" key="sellPrice">
             <span>{article.sellPrice}</span>
         </BaseFormItem>
