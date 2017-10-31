@@ -257,11 +257,11 @@ export default {
             };
             const { data } = yield call(qtyToCaseQtyStr, { qty: Number(payload.record.qty), qpcStr: payload.record.qpcStr });
             payload.record.caseQtyStr = data.obj;
-            for (var item of payload.list) {
-                if (item.line == payload.record.line) {
-                    item.caseQtyStr = data.obj;
-                };
-            };
+            // for (var item of payload.list) {
+            //     if (item.line == payload.record.line) {
+            //         item.caseQtyStr = data.obj;
+            //     };
+            // };
             let totalCaseQtyStr = 0;
             let totalAmount = 0;
             if (payload.list.length == 1) {
@@ -269,9 +269,9 @@ export default {
                 totalAmount = payload.list[0].price * payload.list[0].qty;
             } else {
                 for (let item of payload.list) {
-                    totalAmount = Number.parseFloat(item.price) * Number.parseFloat(item.qty) + Number.parseFloat(totalAmount);
-                    if (item.caseQtyStr == 0 || item.caseQtyStr == '')
+                    if (item.caseQtyStr == 0 || item.caseQtyStr == '' || item.caseQtyStr == null)
                         continue;
+                    totalAmount = Number.parseFloat(item.price) * Number.parseFloat(item.qty) + Number.parseFloat(totalAmount);
                     const totalCaseQtyStrResult = yield call(caseQtyStrAdd, { addend: totalCaseQtyStr, augend: item.caseQtyStr, });
                     totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
                 };
