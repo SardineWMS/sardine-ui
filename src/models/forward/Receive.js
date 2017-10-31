@@ -621,6 +621,8 @@ export default {
                 };
             };
             for (var item of payload.list) {
+                if (item.receiveQty == null || item.receiveQty == "")
+                    continue;
                 totalQty = Number(item.receiveQty) + Number(totalQty);
                 totalAmount = Number(item.amount) + Number(totalAmount);
             };

@@ -4,7 +4,6 @@ import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 function OrderBillSelectGrid({
     dataSource,
     onPageChange,
-    selectedRowKeys = [],
     onSelect
 }) {
     function convertState(text) {
@@ -22,8 +21,8 @@ function OrderBillSelectGrid({
             return "已作废";
     };
 
-    function handleSelect() {
-        onSelect(selectedRowKeys);
+    function handleSelect(record) {
+        onSelect(record);
     };
 
     const columns = [{
@@ -65,33 +64,17 @@ function OrderBillSelectGrid({
     }
     ];
 
-    const rowSelection = {
-        type: 'radio',
-        onChange: (selectedRowKeys, selectedRows) => {
-        },
-        onSelect: (record, selected, selectedRows) => {
-            selectedRowKeys = selectedRows;
-            handleSelect();
-        },
-        onSelectAll: (selected, selectedRows, changeRows) => {
-            selectedRowKeys = selectedRows;
-        },
-        getCheckboxProps: record => ({
-
-        })
-    };
-
     return (
         <div>
             <Table
                 size="small"
                 bordered
                 columns={columns}
-                rowSelection={rowSelection}
                 dataSource={dataSource}
                 onChange={onPageChange}
                 rowKey={record => record.uuid}
                 filterMultiple={false}
+                onRowClick={(record) => handleSelect(record)}
             />
         </div>
     );

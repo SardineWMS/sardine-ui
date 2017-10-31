@@ -87,7 +87,8 @@ function ReceiveBillItemGrid({
             title: '行号',
             dataIndex: 'line',
             key: 'line',
-            width: 50
+            width: 50,
+            render: (text, record, index) => { return index + 1 }
         },
         {
             title: '商品代码',

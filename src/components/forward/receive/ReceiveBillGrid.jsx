@@ -49,15 +49,21 @@ class ReceiveBillGrid extends React.Component {
             sorter: true
         },
         {
-            title: '供应商',
-            dataIndex: 'supplier',
-            key: 'supplier',
-            render: text => (text.name + "[" + text.code + "]")
+            title: '状态',
+            dataIndex: 'state',
+            key: 'state',
+            render: text => convertState(text)
         },
         {
             title: '仓位',
             dataIndex: 'wrh',
             key: 'wrh',
+            render: text => (text.name + "[" + text.code + "]")
+        },
+        {
+            title: '供应商',
+            dataIndex: 'supplier',
+            key: 'supplier',
             render: text => (text.name + "[" + text.code + "]")
         },
         {
@@ -68,10 +74,16 @@ class ReceiveBillGrid extends React.Component {
             sorter: true
         },
         {
-            title: '状态',
-            dataIndex: 'state',
-            key: 'state',
-            render: text => convertState(text)
+            title: '收货人',
+            dataIndex: 'receiver',
+            key: 'receiver',
+            render: text => "[" + text.code + "]" + text.name
+        },
+        {
+            title: '收货方式',
+            dataIndex: 'method',
+            key: 'method',
+            render: text => text == 'ManualBill' ? '手工单据' : '手持终端'
         },
         {
             title: '总件数',

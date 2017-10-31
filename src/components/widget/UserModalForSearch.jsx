@@ -6,6 +6,10 @@ import {
 } from 'qs';
 import UserSelectGrid from './UserSelectGrid';
 
+/**
+ * 带有后缀的输入框，与UserModal的区别在于：去掉了onBlur事件
+ * 使用常见：一般作为搜索条件中的FormItem使用
+ */
 class UserModalForSearch extends React.Component {
     constructor(props) {
         super(props);

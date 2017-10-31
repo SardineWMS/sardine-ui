@@ -8,6 +8,7 @@ import Guid from '../../../utils/Guid';
 import ReceiveBillItemGrid from './ReceiveBillItemGrid';
 const EditableCell = require('../../Widget/EditableCell');
 import PermissionUtil from '../../../utils/PermissionUtil';
+import UserModal from '../../widget/UserModal.jsx';
 
 const ReceiveBillAddForm = ({
     item = {},
@@ -101,7 +102,9 @@ const ReceiveBillAddForm = ({
 
     children.push(
         <BaseFormItem label={"收货人："} >
-            <label>{item.receiver == null ? localStorage.getItem("loginName") + "[" + localStorage.getItem("loginCode") + "]" : item.receiver.name + "[" + item.receiver.code + "]"}</label>
+            {getFieldDecorator("receiver.code", { rules: [{ required: true, message: "收货人不能为空" }], initialValue: item.reveiver ? item.receiver.code : '' })(
+                <UserModal />
+            )}
         </BaseFormItem>
     );
 

@@ -224,7 +224,7 @@ function Receive({ location, dispatch, receive }) {
         onOk(data) {
             dispatch({
                 type: 'receive/selectOderBill',
-                payload: { uuid: data[0].uuid }
+                payload: { uuid: data.uuid }
             });
         },
         onCancel() {
@@ -434,7 +434,7 @@ function Receive({ location, dispatch, receive }) {
             if (showOrderBillSelectModal)
                 return (<OrderBillselectModalGen />)
             else
-                return (<div><ReceiveBillAddGen />
+                return (<div><ReceiveCreate {...receiveAddProps} />
                     <ReceiveBillItemGrid {...orderBillItemGridProps} />
                 </div>)
         } if (showViewPage) {

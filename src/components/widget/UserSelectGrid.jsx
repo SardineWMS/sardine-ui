@@ -7,6 +7,7 @@ import reqwest from 'reqwest';
 import {
     parse, stringify
 } from 'qs';
+const Option = Select.Option;
 const columns = [{
     title: '代码',
     dataIndex: 'code',
@@ -19,19 +20,23 @@ const columns = [{
 },
 {
     title: '状态',
-    dataIndex: 'state',
-    key: 'state',
+    dataIndex: 'userState',
+    key: 'userState',
     render: text => convertState(text)
 }
 ];
 
 function convertState(text) {
-    if (text == "online")
+    if (text == 'online')
         return '启用';
-    if (text == "offline")
+    if (text == 'offline')
         return '停用';
 };
 
+/**
+ * 控件布局：一个可收缩的搜索面板+一个表格数据展示。调用者需传入visible来控制modal的展示
+ * 作为Input后缀的点击事件，一般直接使用UserModal，
+ */
 class UserSelectGrid extends React.Component {
     constructor(props) {
         super(props);
@@ -116,7 +121,7 @@ class UserSelectGrid extends React.Component {
         children.push(
             <BaseTwoCol key={"state"}>
                 <BaseFormItem label={"状态 等于"}>
-                    {getFieldDecorator("state")(
+                    {getFieldDecorator("userState")(
                         <Select placeholder="请选择" showSearch={false} size="default">
                             <Option value="online" >启用</Option>
                             <Option value="offline">停用</Option>
@@ -128,7 +133,7 @@ class UserSelectGrid extends React.Component {
 
         return (
             <div>
-                <Modal visible={this.state.visible} onCancel={this.handleCancel}>
+                <Modal visible={this.state.visible} onCancel={this.handleCancel} width={800}>
                     <BaseSearchPanel children={children} handleReset={this.handleReset} handleSearch={this.handleSearch} />
                     <Table
                         size="small"

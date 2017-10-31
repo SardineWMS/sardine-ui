@@ -3,6 +3,7 @@ import { Form, Input, Select } from 'antd';
 import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
+import UserModalForSearch from '../../widget/UserModalForSearch';
 
 const Option = Select.Option;
 
@@ -77,6 +78,25 @@ const ReceiveBillSearchForm = ({
             </BaseFormItem>
         </BaseTwoCol>
     );
+    children.push(
+        <BaseTwoCol key={"articleCode"}>
+            <BaseFormItem label={"商品代码 类似于"}>
+                {getFieldDecorator("articleCode")(
+                    <Input placeholder="请输入" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+    children.push(
+        <BaseTwoCol key={"receiverCode"}>
+            <BaseFormItem label={"收货员 等于"}>
+                {getFieldDecorator("receiverCode")(
+                    <UserModalForSearch />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+
 
 
     return (

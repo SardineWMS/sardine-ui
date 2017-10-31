@@ -50,6 +50,12 @@ const ReceiveBillView = ({
     extendForm.push(<BaseFormItem label="总件数：" key={Guid()}>
         <span>{item.caseQtyStr}</span>
     </BaseFormItem>);
+    extendForm.push(<BaseFormItem label="创建信息：" key={Guid()}>
+        <span>{createInfo2String(item)}</span>
+    </BaseFormItem>);
+    extendForm.push(<BaseFormItem label="最后修改信息：" key={Guid()}>
+        <span>{lastModifyInfo2String(item)}</span>
+    </BaseFormItem>);
 
     const articleItemProps = {
         dataSource: item.items

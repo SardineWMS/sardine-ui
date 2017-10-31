@@ -6,6 +6,10 @@ import {
 } from 'qs';
 import UserSelectGrid from './UserSelectGrid';
 
+/**
+ * 整个空间的布局是一个带有后缀的输入框，输入框有一个onBlur事件，会根据代码查询用户。后缀的点击时间控制UserSelectGrid的展示
+ * 使用场景：新建编辑时，作为表单控件使用，放置在FormItem中，可以被getFieldDecorator修饰。可以通过getFieldsValue获取控件的值
+ */
 class UserModal extends React.Component {
     constructor(props) {
         super(props);
