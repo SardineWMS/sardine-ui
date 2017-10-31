@@ -16,19 +16,12 @@ function DecIncCreateItem({
     pagination,
     onPageChange,
     getArticleInfo,
-    qpcStrs,
     verifyBin,
-    decIncType,//损溢单类型
-    proDates,//损耗单时，选择生产日期的数据源 
-    queryStockQty,
     calculateCaseQtyStr,
     onRemoveItem,
     onAddItem,
-    billType,
-    suppliers,//商品供应商选择控件数据源
-    refreshSupplier,
-    currentItem,
-    getSupplier
+    reasons,
+    currentBill
 }) {
     const columns = [
         {
@@ -74,7 +67,7 @@ function DecIncCreateItem({
             render: (text, record) => renderSelectColumns(record, "qpcStr", text)
         }, {
             title: '供应商',
-            dataIndex: 'supplier.uuid',
+            dataIndex:'supplier.uuid',
             key: 'supplierName',
             width: 100,
             render: (text, record) => renderSelectColumns(record, "supplierName", text)
@@ -95,7 +88,7 @@ function DecIncCreateItem({
             key: 'price',
             width: 100,
             render: (text, record, index) => {
-                if (currentItem.type == 'Inc') {
+                if (currentBill.type == 'Inc') {
                     return (<RowEditCell editable={record.editable}
                         status={status}
                         onBlur={value => handleChange(record, value, "price")}
@@ -121,7 +114,7 @@ function DecIncCreateItem({
             dataIndex: 'reason',
             key: 'reason',
             width: 150,
-            render: (text, record) => renderColumns(record, "reason", text)
+            render: (text, record) => renderSelectColumns(record, "reason", text)
         }, {
             title: '操作',
             key: 'operation',
@@ -171,17 +164,21 @@ function DecIncCreateItem({
         }
         else if (key == "supplierName") {
             if (record.qpcStrs != null && record.suppliers != null) {
-                if (currentItem.type == "Inc") {
-                    for (var supplier of record.suppliers) {
-                        options.push(<Option key={supplier.supplierUuid}>{supplier.supplierName + "[" + supplier.supplierCode + "]"}</Option>)
-                    };
-                } else {
                     for (var supplier of record.suppliers) {
                         options.push(<Option key={supplier.uuid}>{supplier.name + "[" + supplier.code + "]"}</Option>)
-                    };
                 };
             };
-        };
+        }else if(key == "reason" && reasons){
+            reasons.map(function (reason) {
+                options.push(<Option key={reason}>
+                    {reason}
+                </Option>)
+            });
+        }
+        return renderRowEditCellSelect(options, text, record, key);
+    };
+
+    function renderRowEditCellSelect(options, text, record, key) {
         return (<RowEditCellSelect
             editable={true}
             options={options}
@@ -199,8 +196,21 @@ function DecIncCreateItem({
         };
         if (key === 'qpcStr') {
             record.qpcStr = value;
-            if (currentItem.type == 'Dec') {
-                getSupplier(record, dataSource);
+            if (currentBill.type == 'Dec') {
+                let currentSuppliers=[];
+                let proDates=[];
+                record.stocks.map(function(stock){
+                    if(stock.qpcStr===value){
+                        currentSuppliers.push(stock.supplier);
+                        proDates.push(stock.productionDate);
+                    }
+                });
+                record.suppliers=currentSuppliers;
+                record.supplier=record.suppliers[0];
+                record.proDates=proDates;
+                record.productionDate=record.proDates[0];
+                renderSelectColumns(record, "supplierName", record.supplier.name + "[" + record.supplier.code + "]");
+                renderProDate(record,"productionDate",moment(record.productionDate).format("YYYY-MM-DD"));
             };
         };
         if (key == 'binCode') {
@@ -222,30 +232,42 @@ function DecIncCreateItem({
         if (key == 'supplierName') {
             const uuid = value;
             for (var supplier of record.suppliers) {
-                if (currentItem.type == 'Dec') {
                     if (uuid == supplier.uuid) {
                         record.supplier = new Object();
                         record.supplier.uuid = uuid;
                         record.supplier.code = supplier.code;
                         record.supplier.name = supplier.name;
                     };
-                }
-                else {
-                    if (uuid == supplier.supplierUuid) {
-                        record.supplier = new Object();
-                        record.supplier.uuid = uuid;
-                        record.supplier.code = supplier.supplierCode;
-                        record.supplier.name = supplier.supplierName;
-                    };
-                };
             };
-            // refreshSupplier(record, dataSource);
-            queryStockQty(record, dataSource);
-
+            if (currentBill.type == 'Dec') {
+                let productionDates=[];
+                record.stocks.map(function(stock){
+                    if(stock.qpcStr===record.qpcStr &&
+                        stock.supplier.uuid===record.supplier.uuid)
+                        productionDates.push(stock.productionDate);
+                });
+                record.proDates=productionDates;
+                record.productionDate=record.proDates[0];
+                renderProDate(record,"productionDate",moment(record.productionDate).format("YYYY-MM-DD"));
+            }
         };
         if (key == 'reason') {
             record.reason = value;
         };
+        queryStockQty(record);
+    };
+
+    function queryStockQty(record){
+        if((record.qpcStr && record.supplier && record.productionDate)==false)
+            return;
+        if(record.stocks && record.stocks.lenght>0){
+            record.stocks.map(function(stock){
+                if(stock.qpcStr===record.qpcStr
+                    && stock.supplier.uuid===record.supplier.uuid
+                    && stock.productionDate===record.productionDate)
+                    record.stockQty=stock.qty;
+                });  
+        }
     };
 
     function onCellChange(index, record, value) {
@@ -264,7 +286,7 @@ function DecIncCreateItem({
     function renderProDate(record, key, text) {
         if (typeof record.editable === undefined)
             return text;
-        if (billType == 'Dec') {
+        if (currentBill.type == 'Dec') {
 
             const options = [];
 
@@ -278,12 +300,12 @@ function DecIncCreateItem({
                 editable={true}
                 options={options}
                 onChange={value => handleChange(record, value, key)}
-                value={text}
+                value={moment(text).format("YYYY-MM-DD")}
             />);
         } else {
             return (<RowEditCellDatePicker
                 editable={record.editable}
-                value={record.productionDate ? text : null}
+                value={record.productionDate ? moment(text).format("YYYY-MM-DD") : null}
                 status={status}
                 onChange={value => handleChange(record, value, key)}
             />);

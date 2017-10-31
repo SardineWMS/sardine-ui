@@ -7,6 +7,9 @@ import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
 const EditableCell = require('../../Widget/EditableCell');
 import PermissionUtil from '../../../utils/PermissionUtil';
+import WrhSelect from '../../widget/WrhSelectWithUuid';
+const UserModal = require('../../Widget/UserModal');
+import Panel from '../../Widget/Panel';
 
 const Option = Select.Option;
 
@@ -19,9 +22,7 @@ const DecIncCreateForm = ({
         validateFields,
         getFieldsValue
     },
-    wrhs,//当前组织下的所有仓位
     onSelectType,//选择单据类型之后，在查询仓位
-    onSelectWrh,
     totalCaseQtyStr,
     totalAmount
 }) => {
@@ -33,7 +34,8 @@ const DecIncCreateForm = ({
             let data = {};
             data = {
                 ...getFieldsValue(),
-                ...item
+                ...item,
+                remark:getFieldsValue().remark
             };
             handleSave(data);
         });
@@ -50,29 +52,25 @@ const DecIncCreateForm = ({
         )}
     </BaseFormItem>);
 
-    const options = [];
-    if (wrhs != null) {
-        for (var wrh of wrhs) {
-            options.push(<Option value={wrh.uuid}>{wrh.name + "[" + wrh.code + "]"}</Option>)
-        };
-    };
-
     children.push(
         <BaseFormItem label={"仓位："}>
             {getFieldDecorator("wrh", {
                 rules: [{ required: true }], initialValue: item.wrh ? item.wrh.name + "[" + item.wrh.code + "]" : null
             })(
-                <Select placeholder="请选择：" onChange={(value) => onSelectWrh(value)}>
-                    {options}
-                </Select>
+               <WrhSelect />
                 )
             }
         </BaseFormItem>);
 
-
     children.push(
-        <BaseFormItem label={"报损人："} >
-            <label>{item.operator == null ? localStorage.getItem("loginName") + "[" + localStorage.getItem("loginCode") + "]" : item.operator.name + "[" + item.operator.code + "]"}</label>
+        <BaseFormItem label={"报损员："}>
+            {getFieldDecorator("operator", {
+                rules: [{ required: true, message: "报损员不能为空！" }], initialValue: item.operator ? "[" + item.operator.name + "]"+item.operator.code: 
+                localStorage.getItem("loginName") + "[" + localStorage.getItem("loginCode") + "]" 
+            })(
+                <UserModal />
+                )
+            }
         </BaseFormItem>
     );
 
@@ -96,6 +94,15 @@ const DecIncCreateForm = ({
                 <BaseForm items={children} />
                 <BaseForm items={totalCaseQtyStrForm} />
             </BaseCard>
+            <Panel title="说明">
+                <Form.Item>
+                    {getFieldDecorator('remark', {
+                        initialValue: item.remark, rules: [{ max: 255, message: '说明最大长度是255！' }]
+                    })(
+                        <Input type="textarea" autosize={{ minRows: 4 }} />
+                        )}
+                </Form.Item>
+            </Panel>
         </div>
     );
 

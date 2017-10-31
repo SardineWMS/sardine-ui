@@ -13,16 +13,10 @@ import WMSProgress from '../../components/Widget/WMSProgress';
 function DecInc({ location, dispatch, decinc }) {
     const {
         list, pagination,
-        currentItem,
+        currentBill,
         showCreatePage,
-        wrhs,
+        reasons,
         decIncItem,
-        qpcStrs,
-        billType,
-        proDates,
-        totalCaseQtyStr,
-        totalAmount,
-        suppliers,
         showViewPage,
         deleteDecIncBillEntitys,
         auditDecIncBillEntitys,
@@ -57,7 +51,7 @@ function DecInc({ location, dispatch, decinc }) {
         onCreate() {
             dispatch({
                 type: 'decinc/showCreate',
-                payload: { currentItem }
+                payload: { currentBill }
             });
         },
         onViewItem(record) {
@@ -111,15 +105,13 @@ function DecInc({ location, dispatch, decinc }) {
     };
 
     const decIncCreateFormProps = {
-        wrhs,
-        item: currentItem,
+        itemProps:decIncCreateItemGridProps,
+        item: currentBill,
         onSelectType(value) {
             dispatch({
                 type: 'decinc/onSelectType',
                 payload: value
             });
-        },
-        onSelectWrh(data) {
         },
         handleSave(data) {
             for (let i = 0; i < decIncItem.length; i++) {
@@ -144,22 +136,20 @@ function DecInc({ location, dispatch, decinc }) {
             };
             const result = {};
             result.type = data.type;
-            if (data.uuid) {
-                result.wrh = currentItem.wrh;
+            if(!data.wrh.code){
+                const wrhUuid = data.wrh;
+                data.wrh = {};
+                data.wrh.uuid = wrhUuid;
             }
-            else {
-                for (var wrh of wrhs) {
-                    if (wrh.uuid == data.wrh)
-                        result.wrh = wrh;
-                };
-            };
-            result.totalCaseQtyStr = currentItem.totalCaseQtyStr;
-            result.totalAmount = Math.abs(Number.parseFloat(currentItem.totalAmount));
+            result.wrh=data.wrh;
+            result.remark=data.remark;
+            result.totalCaseQtyStr = currentBill.totalCaseQtyStr;
+            result.totalAmount = Math.abs(Number.parseFloat(currentBill.totalAmount));
             result.items = decIncItem;
-            result.operator = {};
-            result.operator.uuid = localStorage.getItem("loginId");
-            result.operator.code = localStorage.getItem("loginCode");
-            result.operator.name = localStorage.getItem("loginName");
+            if(!data.operator.uuid){
+                result.operator = {};
+                result.operator.code = data.operator;
+            }
             result.reason = data.reason;
             if (data.uuid) {
                 result.uuid = data.uuid;
@@ -188,16 +178,13 @@ function DecInc({ location, dispatch, decinc }) {
 
     const decIncCreateItemGridProps = {
         dataSource: decIncItem,
-        qpcStrs,
-        billType,
-        proDates,
-        suppliers,
-        currentItem,
+        reasons,
+        currentBill,
         getArticleInfo(record, dataSource) {
             dispatch({
                 type: 'decinc/getArticleInfo',
                 payload: {
-                    record, dataSource, currentItem
+                    record, dataSource, currentBill
                 }
             });
         },
@@ -207,19 +194,11 @@ function DecInc({ location, dispatch, decinc }) {
                 payload: value
             });
         },
-        queryStockQty(record, dataSource) {
-            dispatch({
-                type: 'decinc/queryStockQty',
-                payload: {
-                    record, dataSource, billType
-                }
-            });
-        },
         calculateCaseQtyStr(record, dataSource) {
             dispatch({
                 type: 'decinc/calculateCaseQtyStr',
                 payload: {
-                    record, dataSource, totalAmount, totalCaseQtyStr, currentItem
+                    record, dataSource, currentBill
                 }
             });
         },
@@ -227,7 +206,7 @@ function DecInc({ location, dispatch, decinc }) {
             dispatch({
                 type: 'decinc/removeItem',
                 payload: {
-                    record, dataSource
+                    record, dataSource,currentBill
                 }
             });
         },
@@ -258,7 +237,7 @@ function DecInc({ location, dispatch, decinc }) {
     };
 
     const decIncViewProps = {
-        item: currentItem,
+        item: currentBill,
         onDelete(record) {
             dispatch({
                 type: 'decinc/gridDelete',
@@ -390,7 +369,7 @@ DecInc.propTypes = {
     decinc: PropTypes.object,
     list: PropTypes.array,
     pagination: PropTypes.object,
-    currentItem: PropTypes.object
+    currentBill: PropTypes.object
 };
 
 function mapStateToProps({ decinc }) {

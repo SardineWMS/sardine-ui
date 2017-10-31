@@ -2,13 +2,13 @@ import { parse } from 'qs';
 import { queryArticleInStocks } from '../../services/basicinfo/Article.js';
 import { queryWrhs, getBinByCode } from '../../services/basicinfo/Bin.js';
 import { getByCode as getArticleInfo } from '../../services/basicinfo/Article.js';
-import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd } from '../../services/common/common.js';
+import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd ,queryStockExtendInfo} from '../../services/common/common.js';
 import { message } from 'antd';
 import { removeByValue } from '../../utils/ArrayUtils.js';
-import { get, insert, queryDecInc, update, remove, audit, queryStockExtendInfo } from '../../services/inner/decInc.js';
+import { get, insert, queryDecInc, update, remove, audit } from '../../services/inner/decInc.js';
+import { queryReasonConfig } from '../../services/basicinfo/config/ReasonConfig.js';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
-
 moment.locale('zh-cn');
 
 
@@ -17,7 +17,7 @@ export default {
 
     state: {
         list: [],
-        currentItem: {},
+        currentBill: {},
         pagination: {
             showSizeChanger: true,
             showQuickJumper: true,
@@ -26,16 +26,10 @@ export default {
             total: null,
             size: 'default'
         },
-        wrhs: [],//当前组织下的仓位
+        reasons:[],
         showCreatePage: false,
         showViewPage: false,
         decIncItem: [],//当前的损溢单明细集合,
-        qpcStrs: [],//当前商品的规格集合
-        billType: '',//单据类型
-        proDates: [],//单据类型为损耗单时，生产日期取自库存
-        totalCaseQtyStr: '0',//总件数
-        totalAmount: 0,//总金额
-        suppliers: [],//商品供应商数据源
         batchDeleteProcessModal: false,
         deleteDecIncBillEntitys: [],
         batchAuditProcessModal: false,
@@ -71,30 +65,30 @@ export default {
                             showTotal: total => `共${total}条`,
                             size: 'default'
                         },
-                        currentItem: {},
+                        currentBill: {},
                         decIncItem: []
                     }
                 });
             };
         },
 
-        *create({ payload }, { call, put }) {
-            const { data } = yield call(queryArticleInStocks, parse(payload));
-            yield put({
-                type: 'createSuccess',
-                payload: {
+        // *create({ payload }, { call, put }) {
+        //     const { data } = yield call(queryArticleInStocks, parse(payload));
+        //     yield put({
+        //         type: 'createSuccess',
+        //         payload: {
 
-                }
-            });
-        },
+        //         }
+        //     });
+        // },
 
         *onSelectType({ payload }, { call, put }) {
-            const { data } = yield call(queryWrhs, {});
+           // const { data } = yield call(queryWrhs, {});
             const decIncItem = [];
-            const currentItem = {};
-            currentItem.totalCaseQtyStr = '0';
-            currentItem.totalAmount = 0;
-            currentItem.type = payload;
+            const currentBill = {};
+            currentBill.totalCaseQtyStr = '0';
+            currentBill.totalAmount = 0;
+            currentBill.type = payload;
             if (payload.decIncItem == null) {
                 const nullObj = new Object();
                 nullObj.line = 1;
@@ -104,10 +98,10 @@ export default {
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    wrhs: data.obj,
+                  //  wrhs: data.obj,
                     decIncItem: decIncItem,
-                    billType: payload,
-                    currentItem: currentItem
+                    //billType: payload,
+                    currentBill: currentBill
                 }
             });
         },
@@ -120,74 +114,73 @@ export default {
                 payload.record.article.uuid = data.obj.uuid;
                 payload.record.article.name = data.obj.name;
                 let qpcStrs = [];
-                if (payload.currentItem.type == 'Dec') {
-                    const stockInfo = yield call(queryStock, {
+                let suppliers = [];
+                let productionDates=[];
+                let stocks=[];
+               // let itemStockInfo={};
+                if (payload.currentBill.type == 'Dec') {
+                    // const stockInfo = yield call(queryStock, {
+                    //     articleUuid: payload.record.article.uuid,
+                    //     binCode: payload.record.binCode,
+                    //     containerBarcode: payload.record.containerBarCode,
+                    // });
+                    // qpcStrs = stockInfo.data.obj.qpcStrs;
+
+                    const stockInfo = yield call(queryStockExtendInfo, {
                         articleUuid: payload.record.article.uuid,
                         binCode: payload.record.binCode,
                         containerBarcode: payload.record.containerBarCode,
                     });
-                    qpcStrs = stockInfo.data.obj.qpcStrs;
-                }
-                else {
+                    if(stockInfo && stockInfo.data.obj.length>0){
+                        stocks = stockInfo.data.obj;
+                        stocks.sort(function(a,b){
+                            return a.productionDate-b.productionDate
+                        });
+                        stocks.map(function(stock){
+                            qpcStrs.push(stock.qpcStr);
+                        });
+                        // itemStockInfo.line=payload.record.line;
+                        // itemStockInfo.stocks=stocks;
+                        suppliers.push(stocks[0].supplier); 
+                        productionDates.push(stocks[0].productionDate);
+                    }
+                }else {
                     for (var qpc of data.obj.qpcs) {
                         qpcStrs.push(qpc.qpcStr);
                     };
+                    for (var supplier of data.obj.articleSuppliers) {
+                        const supplierUcn=new Object();
+                        supplierUcn.uuid=supplier.supplierUuid;
+                        supplierUcn.code=supplier.supplierCode;
+                        supplierUcn.name=supplier.supplierName;
+                        suppliers.push(supplierUcn);
+                    };
                 };
-                const suppliers = [];
-                for (var supplier of data.obj.articleSuppliers) {
-                    suppliers.push(supplier);
-                };
+      
                 for (var item of payload.dataSource) {
                     if (item.line == payload.record.line) {
                         item.article.uuid = data.obj.uuid;
                         item.article.name = data.obj.name;
                         item.qpcStrs = qpcStrs;
                         item.suppliers = suppliers;
-                    };
-                };
-                yield put({
-                    type: 'createSuccess',
-                    payload: {
-                        decIncItem: payload.dataSource,
-                        qpcStrs: qpcStrs,
-                        suppliers: suppliers
-                    }
-                });
-            };
-        },
-
-        // *verifyBin({ payload }, { call, put }) {
-        //     const { data } = yield call(getBinByCode, {
-        //         bincode: payload.value,
-        //     });
-
-        //     if (data) {
-
-        //     } else { }
-        // },
-
-        *queryStockQty({ payload }, { call, put }) {
-            const { data } = yield call(queryStock, {
-                articleUuid: payload.record.article.uuid,
-                qpcStr: payload.record.qpcStr,
-                supplierUuid: payload.record.supplier.uuid
-            });
-            if (data) {
-                if (data.obj.totalQty == 0 && payload.billType == 'dec') {
-                    message.warning("该商品不存在库存，不能新建类型为损耗的损溢单", 2, '');
-                    return;
-                };
-                for (var item of payload.dataSource) {
-                    if (item.article.uuid == payload.record.article.uuid && item.qpcStr == payload.record.qpcStr) {
-                        item.stockQty = data.obj.totalQty;
-                        item.price = data.obj.price;
-                        item.proDates = data.obj.productionDates;
+                        item.price=data.obj.purchasePrice?data.obj.purchasePrice:0;
+                        item.supplier=suppliers[0];
+                        item.qpcStr=qpcStrs[0];
+                        if(payload.currentBill.type == 'Dec' && productionDates.length>0){
+                            item.proDates=productionDates;
+                            item.productionDate=productionDates[0];
+                        }
+                        item.stockQty=stocks[0]?stocks[0].qty:0;
+                        item.stocks=stocks;
                     };
                 };
                 yield put({
                     type: 'createSuccess',
                     payload: {
                         decIncItem: payload.dataSource
+                        // qpcStrs: qpcStrs,
+                        // suppliers: suppliers,
+                        // stocks:stocks
                     }
                 });
             };
@@ -211,9 +204,7 @@ export default {
                     item.caseQtyStr = data.obj;
                 };
             };
-            // const caseQtyStrResult = yield call(caseQtyStrAdd, {
-            //     addend: payload.currentItem.totalCaseQtyStr, augend: data.obj,
-            // });
+
             let totalAmount = 0;
             let totalCaseQtyStr = 0;
             if (payload.dataSource.length == 1) {
@@ -229,15 +220,14 @@ export default {
                     totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
                 };
             };
-            // totalAmount = payload.record.price * payload.record.qty + payload.currentItem.totalAmount;
-            // 
-            payload.currentItem.totalCaseQtyStr = totalCaseQtyStr;
-            payload.currentItem.totalAmount = totalAmount;
+
+            payload.currentBill.totalCaseQtyStr = totalCaseQtyStr;
+            payload.currentBill.totalAmount = totalAmount;
             yield put({
                 type: 'createSuccess',
                 payload: {
                     decIncItem: payload.dataSource,
-                    currentItem: payload.currentItem
+                    currentBill: payload.currentBill
                 }
             });
         },
@@ -254,13 +244,23 @@ export default {
                 nullObj.editable = true;
                 payload.dataSource.push(nullObj);
             };
+            var totalAmount = 0;
+            var totalCaseQtyStr = 0;
             for (let i = 0; i < payload.dataSource.length; i++) {
                 payload.dataSource[i].line = i + 1;
+                totalAmount = Number.parseFloat(payload.dataSource[i].price) * Number.parseFloat(payload.dataSource[i].qty) + Number.parseFloat(totalAmount);
+                if (payload.dataSource[i].caseQtyStr === undefined || payload.dataSource[i].caseQtyStr == 0 )
+                    continue;
+                const totalCaseQtyStrResult = yield call(caseQtyStrAdd, { addend: totalCaseQtyStr, augend: payload.dataSource[i].caseQtyStr, });
+                totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
             };
+            payload.currentBill.totalCaseQtyStr = totalCaseQtyStr;
+            payload.currentBill.totalAmount = totalAmount;
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    decIncItem: payload.dataSource
+                    decIncItem: payload.dataSource,
+                    currentBill: payload.currentBill
                 }
             });
         },
@@ -297,11 +297,11 @@ export default {
                     uuid: data.obj
                 });
                 if (decIncBill) {
-                    const wrhs = yield call(queryWrhs, {});
+                   // const wrhs = yield call(queryWrhs, {});
                     const decIncItem = [];
-                    const currentItem = {};
-                    currentItem.totalCaseQtyStr = '0';
-                    currentItem.totalAmount = 0;
+                    const currentBill = {};
+                    currentBill.totalCaseQtyStr = '0';
+                    currentBill.totalAmount = 0;
                     const nullObj = new Object();
                     nullObj.line = 1;
                     nullObj.editable = true;
@@ -310,8 +310,8 @@ export default {
                     yield put({
                         type: 'viewSuccess',
                         payload: {
-                            wrhs: wrhs.data.obj,
-                            currentItem: decIncBill.data.obj,
+                           // wrhs: wrhs.data.obj,
+                            currentBill: decIncBill.data.obj,
                             decIncItem: decIncBill.data.obj.items,
                         }
                     });
@@ -346,13 +346,11 @@ export default {
                 uuid: payload.uuid,
             });
             if (data) {
-                const wrhs = yield call(queryWrhs, {});
                 yield put({
                     type: 'viewSuccess',
                     payload: {
                         decIncItem: data.obj.item,
-                        wrhs: wrhs.data.obj,
-                        currentItem: data.obj
+                        currentBill: data.obj
                     }
                 });
             };
@@ -361,7 +359,6 @@ export default {
         *edit({ payload }, { call, put }) {
             const { data } = yield call(get, { uuid: payload.uuid });
             if (data) {
-                const wrhs = yield call(queryWrhs, {});
                 for (var item of data.obj.items) {
                     item.editable = true;
                     var produceDate = moment(item.productionDate);
@@ -377,14 +374,11 @@ export default {
                             return;
                         };
                         const proDates = [];
-                        // for (var item of payload.dataSource) {
-                        // if (item.article.uuid == payload.record.article.uuid && item.qpcStr == payload.record.qpcStr) {
                         item.stockQty = stocks.data.obj.totalQty;
                         proDates.push(stocks.data.obj.productionDate);
 
                         item.proDates = proDates;
                     };
-                    // }
 
                     const article = yield call(getArticleInfo, {
                         articleCode: item.article.code,
@@ -407,8 +401,7 @@ export default {
                     type: 'createSuccess',
                     payload: {
                         decIncItem: data.obj.items,
-                        wrhs: wrhs.data.obj,
-                        currentItem: data.obj
+                        currentBill: data.obj
                     }
                 });
             };
@@ -461,19 +454,20 @@ export default {
             billItem.editable = true;
             const list = [];
             list.push(billItem);
-            const currentItem = {};
-            currentItem.totalCaseQtyStr = 0;
-            currentItem.totalAmount = 0;
-            const { data } = yield call(queryWrhs, {});
+            const currentBill = {};
+            currentBill.totalCaseQtyStr = 0;
+            currentBill.totalAmount = 0;
+            const {data}=yield call(queryReasonConfig, {reasonType:"DECINC"});
             yield put({
                 type: 'createSuccess',
                 payload: {
                     decIncItem: list,
-                    currentItem: currentItem,
-                    wrhs: data.obj
+                    currentBill: currentBill,
+                    reasons:data.obj
                 }
             });
-        },
+        }
+
     },
 
     reducers: {
