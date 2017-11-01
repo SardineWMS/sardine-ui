@@ -118,14 +118,22 @@ function DecInc({ location, dispatch, decinc }) {
                 if (decIncItem[i].price == null || decIncItem[i].price == '') {
                     message.error("第" + i + "行中的单价不能为空");
                     return;
-                } else if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(decIncItem[i].price) == false) {
+                } else if (decIncItem[i].price < 0 ){
+                    message.error("第" + i + "行中的单价不能小于零");
+                    return;
+                }
+                else if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(decIncItem[i].price) == false) {
                     message.error("第" + i + "行中的单价格式不正确，最大长度12位数字，保留3位小数");
                     return;
                 };
                 if (decIncItem[i].qty == null || decIncItem[i].qty == '') {
                     message.error("第" + i + "行中的数量不能为空");
                     return;
-                } else if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(decIncItem[i].price) == false) {
+                } else if (decIncItem[i].qty<0){
+                    message.error("第" + i + "行中的数量不能小于零");
+                    return;
+                }
+                else if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(decIncItem[i].price) == false) {
                     message.error("第" + i + "行中的数量格式不正确，最大长度12位数字，保留3位小数");
                     return;
                 };
