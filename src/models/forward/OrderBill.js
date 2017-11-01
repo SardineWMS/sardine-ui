@@ -140,7 +140,8 @@ export default {
             yield put({
                 type: 'showCreatePage',
                 payload: {
-                    wrhs: data.obj
+                    wrhs: data.obj,
+                    currentItem: {}
                 }
             });
         },
