@@ -419,8 +419,8 @@ export default {
         *finish({ payload }, { call, put }) {
             yield call(finish, { uuid: payload.uuid, version: payload.version });
             yield put({
-                type: 'query',
-                payload: {}
+                type: 'showView',
+                payload: payload
             })
         },
 
@@ -431,8 +431,8 @@ export default {
         *abort({ payload }, { call, put }) {
             yield call(abort, { uuid: payload.uuid, version: payload.version });
             yield put({
-                type: 'query',
-                payload: {}
+                type: 'showView',
+                payload: payload
             })
         },
 
@@ -442,6 +442,10 @@ export default {
 
         *gridGenRtnBill({ payload }, { call, put }) {
             yield call(genRtnBill, { uuid: payload.uuid, version: payload.version });
+            yield put({
+                type: 'showView',
+                payload: payload
+            })
         }
 
     },

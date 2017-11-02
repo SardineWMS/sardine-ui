@@ -87,8 +87,9 @@ const ReturnNtcBillViewPage = ({
         </Popconfirm>
     );
     toolbar.push(<Button onClick={() => onGenRtnBill(item)} disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>生成退仓单</Button >);
-    toolbar.push(<Button onClick={() => onFinish(item)} disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>完成</Button>);
-    toolbar.push(<Button onClick={() => onAbort(item)} disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>作废</Button>);
+    toolbar.push(
+        <Popconfirm title="确定要完成吗？" onConfirm={() => onFinish(item)}><Button disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>完成</Button></Popconfirm>);
+    toolbar.push(<Popconfirm title="确定要作废吗？" onConfirm={() => onAbort(item)}><Button disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>作废</Button></Popconfirm>);
     toolbar.push(<Button onClick={() => onBack()}>返回</Button>);
 
     return (
