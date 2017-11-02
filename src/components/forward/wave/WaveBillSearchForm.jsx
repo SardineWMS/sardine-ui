@@ -39,8 +39,9 @@ const WaveBillSearchForm = ({
     children.push(
         <BaseTwoCol key={"state"}>
             <BaseFormItem label={"状态 等于"}>
-                {getFieldDecorator("state")(
+                {getFieldDecorator("state",{initialValue:''})(
                     <Select placeholder="请选择" showSearch={false} size="default">
+                        <Option value=''>全部</Option>
                         <Option value="initial" >初始</Option>
                         <Option value="inProgress">启动中</Option>
                         <Option value="exception">异常</Option>
