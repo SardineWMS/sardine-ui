@@ -1,5 +1,5 @@
 import { parse } from 'qs';
-import { queryBill, insertBill, getRtnSupplierNtcBill, updateBill, abort, finish,genTask } from '../../services/backward/RtnSupplierNtcBillService';
+import { queryBill, insertBill, getRtnSupplierNtcBill, updateBill, abort, finish, genTask } from '../../services/backward/RtnSupplierNtcBillService';
 import modelExtend from 'dva-model-extend';
 import { pageModel } from '../../utils/BaseModel';
 import { queryWrhs } from '../../services/basicinfo/Bin.js';
@@ -44,11 +44,11 @@ export default modelExtend(pageModel, {
     effects: {
         *query({ payload }, { call, put }) {
             const { data } = yield call(queryBill, parse(payload));
-            if (data.status === '200' ) {
-                if(data.obj.records){
-                    data.obj.records.map(function item(){
-                        item.rtnDate=timeStamp2date(item.rtnDate);
-                    });                    
+            if (data.status === '200') {
+                if (data.obj.records) {
+                    data.obj.records.map(function item() {
+                        item.rtnDate = timeStamp2date(item.rtnDate);
+                    });
                 }
 
                 yield put({
@@ -169,7 +169,7 @@ export default modelExtend(pageModel, {
                 payload.record.price = data.obj.purchasePrice;
                 let qpcs = [];
                 qpcs = data.obj.qpcs;
-                if(qpcs){
+                if (qpcs) {
                     payload.record.qpcStr = qpcs[0].qpcStr;
                     payload.record.munit = qpcs[0].munit;
                 }
@@ -347,6 +347,14 @@ export default modelExtend(pageModel, {
 
         *gridFinish({ payload }, { call, put }) {
             yield call(finish, { uuid: payload.uuid, version: payload.version });
+        },
+
+        *finish({ payload }, { call, put }) {
+            yield call(finish, { uuid: payload.uuid, version: payload.version });
+            yield put({
+                type: 'showView',
+                payload: payload
+            })
         },
 
         *refreshAmount({ payload }, { call, put }) {

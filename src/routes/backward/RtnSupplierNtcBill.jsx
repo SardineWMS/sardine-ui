@@ -281,6 +281,12 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
             dispatch({
                 type: 'rtnSupplierNtcBill/query'
             })
+        },
+        onFinish(record) {
+            dispatch({
+                type: 'rtnSupplierNtcBill/finish',
+                payload: record
+            })
         }
     };
 
