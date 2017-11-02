@@ -99,7 +99,7 @@ const ReturnNtcBillViewPage = ({
                 <BaseForm items={extendForm} />
             </BaseCard>
             <BaseCard single={true} title="商品明细">
-                <BaseForm items={<ReturnNtcBillViewItem {...returnNtcBillViewItemProps} />} />
+                <ReturnNtcBillViewItem {...returnNtcBillViewItemProps} />
             </BaseCard>
             <RemarkCard />
         </div>
