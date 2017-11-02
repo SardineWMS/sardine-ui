@@ -55,7 +55,7 @@ function ArticleSearch({
     title: '状态',
     dataIndex: 'state',
     key: 'state',
-    render: text => (text == "online" ? '正常' : '停用')
+    render: text => (text == "normal" ? '正常' : '停用')
   }, {
     title: '规格',
     dataIndex: 'spec',
@@ -85,7 +85,7 @@ function ArticleSearch({
     title: '售价',
     dataIndex: 'sellPrice',
     key: 'sellPrice'
-  }, ];
+  },];
 
   const rowSelection = {
     onChange: (selectedRowKeys, selectedRows) => {

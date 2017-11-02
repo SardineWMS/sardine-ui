@@ -29,28 +29,38 @@ const ArticleSearchForm = ({
   const children = [];
   children.push(
     <BaseTwoCol key="code">
-      <BaseFormItem  label="代码 等于">
+      <BaseFormItem label="代码 类似于">
         {getFieldDecorator('code')(
-          <Input type="text" placeholder="代码 等于" />
+          <Input type="text" placeholder="请输入：" />
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
+  children.push(
+    <BaseTwoCol key="secondCode">
+      <BaseFormItem label="第二代码 类似于">
+        {getFieldDecorator('secondCode')(
+          <Input type="text" placeholder="请输入：" />
         )}
       </BaseFormItem>
     </BaseTwoCol>
   );
   children.push(
     <BaseTwoCol key="name">
-      <BaseFormItem label="名称 等于">
+      <BaseFormItem label="名称 类似于">
         {getFieldDecorator('name')(
-          <Input type="text" placeholder="名称 等于" />
+          <Input type="text" placeholder="请输入：" />
         )}
       </BaseFormItem>
     </BaseTwoCol>
   );
   children.push(
     <BaseTwoCol key="state">
-      <BaseFormItem  label="状态 等于">
+      <BaseFormItem label="状态 等于">
         {getFieldDecorator('state')(
-          <Select size="default">
+          <Select size="default" placeholder="请选择：">
             <Option value="normal" initialValue>正常</Option>
+            <Option value="offline" initialValue>停用</Option>
           </Select>
         )}
       </BaseFormItem>
