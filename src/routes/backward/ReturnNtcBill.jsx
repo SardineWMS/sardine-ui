@@ -164,9 +164,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
                     };
                 };
             };
-            const wrhUuid = data.wrh;
-            data.wrh = {};
-            data.wrh.uuid = wrhUuid;
             data.items = rtnNtcBillItems;
             if (!data.uuid) {
                 dispatch({

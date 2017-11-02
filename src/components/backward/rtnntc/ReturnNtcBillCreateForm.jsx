@@ -33,7 +33,9 @@ const ReturnNtcBillCreateForm = ({
             let data = {};
             data = {
                 ...getFieldsValue(),
-                ...item
+                billNumber: item.billNumber, uuid: item.uuid, state: item.state,totalCaseQtyStr:item.totalCaseQtyStr,
+                totalAmount:item.totalAmount,
+                companyUuid: item.companyUuid, version: item.version, customer: item.customer, wrh: item.wrh
             };
             handleSave(data);
         });
@@ -94,7 +96,7 @@ const ReturnNtcBillCreateForm = ({
 
     const totalCaseQtyStrForm = [];
     totalCaseQtyStrForm.push(<BaseFormItem label={"总件数："}>
-        <label>{item.totalCaseQtyStr == null ? 0 : item.totalCaseQtyStr}</label>
+        <label>{item.totalCaseQtyStr == null ? '0' : item.totalCaseQtyStr}</label>
     </BaseFormItem>);
 
     totalCaseQtyStrForm.push(<BaseFormItem label={"总金额："}>

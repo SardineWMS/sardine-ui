@@ -27,10 +27,10 @@ const columns = [{
 ];
 
 function convertState(text) {
-    if (text == "normal")
+    if (text == "online")
         return '正常';
-    if (text == "deleted")
-        return '已删除';
+    if (text == "offline")
+        return '停用';
 };
 
 class CustomerSelectGrid extends React.Component {
@@ -119,8 +119,8 @@ class CustomerSelectGrid extends React.Component {
                 <BaseFormItem label={"状态 等于"}>
                     {getFieldDecorator("state")(
                         <Select placeholder="请选择" showSearch={false} size="default">
-                            <Option value="normal" >正常</Option>
-                            <Option value="deleted">已删除</Option>
+                            <Option value="online" >正常</Option>
+                            <Option value="offline">停用</Option>
                         </Select>
                     )}
                 </BaseFormItem>
