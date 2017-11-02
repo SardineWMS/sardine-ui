@@ -290,8 +290,10 @@ export default {
                     qpcInfo.munit = articleQpc.munit;
                     qpcInfo.qpcStr = articleQpc.qpcStr;
                     qpcs.push(qpcInfo);
-                    if (articleQpc.default_)
+                    if (articleQpc.default_) {
                         orderBillItems[payload.index].qpcStr = articleQpc.qpcStr;
+                        orderBillItems[payload.index].munit = articleQpc.munit;
+                    }
                 });
                 payload.currentBill.items = orderBillItems;
                 yield put({
