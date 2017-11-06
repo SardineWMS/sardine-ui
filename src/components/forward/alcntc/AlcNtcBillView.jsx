@@ -80,10 +80,10 @@ const AlcNtcBillView = ({
     operateForm.push(<BaseFormItem label="状态：" key={Guid()}>
         <span>{convertState(item.state)}</span>
     </BaseFormItem>);
-    operateForm.push(<BaseFormItem label="创建人：" key={Guid()}>
+    operateForm.push(<BaseFormItem label="创建信息：" key={Guid()}>
         <span>{createInfo2String(item)}</span>
     </BaseFormItem>);
-    operateForm.push(<BaseFormItem label="最后修改人 ：" key={Guid()}>
+    operateForm.push(<BaseFormItem label="最后修改信息 ：" key={Guid()}>
         <span>{lastModifyInfo2String(item)}</span>
     </BaseFormItem>);
     operateForm.push(<BaseFormItem label="总件数：" key={Guid()}>

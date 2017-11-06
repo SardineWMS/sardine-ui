@@ -369,6 +369,24 @@ export default {
                 type: 'viewAlcNtc',
                 payload: payload
             })
+        },
+
+        *refreshAmount({ payload }, { call, put }) {
+            if (payload.record.qty == '' || payload.record.qty == null)
+                return;
+            payload.record.amount = Number.parseInt(payload.record.qty) * Number.parseFloat(payload.record.price);
+            let totalAmount = 0;
+            for (let item of payload.dataSource) {
+                totalAmount = totalAmount + Number.parseFloat(item.amount);
+            };
+            payload.currentItem.totalAmount = totalAmount;
+            yield put({
+                type: 'createSuccess',
+                payload: {
+                    billItems: payload.dataSource,
+                    currentItem: payload.currentItem
+                }
+            });
         }
 
     },

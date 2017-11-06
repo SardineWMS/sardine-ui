@@ -1,6 +1,9 @@
 import React, { PropTypes } from 'react';
 import { Table, message, Popconfirm, Button, Row, Col, Card, Spin } from 'antd';
 import PermissionUtil from '../../../utils/PermissionUtil';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 class AlcNtcBillSearchGrid extends React.Component {
     constructor(props) {
@@ -119,6 +122,12 @@ class AlcNtcBillSearchGrid extends React.Component {
             dataIndex: 'deliveryMode',
             key: 'deliveryMode',
             render: text => convertMode(text)
+        },
+        {
+            title: '配货时间',
+            dataIndex: 'alcDate',
+            key: 'alcDate',
+            render: text => moment(text).format("YYYY-MM-DD")
         },
         {
             title: '配送原因',

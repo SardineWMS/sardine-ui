@@ -19,7 +19,8 @@ function AlcNtcBillCreateItem({
     refreshMunit,
     calculateCaseQtyStr,
     onAddItem,
-    onRemoveItem
+    onRemoveItem,
+    refreshAmount
 }) {
     const columns = [
         {
@@ -66,7 +67,8 @@ function AlcNtcBillCreateItem({
         }, {
             title: '价格',
             dataIndex: 'price',
-            key: 'price'
+            key: 'price',
+            render: (text, record, index) => renderPriceColumns(record, "price", text)
         }, {
             title: '金额',
             dataIndex: 'amount',
@@ -129,12 +131,22 @@ function AlcNtcBillCreateItem({
             record.qpcStr = value;
             refreshMunit(record, dataSource);
         };
-        if (key == 'qty') {
+        if (key === 'qty') {
             record.qty = value;
             if (record.qty == 0 || record.qty == '')
                 return;
             calculateCaseQtyStr(record, dataSource);
         };
+        if (key === 'price') {
+            if (value == record.price)
+                return;
+            record.price = value;
+            if (/^[0-9]{1,24}(.[0-9]{1,5})?$/.test(value) == false) {
+                message.error("价格格式不正确，最大24位数字，支持5位小数！");
+                return;
+            }
+            refreshAmount(record, dataSource);
+        }
     };
 
     function renderColumns(record, key, text) {
@@ -147,6 +159,19 @@ function AlcNtcBillCreateItem({
             onBlur={value => handleChange(record, value, key)}
             autoFocus={false}
             value={record.article ? text : null}
+        />);
+    };
+
+    function renderPriceColumns(record, key, text) {
+        if (typeof record.editable === undefined)
+            return text;
+
+        return (<RowEditCell
+            editable={true}
+            status={status}
+            onBlur={value => handleChange(record, value, key)}
+            autoFocus={false}
+            value={record.price}
         />);
     };
 

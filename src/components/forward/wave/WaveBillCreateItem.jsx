@@ -42,8 +42,8 @@ function WaveBillCreateItem({
             key: 'ntcBillNumber',
         }, {
             title: '状态',
-            dataIndex: 'ntcBillState',
-            key: 'ntcBillState',
+            dataIndex: 'alcNtcBillState',
+            key: 'alcNtcBillState',
             render: (text, record) => convertState(text)
         }, {
             title: '客户',

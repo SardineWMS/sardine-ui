@@ -19,8 +19,8 @@ const columns = [{
 },
 {
     title: '状态',
-    dataIndex: 'state',
-    key: 'state',
+    dataIndex: 'userState',
+    key: 'userState',
     render: text => convertState(text)
 }
 ];

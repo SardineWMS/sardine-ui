@@ -196,6 +196,14 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
                     record, dataSource, currentItem
                 }
             });
+        },
+        refreshAmount(record, dataSource) {
+            dispatch({
+                type: 'alcNtc/refreshAmount',
+                payload: {
+                    record, dataSource, currentItem
+                }
+            })
         }
     };
 
