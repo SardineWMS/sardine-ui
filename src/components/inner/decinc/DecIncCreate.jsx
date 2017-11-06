@@ -35,7 +35,8 @@ const DecIncCreateForm = ({
             data = {
                 ...getFieldsValue(),
                 ...item,
-                remark: getFieldsValue().remark
+                remark: getFieldsValue().remark,
+                operator: getFieldsValue().operator
             };
             handleSave(data);
         });
