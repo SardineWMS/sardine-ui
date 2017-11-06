@@ -66,7 +66,7 @@ const ReturnNtcBillViewPage = ({
     extendForm.push(<BaseFormItem label="已退总金额：" key={Guid()}>
         <span>{item.totalReturnedAmount}</span>
     </BaseFormItem>);
-    extendForm.push(<BaseFormItem label="操作信息：" key={Guid()}>
+    extendForm.push(<BaseFormItem label="创建信息：" key={Guid()}>
         <span>{createInfo2String(item)}</span>
     </BaseFormItem>);
     extendForm.push(<BaseFormItem label="最后修改信息：" key={Guid()}>

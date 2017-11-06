@@ -33,9 +33,9 @@ const ReturnNtcBillCreateForm = ({
             let data = {};
             data = {
                 ...getFieldsValue(),
-                billNumber: item.billNumber, uuid: item.uuid, state: item.state,totalCaseQtyStr:item.totalCaseQtyStr,
-                totalAmount:item.totalAmount,
-                companyUuid: item.companyUuid, version: item.version, customer: item.customer, wrh: item.wrh
+                billNumber: item.billNumber, uuid: item.uuid, state: item.state, totalCaseQtyStr: item.totalCaseQtyStr,
+                totalAmount: item.totalAmount,
+                companyUuid: item.companyUuid, version: item.version, customer: item.customer,
             };
             handleSave(data);
         });
@@ -65,8 +65,8 @@ const ReturnNtcBillCreateForm = ({
     );
     children.push(
         <BaseFormItem label={"仓位："}>
-            {getFieldDecorator("wrh", {
-                rules: [{ required: true, message: "仓位不能为空！" }], initialValue: item.wrh ? item.wrh.code : null
+            {getFieldDecorator("wrh.uuid", {
+                rules: [{ required: true, message: "仓位不能为空！" }], initialValue: item.wrh ? item.wrh.uuid : null
             })(
                 <WrhSelect />
                 )

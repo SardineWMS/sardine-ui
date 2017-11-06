@@ -148,6 +148,16 @@ export default {
                 payload.record.qpcs = qpcs;
                 payload.record.suppliers = suppliers;
                 payload.record.price = data.obj.purchasePrice;
+                for (let supplier of suppliers) {
+                    if (supplier.default_) {
+                        let supplierObj = {};
+                        supplierObj.code = supplier.supplierCode;
+                        supplierObj.uuid = supplier.supplierUuid;
+                        supplierObj.name = supplier.supplierName;
+                        payload.record.supplier = supplierObj;
+                        break;
+                    }
+                }
                 yield put({
                     type: 'showCreateSuccess',
                     payload: {
