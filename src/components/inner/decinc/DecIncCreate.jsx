@@ -35,7 +35,7 @@ const DecIncCreateForm = ({
             data = {
                 ...getFieldsValue(),
                 ...item,
-                remark:getFieldsValue().remark
+                remark: getFieldsValue().remark
             };
             handleSave(data);
         });
@@ -57,7 +57,7 @@ const DecIncCreateForm = ({
             {getFieldDecorator("wrh", {
                 rules: [{ required: true }], initialValue: item.wrh ? item.wrh.name + "[" + item.wrh.code + "]" : null
             })(
-               <WrhSelect />
+                <WrhSelect />
                 )
             }
         </BaseFormItem>);
@@ -65,8 +65,7 @@ const DecIncCreateForm = ({
     children.push(
         <BaseFormItem label={"报损员："}>
             {getFieldDecorator("operator", {
-                rules: [{ required: true, message: "报损员不能为空！" }], initialValue: item.operator ? "[" + item.operator.name + "]"+item.operator.code: 
-                localStorage.getItem("loginName") + "[" + localStorage.getItem("loginCode") + "]" 
+                rules: [{ required: true, message: "报损员不能为空！" }], initialValue: item.operator ? item.operator.code : localStorage.getItem("loginCode")
             })(
                 <UserModal />
                 )

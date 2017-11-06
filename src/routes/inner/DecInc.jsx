@@ -105,7 +105,7 @@ function DecInc({ location, dispatch, decinc }) {
     };
 
     const decIncCreateFormProps = {
-        itemProps:decIncCreateItemGridProps,
+        itemProps: decIncCreateItemGridProps,
         item: currentBill,
         onSelectType(value) {
             dispatch({
@@ -116,45 +116,48 @@ function DecInc({ location, dispatch, decinc }) {
         handleSave(data) {
             for (let i = 0; i < decIncItem.length; i++) {
                 if (decIncItem[i].price == null || decIncItem[i].price == '') {
-                    message.error("第" + i + "行中的单价不能为空");
+                    message.error("第" + (i + 1) + "行中的单价不能为空");
                     return;
-                } else if (decIncItem[i].price < 0 ){
-                    message.error("第" + i + "行中的单价不能小于零");
+                } else if (decIncItem[i].price < 0) {
+                    message.error("第" + (i + 1) + "行中的单价不能小于零");
                     return;
                 }
                 else if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(decIncItem[i].price) == false) {
-                    message.error("第" + i + "行中的单价格式不正确，最大长度12位数字，保留3位小数");
+                    message.error("第" + (i + 1) + "行中的单价格式不正确，最大长度12位数字，保留3位小数");
                     return;
                 };
                 if (decIncItem[i].qty == null || decIncItem[i].qty == '') {
-                    message.error("第" + i + "行中的数量不能为空");
+                    message.error("第" + (i + 1) + "行中的数量不能为空");
                     return;
-                } else if (decIncItem[i].qty<0){
-                    message.error("第" + i + "行中的数量不能小于零");
+                } else if (data.type == 'Inc' && decIncItem[i].qty < 0) {
+                    message.error("第" + (i + 1) + "行中的数量不能小于零");
+                    return;
+                } else if (data.type == 'Dec' && decIncItem[i].qty > 0) {
+                    message.error("第" + (i + 1) + "行中的数量不能大于零");
                     return;
                 }
                 else if (/^([1-9][0-9]{0,7}\.[0-9]{0,3})$|^([1-9][0-9]{0,7})$|^0$/.test(decIncItem[i].price) == false) {
-                    message.error("第" + i + "行中的数量格式不正确，最大长度12位数字，保留3位小数");
+                    message.error("第" + (i + 1) + "行中的数量格式不正确，最大长度12位数字，保留3位小数");
                     return;
                 };
                 if ((decIncItem[i].reason && decIncItem[i].reason.length > 255)) {
-                    message.error("第" + i + "行中的原因最大长度是255！", 2);
+                    message.error("第" + (i + 1) + "行中的原因最大长度是255！", 2);
                     return;
                 };
             };
             const result = {};
             result.type = data.type;
-            if(!data.wrh.code){
+            if (!data.wrh.code) {
                 const wrhUuid = data.wrh;
                 data.wrh = {};
                 data.wrh.uuid = wrhUuid;
             }
-            result.wrh=data.wrh;
-            result.remark=data.remark;
+            result.wrh = data.wrh;
+            result.remark = data.remark;
             result.totalCaseQtyStr = currentBill.totalCaseQtyStr;
             result.totalAmount = Math.abs(Number.parseFloat(currentBill.totalAmount));
             result.items = decIncItem;
-            if(!data.operator.uuid){
+            if (!data.operator.uuid) {
                 result.operator = {};
                 result.operator.code = data.operator;
             }
@@ -214,7 +217,7 @@ function DecInc({ location, dispatch, decinc }) {
             dispatch({
                 type: 'decinc/removeItem',
                 payload: {
-                    record, dataSource,currentBill
+                    record, dataSource, currentBill
                 }
             });
         },
