@@ -88,7 +88,8 @@ export default {
 							showTotal: total => `共 ${total} 条`,
 							pageSize: data.obj.pageSize
 						},
-						allRoles: allRoles.data.obj
+						allRoles: allRoles.data.obj,
+						currentItem: {}
 					}
 				});
 			};
