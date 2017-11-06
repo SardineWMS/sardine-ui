@@ -99,6 +99,7 @@ function ShipBillCreateItem({
             render: (text, record, index) => {
                 if (text == null) {
                     text = localStorage.getItem("loginCode");
+                    record.shipper.code = localStorage.getItem("loginCode");
                     record.shipper.name = localStorage.getItem("loginName");
                 }
                 return (<RowEditCell
