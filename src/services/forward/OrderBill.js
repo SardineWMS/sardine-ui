@@ -9,6 +9,13 @@ export async function querybypage(params) {
   return request(query(url, params));
 }
 
+export async function queryCanReceiveOrderBills(params) {
+  if (params == null)
+    params = { token: '' };
+  const url = "/swms/in/order/querycanreceiveorderbills";
+  return request(query(url, params));
+}
+
 export async function get(params) {
   const url = "/swms/in/order/get";
   return request(query(url, params));
@@ -31,12 +38,12 @@ export async function remove(params) {
 
 export async function bookReg(params) {
   const url = "/swms/in/order/bookreg";
-  const newUrl=url+`?uuid=` + params.uuid+`&version=`+params.version;
+  const newUrl = url + `?uuid=` + params.uuid + `&version=` + params.version;
   var req = new Object();
   req.method = 'put';
   req.headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
   };
   req.body = JSON.stringify(params.bookedDate);
   return request(addTokenToUrl(newUrl), req);
@@ -69,13 +76,13 @@ export async function getOrderBillByBillNo(params) {
 
 export async function refreshCaseQtyAndAmount(params) {
   const url = "/swms/in/order/refreshcaseqtyandamount";
-  const newUrl=url+`?line=` + params.line;
+  const newUrl = url + `?line=` + params.line;
 
   var req = new Object();
   req.method = 'put';
   req.headers = {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
+    'Accept': 'application/json',
+    'Content-Type': 'application/json'
   };
   req.body = JSON.stringify(params.orderBill);
   return request(addTokenToUrl(newUrl), req);
@@ -87,10 +94,10 @@ export async function queryWrhs(params) {
 }
 
 export async function querySuppliers(params) {
-  if(params==null)
-    params={token:''};
-  const url="/swms/basicinfo/supplier/querybypage";
-  return request(query(url,params));
+  if (params == null)
+    params = { token: '' };
+  const url = "/swms/basicinfo/supplier/querybypage";
+  return request(query(url, params));
 }
 
 

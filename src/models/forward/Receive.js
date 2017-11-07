@@ -1,6 +1,6 @@
 import { parse } from 'qs';
 import { queryReceiveBill, insetReceiveBill, getReceiveBillByBillNo, remove, audit, update } from '../../services/forward/receive.js';
-import { get as getOrderBill, querybypage as queryOrderBill, getOrderBillByBillNo } from '../../services/forward/OrderBill.js';
+import { get as getOrderBill, queryCanReceiveOrderBills as queryOrderBill, getOrderBillByBillNo } from '../../services/forward/OrderBill.js';
 import { get } from '../../services/basicinfo/Article.js';
 import { timeStamp2date } from '../../utils/DateUtils';
 import { removeByValue } from '../../utils/ArrayUtils.js';
