@@ -38,15 +38,15 @@ export async function remove(params) {
 
 export async function bookReg(params) {
   const url = "/swms/in/order/bookreg";
-  const newUrl = url + `?uuid=` + params.uuid + `&version=` + params.version;
-  var req = new Object();
-  req.method = 'put';
-  req.headers = {
-    'Accept': 'application/json',
-    'Content-Type': 'application/json'
-  };
-  req.body = JSON.stringify(params.bookedDate);
-  return request(addTokenToUrl(newUrl), req);
+  // const newUrl = url + `?uuid=` + params.uuid + `&version=` + params.version;
+  // var req = new Object();
+  // req.method = 'put';
+  // req.headers = {
+  //   'Accept': 'application/json',
+  //   'Content-Type': 'application/json'
+  // };
+  // req.body = JSON.stringify(params.bookedDate);
+  return request(query(url, params), updateBaseNullBody(null));
 }
 
 export async function check(params) {

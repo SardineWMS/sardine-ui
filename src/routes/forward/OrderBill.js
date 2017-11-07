@@ -11,13 +11,13 @@ import OrderBillItems from '../../components/forward/Order/OrderBillItems';
 import DateModal from '../../components/forward/Order/DateModal';
 import SupplierSelectModal from '../../components/forward/Order/SupplierSelectModal';
 
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
+import ProgressForBookReg from '../../components/forward/order/ProgressForBookReg';
 function OrderBill({ location, dispatch, orderBill }) {
     const {
         list, showCreatePage, pagination, showViewPage,
         currentItem, current, articleQpcs, wrhs, suppliers,
         supplierPagination,
-        batchDeleteProcessModal, deleteOrderBillEntitys,
         batchBookRegProcessModal, bookRegOrderBillEntitys,
         batchCheckProcessModal, checkOrderBillEntitys,
         batchFinishProcessModal, finishOrderBillEntitys,
@@ -65,37 +65,15 @@ function OrderBill({ location, dispatch, orderBill }) {
                 }
             });
         },
-        onDeleteBatch(orderBills) {
-            if (orderBills.length <= 0) {
-                message.warning("请选择要删除的订单！", 2, '');
-                return;
-            };
-            const deleteOrderBills = [];
-            orderBills.map(function (orderBill) {
-                if ("Initial" === orderBill.state)
-                    deleteOrderBills.push(orderBill);
-            });
-            dispatch({
-                type: 'orderBill/batchRemoveOrderBill',
-                payload: {
-                    deleteOrderBillEntitys: deleteOrderBills
-                }
-            });
-        },
         onBookRegBatch(orderBills) {
             if (orderBills.length <= 0) {
                 message.warning("请选择要预约的订单！", 2, '');
                 return;
             };
-            const bookRegOrderBills = [];
-            orderBills.map(function (orderBill) {
-                if ("Initial" === orderBill.state)
-                    bookRegOrderBills.push(orderBill);
-            });
             dispatch({
                 type: 'orderBill/showDateModal',
                 payload: {
-                    bookRegBills: bookRegOrderBills,
+                    bookRegBills: orderBills,
                     bookRegType: "group"
                 }
             });
@@ -105,15 +83,10 @@ function OrderBill({ location, dispatch, orderBill }) {
                 message.warning("请选择要预检的订单！", 2, '');
                 return;
             };
-            const checkOrderBills = [];
-            orderBills.map(function (orderBill) {
-                if ("Initial" === orderBill.state || "PreBookReg" === orderBill.state)
-                    checkOrderBills.push(orderBill);
-            });
             dispatch({
                 type: 'orderBill/batchCheckOrderBill',
                 payload: {
-                    checkOrderBillEntitys: checkOrderBills
+                    checkOrderBillEntitys: orderBills
                 }
             });
         },
@@ -122,15 +95,10 @@ function OrderBill({ location, dispatch, orderBill }) {
                 message.warning("请选择要完成的订单！", 2, '');
                 return;
             };
-            const finishOrderBills = [];
-            orderBills.map(function (orderBill) {
-                if ("Finished" != orderBill.state && "Aborted" != orderBill.state)
-                    finishOrderBills.push(orderBill);
-            });
             dispatch({
                 type: 'orderBill/batchFinishOrderBill',
                 payload: {
-                    finishOrderBillEntitys: finishOrderBills
+                    finishOrderBillEntitys: orderBills
                 }
             });
         },
@@ -139,15 +107,10 @@ function OrderBill({ location, dispatch, orderBill }) {
                 message.warning("请选择要作废的订单！", 2, '');
                 return;
             };
-            const abortBills = [];
-            orderBills.map(function (orderBill) {
-                if ("Initial" === orderBill.state || "PreBookReg" === orderBill.state)
-                    abortBills.push(orderBill);
-            });
             dispatch({
                 type: 'orderBill/batchAbortOrderBill',
                 payload: {
-                    abortOrderBillEntitys: abortBills
+                    abortOrderBillEntitys: orderBills
                 }
             });
         }
@@ -164,32 +127,6 @@ function OrderBill({ location, dispatch, orderBill }) {
         }
     };
 
-    const batchProcessDeleteOrderBillsProps = {
-        showConfirmModal: batchDeleteProcessModal,
-        records: deleteOrderBillEntitys ? deleteOrderBillEntitys : [],
-        next: orderBillNext,
-        actionText: '删除',
-        entityCaption: '入库订单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'orderBill/remove',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version
-                }
-            });
-        },
-        hideConfirmModal() {
-            dispatch({
-                type: 'orderBill/hideRemoveOrderBillModal'
-            });
-        },
-        refreshGrid() {
-            dispatch({
-                type: 'orderBill/query'
-            });
-        }
-    };
 
     const batchProcessBookRegOrderBillsProps = {
         showConfirmModal: batchBookRegProcessModal,
@@ -197,16 +134,8 @@ function OrderBill({ location, dispatch, orderBill }) {
         next: orderBillNext,
         actionText: '预约',
         entityCaption: '入库订单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'orderBill/gridBookReg',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    bookedDate: entity.bookedDate
-                }
-            });
-        },
+        url: '/swms/in/order/bookreg',
+        canSkipState: 'PreBookReg',
         hideConfirmModal() {
             dispatch({
                 type: 'orderBill/hideBookRegOrderBillModal'
@@ -225,15 +154,8 @@ function OrderBill({ location, dispatch, orderBill }) {
         next: orderBillNext,
         actionText: '预检',
         entityCaption: '入库订单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'orderBill/gridCheck',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version
-                }
-            });
-        },
+        url: '/swms/in/order/check',
+        canSkipState: 'PreChecked',
         hideConfirmModal() {
             dispatch({
                 type: 'orderBill/hideCheckOrderBillModal'
@@ -252,15 +174,8 @@ function OrderBill({ location, dispatch, orderBill }) {
         next: orderBillNext,
         actionText: '完成',
         entityCaption: '入库订单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'orderBill/gridFinish',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version
-                }
-            });
-        },
+        url: '/swms/in/order/finish',
+        canSkipState: 'Finished',
         hideConfirmModal() {
             dispatch({
                 type: 'orderBill/hideFinishOrderBillModal'
@@ -279,15 +194,8 @@ function OrderBill({ location, dispatch, orderBill }) {
         next: orderBillNext,
         actionText: '作废',
         entityCaption: '入库订单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'orderBill/gridAbort',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version
-                }
-            });
-        },
+        url: '/swms/in/order/abort',
+        canSkipState: 'Aborted',
         hideConfirmModal() {
             dispatch({
                 type: 'orderBill/hideAbortOrderBillModal'
@@ -526,6 +434,8 @@ function OrderBill({ location, dispatch, orderBill }) {
         }
     };
 
+    const OrderBillSearchGridGen = () => <OrderBillSearchGrid {...orderBillListProps} />;
+
 
     function RefreshWidget() {
         if (showViewPage) {
@@ -549,13 +459,12 @@ function OrderBill({ location, dispatch, orderBill }) {
             return (
                 <div>
                     <OrderBillSearchForm {...orderBillSearchProps} />
-                    <OrderBillSearchGrid {...orderBillListProps} />
+                    <OrderBillSearchGridGen />
                     <DateModal {...dateModalProps} />
-                    <WMSProgress {...batchProcessBookRegOrderBillsProps} />
+                    <ProgressForBookReg {...batchProcessBookRegOrderBillsProps} />
                     <WMSProgress {...batchProcessCheckOrderBillsProps} />
                     <WMSProgress {...batchProcessFinishOrderBillsProps} />
                     <WMSProgress {...batchProcessAbortOrderBillsProps} />
-                    <WMSProgress {...batchProcessDeleteOrderBillsProps} />
                 </div>
             );
         };

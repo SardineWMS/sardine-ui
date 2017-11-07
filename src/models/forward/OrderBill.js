@@ -36,8 +36,6 @@ export default {
         showCreatePage: false,
         showEditPage: false,
         showViewPage: false,
-        batchDeleteProcessModal: false,
-        deleteOrderBillEntitys: [],
         batchBookRegProcessModal: false,
         bookRegOrderBillEntitys: [],
         batchCheckProcessModal: false,
@@ -166,23 +164,13 @@ export default {
             });
         },
 
-        *remove({ payload }, { call, put }) {
-            yield call(remove, {
-                uuid: payload.uuid,
-                version: payload.version
-            });
-            yield put({
-                type: 'query',
-            });
-        },
-
         *bookReg({ payload }, { call, put }) {
             yield call(bookReg, {
                 uuid: payload.uuid,
                 version: payload.version,
-                bookedDate: payload.bookedDate
+                bookedDate: moment(payload.bookedDate).format("YYYY-MM-DD")
             });
-            yield put({ type: 'hideModal' });
+            yield put({ type: 'hideDateModal' });
             yield put({
                 type: 'get',
                 payload: {
@@ -197,7 +185,7 @@ export default {
                 version: payload.version,
                 bookedDate: payload.bookedDate
             });
-            yield put({ type: 'hideModal' })
+            yield put({ type: 'hideDateModal' })
             yield put({
                 type: 'query'
             });
@@ -452,24 +440,12 @@ export default {
                 showCreatePage: false
             };
         },
-        batchRemoveOrderBill(state, action) {
-            return {
-                ...state,
-                ...action.payload,
-                batchDeleteProcessModal: true
-            };
-        },
-        hideRemoveOrderBillModal(state) {
-            return {
-                ...state,
-                batchDeleteProcessModal: false
-            };
-        },
         batchBookRegOrderBill(state, action) {
             return {
                 ...state,
                 ...action.payload,
-                batchBookRegProcessModal: true
+                batchBookRegProcessModal: true,
+                dateModalVisible: false
             };
         },
         hideBookRegOrderBillModal(state) {
