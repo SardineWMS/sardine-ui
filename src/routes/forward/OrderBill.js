@@ -34,7 +34,7 @@ function OrderBill({ location, dispatch, orderBill }) {
         wrhs: wrhs,
         onPageChange(page, filters, sorter) {
             dispatch(routerRedux.push({
-                pathname: '/forward/orderBill',
+                pathname: '/forward/order',
                 query: {
                     page: page.current,
                     pageSize: page.pageSize,

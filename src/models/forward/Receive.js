@@ -281,7 +281,7 @@ export default {
         }, {
             call, put
         }) {
-            const { data } = yield call(getOrderBill, parse(payload));
+            const { data } = yield call(getOrderBillByBillNo, parse(payload));
             if (data) {
                 if (data.obj == null) {
                     message.warning("输入的订单不存在，请正确输入", 2);
@@ -770,7 +770,7 @@ export default {
             call, put
         }) {
             for (var orderBillItemArticle of payload.orderBillItemArticles) {
-                if (orderBillItemArticle.article.code == payload.record.article.code) {
+                if (orderBillItemArticle.article.code == payload.record.article.code && orderBillItemArticle.qpcStr == payload.record.qpcStr) {
                     payload.record.canReceiveQty = orderBillItemArticle.qty - orderBillItemArticle.receivedQty;
                     const { data } = yield call(qtyToCaseQtyStr, {
                         qty: payload.record.canReceiveQty, qpcStr: payload.record.qpcStr
@@ -779,9 +779,7 @@ export default {
                     payload.record.expDays = orderBillItemArticle.expDays;
                     payload.record.bin = orderBillItemArticle.bin;
                     payload.record.munit = orderBillItemArticle.munit;
-                    payload.record.article.uuid = orderBillItemArticle.article.uuid;
-                    payload.record.article.name = orderBillItemArticle.article.name;
-                    payload.record.article.code = orderBillItemArticle.article.code;
+                    payload.record.article = { ...orderBillItemArticle.article };
                     break;
                 };
             };
@@ -789,7 +787,7 @@ export default {
                 if (payload.record.article.uuid != null) {
                     if (item.article.uuid == payload.record.article.uuid) {
                         for (var orderBillItemArticle of payload.orderBillItemArticles) {
-                            if (orderBillItemArticle.article.code == payload.record.article.code) {
+                            if (orderBillItemArticle.article.code == payload.record.article.code && orderBillItemArticle.qpcStr == payload.record.qpcStr) {
                                 payload.record.canReceiveQty = orderBillItemArticle.qty - orderBillItemArticle.receivedQty;
                                 const { data } = yield call(qtyToCaseQtyStr, {
                                     qty: payload.record.canReceiveQty, qpcStr: payload.record.qpcStr
@@ -798,9 +796,7 @@ export default {
                                 payload.record.expDays = orderBillItemArticle.expDays;
                                 payload.record.bin = orderBillItemArticle.bin;
                                 payload.record.munit = orderBillItemArticle.munit;
-                                payload.record.article.uuid = orderBillItemArticle.article.uuid;
-                                payload.record.article.name = orderBillItemArticle.article.name;
-                                payload.record.article.code = orderBillItemArticle.article.code;
+                                payload.record.article = { ...orderBillItemArticle.article };
                                 break;
                             };
                         };
@@ -808,7 +804,7 @@ export default {
                 } else {
                     if (payload.record.article.line == item.line) {
                         for (var orderBillItemArticle of payload.orderBillItemArticles) {
-                            if (orderBillItemArticle.article.code == payload.record.article.code) {
+                            if (orderBillItemArticle.article.code == payload.record.article.code && orderBillItemArticle.qpcStr == payload.record.qpcStr) {
                                 payload.record.canReceiveQty = orderBillItemArticle.qty - orderBillItemArticle.receivedQty;
                                 const { data } = yield call(qtyToCaseQtyStr, {
                                     qty: payload.record.canReceiveQty, qpcStr: payload.record.qpcStr
@@ -817,9 +813,7 @@ export default {
                                 payload.record.expDays = orderBillItemArticle.expDays;
                                 payload.record.bin = orderBillItemArticle.bin;
                                 payload.record.munit = orderBillItemArticle.munit;
-                                payload.record.article.uuid = orderBillItemArticle.article.uuid;
-                                payload.record.article.name = orderBillItemArticle.article.name;
-                                payload.record.article.code = orderBillItemArticle.article.code;
+                                payload.record.article = { ...orderBillItemArticle.article };
                                 break;
                             };
                         };

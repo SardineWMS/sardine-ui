@@ -17,37 +17,17 @@ function ReceiveBillItemGrid({
 	dataSource,
     pagination,
     onPageChange,
-    onCreate,
-    onViewItem,
-    onEditItem,
     onRemoveItem,
-    onRecoverItem,
-    onRemoveBatch,
-    onRecoverBatch,
     onCancelEdit,
     onAddItem,
     onSave,
     calculateValidDate,
     calculateCaseQtyStr,
     treeData,
-    qpcStrTreeData,
     article_qpcStr,
     selectArticle,
     selectQpcStr
 }) {
-
-    function handleCreate(e) {
-        e.preventDefault();
-        onCreate();
-    };
-
-    function handleRemoveBatch() {
-        onRemoveBatch(suppliers);
-    };
-
-    function handleRecoverBatch() {
-        onRecoverBatch(suppliers);
-    };
 
     function handleChange(record, value, key) {
         if (key === 'produceDate') {
@@ -312,11 +292,6 @@ ReceiveBillItemGrid.propTypes = {
     dataSource: PropTypes.array,
     loading: PropTypes.any,
     pagination: PropTypes.any,
-    onCreate: PropTypes.func,
-    onRecoverBatch: PropTypes.func,
-    onRemoveBatch: PropTypes.func,
-    onViewItem: PropTypes.func,
-    onEditItem: PropTypes.func,
     onRemoveItem: PropTypes.func
 };
 
