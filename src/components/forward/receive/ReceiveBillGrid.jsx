@@ -74,7 +74,7 @@ class ReceiveBillGrid extends React.Component {
             sorter: true
         },
         {
-            title: '收货人',
+            title: '收货员',
             dataIndex: 'receiver',
             key: 'receiver',
             render: text => "[" + text.code + "]" + text.name

@@ -89,7 +89,7 @@ const ReceiveBillSearchForm = ({
     );
     children.push(
         <BaseTwoCol key={"receiverCode"}>
-            <BaseFormItem label={"收货员 等于"}>
+            <BaseFormItem label={"收货员代码 等于"}>
                 {getFieldDecorator("receiverCode")(
                     <UserModalForSearch />
                 )}

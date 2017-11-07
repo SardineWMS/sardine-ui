@@ -101,8 +101,8 @@ const ReceiveBillAddForm = ({
     );
 
     children.push(
-        <BaseFormItem label={"收货人："} >
-            {getFieldDecorator("receiver.code", { rules: [{ required: true, message: "收货人不能为空" }], initialValue: item.reveiver ? item.receiver.code : '' })(
+        <BaseFormItem label={"收货员："} >
+            {getFieldDecorator("receiver.code", { rules: [{ required: true, message: "收货员不能为空" }], initialValue: item.reveiver ? item.receiver.code : '' })(
                 <UserModal />
             )}
         </BaseFormItem>
