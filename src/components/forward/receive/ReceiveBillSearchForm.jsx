@@ -96,6 +96,15 @@ const ReceiveBillSearchForm = ({
             </BaseFormItem>
         </BaseTwoCol>
     );
+    children.push(
+        <BaseTwoCol key={"containerBarcode"}>
+            <BaseFormItem label={"容器条码 类似于"}>
+                {getFieldDecorator("containerBarcode")(
+                    <Input placeholder="请输入" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
 
 
 
