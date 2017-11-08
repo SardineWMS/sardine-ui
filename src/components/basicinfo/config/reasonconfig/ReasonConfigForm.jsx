@@ -45,13 +45,11 @@ class ReasonConfigForm extends React.Component {
   }
 
   changeHandler = (index) => {
-    console.log(index);
     const keys = this.props.form.getFieldValue('keys');
     keys[`${index}`] = this.props.form.getFieldValue(`names-${index}`);
     this.props.form.setFieldsValue({
       keys: keys,
     });
-    console.dir(keys);
   }
 
   render() {

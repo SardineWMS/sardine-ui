@@ -16,7 +16,7 @@ moment.locale('zh-cn');
 
 function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
     const { showPage, showCustomerSelectModal, currentItem, rtnNtcBillItems, qpcs, list, pagination, batchDeleteProcessModal, deleteRtnNtcBillEntitys, batchAbortProcessModal, abortRtnNtcBillEntitys,
-        batchGenRtnBillProcessModal, genRtnBillRtnNtcBillEntitys, batchFinishProcessModal, finishRtnNtcBillEntitys, rtnNtcBillNext } = rtnNtcBill;
+        batchGenRtnBillProcessModal, genRtnBillRtnNtcBillEntitys, batchFinishProcessModal, finishRtnNtcBillEntitys, rtnNtcBillNext, reasons } = rtnNtcBill;
 
     const returnNtcBillSearchGridProps = {
         dataSource: list,
@@ -208,6 +208,7 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
     const returnNtcBillCreateItemProps = {
         dataSource: rtnNtcBillItems,
         qpcStrs: qpcs,
+        reasons,
         getArticleInfo(record, list) {
             dispatch({
                 type: 'rtnNtcBill/getArticleInfo',

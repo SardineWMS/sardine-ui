@@ -69,7 +69,7 @@ export default {
         },
         operatorModalVisible:false,
         reasons:[],
-        reasonType:'DECINC'
+        reasonType:'DECINC',
 	},
 
     subscriptions: {
@@ -249,7 +249,6 @@ export default {
         },
         *updateTaskAreaConfig({ payload }, { call, put }) {
             const { data } = yield call(updateTaskAreaConfig, parse(payload));
-            console.log({data});
             yield put({
                 type: 'hideTaskAreaConfigModal'
             }) 

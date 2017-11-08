@@ -5,6 +5,7 @@ import { getByCode as getArticleInfo } from '../../services/basicinfo/Article.js
 import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, caseQtyStrSubtract } from '../../services/common/common.js';
 import { insertRtnNtcBill, queryRtnNtcBill, getRtnNtcBill, updateRtnNtcBill, remove, finish, abort, genRtnBill } from '../../services/backward/RtnNtcBillService';
 import { removeByValue } from '../../utils/ArrayUtils';
+import { queryReasonConfig } from '../../services/basicinfo/config/ReasonConfig.js';
 
 
 export default {
@@ -31,7 +32,8 @@ export default {
         batchGenRtnBillProcessModal: false,
         genRtnBillRtnNtcBillEntitys: [],
         batchFinishProcessModal: false,
-        finishRtnNtcBillEntitys: []
+        finishRtnNtcBillEntitys: [],
+        reasons: []//退仓原因
     },
 
     subscriptions: {
@@ -86,11 +88,13 @@ export default {
                 currentItem.totalCaseQtyStr = 0;
                 currentItem.totalAmount = 0;
             }
+            const { data } = yield call(queryReasonConfig, { reasonType: "RTNNTC" });
             yield put({
                 type: 'showCreateSuccess',
                 payload: {
                     rtnNtcBillItems: payload.rtnNtcBillItems,
-                    currentItem: currentItem
+                    currentItem: currentItem,
+                    reasons: data.obj
                 }
             })
         },

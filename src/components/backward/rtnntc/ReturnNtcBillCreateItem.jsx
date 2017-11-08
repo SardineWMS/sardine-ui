@@ -19,7 +19,8 @@ const ReturnNtcBillCreateItem = ({
     onAddItem,
     calculateCaseQtyStr,
     refreshAmount,
-    onRemoveItem
+    onRemoveItem,
+    reasons
 }) => {
     const columns = [];
 
@@ -102,7 +103,7 @@ const ReturnNtcBillCreateItem = ({
         dataIndex: 'reason',
         key: 'reason',
         width: 150,
-        render: (text, record, index) => renderColumns(record, "reason", text)
+        render: (text, record, index) => renderSelectColumns(record, "reason", text)
     });
     columns.push({
         title: '操作',
@@ -180,11 +181,19 @@ const ReturnNtcBillCreateItem = ({
 
         const options = [];
 
-        if (record.article != null && record.qpcs != null) {
-            for (var qpc of record.qpcs) {
-                options.push(<Option key={qpc.qpcStr}>{qpc.qpcStr}</Option>);
-            };
-        };
+        if (key == "qpcStr") {
+            if (record.article != null && record.qpcs != null) {
+                for (var qpc of record.qpcs) {
+                    options.push(<Option key={qpc.qpcStr}>{qpc.qpcStr}</Option>);
+                };
+            }
+        } else if (key == "reason" && reasons) {
+            reasons.map(function (reason) {
+                options.push(<Option key={reason}>
+                    {reason}
+                </Option>)
+            });
+        }
 
         return (<RowEditCellSelect
             editable={true}

@@ -23,37 +23,37 @@ import ReasonConfigForm from '../../components/basicinfo/config/reasonconfig/Rea
 function Config({ location, dispatch, config }) {
   const {
       showPage,
-      treeData,
-      binScopeModalVisible,
-      binScopeType,
-      pickBinStockLimitModalVisible,
-      articleConfigs,
-      articlePagination,
-      batchSetArticleFixedPickBinModal,
-      batchSetArticleStorageAreaModal,
-      batchSetPickBinStockLimitModal,
-      selectedArticleConfigs,
-      articleConfigNext,
-      categoryStorageAreaConfigs,
-      categoryStorageAreaPagination,
-      selectedCategoryStorageAreaConfigs,
-      categoryStorageAreaConfigNext,
-      batchSetCategoryStorageAreaModal,
-      pickAreaStorageAreaConfigs,
-      pickAreaStorageAreaPagination,
-      selectedPickAreaStorageAreaConfigs,
-      batchSetPickAreaStorageAreaModal,
-      pickAreaStorageAreaConfigNext,
-      taskAreaConfigs,
-      taskAreaPagination,
-      taskAreaConfigModalVisible,
-      operatorModalVisible,
-      operators,
-      operatorPagination,
-      currentTaskAreaConfig,
-      currentOperator,
-      reasons,
-      reasonType 
+    treeData,
+    binScopeModalVisible,
+    binScopeType,
+    pickBinStockLimitModalVisible,
+    articleConfigs,
+    articlePagination,
+    batchSetArticleFixedPickBinModal,
+    batchSetArticleStorageAreaModal,
+    batchSetPickBinStockLimitModal,
+    selectedArticleConfigs,
+    articleConfigNext,
+    categoryStorageAreaConfigs,
+    categoryStorageAreaPagination,
+    selectedCategoryStorageAreaConfigs,
+    categoryStorageAreaConfigNext,
+    batchSetCategoryStorageAreaModal,
+    pickAreaStorageAreaConfigs,
+    pickAreaStorageAreaPagination,
+    selectedPickAreaStorageAreaConfigs,
+    batchSetPickAreaStorageAreaModal,
+    pickAreaStorageAreaConfigNext,
+    taskAreaConfigs,
+    taskAreaPagination,
+    taskAreaConfigModalVisible,
+    operatorModalVisible,
+    operators,
+    operatorPagination,
+    currentTaskAreaConfig,
+    currentOperator,
+    reasons,
+    reasonType
     } = config;
 
   const { field, keyword } = location.query
@@ -61,35 +61,42 @@ function Config({ location, dispatch, config }) {
   const configTreeProps = {
     onSelect(selectKeys) {
       if (selectKeys == '0002080101') {
-          dispatch({
-             type: 'config/queryArticleConfigByPage'
-          })      
-      } else if(selectKeys == '0002080102') {
-          dispatch({
-             type: 'config/queryCategoryStorageAreaConfigByPage'
-          })    
-      } else if(selectKeys == '0002080103') {
-          dispatch({
-             type: 'config/queryPickAreaStorageAreaConfigByPage'
-          })    
-      }else if(selectKeys == '0002080301') {
-          dispatch({
-             type: 'config/queryTaskAreaConfigByPage'
-          })    
-      }else if(selectKeys == '0002080201') {
-          dispatch({
-             type: 'config/queryReasonConfig',
-             payload: {
-                reasonType:"DECINC"
-             }
-          })    
-      }else if(selectKeys == '0002080202') {
-          dispatch({
-             type: 'config/queryReasonConfig',
-             payload: {
-                reasonType:"MOVE"
-             }
-          })    
+        dispatch({
+          type: 'config/queryArticleConfigByPage'
+        })
+      } else if (selectKeys == '0002080102') {
+        dispatch({
+          type: 'config/queryCategoryStorageAreaConfigByPage'
+        })
+      } else if (selectKeys == '0002080103') {
+        dispatch({
+          type: 'config/queryPickAreaStorageAreaConfigByPage'
+        })
+      } else if (selectKeys == '0002080301') {
+        dispatch({
+          type: 'config/queryTaskAreaConfigByPage'
+        })
+      } else if (selectKeys == '0002080201') {
+        dispatch({
+          type: 'config/queryReasonConfig',
+          payload: {
+            reasonType: "DECINC"
+          }
+        })
+      } else if (selectKeys == '0002080202') {
+        dispatch({
+          type: 'config/queryReasonConfig',
+          payload: {
+            reasonType: "MOVE"
+          }
+        })
+      } else if (selectKeys == '0002080203') {
+        dispatch({
+          type: 'config/queryReasonConfig',
+          payload: {
+            reasonType: 'RTNNTC'
+          }
+        })
       }
     }
   }
@@ -99,108 +106,108 @@ function Config({ location, dispatch, config }) {
     keyword,
     onSearch(fieldsValue) {
       dispatch({
-        type: 'config/queryArticleConfigByPage',  
+        type: 'config/queryArticleConfigByPage',
         payload: fieldsValue
       })
     },
   }
 
 
-  const articleConfigSearchGridProps={
-      dataSource: articleConfigs,
-      pagination: articlePagination,
-      onPageChange(page, filters, sorter) {
-        dispatch({
-          type: 'config/queryArticleConfigByPage',  
-          payload: {
-            page: page.current,
-            pageSize: page.pageSize,
-            sort: sorter.columnKey,
-            order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
-          },
-        })
-      },
-      onSetArticleFixedPickBin(articleConfigs){
-        if (articleConfigs.length <= 0) {
-            message.warning("请选择要设置的商品！", 2, '');
-            return;
-        }
-        dispatch({
-            type: 'config/showBinScopeModal',
-            payload: {
-              binScopeType: "setArticleFixedPickBin",
-              selectedArticleConfigs:articleConfigs
-            }
-        })
-      },
-      onSetArticleStorageArea(articleConfigs){
-       if (articleConfigs.length <= 0) {
-            message.warning("请选择要设置的商品！", 2, '');
-            return;
-        }
-        dispatch({
-            type: 'config/showBinScopeModal',
-            payload: {
-              binScopeType: "setArticleStorageArea",
-              selectedArticleConfigs:articleConfigs
-            }
-        })
-      },
-      onSetPickBinStockLimit(articleConfigs){
-         if (articleConfigs.length <= 0) {
-              message.warning("请选择要设置的商品！", 2, '');
-              return;
-          }
-          dispatch({
-              type: 'config/showPickBinStockLimitModal',
-              payload: { 
-                selectedArticleConfigs:articleConfigs
-              }
-          })
+  const articleConfigSearchGridProps = {
+    dataSource: articleConfigs,
+    pagination: articlePagination,
+    onPageChange(page, filters, sorter) {
+      dispatch({
+        type: 'config/queryArticleConfigByPage',
+        payload: {
+          page: page.current,
+          pageSize: page.pageSize,
+          sort: sorter.columnKey,
+          order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+        },
+      })
+    },
+    onSetArticleFixedPickBin(articleConfigs) {
+      if (articleConfigs.length <= 0) {
+        message.warning("请选择要设置的商品！", 2, '');
+        return;
       }
+      dispatch({
+        type: 'config/showBinScopeModal',
+        payload: {
+          binScopeType: "setArticleFixedPickBin",
+          selectedArticleConfigs: articleConfigs
+        }
+      })
+    },
+    onSetArticleStorageArea(articleConfigs) {
+      if (articleConfigs.length <= 0) {
+        message.warning("请选择要设置的商品！", 2, '');
+        return;
+      }
+      dispatch({
+        type: 'config/showBinScopeModal',
+        payload: {
+          binScopeType: "setArticleStorageArea",
+          selectedArticleConfigs: articleConfigs
+        }
+      })
+    },
+    onSetPickBinStockLimit(articleConfigs) {
+      if (articleConfigs.length <= 0) {
+        message.warning("请选择要设置的商品！", 2, '');
+        return;
+      }
+      dispatch({
+        type: 'config/showPickBinStockLimitModal',
+        payload: {
+          selectedArticleConfigs: articleConfigs
+        }
+      })
+    }
   }
 
-  const setArticleFixedPickBinModalProps={
-      title:"设置固定拣货位",
-      label:"固定拣货位",
-      testValue:"test",
-      visible:binScopeModalVisible,
-      onOk(binScope) {
-        selectedArticleConfigs.map(function (articleConfig) {
-            articleConfig.fixedPickBin=binScope;
-        });
-        dispatch({
-          type: 'config/showBatchSetArticleFixedPickBinModal',
-          payload: {
-            selectedArticleConfigs:selectedArticleConfigs
-          }
-        })
-      },
-      onCancel(){
-        dispatch({
-            type: 'config/hideBinScopeModal'
-        })  
-      }
+  const setArticleFixedPickBinModalProps = {
+    title: "设置固定拣货位",
+    label: "固定拣货位",
+    testValue: "test",
+    visible: binScopeModalVisible,
+    onOk(binScope) {
+      selectedArticleConfigs.map(function (articleConfig) {
+        articleConfig.fixedPickBin = binScope;
+      });
+      dispatch({
+        type: 'config/showBatchSetArticleFixedPickBinModal',
+        payload: {
+          selectedArticleConfigs: selectedArticleConfigs
+        }
+      })
+    },
+    onCancel() {
+      dispatch({
+        type: 'config/hideBinScopeModal'
+      })
+    }
   }
 
-  const setArticleStorageAreaModalProps={
-      title:"设置存储区域",
-      label:"存储区域",
-      visible:binScopeModalVisible,
-      onOk(binScope) {
-        selectedArticleConfigs.map(function (articleConfig) {
-            articleConfig.storageArea=binScope;
-        });
-        dispatch({
-          type: 'config/showBatchSetArticleStorageAreaModal',
-          payload: selectedArticleConfigs
-        })
-      },
-      onCancel(){
-        dispatch({
-            type: 'config/hideBinScopeModal'
-        })  
-      }
+  const setArticleStorageAreaModalProps = {
+    title: "设置存储区域",
+    label: "存储区域",
+    visible: binScopeModalVisible,
+    onOk(binScope) {
+      selectedArticleConfigs.map(function (articleConfig) {
+        articleConfig.storageArea = binScope;
+      });
+      dispatch({
+        type: 'config/showBatchSetArticleStorageAreaModal',
+        payload: selectedArticleConfigs
+      })
+    },
+    onCancel() {
+      dispatch({
+        type: 'config/hideBinScopeModal'
+      })
+    }
   }
 
   const batchSetArticleFixedPickBinProps = {
@@ -214,7 +221,7 @@ function Config({ location, dispatch, config }) {
         type: 'config/setArticleFixedPickBin',
         payload: {
           articleUuid: entity.article.uuid,
-          fixedPickBin:entity.fixedPickBin,
+          fixedPickBin: entity.fixedPickBin,
           version: entity.version
         }
       })
@@ -242,7 +249,7 @@ function Config({ location, dispatch, config }) {
         type: 'config/setArticleStorageArea',
         payload: {
           articleUuid: entity.article.uuid,
-          storageArea:entity.storageArea,
+          storageArea: entity.storageArea,
           version: entity.version
         }
       })
@@ -259,22 +266,22 @@ function Config({ location, dispatch, config }) {
     }
   }
 
-  const setPickBinStockLimitModalProps={
-      visible:pickBinStockLimitModalVisible,
-      onOk(pickBinStockLimit) {
-        selectedArticleConfigs.map(function (articleConfig) {
-            articleConfig.pickBinStockLimit=pickBinStockLimit;
-        });
-        dispatch({
-          type: 'config/showBatchSetPickBinStockLimitModal',
-          payload: selectedArticleConfigs
-        })
-      },
-      onCancel(){
-        dispatch({
-            type: 'config/hidePickBinStockLimitModal'
-        })  
-      }
+  const setPickBinStockLimitModalProps = {
+    visible: pickBinStockLimitModalVisible,
+    onOk(pickBinStockLimit) {
+      selectedArticleConfigs.map(function (articleConfig) {
+        articleConfig.pickBinStockLimit = pickBinStockLimit;
+      });
+      dispatch({
+        type: 'config/showBatchSetPickBinStockLimitModal',
+        payload: selectedArticleConfigs
+      })
+    },
+    onCancel() {
+      dispatch({
+        type: 'config/hidePickBinStockLimitModal'
+      })
+    }
   }
 
   const batchSetPickBinStockLimitProps = {
@@ -288,9 +295,9 @@ function Config({ location, dispatch, config }) {
         type: 'config/setPickBinStockLimit',
         payload: {
           articleUuid: entity.article.uuid,
-          fixedPickBin:entity.fixedPickBin,
+          fixedPickBin: entity.fixedPickBin,
           version: entity.version,
-          pickBinStockLimit:entity.pickBinStockLimit
+          pickBinStockLimit: entity.pickBinStockLimit
         }
       })
     },
@@ -311,59 +318,59 @@ function Config({ location, dispatch, config }) {
     keyword,
     onSearch(fieldsValue) {
       dispatch({
-        type: 'config/queryCategoryStorageAreaConfigByPage',  
+        type: 'config/queryCategoryStorageAreaConfigByPage',
         payload: fieldsValue
       })
     },
   }
 
-  const categoryStorageAreaConfigSearchGridProps={
-      dataSource: categoryStorageAreaConfigs,
-      pagination: categoryStorageAreaPagination,
-      onPageChange(page, filters, sorter) {
-        dispatch({
-          type: 'config/queryCategoryStorageAreaConfigByPage',
-          payload: {
-            page: page.current,
-            pageSize: page.pageSize,
-            sort: sorter.columnKey,
-            order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
-          },
-        })
-      },
-      onSetCategoryStorageArea(categoryStorageAreaConfigs){
-       if (categoryStorageAreaConfigs.length <= 0) {
-            message.warning("请选择要设置的商品类别！", 2, '');
-            return;
+  const categoryStorageAreaConfigSearchGridProps = {
+    dataSource: categoryStorageAreaConfigs,
+    pagination: categoryStorageAreaPagination,
+    onPageChange(page, filters, sorter) {
+      dispatch({
+        type: 'config/queryCategoryStorageAreaConfigByPage',
+        payload: {
+          page: page.current,
+          pageSize: page.pageSize,
+          sort: sorter.columnKey,
+          order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+        },
+      })
+    },
+    onSetCategoryStorageArea(categoryStorageAreaConfigs) {
+      if (categoryStorageAreaConfigs.length <= 0) {
+        message.warning("请选择要设置的商品类别！", 2, '');
+        return;
+      }
+      dispatch({
+        type: 'config/showBinScopeModal',
+        payload: {
+          binScopeType: "setCategoryStorageArea",
+          selectedCategoryStorageAreaConfigs: categoryStorageAreaConfigs
         }
-        dispatch({
-            type: 'config/showBinScopeModal',
-            payload: {
-              binScopeType: "setCategoryStorageArea",
-              selectedCategoryStorageAreaConfigs:categoryStorageAreaConfigs
-            }
-        })
-      },
+      })
+    },
   }
 
-  const setCategoryStorageAreaModalProps={
-      title:"设置存储区域",
-      label:"存储区域",
-      visible:binScopeModalVisible,
-      onOk(binScope) {
-        selectedCategoryStorageAreaConfigs.map(function (categoryStorageAreaConfig) {
-            categoryStorageAreaConfig.storageArea=binScope;
-        });
-        dispatch({
-          type: 'config/showBatchSetCategoryStorageAreaModal',
-          payload: selectedCategoryStorageAreaConfigs
-        })
-      },
-      onCancel(){
-        dispatch({
-            type: 'config/hideBinScopeModal'
-        })  
-      }
+  const setCategoryStorageAreaModalProps = {
+    title: "设置存储区域",
+    label: "存储区域",
+    visible: binScopeModalVisible,
+    onOk(binScope) {
+      selectedCategoryStorageAreaConfigs.map(function (categoryStorageAreaConfig) {
+        categoryStorageAreaConfig.storageArea = binScope;
+      });
+      dispatch({
+        type: 'config/showBatchSetCategoryStorageAreaModal',
+        payload: selectedCategoryStorageAreaConfigs
+      })
+    },
+    onCancel() {
+      dispatch({
+        type: 'config/hideBinScopeModal'
+      })
+    }
   }
 
   const batchCategoryStorageAreaProps = {
@@ -377,7 +384,7 @@ function Config({ location, dispatch, config }) {
         type: 'config/setCategoryStorageArea',
         payload: {
           categoryUuid: entity.category.uuid,
-          storageArea:entity.storageArea,
+          storageArea: entity.storageArea,
           version: entity.version
         }
       })
@@ -399,59 +406,59 @@ function Config({ location, dispatch, config }) {
     keyword,
     onSearch(fieldsValue) {
       dispatch({
-        type: 'config/queryPickAreaStorageAreaConfigByPage',  
+        type: 'config/queryPickAreaStorageAreaConfigByPage',
         payload: fieldsValue
       })
     },
   }
 
-  const pickAreaStorageAreaConfigSearchGridProps={
-      dataSource: pickAreaStorageAreaConfigs,
-      pagination: pickAreaStorageAreaPagination,
-      onPageChange(page, filters, sorter) {
-        dispatch({
-          type: 'config/queryPickAreaStorageAreaConfigByPage',
-          payload: {
-            page: page.current,
-            pageSize: page.pageSize,
-            sort: sorter.columnKey,
-            order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
-          },
-        })
-      },
-      onSetPickAreaStorageArea(pickAreaStorageAreaConfigs){
-       if (pickAreaStorageAreaConfigs.length <= 0) {
-            message.warning("请选择要设置的拣货分区！", 2, '');
-            return;
+  const pickAreaStorageAreaConfigSearchGridProps = {
+    dataSource: pickAreaStorageAreaConfigs,
+    pagination: pickAreaStorageAreaPagination,
+    onPageChange(page, filters, sorter) {
+      dispatch({
+        type: 'config/queryPickAreaStorageAreaConfigByPage',
+        payload: {
+          page: page.current,
+          pageSize: page.pageSize,
+          sort: sorter.columnKey,
+          order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+        },
+      })
+    },
+    onSetPickAreaStorageArea(pickAreaStorageAreaConfigs) {
+      if (pickAreaStorageAreaConfigs.length <= 0) {
+        message.warning("请选择要设置的拣货分区！", 2, '');
+        return;
+      }
+      dispatch({
+        type: 'config/showBinScopeModal',
+        payload: {
+          binScopeType: "setPickAreaStorageArea",
+          selectedPickAreaStorageAreaConfigs: pickAreaStorageAreaConfigs
         }
-        dispatch({
-            type: 'config/showBinScopeModal',
-            payload: {
-              binScopeType: "setPickAreaStorageArea",
-              selectedPickAreaStorageAreaConfigs:pickAreaStorageAreaConfigs
-            }
-        })
-      },
+      })
+    },
   }
 
-  const setPickAreaStorageAreaModalProps={
-      title:"设置存储区域",
-      label:"存储区域",
-      visible:binScopeModalVisible,
-      onOk(binScope) {
-        selectedPickAreaStorageAreaConfigs.map(function (pickAreaStorageAreaConfig) {
-            pickAreaStorageAreaConfig.storageArea=binScope;
-        });
-        dispatch({
-          type: 'config/showBatchSetPickAreaStorageAreaModal',
-          payload: selectedPickAreaStorageAreaConfigs
-        })
-      },
-      onCancel(){
-        dispatch({
-            type: 'config/hideBinScopeModal'
-        })  
-      }
+  const setPickAreaStorageAreaModalProps = {
+    title: "设置存储区域",
+    label: "存储区域",
+    visible: binScopeModalVisible,
+    onOk(binScope) {
+      selectedPickAreaStorageAreaConfigs.map(function (pickAreaStorageAreaConfig) {
+        pickAreaStorageAreaConfig.storageArea = binScope;
+      });
+      dispatch({
+        type: 'config/showBatchSetPickAreaStorageAreaModal',
+        payload: selectedPickAreaStorageAreaConfigs
+      })
+    },
+    onCancel() {
+      dispatch({
+        type: 'config/hideBinScopeModal'
+      })
+    }
   }
 
   const batchPickAreaStorageAreaProps = {
@@ -465,7 +472,7 @@ function Config({ location, dispatch, config }) {
         type: 'config/setPickAreaStorageArea',
         payload: {
           pickAreaUuid: entity.pickArea.uuid,
-          storageArea:entity.storageArea,
+          storageArea: entity.storageArea,
           version: entity.version
         }
       })
@@ -482,150 +489,162 @@ function Config({ location, dispatch, config }) {
     }
   }
 
-   const taskAreaConfigSearchFormProps = {
+  const taskAreaConfigSearchFormProps = {
     field,
     keyword,
     onSearch(fieldsValue) {
       dispatch({
-        type: 'config/queryTaskAreaConfigByPage',  
+        type: 'config/queryTaskAreaConfigByPage',
         payload: fieldsValue
       })
     },
   }
 
-  const taskAreaConfigSearchGridProps={
-      dataSource: taskAreaConfigs,
-      pagination: taskAreaPagination,
-      onPageChange(page, filters, sorter) {
-        dispatch({
-          type: 'config/queryTaskAreaConfigByPage',
-          payload: {
-            page: page.current,
-            pageSize: page.pageSize,
-            sort: sorter.columnKey,
-            order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
-          },
-        })
-      },
-      onCreate() {
-        dispatch({
-          type: 'config/showTaskAreaConfigModal',
-          payload: {
-            currentTaskAreaConfig: {}
-          }
-        })
-      },
-      onRemove(taskAreaConfig) {
-        dispatch({
-          type: 'config/removeTaskAreaConfig',
-          payload: {
-            uuid: taskAreaConfig.uuid,
-            version: taskAreaConfig.version  
-          },
-        });
-      },
-      onEdit(taskAreaConfig) {
-        const newTaskAreaConfig=new Object(taskAreaConfig);
-        dispatch({
-          type: 'config/showTaskAreaConfigModal',
-          payload: {
-            currentTaskAreaConfig: newTaskAreaConfig
-          }
-        })
-      }
-  }
-
-  const setTaskAreaConfigModalProps={
-      visible:taskAreaConfigModalVisible,
-      taskAreaConfig:currentTaskAreaConfig,
-      currentOperator:currentOperator,
-      queryOperators(){
-        dispatch({
-            type: 'config/queryUserByPage'
-        }); 
-      },
-      getOperator(operatorCode){
-          dispatch({
-            type: 'config/getOperator',
-            payload: operatorCode
-          })
-      },
-      onOk(taskAreaConfig) {
-        if(taskAreaConfig.uuid){
-          dispatch({
-            type: 'config/updateTaskAreaConfig',
-            payload: taskAreaConfig
-          })
-          dispatch({
-            type: 'config/queryTaskAreaConfigByPage'
-          })
-        }else{
-          dispatch({
-            type: 'config/createTaskAreaConfig',
-            payload: taskAreaConfig
-          })
-        }
-      },
-      onCancel(){
-        dispatch({
-            type: 'config/hideTaskAreaConfigModal'
-        })  
-      }
-  }
-
-  const operatorModalProps={
-      visible:operatorModalVisible,
-      operators: operators,
-      operatorPagination: operatorPagination,
-      onOk(users){
-        if(users && users.length <= 0){
-             message.warning("请选择要设置的员工！", 2, '');
-            return;
-        }
-        const user=users[0];
-        const operator=new Object();
-        operator.uuid=user.uuid;
-        operator.code=user.code;
-        operator.name=user.name;
-        dispatch({
-            type: 'config/selectOperator',
-            payload: operator
-        })  
-      },
-      onCancel(){
-          dispatch({
-              type: 'config/hideOperatorModal'
-          })  
-      }
-  } 
-
-  const reasonConfigProps={
-    title: reasonType==="MOVE"? "移库原因":"损溢原因",
-    reasons : reasons ? (reasons.length>0 ? reasons : ['']):[''],
-    onAdd(reasons){
-       reasons.push('');
-       dispatch({
-        type: 'config/showReasonConfigByPage',
+  const taskAreaConfigSearchGridProps = {
+    dataSource: taskAreaConfigs,
+    pagination: taskAreaPagination,
+    onPageChange(page, filters, sorter) {
+      dispatch({
+        type: 'config/queryTaskAreaConfigByPage',
         payload: {
-          reasons : reasons
+          page: page.current,
+          pageSize: page.pageSize,
+          sort: sorter.columnKey,
+          order: (sorter.order && sorter.order.indexOf("asc") > -1) ? "asc" : "desc"
+        },
+      })
+    },
+    onCreate() {
+      dispatch({
+        type: 'config/showTaskAreaConfigModal',
+        payload: {
+          currentTaskAreaConfig: {}
         }
       })
     },
-    onRemove(index,currentReasons){
-       currentReasons.splice(index,1);
-       dispatch({
+    onRemove(taskAreaConfig) {
+      dispatch({
+        type: 'config/removeTaskAreaConfig',
+        payload: {
+          uuid: taskAreaConfig.uuid,
+          version: taskAreaConfig.version
+        },
+      });
+    },
+    onEdit(taskAreaConfig) {
+      const newTaskAreaConfig = new Object(taskAreaConfig);
+      dispatch({
+        type: 'config/showTaskAreaConfigModal',
+        payload: {
+          currentTaskAreaConfig: newTaskAreaConfig
+        }
+      })
+    }
+  }
+
+  const setTaskAreaConfigModalProps = {
+    visible: taskAreaConfigModalVisible,
+    taskAreaConfig: currentTaskAreaConfig,
+    currentOperator: currentOperator,
+    queryOperators() {
+      dispatch({
+        type: 'config/queryUserByPage'
+      });
+    },
+    getOperator(operatorCode) {
+      dispatch({
+        type: 'config/getOperator',
+        payload: operatorCode
+      })
+    },
+    onOk(taskAreaConfig) {
+      if (taskAreaConfig.uuid) {
+        dispatch({
+          type: 'config/updateTaskAreaConfig',
+          payload: taskAreaConfig
+        })
+        dispatch({
+          type: 'config/queryTaskAreaConfigByPage'
+        })
+      } else {
+        dispatch({
+          type: 'config/createTaskAreaConfig',
+          payload: taskAreaConfig
+        })
+      }
+    },
+    onCancel() {
+      dispatch({
+        type: 'config/hideTaskAreaConfigModal'
+      })
+    }
+  }
+
+  const operatorModalProps = {
+    visible: operatorModalVisible,
+    operators: operators,
+    operatorPagination: operatorPagination,
+    onOk(users) {
+      if (users && users.length <= 0) {
+        message.warning("请选择要设置的员工！", 2, '');
+        return;
+      }
+      const user = users[0];
+      const operator = new Object();
+      operator.uuid = user.uuid;
+      operator.code = user.code;
+      operator.name = user.name;
+      dispatch({
+        type: 'config/selectOperator',
+        payload: operator
+      })
+    },
+    onCancel() {
+      dispatch({
+        type: 'config/hideOperatorModal'
+      })
+    }
+  }
+
+  const reasonConfigProps = {
+    // Immediately-Invoked Function Expression (IIFE)
+    title: (() => {
+      switch (reasonType) {
+        case 'MOVE':
+          return '移库原因';
+          break;
+        case 'RTNNTC':
+          return '退仓原因';
+        default:
+          return '损溢原因'
+          break;
+      }
+    })(),
+    reasons: reasons ? (reasons.length > 0 ? reasons : ['']) : [''],
+    onAdd(reasons) {
+      reasons.push('');
+      dispatch({
         type: 'config/showReasonConfigByPage',
         payload: {
-          reasons : currentReasons
+          reasons: reasons
         }
       })
     },
-    setReasonConfig(reasons){
-       dispatch({
+    onRemove(index, currentReasons) {
+      currentReasons.splice(index, 1);
+      dispatch({
+        type: 'config/showReasonConfigByPage',
+        payload: {
+          reasons: currentReasons
+        }
+      })
+    },
+    setReasonConfig(reasons) {
+      dispatch({
         type: 'config/setReasonConfig',
         payload: {
           reasonType: reasonType,
-          reasons : reasons
+          reasons: reasons
         }
       })
     }
@@ -641,61 +660,61 @@ function Config({ location, dispatch, config }) {
         <Content style={{ padding: '0 0 0 5px', minHeight: 280 }}>
           {
             (() => {
-                  switch (showPage) {
-                      case 'articleConfigPage':
-                       return (
-                           <div>
-                                <ArticleConfigSearchForm {...articleConfigSearchFormProps} />
-                                <ArticleConfigSearchGrid {...articleConfigSearchGridProps} />
-                                <WMSProgress {...batchSetArticleFixedPickBinProps} />
-                                <WMSProgress {...batchSetPickBinStockLimitProps} />
-                                <WMSProgress {...batchSetArticleStorageAreaProps} />
-                                <PickBinStockLimitModal {...setPickBinStockLimitModalProps} />
-                                {"setArticleFixedPickBin"===binScopeType?
-                                   <BinScopeModal {...setArticleFixedPickBinModalProps} />
-                                  :
-                                   <BinScopeModal {...setArticleStorageAreaModalProps} />
-                                }
-                           </div>
-                       )
-                      case 'categoryStorageAreaConfigPage':
-                       return (
-                           <div>
-                                <CategoryStorageAreaConfigSearchForm {...categoryStorageAreaConfigSearchFormProps} />
-                                <CategoryStorageAreaConfigSearchGrid {...categoryStorageAreaConfigSearchGridProps} />
-                                <WMSProgress {...batchCategoryStorageAreaProps} />
-                                <BinScopeModal {...setCategoryStorageAreaModalProps} />
+              switch (showPage) {
+                case 'articleConfigPage':
+                  return (
+                    <div>
+                      <ArticleConfigSearchForm {...articleConfigSearchFormProps} />
+                      <ArticleConfigSearchGrid {...articleConfigSearchGridProps} />
+                      <WMSProgress {...batchSetArticleFixedPickBinProps} />
+                      <WMSProgress {...batchSetPickBinStockLimitProps} />
+                      <WMSProgress {...batchSetArticleStorageAreaProps} />
+                      <PickBinStockLimitModal {...setPickBinStockLimitModalProps} />
+                      {"setArticleFixedPickBin" === binScopeType ?
+                        <BinScopeModal {...setArticleFixedPickBinModalProps} />
+                        :
+                        <BinScopeModal {...setArticleStorageAreaModalProps} />
+                      }
+                    </div>
+                  )
+                case 'categoryStorageAreaConfigPage':
+                  return (
+                    <div>
+                      <CategoryStorageAreaConfigSearchForm {...categoryStorageAreaConfigSearchFormProps} />
+                      <CategoryStorageAreaConfigSearchGrid {...categoryStorageAreaConfigSearchGridProps} />
+                      <WMSProgress {...batchCategoryStorageAreaProps} />
+                      <BinScopeModal {...setCategoryStorageAreaModalProps} />
 
-                           </div>
-                       )
-                     case 'pickAreaStorageAreaConfigPage':
-                       return (
-                           <div>
-                                <PickAreaStorageAreaConfigSearchForm {...pickAreaStorageAreaConfigSearchFormProps} />
-                                <PickAreaStorageAreaConfigSearchGrid {...pickAreaStorageAreaConfigSearchGridProps} />
-                                <WMSProgress {...batchPickAreaStorageAreaProps} />
-                                <BinScopeModal {...setPickAreaStorageAreaModalProps} />
-                           </div>
-                       )
-                    case 'taskAreaConfigPage':
-                       return (
-                           <div>
-                                <TaskAreaConfigSearchForm {...taskAreaConfigSearchFormProps} />
-                                <TaskAreaConfigSearchGrid {...taskAreaConfigSearchGridProps} />
-                                <OperatorModal {...operatorModalProps} />
-                                <TaskAreaConfigModal {...setTaskAreaConfigModalProps} />
-                           </div>
-                       )
-                    case 'reasonConfigPage':
-                       {
-                         return (
-                           <div>
-                                <ReasonConfigForm {...reasonConfigProps} />
-                           </div>
-                         );
-                        }  
+                    </div>
+                  )
+                case 'pickAreaStorageAreaConfigPage':
+                  return (
+                    <div>
+                      <PickAreaStorageAreaConfigSearchForm {...pickAreaStorageAreaConfigSearchFormProps} />
+                      <PickAreaStorageAreaConfigSearchGrid {...pickAreaStorageAreaConfigSearchGridProps} />
+                      <WMSProgress {...batchPickAreaStorageAreaProps} />
+                      <BinScopeModal {...setPickAreaStorageAreaModalProps} />
+                    </div>
+                  )
+                case 'taskAreaConfigPage':
+                  return (
+                    <div>
+                      <TaskAreaConfigSearchForm {...taskAreaConfigSearchFormProps} />
+                      <TaskAreaConfigSearchGrid {...taskAreaConfigSearchGridProps} />
+                      <OperatorModal {...operatorModalProps} />
+                      <TaskAreaConfigModal {...setTaskAreaConfigModalProps} />
+                    </div>
+                  )
+                case 'reasonConfigPage':
+                  {
+                    return (
+                      <div>
+                        <ReasonConfigForm {...reasonConfigProps} />
+                      </div>
+                    );
                   }
-              })()
+              }
+            })()
           }
         </Content>
       </Layout>
