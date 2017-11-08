@@ -15,9 +15,6 @@ function WaveBillCreateItem({
     dataSource,
     pagination,
     onPageChange,
-    getArticleInfo,
-    refreshMunit,
-    calculateCaseQtyStr,
     onAddItem,
     onRemoveBatch,
     selectedRowKeys = []

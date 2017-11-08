@@ -9,7 +9,7 @@ import WaveBillCreateForm from '../../components/forward/wave/WaveBillCreateForm
 import WaveBillCreateItem from '../../components/forward/wave/WaveBillCreateItem';
 import WaveBillSelectAlcNtcModal from '../../components/forward/wave/WaveBillSelectAlcNtcModal';
 import WaveBillView from '../../components/forward/wave/WaveBillView';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgressForRemove';
 import { removeByValue } from '../../utils/ArrayUtils';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -17,7 +17,7 @@ moment.locale('zh-cn');
 
 
 function WaveBill({ location, dispatch, waveBill }) {
-    const { showPage, selectModalVisible, allInitialAlcNtcList, selectedAlcNtcList, waveType, serialArchList, currentItem, list, batchDeleteProcessModal, waveBillNext, deleteWaveBillEntitys, allRemoveAlcNtcList, isUpdate, existAlcNtcList, pagination } = waveBill;
+    const { showPage, selectModalVisible, allInitialAlcNtcList, selectedAlcNtcList, waveType, serialArchList, currentItem, list, batchDeleteProcessModal, waveBillNext, deleteWaveBillEntitys, allRemoveAlcNtcList, isUpdate, existAlcNtcList, pagination, line } = waveBill;
 
     const waveBillSearchGridProps = {
         dataSource: list,
@@ -123,7 +123,8 @@ function WaveBill({ location, dispatch, waveBill }) {
                     waveType: waveType,
                     allRemoveAlcNtcList: allRemoveAlcNtcList,
                     isUpdate: isUpdate,
-                    existAlcNtcList: existAlcNtcList
+                    existAlcNtcList: existAlcNtcList,
+                    line: line
                 }
             })
         },
@@ -144,22 +145,30 @@ function WaveBill({ location, dispatch, waveBill }) {
         serialArchList: serialArchList,
         item: currentItem,
         onSelectType(value) {
-            if (value === 'eCommerce')
-                dispatch({
-                    type: 'waveBill/selectTypeSuccess',
-                    payload: {
-                        waveType: value,
-                        selectedAlcNtcList: [],
-                    }
-                });
-            else if (value === 'normal')
-                dispatch({
-                    type: 'waveBill/selectType',
-                    payload: {
-                        waveType: value,
-                        selectedAlcNtcList: [],
-                    }
-                });
+            // if (value === 'eCommerce')
+            dispatch({
+                type: 'waveBill/selectTypeSuccess',
+                payload: {
+                    waveType: value,
+                    selectedAlcNtcList: [],
+                }
+            });
+            // else if (value === 'normal')
+            //     dispatch({
+            //         type: 'waveBill/selectType',
+            //         payload: {
+            //             waveType: value,
+            //             selectedAlcNtcList: [],
+            //         }
+            //     });
+        },
+        onSelectLine(value) {
+            dispatch({
+                type: 'waveBill/selectTypeSuccess',
+                payload: {
+                    line: value
+                }
+            })
         },
         onCancel() {
             dispatch({
@@ -238,16 +247,8 @@ function WaveBill({ location, dispatch, waveBill }) {
         next: waveBillNext,
         actionText: '删除',
         entityCaption: '波次单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'waveBill/delete',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token")
-                }
-            });
-        },
+        url: '/swms/out/wave/remove',
+        canSkipState: '',
         hideConfirmModal() {
             dispatch({
                 type: 'waveBill/hideDeleteWaveBillModal'

@@ -22,7 +22,8 @@ const WaveBillCreateForm = ({
     checkCustomer,
     onSelectType,
     waveType,
-    serialArchList
+    serialArchList,
+    onSelectLine
 }) => {
     function handleCreate() {
         validateFields((errors) => {
@@ -61,18 +62,18 @@ const WaveBillCreateForm = ({
             options.push(<Option value={serialArch.uuid}>{serialArch.name + "[" + serialArch.code + "]"}</Option>)
         };
     };
-    if (waveType == 'normal')
-        children.push(
-            <BaseFormItem label={"线路体系："}>
-                {getFieldDecorator("serialArchUuid", {
-                    rules: [{ required: true }], initialValue: item.serialArch ? item.serialArch.name + "[" + item.serialArch.code + "]" : null
-                })(
-                    <Select placeholder="请选择：">
-                        {options}
-                    </Select>
-                    )
-                }
-            </BaseFormItem>);
+    // if (waveType == 'normal')
+    //     children.push(
+    //         <BaseFormItem label={"线路体系："}>
+    //             {getFieldDecorator("serialArchUuid", {
+    //                 rules: [{ required: true }], initialValue: item.serialArch ? item.serialArch.name + "[" + item.serialArch.code + "]" : null
+    //             })(
+    //                 <Select placeholder="请选择：" onChange={(value) => onSelectLine(value)}>
+    //                     {options}
+    //                 </Select>
+    //                 )
+    //             }
+    //         </BaseFormItem>);
 
     const toolbar = [];
     toolbar.push(<Button key={Guid()} onClick={handleCreate} >保存</Button>);

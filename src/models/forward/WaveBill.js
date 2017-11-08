@@ -3,7 +3,7 @@ import { queryAlcNtcBill } from '../../services/forward/AlcNtcBill';
 import { removeByValue } from '../../utils/ArrayUtils';
 import { message } from 'antd';
 import { querySerialArch } from '../../services/tms/SerialArch';
-import { insert, getWaveBill, queryWaveBill, update, remove,start,confirm,rollBack } from '../../services/forward/WaveBill';
+import { insert, getWaveBill, queryWaveBill, update, remove, start, confirm, rollBack } from '../../services/forward/WaveBill';
 
 export default {
     namespace: 'waveBill',
@@ -23,6 +23,7 @@ export default {
         allInitialAlcNtcList: [],//所有初始状态的波次单
         selectedAlcNtcList: [],//选中的配单
         waveType: '',
+        line: '',//正常波次下的线路
         serialArchList: [],
         batchDeleteProcessModal: false,
         deleteWaveBillEntitys: [],
@@ -79,10 +80,13 @@ export default {
         },
 
         *showSelectModal({ payload }, { call, put }) {
-            if (payload.waveType === '' || payload.waveType === undefined) {
-                message.warning("请先选择波次类型", 2);
-                return;
-            }
+            // if (!payload.waveType) {
+            //     message.warning("请先选择波次类型", 2);
+            //     return;
+            // } else if (payload.waveType === 'normal' && !payload.line) {
+            //     message.warning("请先选择线路!", 2);
+            //     return;
+            // }
             const { data } = yield call(queryAlcNtcBill, { ...payload, state: 'initial' });
             if (data.status == '200') {
                 let initialAlcNtcBill = [];//所有初始+当前波次单明细中包含的
@@ -202,7 +206,7 @@ export default {
                 yield put({
                     type: 'viewWaveBill',
                     payload: {
-                         uuid: payload.uuid 
+                        uuid: payload.uuid
                     }
                 })
             }
@@ -214,7 +218,7 @@ export default {
                 yield put({
                     type: 'viewWaveBill',
                     payload: {
-                         uuid: payload.uuid 
+                        uuid: payload.uuid
                     }
                 })
             }
@@ -226,7 +230,7 @@ export default {
                 yield put({
                     type: 'viewWaveBill',
                     payload: {
-                         uuid: payload.uuid 
+                        uuid: payload.uuid
                     }
                 })
             }
