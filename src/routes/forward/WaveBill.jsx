@@ -26,6 +26,7 @@ function WaveBill({ location, dispatch, waveBill }) {
             dispatch(routerRedux.push({
                 pathname: '/forward/waveBill',
                 query: {
+                    ...location.query,
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.field,
@@ -266,10 +267,12 @@ function WaveBill({ location, dispatch, waveBill }) {
 
     const waveBillSearchFormProps = {
         onSearch(fieldsValue) {
-            dispatch({
-                type: 'waveBill/query',
-                payload: fieldsValue
-            });
+            dispatch(routerRedux.push({
+                pathname: '/forward/waveBill',
+                query: {
+                    ...fieldsValue
+                }
+            }));
         }
     };
 
