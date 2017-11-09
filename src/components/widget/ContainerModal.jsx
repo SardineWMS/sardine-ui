@@ -94,7 +94,7 @@ class ContainerModal extends React.Component {
         }
         return (
             <div>
-                <Input placeholder="请选择：" suffix={<Icon type="ellipsis" onClick={this.handleShowSelect} />} onBlur={this.handleSearch} value={this.state.entity == null ? '' : this.state.entity.barcode} onChange={this.handleChange} />
+                <Input placeholder="请选择容器：" suffix={<Icon type="ellipsis" onClick={this.handleShowSelect} />} onBlur={this.handleSearch} value={this.state.entity == null ? '' : this.state.entity.barcode} onChange={this.handleChange} />
                 <ContainerSelectGrid {...props} />
             </div>
         )

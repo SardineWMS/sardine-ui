@@ -540,6 +540,14 @@ function Task({ location, dispatch, task }) {
         }
     };
 
+    const PutawayTaskSearchGridGen = () => <PutawayTaskSearchGrid {...taskListProps} />;
+    const RplTaskSearchGridGen = () => <RplTaskSearchGrid {...taskListProps} />;
+    const PickTaskSearchGridGen = () => <PickTaskSearchGrid {...taskListProps} />;
+    const ShipBillSearchGridGen = () => <ShipBillSearchGrid {...taskListProps} />;
+    const RtnPutawayTaskSearchGridGen = () => <RtnPutawayTaskSearchGrid {...taskListProps} />;
+    const RtnShelfTaskSearchGridGen = () => <RtnShelfTaskSearchGrid {...taskListProps} />;
+    const ReturnSupplierHandoverSearchGridGen = () => <ReturnSupplierHandoverSearchGrid {...taskListProps} />;
+
     function refreshWidget() {
         if (articleMoveModalVisable) {
             return (
@@ -560,32 +568,31 @@ function Task({ location, dispatch, task }) {
                 <Tabs defaultActiveKey={TaskType.PUTAWAY} onChange={activeKey=> tabsProps.onPageChange(activeKey)}>
                     <Tabs.TabPane tab="收货上架" key={TaskType.PUTAWAY}>
                         <PutawayTaskSearchForm {...taskSearchProps} />
-                        <PutawayTaskSearchGrid {...taskListProps} />                    
+                            <PutawayTaskSearchGridGen/>              
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="补货" key={TaskType.RPL}>
                         <RplTaskSearchForm {...taskSearchProps} />
-                        <RplTaskSearchGrid {...taskListProps} />      
+                        <RplTaskSearchGridGen />      
+                    </Tabs.TabPane><Tabs.TabPane tab="拣货" key={TaskType.PICK}>
+                        <PickTaskSearchForm {...taskSearchProps} />
+                        <PickTaskSearchGridGen/>      
+                    </Tabs.TabPane> 
+                    <Tabs.TabPane tab="装车" key={TaskType.SHIP}>
+                        <ShipBillSearchForm {...taskSearchProps} />
+                        <ShipBillSearchGridGen/>      
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="退仓上架" key={TaskType.RTNPUTAWAY}>
                         <RtnPutawayTaskSearchForm {...taskSearchProps} />
-                        <RtnPutawayTaskSearchGrid {...taskListProps} />      
+                        <RtnPutawayTaskSearchGridGen />      
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="退货下架" key={TaskType.RTNSHELF}>
                         <RtnShelfTaskSearchForm {...taskSearchProps} />
-                        <RtnShelfTaskSearchGrid {...taskListProps} />      
+                        <RtnShelfTaskSearchGridGen/>      
                     </Tabs.TabPane>
                     <Tabs.TabPane tab="退货交接" key={TaskType.RTNHANDOVER}>
                         <ReturnSupplierHandoverSearchForm {...taskSearchProps} />
-                        <ReturnSupplierHandoverSearchGrid {...taskListProps} />      
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="拣货" key={TaskType.PICK}>
-                        <PickTaskSearchForm {...taskSearchProps} />
-                        <PickTaskSearchGrid {...taskListProps} />      
-                    </Tabs.TabPane>
-                    <Tabs.TabPane tab="装车" key={TaskType.SHIP}>
-                        <ShipBillSearchForm {...taskSearchProps} />
-                        <ShipBillSearchGrid {...taskListProps} />      
-                    </Tabs.TabPane>
+                        <ReturnSupplierHandoverSearchGridGen/>      
+                    </Tabs.TabPane>                   
                 </Tabs>
                 <WMSProgress {...batchProcessAbortTaskProps} />
                 <UserModal {...userModalProps} />

@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col ,Badge,message} from 'antd';
+import { Table, Popconfirm, Button, Menu, Dropdown, Icon, Row, Col, Badge, message } from 'antd';
 const EditableCell = require('../../widget/EditableCell');
 
 function PickTaskSearchGrid({
@@ -13,96 +13,122 @@ function PickTaskSearchGrid({
 }) {
 
   function handlerAbortBatch() {
-      onAbortBatch(selectedRowKeys);
+    onAbortBatch(selectedRowKeys);
   };
 
   function handlerPick() {
-    const pickItemUuids=[];
+    const pickItemUuids = [];
     for (var i = 0; i < selectedRowKeys.length; i++) {
-      const currentRow= selectedRowKeys[i];
-      if(currentRow.billNumber){
-        currentRow.items.map(function (item){
+      const currentRow = selectedRowKeys[i];
+      if (currentRow.billNumber) {
+        currentRow.items.map(function (item) {
           pickItemUuids.push(item);
         });
-      }else{
+      } else {
         pickItemUuids.push(currentRow);
       }
     }
     onPick(pickItemUuids);
-   };
+  };
+
+  function converStates(text) {
+    if (text == "inConfirm")
+      return "待确认";
+    if (text == "approved")
+      return "已批准";
+    if (text == "inProgress")
+      return "进行中";
+    if (text == "exception")
+      return "异常";
+    if (text == "audited")
+      return "已审核";
+  }
 
   const parentColumns = [{
-        title: '单号',
-        dataIndex: 'billNumber',
-        key: 'billNumber',
-        width: 120
-      }, {
-        title: '客户',
-        dataIndex: 'customer',
-        key: 'customer',
-        width: 100,
-        render: (text) => text?"[" + text.code + "]" + text.name :text
-      }, {
-        title: '配送方式',
-        dataIndex: 'deliveryType',
-        key: 'deliveryType',
-        width: 50,
-        render: (text) => "warehouse"===text?"仓库送":"自提"
-      }, {
-        title: '操作方式',
-        dataIndex: 'method',
-        key: 'method',
-        width: 50,
-        render: (text) => "ManualBill"===text?"手工单据":"APP"
-      }, {
-        title: '拣货类型',
-        dataIndex: 'type',
-        key: 'type',
-        width: 50,
-        render: (text) => "WholeContainer"===text?"整托":"非整托"
-      },
-      {
-        title: '拣货区域',
-        dataIndex: 'pickArea',
-        key: 'pickArea',
-        width: 50,
-        render: (text) =>text? "[" + text.code + "]" + text.name :text
-      },
-      {
-        title: '来源单据',
-        dataIndex: 'sourceBill',
-        key: 'sourceBill',
-        width: 150,
-        render: (text) =>text? "[" + text.billNumber + "]" + text.billType :text
-      },
-      {
-        title: '拣货顺序',
-        dataIndex: 'pickOrder',
-        key: 'pickOrder',
-        width: 100
-      },
-      {
-        title: '总体积',
-        dataIndex: 'volume',
-        key: 'volume',
-        width: 100
-      }
+    title: '单号',
+    dataIndex: 'billNumber',
+    key: 'billNumber',
+    width: 120
+  }, {
+    title: '状态',
+    dataIndex: 'state',
+    key: 'state',
+    render: text => converStates(text),
+    width: 70
+  },
+  {
+    title: '客户',
+    dataIndex: 'customer',
+    key: 'customer',
+    width: 150,
+    render: (text) => text ? "[" + text.code + "]" + text.name : text
+  }, {
+    title: '配送方式',
+    dataIndex: 'deliveryType',
+    key: 'deliveryType',
+    width: 70,
+    render: (text) => "warehouse" === text ? "仓库送" : text
+  }, {
+    title: '配送体系',
+    dataIndex: 'deliverySystem',
+    key: 'deliverySystem',
+    width: 70,
+    render: (text) => "tradition" === text ? "传统体系" : "电商体系"
+  }, {
+    title: '操作方式',
+    dataIndex: 'method',
+    key: 'method',
+    width: 70,
+    render: (text) => "ManualBill" === text ? "手工单据" : "APP"
+  }, {
+    title: '拣货类型',
+    dataIndex: 'type',
+    key: 'type',
+    width: 70,
+    render: (text) => "WholeContainer" === text ? "整托" : "非整托"
+  },
+  {
+    title: '拣货区域',
+    dataIndex: 'pickArea',
+    key: 'pickArea',
+    width: 70,
+    render: (text) => text ? "[" + text.code + "]" + text.name : text
+  },
+  {
+    title: '来源单据',
+    dataIndex: 'sourceBill',
+    key: 'sourceBill',
+    width: 150,
+    render: (text) => text ? "[" + text.billNumber + "]" + text.billType : text
+  },
+  {
+    title: '拣货顺序',
+    dataIndex: 'pickOrder',
+    key: 'pickOrder',
+    width: 80
+  },
+  {
+    title: '总体积',
+    dataIndex: 'volume',
+    key: 'volume',
+    width: 80
+  }
 
-    ];
+  ];
 
-  const expandedRowRender = (childDataSource,childIndex) => {
-    function converState(text)  {
-      if(text == "initial")
+  const expandedRowRender = (childDataSource, childIndex) => {
+    function converState(text) {
+      if (text == "initial")
         return "未处理";
-      if(text=="inProgress")
+      if (text == "inProgress")
         return "进行中";
-      if(text=="finished")
+      if (text == "finished")
         return "已完成";
-      if(text=="exception")
+      if (text == "exception")
         return "异常";
-      if(text=="skip")
+      if (text == "skip")
         return "跳过";
-      if(text=="stockOut")
+      if (text == "stockOut")
         return "缺货";
     };
 
@@ -112,7 +138,7 @@ function PickTaskSearchGrid({
       key: 'state',
       render: (text) => converState(text),
       width: 80
-    },{
+    }, {
       title: '商品代码',
       dataIndex: 'article',
       key: 'article',
@@ -124,23 +150,23 @@ function PickTaskSearchGrid({
       key: 'articleSpec',
       render: (text, record) => record.article.name + "," + record.articleSpec,
       width: 150
-    },{
+    }, {
       title: '包装',
       dataIndex: 'qpcStr',
       key: 'qpcStr',
       render: (text, record) => record.munit + "," + record.qpcStr,
       width: 100
-    },{
+    }, {
       title: '数量',
       dataIndex: 'qty',
       key: 'qty',
       width: 70
-    },{
+    }, {
       title: '来源货位',
       dataIndex: 'sourceBinCode',
       key: 'sourceBinCode',
       width: 100
-    },{
+    }, {
       title: '来源容器',
       dataIndex: 'sourceContainerBarcode',
       key: 'sourceContainerBarcode',
@@ -150,22 +176,22 @@ function PickTaskSearchGrid({
       dataIndex: 'toBinCode',
       key: 'toBinCode',
       width: 100
-    },{
+    }, {
       title: '目标容器',
       dataIndex: 'toContainerBarcode',
       key: 'toContainerBarcode',
       width: 100
-    },{
+    }, {
       title: '件数',
       dataIndex: 'caseQtyStr',
       key: 'caseQtyStr',
       width: 100
-    },{
+    }, {
       title: '实际数量',
       dataIndex: 'realQty',
       key: 'realQty',
       width: 120,
-      render: (text, record, index) => renderColumns(record,"realQty", text,index)
+      render: (text, record, index) => renderColumns(record, "realQty", text, index)
     }, {
       title: '实际件数',
       dataIndex: 'realCaseQtyStr',
@@ -175,34 +201,35 @@ function PickTaskSearchGrid({
       title: '拣货员',
       dataIndex: 'picker',
       key: 'picker',
+      render: (text, record) => record.picker.name,
       width: 100
     }];
 
-    function renderColumns(record, key, text,index) {
-    // if(key==="toBinCode")
-    //   return text;
-    return (<EditableCell
-      editable= {false}
-      value={text}
-      status={status}
-      onChange={value => handleChange(record,key,value,index)}
+    function renderColumns(record, key, text, index) {
+      // if(key==="toBinCode")
+      //   return text;
+      return (<EditableCell
+        editable={false}
+        value={text}
+        status={status}
+        onChange={value => handleChange(record, key, value, index)}
       />);
     };
 
-    function handleChange(record,key,value,itemIndex){
+    function handleChange(record, key, value, itemIndex) {
       var reg = /^\d+(\.{0,1}\d+){0,1}$/;
-      if(!reg.test(value)){
+      if (!reg.test(value)) {
         message.error("请输入大于0的数字", 2, '');
         return;
       }
-      if(value> record.qty){
+      if (value > record.qty) {
         message.error("实际数量不能大于计划数量", 2, '');
         return;
       }
-      record.realQty=value;
-      childDataSource[itemIndex]=record;
-      dataSource[childIndex].items=childDataSource;
-      refresItemRealCaseQtyStr(itemIndex,childIndex,record.realQty,record.qpcStr);
+      record.realQty = value;
+      childDataSource[itemIndex] = record;
+      dataSource[childIndex].items = childDataSource;
+      refresItemRealCaseQtyStr(itemIndex, childIndex, record.realQty, record.qpcStr);
     };
 
     return (
@@ -216,17 +243,17 @@ function PickTaskSearchGrid({
   };
 
   const rowSelection = {
-      onChange: (selectedRowKeys, selectedRows) => {
-      },
-      onSelect: (record, selected, selectedRows) => {
-          selectedRowKeys = selectedRows;
-      },
-      onSelectAll: (selected, selectedRows, changeRows) => {
-          selectedRowKeys = selectedRows;
-      },
-      getCheckboxProps: record => ({
-          disabled: record.name === 'Disabled User',
-      })
+    onChange: (selectedRowKeys, selectedRows) => {
+    },
+    onSelect: (record, selected, selectedRows) => {
+      selectedRowKeys = selectedRows;
+    },
+    onSelectAll: (selected, selectedRows, changeRows) => {
+      selectedRowKeys = selectedRows;
+    },
+    getCheckboxProps: record => ({
+      disabled: record.name === 'Disabled User',
+    })
   };
 
   return (
@@ -239,11 +266,11 @@ function PickTaskSearchGrid({
         pagination={pagination}
         rowKey={record => record.uuid}
         rowSelection={rowSelection}
-        expandedRowRender={(record,index) => expandedRowRender(record.items,index)}
+        expandedRowRender={(record, index) => expandedRowRender(record.items, index)}
         title={() =>
           <div>
             <Button onClick={handlerPick}>批量拣货</Button>
-            <Button onClick={handlerAbortBatch}>批量作废</Button>
+            <Button onClick={handlerAbortBatch}>作废</Button>
           </div>}
       />
     </div>

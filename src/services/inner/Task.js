@@ -17,6 +17,20 @@ export async function queryTask(params) {
     return request(query(url, params), req);
 }
 
+export async function queryPickTasks(params) {
+    const url = "/swms/inner/task/queryPickUpTask";
+
+    var req = new Object();
+    req.method = 'post';
+    req.headers = {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+    };
+    req.body = JSON.stringify(params.states ? params.states : []);
+
+    return request(query(url, params), req);
+}
+
 export async function queryHandoverTasks(params) {
     const url = `/swms/inner/task/queryhandovertasks`;
     return request(query(url, params));

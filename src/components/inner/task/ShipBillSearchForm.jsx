@@ -28,19 +28,10 @@ const ShipBillSearchForm = ({
 
   const children = [];
 
-  children.push(
-    <BaseTwoCol key="supplierCodeLike">
-      <BaseFormItem  label="供应商代码 类似于">
-        {getFieldDecorator('supplierCodeLike')(
-          <Input type="text" placeholder="供应商代码 类似于" />
-        )}
-      </BaseFormItem>
-    </BaseTwoCol>
-  );
 
   children.push(
     <BaseTwoCol key="binCodeLike">
-      <BaseFormItem  label="货位代码 类似于">
+      <BaseFormItem label="货位代码 类似于">
         {getFieldDecorator('binCodeLike')(
           <Input type="text" placeholder="货位代码 类似于" />
         )}
@@ -50,7 +41,7 @@ const ShipBillSearchForm = ({
 
   children.push(
     <BaseTwoCol key="containerBarcodeLike">
-      <BaseFormItem  label="容器条码 类似于">
+      <BaseFormItem label="容器条码 类似于">
         {getFieldDecorator('containerBarcodeLike')(
           <Input type="text" placeholder="容器条码 类似于" />
         )}
@@ -60,7 +51,7 @@ const ShipBillSearchForm = ({
 
   children.push(
     <BaseTwoCol key="articleCodeLike">
-      <BaseFormItem  label="商品条码 类似于">
+      <BaseFormItem label="商品条码 类似于">
         {getFieldDecorator('articleCodeLike')(
           <Input type="text" placeholder="商品条码 类似于" />
         )}
@@ -70,15 +61,49 @@ const ShipBillSearchForm = ({
 
   children.push(
     <BaseTwoCol key="customerCodeLike">
-      <BaseFormItem  label="客户代码 类似于">
+      <BaseFormItem label="客户代码 类似于">
         {getFieldDecorator('customerCodeLike')(
           <Input type="text" placeholder="客户代码 类似于" />
         )}
       </BaseFormItem>
     </BaseTwoCol>
   );
+  children.push(
+    <BaseTwoCol key="line">
+      <BaseFormItem label="线路代码 类似于">
+        {getFieldDecorator('line')(
+          <Input type="text" placeholder="线路代码 类似于" />
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
+  children.push(
+    <BaseTwoCol key="deliveryType">
+      <BaseFormItem label="配送方式 类似于">
+        {getFieldDecorator('deliveryType')(
+          <Select placeholder="请选择" showSearch={false} psize="default" >
+            <Option value=''>全部</Option>
+            <Option value="warehouse">仓库送</Option>
+            <Option value="pickByOneSelf">自提</Option>
+          </Select>
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
 
-
+  children.push(
+    <BaseTwoCol key="deliverySystem">
+      <BaseFormItem label="配送体系 等于">
+        {getFieldDecorator('deliverySystem', { initialValue: '' })(
+          <Select placeholder="请选择" showSearch={false} psize="default" >
+            <Option value=''>全部</Option>
+            <Option value="tradition">传统体系</Option>
+            <Option value="eCommerce">电商体系</Option>
+          </Select>
+        )}
+      </BaseFormItem>
+    </BaseTwoCol>
+  );
   return (
     <BaseSearchPanel children={children} handleReset={handleReset} handleSearch={handleSearch} />
   );

@@ -30,7 +30,7 @@ const ReturnSupplierHandoverSearchForm = ({
 
   children.push(
     <BaseTwoCol key="supplierCodeLike">
-      <BaseFormItem  label="供应商代码 类似于">
+      <BaseFormItem label="供应商代码 类似于">
         {getFieldDecorator('supplierCodeLike')(
           <Input type="text" placeholder="供应商代码 类似于" />
         )}
@@ -40,7 +40,7 @@ const ReturnSupplierHandoverSearchForm = ({
 
   children.push(
     <BaseTwoCol key="binCodeLike">
-      <BaseFormItem  label="货位代码 类似于">
+      <BaseFormItem label="货位代码 类似于">
         {getFieldDecorator('binCodeLike')(
           <Input type="text" placeholder="货位代码 类似于" />
         )}
@@ -50,7 +50,7 @@ const ReturnSupplierHandoverSearchForm = ({
 
   children.push(
     <BaseTwoCol key="containerBarcodeLike">
-      <BaseFormItem  label="容器条码 类似于">
+      <BaseFormItem label="容器条码 类似于">
         {getFieldDecorator('containerBarcodeLike')(
           <Input type="text" placeholder="容器条码 类似于" />
         )}
@@ -60,7 +60,7 @@ const ReturnSupplierHandoverSearchForm = ({
 
   children.push(
     <BaseTwoCol key="articleCodeLike">
-      <BaseFormItem  label="商品条码 类似于">
+      <BaseFormItem label="商品条码 类似于">
         {getFieldDecorator('articleCodeLike')(
           <Input type="text" placeholder="商品条码 类似于" />
         )}

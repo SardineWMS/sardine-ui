@@ -19,7 +19,7 @@ const UserModal = ({
     users,
     userPagination,
 }) => {
-
+ 
     const modalOpts = {
         visible,
         onOk: onOk,

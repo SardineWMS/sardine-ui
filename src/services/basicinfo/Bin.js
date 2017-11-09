@@ -7,6 +7,11 @@ export async function queryBin(params) {
   return request(query(url, params));
 }
 
+export async function queryByPage(params) {
+  const url = "/swms/basicinfo/bin/queryByPage";
+  return request(query(url, params));
+}
+
 export async function queryWrhs(params) {
   const url = "/swms/basicinfo/bin/queryWrhs";
   return request(query(url, params));
