@@ -192,15 +192,15 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
             })
         },
         onSelect(data) {
-            const t = {};
+            // const t = currentItem;
             const customer = {};
             customer.uuid = data.uuid;
             customer.code = data.code;
             customer.name = data.name;
-            t.customer = customer;
+            currentItem.customer = customer;
             dispatch({
                 type: 'rtnNtcBill/hideCustomerModal',
-                payload: { currentItem: t }
+                payload: { currentItem: currentItem }
             })
         }
     };

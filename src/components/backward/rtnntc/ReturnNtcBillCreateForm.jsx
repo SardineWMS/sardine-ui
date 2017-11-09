@@ -21,11 +21,22 @@ const ReturnNtcBillCreateForm = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue
+        getFieldsValue,
+        resetFields,
+        setFieldsValue
     },
     onCustomerSelect,
     onEnterCustomer
 }) => {
+
+    function handleCustomerSelect() {
+        let { customer } = getFieldsValue(["customer"]);
+        if (!customer) {
+            item.customer = {};
+        }
+        resetFields(["customer"]);
+        onCustomerSelect();
+    }
     function handleCreate() {
         validateFields((errors) => {
             if (errors)
@@ -58,7 +69,7 @@ const ReturnNtcBillCreateForm = ({
                     rules: [{ required: true, message: "客户不能为空！" }],
                     initialValue: item.customer ? item.customer.code : ""
                 })(
-                    <Input placeholder="请选择" suffix={<Icon type="bars" onClick={() => onCustomerSelect()} />} onBlur={handleEnterPress} />
+                    <Input placeholder="请选择" suffix={<Icon type="bars" onClick={handleCustomerSelect} />} onBlur={handleEnterPress} />
                     )
             }
         </BaseFormItem>
