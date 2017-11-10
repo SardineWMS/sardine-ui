@@ -272,7 +272,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
         },
         onBack() {
             dispatch({
-                type: 'acceptanceBill/backSearchForm',
+                type: 'acceptanceBill/query',
             });
         }
     };

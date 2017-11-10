@@ -316,7 +316,7 @@ function OrderBill({ location, dispatch, orderBill }) {
         },
         onBack() {
             dispatch({
-                type: 'orderBill/backSearchForm'
+                type: 'orderBill/query'
             });
         }
     };
