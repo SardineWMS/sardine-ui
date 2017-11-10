@@ -3,6 +3,7 @@ import { Form, Input, Select } from 'antd';
 import BaseSearchPanel from '../../Widget/BaseSearchPanel';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import BaseFormItem from '../../Widget/BaseFormItem';
+import WrhSelect from '../../widget/WrhSelect';
 
 const Option = Select.Option;
 
@@ -62,10 +63,31 @@ const AcceptanceBillSearchForm = ({
         </BaseTwoCol>
     );
 
+    children.push(
+        <BaseTwoCol key={"binCode"}>
+            <BaseFormItem label={"货位代码 类似于"}>
+                {getFieldDecorator("binCode")(
+                    <Input placeholder="请输入" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+
+    children.push(
+        <BaseTwoCol key={"containerBarcode"}>
+            <BaseFormItem label={"容器代码 类似于"}>
+                {getFieldDecorator("containerBarcode")(
+                    <Input placeholder="请输入" />
+                )}
+            </BaseFormItem>
+        </BaseTwoCol>
+    );
+
     children.push(<BaseTwoCol key={"wrhcode"}>
-        <BaseFormItem label="仓位 等于">
+        <BaseFormItem label="仓位代码 等于">
             {getFieldDecorator("wrhcode")(
-                <Input placeholder="请输入" />
+                <WrhSelect/>
+                //<Input placeholder="请输入" />
             )}
         </BaseFormItem>
     </BaseTwoCol>);
