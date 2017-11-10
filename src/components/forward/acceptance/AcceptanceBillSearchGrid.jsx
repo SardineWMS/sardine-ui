@@ -121,7 +121,8 @@ function AcceptanceBillSearchGrid({
 
     return (
         <div>
-            <Table size="small" bordered rowSelection={rowSelection}
+            <Table size="small" bordered 
+                rowSelection={rowSelection}
                 columns={columns}
                 title={
                     () =>

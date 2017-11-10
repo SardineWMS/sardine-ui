@@ -25,18 +25,18 @@ export async function edit(params) {
 }
 
 export async function approve(params) {
-  const url = `/swms/out/acceptance/approve?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url), updateBaseNullBody(params));
+  const url = "/swms/out/acceptance/approve";
+  return request(query(url,params), updateBaseNullBody(null));
 }
 
 export async function beginalc(params) {
-  const url = `/swms/out/acceptance/beginalc?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url), updateBaseNullBody(params));
+  const url = "/swms/out/acceptance/beginalc";
+  return request(query(url,params), updateBaseNullBody(null));
 }
 
 export async function abort(params) {
-  const url = `/swms/out/acceptance/abort?${qs.stringify(params)}`;
-  return request(addTokenToUrl(url), updateBaseNullBody(params));
+  const url = "/swms/out/acceptance/abort";
+  return request(query(url,params), updateBaseNullBody(null));
 }
 
 export async function queryWrhs(params) {

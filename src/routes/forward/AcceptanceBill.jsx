@@ -9,22 +9,22 @@ import AcceptanceBillCreateForm from '../../components/forward/acceptance/Accept
 import AcceptanceBillViewForm from '../../components/forward/acceptance/AcceptanceBillViewForm';
 import CustomerSelectModal from '../../components/forward/acceptance/CustomerSelectModal';
 import AcceptanceBillItemForm from '../../components/forward/acceptance/AcceptanceBillItemForm';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
 
-function AcceptanceBill({ location, dispatch, acceptanceBill }){
-   const {
-        list,pagination, showPage,
+function AcceptanceBill({ location, dispatch, acceptanceBill }) {
+    const {
+        list, pagination, showPage,
         currentAcceptanceBill, current,
-        batchApproveProcessModal,approveAcceptanceBillEntitys,
-        batchAlcProcessModal,alcAcceptanceBillEntitys,
-        batchAbortProcessModal,abortAcceptanceBillEntitys,
-        acceptanceBillNext,wrhs,customers,customerModalVisible,
-        customerPagination,stocks,customer
+        batchApproveProcessModal, approveAcceptanceBillEntitys,
+        batchAlcProcessModal, alcAcceptanceBillEntitys,
+        batchAbortProcessModal, abortAcceptanceBillEntitys,
+        acceptanceBillNext, wrhs, customers, customerModalVisible,
+        customerPagination, stocks, customer
     } = acceptanceBill;
 
     const { field, keyword } = location.query;
-    const acceptanceBillListProps={
-    	dataSource: list,
+    const acceptanceBillListProps = {
+        dataSource: list,
         pagination: pagination,
         wrhs: wrhs,
         onPageChange(page, filters, sorter) {
@@ -53,7 +53,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
             dispatch({
                 type: 'acceptanceBill/get',
                 payload: {
-                    uuid:acceptanceBill.uuid
+                    uuid: acceptanceBill.uuid
                 }
             });
         },
@@ -106,88 +106,87 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         }
     };
 
-    const acceptanceBillCreateProps={
-        acceptanceBill:currentAcceptanceBill,
-        wrhs:wrhs,
-        customer:customer,
-        onSave(acceptanceBill){
-            acceptanceBill.items=currentAcceptanceBill.items;
-            if(acceptanceBill.uuid){
+    const acceptanceBillCreateProps = {
+        acceptanceBill: currentAcceptanceBill,
+        wrhs: wrhs,
+        customer: customer,
+        onSave(acceptanceBill) {
+            acceptanceBill.items = currentAcceptanceBill.items;
+            if (acceptanceBill.uuid) {
                 dispatch({
                     type: 'acceptanceBill/editItem',
                     payload: acceptanceBill
                 });
-            }else{
+            } else {
                 dispatch({
                     type: 'acceptanceBill/create',
                     payload: acceptanceBill
                 });
             };
         },
-        onCancel(){
+        onCancel() {
             dispatch({
                 type: 'acceptanceBill/backSearchForm'
             });
         },
-        getCustomer(customerCode){
+        getCustomer(customerCode) {
             dispatch({
                 type: 'acceptanceBill/getCustomer',
                 payload: {
-                    customerCode:customerCode
+                    customerCode: customerCode
                 }
-            }); 
+            });
         },
-        queryCustomers(){
+        queryCustomers() {
             dispatch({
                 type: 'acceptanceBill/queryCustomers'
-            }); 
+            });
         },
-        queryWrhs(){
+        queryWrhs() {
             dispatch({
                 type: 'acceptanceBill/queryWrhs'
-            }); 
+            });
         }
     };
 
-    const customerModalProps={
-        visible:customerModalVisible,
+    const customerModalProps = {
+        visible: customerModalVisible,
         customers: customers,
         customerPagination: customerPagination,
-        onOk(customers){
+        onOk(customers) {
             dispatch({
                 type: 'acceptanceBill/selectCustomer',
                 payload: {
                     customer: customers[0]
                 }
-            });  
+            });
         },
-        onCancel(){
+        onCancel() {
             dispatch({
                 type: 'acceptanceBill/hideCustomerModal'
-            });  
+            });
         }
     };
 
-    let items=[];
-    if(currentAcceptanceBill && currentAcceptanceBill.items)
-        items=currentAcceptanceBill.items;
-    else
-    {
-        const item=new Object();
-        item.line=1;
+    let items = [];
+    if (currentAcceptanceBill && currentAcceptanceBill.items)
+        items = currentAcceptanceBill.items;
+    else {
+        const item = new Object();
+        item.line = 1;
         items.push(item);
-        currentAcceptanceBill.items=items;
+        currentAcceptanceBill.items = items;
     };
-    const acceptanceBillItemProps={ 
-        acceptanceBillItems:items,
-        stocks:stocks,
-        editable:showPage==="view"? false:true,
-        inAlc:currentAcceptanceBill.state==="InAlc"?true:(currentAcceptanceBill.state==="Finished"?true:false),
-        onAdd(acceptanceBillItems){
-            const acceptanceBillItem=new Object();
-            acceptanceBillItem.line=acceptanceBillItems.length+1;
+    const acceptanceBillItemProps = {
+        acceptanceBillItems: items,
+        stocks: stocks,
+        editable: showPage === "view" ? false : true,
+        inAlc: currentAcceptanceBill.state === "InAlc" ? true : (currentAcceptanceBill.state === "Finished" ? true : false),
+        onAdd(acceptanceBillItems) {
+            const acceptanceBillItem = new Object();
+            acceptanceBillItem.line = acceptanceBillItems.length + 1;
             acceptanceBillItems.push(acceptanceBillItem);
-            acceptanceBill.items=acceptanceBillItems;
+            acceptanceBill.items = acceptanceBillItems;
             dispatch({
                 type: 'acceptanceBill/showEditPage',
                 payload: {
@@ -195,83 +194,83 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
                 }
             });
         },
-        onDelete(index){
+        onDelete(index) {
             currentAcceptanceBill.items.splice(index);
             dispatch({
                 type: 'acceptanceBill/refreshCaseQtyAndAmount',
                 payload: {
-                    acceptanceBill:currentAcceptanceBill,
-                    line: index+1
-                }
-            }); 
-        },
-        queryStocks(articleCode,index){
-            dispatch({
-                type: 'acceptanceBill/queryStocks',
-                payload: {
-                    articleCode:articleCode,
-                    index:index,
-                    acceptanceBill:currentAcceptanceBill
+                    acceptanceBill: currentAcceptanceBill,
+                    line: index + 1
                 }
             });
         },
-        refreshStockInfo(currentAcceptanceBillItem){
-            currentAcceptanceBill.items[currentAcceptanceBillItem.line-1]=currentAcceptanceBillItem;
+        queryStocks(articleCode, index) {
+            dispatch({
+                type: 'acceptanceBill/queryStocks',
+                payload: {
+                    articleCode: articleCode,
+                    index: index,
+                    acceptanceBill: currentAcceptanceBill
+                }
+            });
+        },
+        refreshStockInfo(currentAcceptanceBillItem) {
+            currentAcceptanceBill.items[currentAcceptanceBillItem.line - 1] = currentAcceptanceBillItem;
             dispatch({
                 type: 'acceptanceBill/showEditPage',
                 payload: currentAcceptanceBill
             });
         },
-        refreshCaseQtyAndAmount(currentAcceptanceBillItem){
-            currentAcceptanceBill.items[currentAcceptanceBillItem.line-1]=currentAcceptanceBillItem;
+        refreshCaseQtyAndAmount(currentAcceptanceBillItem) {
+            currentAcceptanceBill.items[currentAcceptanceBillItem.line - 1] = currentAcceptanceBillItem;
             dispatch({
                 type: 'acceptanceBill/refreshCaseQtyAndAmount',
                 payload: {
-                    acceptanceBill:currentAcceptanceBill,
-                    line:currentAcceptanceBillItem.line
+                    acceptanceBill: currentAcceptanceBill,
+                    line: currentAcceptanceBillItem.line
                 }
             });
         }
     };
 
-    const acceptanceBillViewFormProps={
-        acceptanceBill:currentAcceptanceBill,
-        onEdit(acceptanceBill){
+    const acceptanceBillViewFormProps = {
+        acceptanceBill: currentAcceptanceBill,
+        onEdit(acceptanceBill) {
             dispatch({
                 type: 'acceptanceBill/getForEdit',
                 payload: {
-                    uuid:acceptanceBill.uuid
+                    uuid: acceptanceBill.uuid
                 }
             });
         },
-        onApprove(acceptanceBill){
+        onApprove(acceptanceBill) {
             dispatch({
                 type: 'acceptanceBill/approveItem',
                 payload: {
                     uuid: acceptanceBill.uuid,
-                    version:acceptanceBill.version
+                    version: acceptanceBill.version
                 }
             });
         },
-         onBeginAlc(acceptanceBill){
+        onBeginAlc(acceptanceBill) {
             dispatch({
                 type: 'acceptanceBill/beginAlcItem',
                 payload: {
                     uuid: acceptanceBill.uuid,
-                    version:acceptanceBill.version
+                    version: acceptanceBill.version
                 }
             });
         },
-        onAbort(acceptanceBill){
+        onAbort(acceptanceBill) {
             dispatch({
                 type: 'acceptanceBill/abortItem',
                 payload: {
                     uuid: acceptanceBill.uuid,
-                    version:acceptanceBill.version
+                    version: acceptanceBill.version
                 }
             });
         },
-        onBack(){
+        onBack() {
             dispatch({
                 type: 'acceptanceBill/backSearchForm',
             });
@@ -285,24 +284,20 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         next: acceptanceBillNext,
         actionText: '批准',
         entityCaption: '领用单',
-        batchProcess(acceptanceBill) {
-          dispatch({
-            type: 'acceptanceBill/approveGrid',
-            payload: {
-              uuid: acceptanceBill.uuid,
-              version: acceptanceBill.version
-            }
-          });
-        },
+        url: 'swms/out/acceptance/approve',
+        canSkipState: 'approve',
         hideConfirmModal() {
-          dispatch({
-            type: 'acceptanceBill/hideApproveAcceptanceBillModal'
-          })
+            dispatch({
+                type: 'acceptanceBill/hideApproveAcceptanceBillModal'
+            })
         },
         refreshGrid() {
-          dispatch({
-            type: 'acceptanceBill/query'
-          });
+            dispatch({
+                type: 'acceptanceBill/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
         }
     };
 
@@ -312,24 +307,20 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         next: acceptanceBillNext,
         actionText: '配货',
         entityCaption: '领用单',
-        batchProcess(acceptanceBill) {
-          dispatch({
-            type: 'acceptanceBill/beginAlcGrid',
-            payload: {
-              uuid: acceptanceBill.uuid,
-              version: acceptanceBill.version
-            }
-          });
-        },
+        url: 'swms/out/acceptance/beginalc',
+        canSkipState: 'beginalc',
         hideConfirmModal() {
-          dispatch({
-            type: 'acceptanceBill/hideAlcAcceptanceBillModal'
-          });
+            dispatch({
+                type: 'acceptanceBill/hideAlcAcceptanceBillModal'
+            });
         },
         refreshGrid() {
-          dispatch({
-            type: 'acceptanceBill/query'
-          });
+            dispatch({
+                type: 'acceptanceBill/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
         }
     };
 
@@ -339,62 +330,59 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }){
         next: acceptanceBillNext,
         actionText: '作废',
         entityCaption: '领用单',
-        batchProcess(acceptanceBill) {
-          dispatch({
-            type: 'acceptanceBill/abortGrid',
-            payload: {
-              uuid: acceptanceBill.uuid,
-              version: acceptanceBill.version
-            }
-          });
-        },
+        url: 'swms/out/acceptance/abort',
+        canSkipState: 'abort',
         hideConfirmModal() {
-          dispatch({
-            type: 'acceptanceBill/hideAbortAcceptanceBillModal'
-          });
+            dispatch({
+                type: 'acceptanceBill/hideAbortAcceptanceBillModal'
+            });
         },
         refreshGrid() {
-          dispatch({
-            type: 'acceptanceBill/query'
-          });
+            dispatch({
+                type: 'acceptanceBill/query',
+                payload: {
+                    token: localStorage.getItem("token")
+                }
+            });
         }
     };
 
-
+    const AcceptanceBillSearchGridGen = () => <AcceptanceBillSearchGrid {...acceptanceBillListProps} />
 
     return (
         <div className="content-inner">
-        {
-            (() => {
-                switch (showPage) {
-                    case 'create':
-                     return (
-                         <div>
-                            <AcceptanceBillCreateForm {...acceptanceBillCreateProps} />
-                            <CustomerSelectModal {...customerModalProps} />
-                            <AcceptanceBillItemForm {...acceptanceBillItemProps}/>
-                         </div>
-                     )
-                     case 'view':
-                     return (
-                         <div>
-                            <AcceptanceBillViewForm {...acceptanceBillViewFormProps} /> 
-                            <AcceptanceBillItemForm {...acceptanceBillItemProps}/>
-                         </div>
-                     )
-                    default :
-                          return (
+            {
+                (() => {
+                    switch (showPage) {
+                        case 'create':
+                            return (
                                 <div>
-                                    <AcceptanceBillSearchForm {...acceptanceBillSearchProps} />
-                                    <AcceptanceBillSearchGrid {...acceptanceBillListProps} />
-                                    <WMSProgress {...batchBeginAlcAcceptanceBillsProps} />
-                                    <WMSProgress {...batchAbortAcceptanceBillsProps} />
+                                    <AcceptanceBillCreateForm {...acceptanceBillCreateProps} />
+                                    <CustomerSelectModal {...customerModalProps} />
+                                    <AcceptanceBillItemForm {...acceptanceBillItemProps} />
                                 </div>
                             )
-                }
-            })()
-        }
-         
+                        case 'view':
+                            return (
+                                <div>
+                                    <AcceptanceBillViewForm {...acceptanceBillViewFormProps} />
+                                    <AcceptanceBillItemForm {...acceptanceBillItemProps} />
+                                </div>
+                            )
+                        default:
+                            return (
+                                <div>
+                                    <AcceptanceBillSearchForm {...acceptanceBillSearchProps} />
+                                    <AcceptanceBillSearchGridGen />
+                                    <WMSProgress {...batchBeginAlcAcceptanceBillsProps} />
+                                    <WMSProgress {...batchAbortAcceptanceBillsProps} />
+                                    <WMSProgress {...batchApproveAcceptanceBillsProps} />
+                                </div>
+                            )
+                    }
+                })()
+            }
+
         </div>
     );
 };
@@ -404,7 +392,7 @@ AcceptanceBill.propTypes = {
 };
 
 function mapStateToProps({ acceptanceBill }) {
-    return {acceptanceBill};
+    return { acceptanceBill };
 };
 
 export default connect(mapStateToProps)(AcceptanceBill);
