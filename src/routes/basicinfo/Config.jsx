@@ -170,7 +170,6 @@ function Config({ location, dispatch, config }) {
   const setArticleFixedPickBinModalProps = {
     title: "设置固定拣货位",
     label: "固定拣货位",
-    testValue: "test",
     visible: binScopeModalVisible,
     onOk(binScope) {
       selectedArticleConfigs.map(function (articleConfig) {
@@ -229,6 +228,8 @@ function Config({ location, dispatch, config }) {
     hideConfirmModal() {
       dispatch({
         type: 'config/hideBatchSetArticleFixedPickBinModal',
+        payload:{
+        }
       })
     },
     refreshGrid() {
@@ -651,6 +652,17 @@ function Config({ location, dispatch, config }) {
   }
 
 
+  const ArticleConfigSearchGridGen = ()=><ArticleConfigSearchGrid {...articleConfigSearchGridProps} />;
+  const CategoryStorageAreaConfigSearchGridGen =()=> <CategoryStorageAreaConfigSearchGrid {...categoryStorageAreaConfigSearchGridProps} />;
+  const PickAreaStorageAreaConfigSearchGridGen=()=><PickAreaStorageAreaConfigSearchGrid {...pickAreaStorageAreaConfigSearchGridProps} />;
+  const TaskAreaConfigSearchGridGen=()=><TaskAreaConfigSearchGrid {...taskAreaConfigSearchGridProps} />;
+  const BinScopeModalGen1 =()=><BinScopeModal {...setArticleFixedPickBinModalProps} />;
+  const BinScopeModalGen2 =()=><BinScopeModal {...setArticleStorageAreaModalProps} />;
+  const PickBinStockLimitModalGen =()=><PickBinStockLimitModal {...setPickBinStockLimitModalProps} />;
+  const BinScopeModalGen3 =()=><BinScopeModal {...setCategoryStorageAreaModalProps} />;
+  const BinScopeModalGen4 =()=><BinScopeModal {...setPickAreaStorageAreaModalProps} />
+
+
   return (
     <div className="content-inner">
       <Layout style={{ padding: '0 0', background: '#fff' }}>
@@ -665,15 +677,15 @@ function Config({ location, dispatch, config }) {
                   return (
                     <div>
                       <ArticleConfigSearchForm {...articleConfigSearchFormProps} />
-                      <ArticleConfigSearchGrid {...articleConfigSearchGridProps} />
+                      <ArticleConfigSearchGridGen/>
                       <WMSProgress {...batchSetArticleFixedPickBinProps} />
                       <WMSProgress {...batchSetPickBinStockLimitProps} />
                       <WMSProgress {...batchSetArticleStorageAreaProps} />
-                      <PickBinStockLimitModal {...setPickBinStockLimitModalProps} />
+                      <PickBinStockLimitModalGen/>
                       {"setArticleFixedPickBin" === binScopeType ?
-                        <BinScopeModal {...setArticleFixedPickBinModalProps} />
+                        <BinScopeModalGen1/>
                         :
-                        <BinScopeModal {...setArticleStorageAreaModalProps} />
+                        <BinScopeModalGen2/>
                       }
                     </div>
                   )
@@ -681,9 +693,9 @@ function Config({ location, dispatch, config }) {
                   return (
                     <div>
                       <CategoryStorageAreaConfigSearchForm {...categoryStorageAreaConfigSearchFormProps} />
-                      <CategoryStorageAreaConfigSearchGrid {...categoryStorageAreaConfigSearchGridProps} />
+                     <CategoryStorageAreaConfigSearchGridGen/>
                       <WMSProgress {...batchCategoryStorageAreaProps} />
-                      <BinScopeModal {...setCategoryStorageAreaModalProps} />
+                      <BinScopeModalGen3/>
 
                     </div>
                   )
@@ -691,16 +703,16 @@ function Config({ location, dispatch, config }) {
                   return (
                     <div>
                       <PickAreaStorageAreaConfigSearchForm {...pickAreaStorageAreaConfigSearchFormProps} />
-                      <PickAreaStorageAreaConfigSearchGrid {...pickAreaStorageAreaConfigSearchGridProps} />
+                      <PickAreaStorageAreaConfigSearchGridGen/>
                       <WMSProgress {...batchPickAreaStorageAreaProps} />
-                      <BinScopeModal {...setPickAreaStorageAreaModalProps} />
+                      <BinScopeModalGen4/>
                     </div>
                   )
                 case 'taskAreaConfigPage':
                   return (
                     <div>
                       <TaskAreaConfigSearchForm {...taskAreaConfigSearchFormProps} />
-                      <TaskAreaConfigSearchGrid {...taskAreaConfigSearchGridProps} />
+                      <TaskAreaConfigSearchGridGen/>
                       <OperatorModal {...operatorModalProps} />
                       <TaskAreaConfigModal {...setTaskAreaConfigModalProps} />
                     </div>
