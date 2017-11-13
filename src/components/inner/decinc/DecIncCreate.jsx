@@ -45,7 +45,7 @@ const DecIncCreateForm = ({
 
     const children = [];
     children.push(<BaseFormItem label={"单据类型："}>
-        {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type })(
+        {getFieldDecorator("type", { rules: [{ required: true }], initialValue: item.type ? item.type : 'Dec' })(
             <Select placeholder="请选择" onChange={(value) => onSelectType(value)}>
                 <Option value='Dec'>损耗</Option>
                 <Option value='Inc'>溢余</Option>

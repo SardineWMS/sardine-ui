@@ -111,6 +111,11 @@ export default {
                 articleCode: payload.record.article.code,
             });
             if (data) {
+                if (!data.obj) {
+                    message.warning("商品不存在，请重新输入！", 2);
+                    return;
+                }
+                console.log("商品结果", data);
                 payload.record.article.uuid = data.obj.uuid;
                 payload.record.article.name = data.obj.name;
                 let qpcStrs = [];
@@ -474,7 +479,6 @@ export default {
                 }
             });
         }
-
     },
 
     reducers: {
