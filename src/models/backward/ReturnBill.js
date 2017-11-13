@@ -90,7 +90,7 @@ export default {
             if (data.status == '200' && data.obj != null) {
                 const article_qpcStr = {};
                 const bin = yield call(queryBin, {
-                    wrhUuid: data.obj.wrh.uuid, usage: 'RtnReceiveTempBin'
+                    usage: 'RtnReceiveTempBin'
                 });
                 const articles = [];
                 let itemLists = [];
@@ -106,7 +106,7 @@ export default {
                     itemArt.editable = true;
                     itemArt.expDays = expDays;
                     if (!bin.data.obj.pageData.records[0]) {
-                        message.error("当前仓位下不存在退货收货暂存位，无法退仓");
+                        message.error("当前仓库不存在退货收货暂存位，无法退仓");
                         return;
                     }
                     itemArt.binCode = bin.data.obj.pageData.records[0].code;
@@ -159,6 +159,8 @@ export default {
                 const nullItem = {};
                 nullItem.editable = true;
                 nullItem.line = 1;
+                nullItem.returnType = 'returnToSupplier';
+                nullItem.binCode = bin.data.obj.pageData.records[0].code;
                 itemLists.push(nullItem);
 
                 let current = {};
@@ -394,7 +396,7 @@ export default {
             const articles = [];
             let totalCaseQtyStr = "0";
             let article_qpcStr = {};
-            const bin = yield call(queryBin, { wrhUuid: data.obj.wrh.uuid, usage: 'RtnReceiveTempBin' });
+            const bin = yield call(queryBin, { wrhUuid: null, usage: 'RtnReceiveTempBin' });
             let binCode = bin.data.obj.pageData.records[0].code;
 
 
@@ -494,10 +496,24 @@ export default {
         },
 
         *modifyReturnType({ payload }, { call, put }) {
+            let result = {};
+            let binUsage = "";
+            let binCode = "";
+            if (payload.data.returnType == 'goodReturn')
+                binUsage = 'ReceiveStorageBin';
+            else
+                binUsage = 'RtnReceiveTempBin'
+            result = yield call(getBinByWrhAndUsage, { wrhUuid: null, binUsage: binUsage });
+            if (result.data.obj == null) {
+                message.error("不存在相应的收货暂存位", 3);
+                return;
+            }
+            binCode = result.data.obj;
             for (let item of payload.list) {
                 for (let select of payload.selecteds) {
                     if (item.line == select.line) {
                         item.returnType = payload.data.returnType;
+                        item.binCode = binCode;
                     }
                 }
             };
@@ -579,7 +595,7 @@ export default {
                 binUsage = 'ReceiveStorageBin';
             else
                 binUsage = 'RtnReceiveTempBin'
-            result = yield call(getBinByWrhAndUsage, { wrhUuid: payload.currentItem.wrh.uuid, binUsage: binUsage });
+            result = yield call(getBinByWrhAndUsage, { wrhUuid: null, binUsage: binUsage });
             if (result.data.obj == null) {
                 message.error("不存在相应的收货暂存位", 3);
                 payload.record.binCode = "";
