@@ -127,10 +127,12 @@ function AcceptanceBillSearchGrid({
                 title={
                     () =>
                         <div>
-                            <Button onClick={handleCreate}> 新建</Button>
-                            <Button onClick={handlerAbortBatch}> 作废</Button>
-                            <Button onClick={handlerApproveBatch}> 批准</Button>
-                            <Button onClick={handlerAlcBatch}> 配货</Button>
+                            <Row type="flex">
+                            <Col><Button onClick={handleCreate}> 新建</Button></Col>
+                            <Col><Button onClick={handlerAbortBatch}> 作废</Button></Col>
+                            <Col><Button onClick={handlerApproveBatch}> 批准</Button></Col>
+                            <Col><Button onClick={handlerAlcBatch}> 配货</Button></Col>
+                            </Row>
                         </div>
                 }
                 dataSource={dataSource}

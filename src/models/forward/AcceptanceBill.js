@@ -1,10 +1,10 @@
 import { parse } from 'qs';
 import {
     querybypage, get, create, edit, abort,
-     queryWrhs, refreshCaseQtyAndAmount, approve, beginalc
+    queryWrhs, refreshCaseQtyAndAmount, approve, beginalc
 } from '../../services/forward/AcceptanceBill';
 import { queryStockExtendInfo } from '../../services/common/common.js';
-import {queryCustomer,getByCode as getCustomer} from '../../services/basicinfo/Customer';
+import { queryCustomer, getByCode as getCustomer } from '../../services/basicinfo/Customer';
 import { message } from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -63,16 +63,23 @@ export default {
     effects: {
         *query({ payload }, { call, put }) {
             const { data } = yield call(querybypage, parse(payload));
-            yield put({
+           if(data.status == "200"){
+              yield put({
                 type: 'querySuccess',
                 payload: {
                     list: data.obj.records,
                     pagination: {
+                        showSizeChanger: true,
+                        showQuickJumper: true,
+                        showTotal: total => `共 ${total}条`,
+                        current: data.obj.page,
                         total: data.obj.recordCount,
-                        current: data.obj.page
+                        pageSize: payload.pageSize
                     }
                 }
             });
+           }
+           
         },
 
         *get({ payload }, { call, put }) {
@@ -96,7 +103,7 @@ export default {
                 type: 'showCreatePage',
                 payload: {
                     wrhs: data.obj,
-                    currentAcceptanceBill:{}
+                    currentAcceptanceBill: {}
                 }
             });
         },
@@ -227,15 +234,15 @@ export default {
         },
 
         *getCustomer({ payload }, { call, put }) {
-            const result = yield call(getCustomer,parse(payload));
-            if (result.data.status==="200" && result.data.obj) {
+            const result = yield call(getCustomer, parse(payload));
+            if (result.data.status === "200" && result.data.obj) {
                 yield put({
                     type: 'showEditPage',
                     payload: {
-                        customer:{
-                            uuid:result.data.obj.uuid,
-                            code:result.data.obj.code,
-                            name:result.data.obj.name
+                        customer: {
+                            uuid: result.data.obj.uuid,
+                            code: result.data.obj.code,
+                            name: result.data.obj.name
                         }
                     }
                 });
@@ -260,20 +267,20 @@ export default {
             });
             if (stocks) {
                 const acceptanceBill = payload.acceptanceBill;
-                const acceptanceItem=payload.acceptanceBill.items[payload.index];
-                const stock=stocks.data.obj[0];
+                const acceptanceItem = payload.acceptanceBill.items[payload.index];
+                const stock = stocks.data.obj[0];
                 acceptanceItem.article = stock.article;
-                acceptanceItem.binCode=stock.binCode;
-                acceptanceItem.containerBarCode=stock.containerBarcode;
-                acceptanceItem.supplier=stock.supplier;
-                acceptanceItem.qpcStr=stock.qpcStr;
+                acceptanceItem.binCode = stock.binCode;
+                acceptanceItem.containerBarCode = stock.containerBarcode;
+                acceptanceItem.supplier = stock.supplier;
+                acceptanceItem.qpcStr = stock.qpcStr;
                 acceptanceItem.munit = stock.munit;
                 acceptanceItem.price = stock.price;
                 acceptanceItem.stockQty = stock.qty;
                 acceptanceItem.productionDate = moment(stock.productionDate);
                 acceptanceItem.validDate = moment(stock.validDate);
                 acceptanceItem.stockBatch = stock.stockBatch;
-                payload.acceptanceBill.items[payload.index]=acceptanceItem;
+                payload.acceptanceBill.items[payload.index] = acceptanceItem;
                 yield put({
                     type: 'showEditPage',
                     payload: {
@@ -420,7 +427,7 @@ export default {
         selectCustomer(state, action) {
             return {
                 ...state,
-                customer:action.payload.customer,
+                customer: action.payload.customer,
                 customerModalVisible: false
             };
         }

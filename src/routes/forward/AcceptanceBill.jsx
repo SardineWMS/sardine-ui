@@ -31,6 +31,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
             dispatch(routerRedux.push({
                 pathname: '/forward/acceptanceBill',
                 query: {
+                    ...location.query,
                     page: page.current,
                     pageSize: page.pageSize,
                     sort: sorter.field,
@@ -273,6 +274,9 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
         onBack() {
             dispatch({
                 type: 'acceptanceBill/query',
+                payload:{
+                    currentAcceptanceBill:{}
+                }
             });
         }
     };
