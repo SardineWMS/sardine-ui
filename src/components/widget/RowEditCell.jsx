@@ -25,9 +25,11 @@ class RowEditCell extends React.Component {
       this.props.onBlur(e.target.value);
   };
   componentWillReceiveProps(newProps) {
-    this.setState({
-      ...newProps
-    })
+    if (!this.state.value) {
+      this.setState({
+        ...newProps,
+      })
+    }
   };
   render() {
     const { value, editable } = this.state;
