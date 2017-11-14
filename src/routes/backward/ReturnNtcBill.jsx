@@ -99,6 +99,56 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
         }
     };
 
+    const returnNtcBillCreateItemProps = {
+        dataSource: rtnNtcBillItems,
+        qpcStrs: qpcs,
+        reasons,
+        getArticleInfo(record, list) {
+            dispatch({
+                type: 'rtnNtcBill/getArticleInfo',
+                payload: { record, list }
+            })
+        },
+        refreshMunit(record, dataSource) {
+            dispatch({
+                type: 'rtnNtcBill/refreshMunit',
+                payload: {
+                    record, dataSource
+                }
+            });
+        },
+        getSupplierInfo(record, dataSource) {
+            dispatch({
+                type: 'rtnNtcBill/getSupplierInfo',
+                payload: { record, dataSource }
+            })
+        },
+        onAddItem() {
+            dispatch({
+                type: 'rtnNtcBill/addItem',
+                payload: {
+                    dataSource: rtnNtcBillItems
+                }
+            })
+        },
+        calculateCaseQtyStr(record, dataSource) {
+            dispatch({
+                type: 'rtnNtcBill/calculateCaseQtyStr',
+                payload: {
+                    record, dataSource, currentItem
+                }
+            })
+        },
+        refreshAmount(record, dataSource) {
+            dispatch({
+                type: 'rtnNtcBill/refreshAmount',
+                payload: {
+                    record, dataSource, currentItem
+                }
+            })
+        }
+    };
+
     const returnNtcBillCreateFormProps = {
         item: currentItem,
         onCustomerSelect() {
@@ -181,7 +231,8 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
             dispatch({
                 type: 'rtnNtcBill/query'
             })
-        }
+        },
+        returnNtcBillCreateItemProps
     };
 
     const customerSelectGridProps = {
@@ -205,55 +256,7 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
         }
     };
 
-    const returnNtcBillCreateItemProps = {
-        dataSource: rtnNtcBillItems,
-        qpcStrs: qpcs,
-        reasons,
-        getArticleInfo(record, list) {
-            dispatch({
-                type: 'rtnNtcBill/getArticleInfo',
-                payload: { record, list }
-            })
-        },
-        refreshMunit(record, dataSource) {
-            dispatch({
-                type: 'rtnNtcBill/refreshMunit',
-                payload: {
-                    record, dataSource
-                }
-            });
-        },
-        getSupplierInfo(record, dataSource) {
-            dispatch({
-                type: 'rtnNtcBill/getSupplierInfo',
-                payload: { record, dataSource }
-            })
-        },
-        onAddItem() {
-            dispatch({
-                type: 'rtnNtcBill/addItem',
-                payload: {
-                    dataSource: rtnNtcBillItems
-                }
-            })
-        },
-        calculateCaseQtyStr(record, dataSource) {
-            dispatch({
-                type: 'rtnNtcBill/calculateCaseQtyStr',
-                payload: {
-                    record, dataSource, currentItem
-                }
-            })
-        },
-        refreshAmount(record, dataSource) {
-            dispatch({
-                type: 'rtnNtcBill/refreshAmount',
-                payload: {
-                    record, dataSource, currentItem
-                }
-            })
-        }
-    };
+
 
     const returnNtcBillViewPageProps = {
         item: currentItem,
@@ -381,9 +384,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
         }
     };
 
-    const CustomerSelectModalGen = () => <ReturnNtcBillCreateForm {...returnNtcBillCreateFormProps} />;
-    const ReturnNtcBillCreateFormGen = () => <ReturnNtcBillCreateForm {...returnNtcBillCreateFormProps} />;
-    const ReturnNtcBillCreateItemGen = () => <ReturnNtcBillCreateItem {...returnNtcBillCreateItemProps} />;
     return (
         <div className="content-inner">
             {
@@ -393,7 +393,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
                             return <div><ReturnNtcBillViewPage {...returnNtcBillViewPageProps} /></div>
                         case 'create':
                             return <div><ReturnNtcBillCreateForm {...returnNtcBillCreateFormProps} />
-                                <ReturnNtcBillCreateItem {...returnNtcBillCreateItemProps} />
                                 <CustomerSelectGrid {...customerSelectGridProps} />
                             </div>
                         default:

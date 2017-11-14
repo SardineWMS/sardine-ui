@@ -259,11 +259,6 @@ export default {
             };
             const { data } = yield call(qtyToCaseQtyStr, { qty: Number(payload.record.qty), qpcStr: payload.record.qpcStr });
             payload.record.caseQtyStr = data.obj;
-            // for (var item of payload.list) {
-            //     if (item.line == payload.record.line) {
-            //         item.caseQtyStr = data.obj;
-            //     };
-            // };
             let totalCaseQtyStr = 0;
             let totalAmount = 0;
             if (payload.list.length == 1) {
@@ -396,8 +391,9 @@ export default {
             const articles = [];
             let totalCaseQtyStr = "0";
             let article_qpcStr = {};
-            const bin = yield call(queryBin, { wrhUuid: null, usage: 'RtnReceiveTempBin' });
-            let binCode = bin.data.obj.pageData.records[0].code;
+            // const bin = yield call(queryBin, { wrhUuid: null, usage: 'RtnReceiveTempBin' });
+            // console.log("货位卡迪夫", bin);
+            // let binCode = bin.data.obj.pageData.records[0].code;
 
 
 
@@ -446,7 +442,7 @@ export default {
             for (let ntcItem of data.obj.items) {
                 const sku = yield call(getArticle, { articleUuid: ntcItem.article.uuid });
                 ntcItem.expDays = sku.data.obj.expDays;
-                ntcItem.binCode = binCode;
+                // ntcItem.binCode = binCode;
                 for (let item of payload.items) {
                     if (ntcItem.article.code == item.article.code && item.qpcStr == ntcItem.qpcStr) {
                         const supplier = ntcItem.supplier;

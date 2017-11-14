@@ -26,11 +26,11 @@ const ReturnNtcBillViewPage = ({
     function convertState(text) {
         if (text == "initial")
             return '初始';
-        if (text = "finished")
+        if (text == "finished")
             return '已完成';
-        if (text = "aborted")
+        if (text == "aborted")
             return '已作废';
-        if (text = "inProgress")
+        if (text == "inProgress")
             return '进行中';
     };
     let basicForm = [];
@@ -88,7 +88,7 @@ const ReturnNtcBillViewPage = ({
     );
     toolbar.push(<Button onClick={() => onGenRtnBill(item)} disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>生成退仓单</Button >);
     toolbar.push(
-        <Popconfirm title="确定要完成吗？" onConfirm={() => onFinish(item)}><Button disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>完成</Button></Popconfirm>);
+        <Popconfirm title="确定要完成吗？" onConfirm={() => onFinish(item)}><Button disabled={!(item.state == "initial" || item.state == 'inProgress') && PermissionUtil("rtnNtcBill:edit")}>完成</Button></Popconfirm>);
     toolbar.push(<Popconfirm title="确定要作废吗？" onConfirm={() => onAbort(item)}><Button disabled={!(item.state == "initial") && PermissionUtil("rtnNtcBill:edit")}>作废</Button></Popconfirm>);
     toolbar.push(<Button onClick={() => onBack()}>返回</Button>);
 
@@ -102,7 +102,7 @@ const ReturnNtcBillViewPage = ({
             <BaseCard single={true} title="商品明细">
                 <ReturnNtcBillViewItem {...returnNtcBillViewItemProps} />
             </BaseCard>
-            <RemarkCard />
+            <RemarkCard remark={item.remark} />
         </div>
     );
 };

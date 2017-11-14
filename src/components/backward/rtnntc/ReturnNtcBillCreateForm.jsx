@@ -3,6 +3,7 @@ import { Button, Input, Form, Select, Card, Icon, DatePicker } from 'antd';
 import BaseCard from '../../Widget/BaseCard';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import ToolbarPanel from '../../Widget/ToolbarPanel';
+import RemarkCard from '../../Widget/RemarkCard';
 import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
 const EditableCell = require('../../Widget/EditableCell');
@@ -10,6 +11,8 @@ import WrhSelect from '../../widget/WrhSelectWithUuid';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
+import ReturnNtcBillCreateItem from './ReturnNtcBillCreateItem';
+import Panel from '../../Widget/Panel';
 
 
 const Option = Select.Option;
@@ -26,7 +29,8 @@ const ReturnNtcBillCreateForm = ({
         setFieldsValue
     },
     onCustomerSelect,
-    onEnterCustomer
+    onEnterCustomer,
+    returnNtcBillCreateItemProps
 }) => {
 
     function handleCustomerSelect() {
@@ -125,6 +129,16 @@ const ReturnNtcBillCreateForm = ({
                 <BaseForm items={children} />
                 <BaseForm items={totalCaseQtyStrForm} />
             </BaseCard>
+            <ReturnNtcBillCreateItem {...returnNtcBillCreateItemProps} />
+            <Panel title="说明">
+                <Form.Item>
+                    {getFieldDecorator('remark', {
+                        initialValue: item.remark, rules: [{ max: 255, message: '说明最大长度是255！' }]
+                    })(
+                        <Input type="textarea" autosize={{ minRows: 4 }} />
+                        )}
+                </Form.Item>
+            </Panel>
         </div>
     );
 };
