@@ -97,34 +97,7 @@ function ReturnBill({ location, dispatch, rtnBill }) {
         }
     };
 
-    const returnBillCreateFormProps = {
-        item: currentItem,
-        onRtnNtcBillSelect() {
-            dispatch({
-                type: 'rtnBill/showRtnNtcBillModal'
-            })
-        },
-        handleSave(data) {
-            data.items = billItems;
 
-            if (data.uuid) {
-                dispatch({
-                    type: 'rtnBill/update',
-                    payload: data
-                });
-            } else {
-                dispatch({
-                    type: 'rtnBill/insert',
-                    payload: data
-                });
-            };
-        },
-        onCancel() {
-            dispatch({
-                type: 'rtnBill/query'
-            })
-        }
-    };
 
     const returnBillCreateItemProps = {
         dataSource: billItems,
@@ -363,9 +336,42 @@ function ReturnBill({ location, dispatch, rtnBill }) {
         }
     };
 
-    const ReturnBillCreateItemGen = () => <ReturnBillCreateItem {...returnBillCreateItemProps} />;
+    const returnBillCreateFormProps = {
+        item: currentItem,
+        onRtnNtcBillSelect() {
+            dispatch({
+                type: 'rtnBill/showRtnNtcBillModal'
+            })
+        },
+        handleSave(data) {
+            data.items = billItems;
+
+            if (data.uuid) {
+                dispatch({
+                    type: 'rtnBill/update',
+                    payload: data
+                });
+            } else {
+                dispatch({
+                    type: 'rtnBill/insert',
+                    payload: data
+                });
+            };
+        },
+        onCancel() {
+            dispatch({
+                type: 'rtnBill/query'
+            })
+        },
+        returnBillCreateItemProps,
+        batchModifyReturnTypeProps,
+        batchModifyProductionDateProps,
+        batchModifyReturnContainerProps
+    };
+
+
     const ReturnBillSearchGridGen = () => <ReturnBillSearchGrid {...returnBillSearchGridProps} />;
-    const BatchModifyReturnContainerGen = () => <BatchModifyReturnContainer {...batchModifyReturnContainerProps} />;
+
 
     return (
         <div className="content-inner">
@@ -377,11 +383,7 @@ function ReturnBill({ location, dispatch, rtnBill }) {
                             </div>
                         case 'create':
                             return <div><ReturnBillCreateForm {...returnBillCreateFormProps} />
-                                <ReturnBillCreateItemGen />
                                 <ReturnNtcBillSelectGrid {...returnNtcBillSelectGridProps} />
-                                <BatchModifyReturnType {...batchModifyReturnTypeProps} />
-                                <BatchModifyReturnContainerGen />
-                                <BatchModifyProductionDate {...batchModifyProductionDateProps} />
                             </div>
                         default:
                             return <div><ReturnBillSearchForm {...returnBillSearchFormProps} />

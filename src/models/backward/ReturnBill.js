@@ -375,6 +375,7 @@ export default {
 
         *showView({ payload }, { call, put }) {
             const { data } = yield call(getRtnBill, { uuid: payload.uuid });
+            console.log("实体", data);
             if (data.status === '200') {
                 yield put({
                     type: 'showViewSuccess',
@@ -481,6 +482,8 @@ export default {
                 if (payload.record.article.code == article.article.code && payload.record.qpcStr == article.qpcStr && payload.record.supplier.code == article.supplier.code) {
                     payload.record.supplier.name = article.supplier.name;
                     payload.record.supplier.uuid = article.supplier.uuid;
+                    payload.record.ntcQty = Number.parseInt(article.qty) - Number.parseInt(article.realQty);
+                    // payload.record.ntcCaseQtyStr = article.caseQtyStr;
                 }
             }
             yield put({

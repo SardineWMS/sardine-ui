@@ -13,10 +13,8 @@ const Option = Select.Option;
 const ReturnBillCreateItem = ({
 	dataSource,
     pagination,
-    onPageChange,
     selectArticle,
     selectQpcStr,
-    getSupplierInfo,
     onAddItem,
     calculateCaseQtyStr,
     refreshAmount,
@@ -98,7 +96,6 @@ const ReturnBillCreateItem = ({
         dataIndex: 'binCode',
         key: 'binCode',
         width: 100,
-        // render: (text, record, index) => renderColumns(record, "binCode", text)
     });
     columns.push({
         title: '容器',
@@ -121,6 +118,12 @@ const ReturnBillCreateItem = ({
         width: 150
     });
     columns.push({
+        title: '未退数量',
+        dataIndex: 'ntcQty',
+        key: 'ntcQty',
+        width: 150
+    });
+    columns.push({
         title: '退仓类型',
         dataIndex: 'returnType',
         key: 'returnType',
@@ -138,8 +141,7 @@ const ReturnBillCreateItem = ({
         title: '到效期',
         dataIndex: 'validDate',
         key: 'validDate',
-        width: 150,
-        // render: (text, record, index) => renderColumns(record, "validDate", text)
+        width: 150
     });
     columns.push({
         title: '操作',
@@ -193,6 +195,8 @@ const ReturnBillCreateItem = ({
         };
         if (key === 'qpcStr') {
             record.qpcStr = value;
+            record.supplier = {};
+            record.ntcQty = null;
             selectQpcStr(record, dataSource);
         };
         if (key === "supplier") {

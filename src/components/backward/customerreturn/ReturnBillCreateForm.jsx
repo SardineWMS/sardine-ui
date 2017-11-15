@@ -11,6 +11,10 @@ import moment from 'moment';
 import 'moment/locale/zh-cn';
 moment.locale('zh-cn');
 import Panel from '../../Widget/Panel';
+import ReturnBillCreateItem from './ReturnBillCreateItem';
+import BatchModifyReturnType from './BatchModifyReturnType';
+import BatchModifyReturnContainer from './BatchModifyReturnContainer';
+import BatchModifyProductionDate from './BatchModifyProductionDate';
 
 const Option = Select.Option;
 
@@ -25,7 +29,11 @@ const ReturnBillCreateForm = ({
     },
     onRtnNtcBillSelect,
     wrhs = [],
-    onEnterCustomer
+    onEnterCustomer,
+    returnBillCreateItemProps,
+    batchModifyReturnTypeProps,
+    batchModifyProductionDateProps,
+    batchModifyReturnContainerProps
 }) => {
     function handleCreate(e) {
         e.preventDefault();
@@ -96,6 +104,9 @@ const ReturnBillCreateForm = ({
     toolbar.push(<Button key={Guid()} onClick={handleCreate} >保存</Button>);
     toolbar.push(<Button onClick={() => onCancel(item)} key={Guid()} > 取消</Button>);
 
+    const ReturnBillCreateItemGen = () => <ReturnBillCreateItem {...returnBillCreateItemProps} />;
+    const BatchModifyReturnContainerGen = () => <BatchModifyReturnContainer {...batchModifyReturnContainerProps} />;
+
     return (
         <div>
             <ToolbarPanel children={toolbar} />
@@ -103,6 +114,19 @@ const ReturnBillCreateForm = ({
                 <BaseForm items={children} />
                 <BaseForm items={totalCaseQtyStrForm} />
             </BaseCard>
+            <ReturnBillCreateItemGen />
+            <BatchModifyReturnType {...batchModifyReturnTypeProps} />
+            <BatchModifyReturnContainerGen />
+            <BatchModifyProductionDate {...batchModifyProductionDateProps} />
+            <Panel title="说明">
+                <Form.Item>
+                    {getFieldDecorator('remark', {
+                        initialValue: item.remark, rules: [{ max: 255, message: '说明最大长度是255！' }]
+                    })(
+                        <Input type="textarea" autosize={{ minRows: 4 }} />
+                        )}
+                </Form.Item>
+            </Panel>
         </div>
     );
 };

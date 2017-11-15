@@ -72,8 +72,8 @@ function ReturnBillGrid({
   },
   {
     title: '单据类型',
-    dataIndex: 'operateMethod',
-    key: 'operateMethod',
+    dataIndex: 'type',
+    key: 'type',
     render: text => convertMethod(text)
   },
   {

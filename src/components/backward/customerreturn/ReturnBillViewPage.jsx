@@ -33,6 +33,13 @@ const ReturnBillViewPage = ({
         if (text = "inProgress")
             return '进行中';
     };
+
+    function convertMethod(text) {
+        if (text == "ManualBill")
+            return '手工单据';
+        if (text == 'APP')
+            return 'APP';
+    };
     let basicForm = [];
     basicForm.push(<BaseFormItem label="单号：" key={Guid()}>
         <span>{item.billNumber}</span>
@@ -50,7 +57,7 @@ const ReturnBillViewPage = ({
         <span>{item.returnor == null ? "" : item.returnor.name + "[" + item.returnor.code + "]"}</span>
     </BaseFormItem>);
     basicForm.push(<BaseFormItem label="单据类型：" key={Guid()}>
-        <span>{item.billType}</span>
+        <span>{convertMethod(item.type)}</span>
     </BaseFormItem>);
 
     let extendForm = [];
@@ -96,7 +103,7 @@ const ReturnBillViewPage = ({
             {/*<BaseCard single={true} title="商品明细">*/}
             <BaseForm items={<ReturnBillViewItem {...ReturnBillViewPage} />} />
             {/*</BaseCard>*/}
-            <RemarkCard />
+            <RemarkCard remark={item.remark} />
         </div>
     );
 };
