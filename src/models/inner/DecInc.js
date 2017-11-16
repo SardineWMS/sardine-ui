@@ -5,7 +5,7 @@ import { getByCode as getArticleInfo } from '../../services/basicinfo/Article.js
 import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, queryStockExtendInfo } from '../../services/common/common.js';
 import { message } from 'antd';
 import { removeByValue } from '../../utils/ArrayUtils.js';
-import { get, insert, queryDecInc, update, remove, audit } from '../../services/inner/decInc.js';
+import { get, insert, queryDecInc, update, remove, audit, refreshCaseQtyStrAndAmount } from '../../services/inner/decInc.js';
 import { queryReasonConfig } from '../../services/basicinfo/config/ReasonConfig.js';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -72,18 +72,7 @@ export default {
             };
         },
 
-        // *create({ payload }, { call, put }) {
-        //     const { data } = yield call(queryArticleInStocks, parse(payload));
-        //     yield put({
-        //         type: 'createSuccess',
-        //         payload: {
-
-        //         }
-        //     });
-        // },
-
         *onSelectType({ payload }, { call, put }) {
-            // const { data } = yield call(queryWrhs, {});
             const decIncItem = [];
             const currentBill = {};
             currentBill.totalCaseQtyStr = '0';
@@ -98,9 +87,7 @@ export default {
             yield put({
                 type: 'createSuccess',
                 payload: {
-                    //  wrhs: data.obj,
                     decIncItem: decIncItem,
-                    //billType: payload,
                     currentBill: currentBill
                 }
             });
@@ -115,26 +102,22 @@ export default {
                     message.warning("商品不存在，请重新输入！", 2);
                     return;
                 }
-                console.log("商品结果", data);
                 payload.record.article.uuid = data.obj.uuid;
                 payload.record.article.name = data.obj.name;
+                if (data.obj.expflag === 'none' && payload.currentBill.type == 'Inc') {
+                    payload.record.productionDate = moment('8888-12-31');
+                }
                 let qpcStrs = [];
                 let suppliers = [];
                 let productionDates = [];
                 let stocks = [];
-                // let itemStockInfo={};
+                let stockQty = 0;
                 if (payload.currentBill.type == 'Dec') {
-                    // const stockInfo = yield call(queryStock, {
-                    //     articleUuid: payload.record.article.uuid,
-                    //     binCode: payload.record.binCode,
-                    //     containerBarcode: payload.record.containerBarCode,
-                    // });
-                    // qpcStrs = stockInfo.data.obj.qpcStrs;
-
                     const stockInfo = yield call(queryStockExtendInfo, {
                         articleUuid: payload.record.article.uuid,
                         binCode: payload.record.binCode,
                         containerBarcode: payload.record.containerBarCode,
+                        state: 'normal'
                     });
                     if (stockInfo && stockInfo.data.obj.length > 0) {
                         stocks = stockInfo.data.obj;
@@ -144,8 +127,6 @@ export default {
                         stocks.map(function (stock) {
                             qpcStrs.push(stock.qpcStr);
                         });
-                        // itemStockInfo.line=payload.record.line;
-                        // itemStockInfo.stocks=stocks;
                         suppliers.push(stocks[0].supplier);
                         productionDates.push(stocks[0].productionDate);
                     }
@@ -174,8 +155,21 @@ export default {
                         if (payload.currentBill.type == 'Dec' && productionDates.length > 0) {
                             item.proDates = productionDates;
                             item.productionDate = productionDates[0];
+                            item.price = stocks[0].price;
                         }
-                        item.stockQty = stocks[0] ? stocks[0].qty : 0;
+                        stocks.map(function (stock) {
+                            if (stock.qpcStr == item.qpcStr && stock.supplier == stock.supplier) {
+                                if (item.productionDate) {
+                                    if (stock.productionDate == item.productionDate) {
+                                        stockQty = stockQty + Number.parseInt(stock.qty);
+                                    }
+                                }
+                                else {
+                                    stockQty = stockQty + Number.parseInt(stock.qty);
+                                }
+                            }
+                        })
+                        item.stockQty = stockQty;
                         item.stocks = stocks;
                     };
                 };
@@ -183,9 +177,6 @@ export default {
                     type: 'createSuccess',
                     payload: {
                         decIncItem: payload.dataSource
-                        // qpcStrs: qpcStrs,
-                        // suppliers: suppliers,
-                        // stocks:stocks
                     }
                 });
             };
@@ -200,34 +191,15 @@ export default {
                 message.error("数量格式不正确，请正确输入数字。");
                 return;
             };
-            const { data } = yield call(qtyToCaseQtyStr, {
-                qty: payload.record.qty,
-                qpcStr: payload.record.qpcStr,
-            });
-            for (var item of payload.dataSource) {
-                if (item.line == payload.record.line) {
-                    item.caseQtyStr = data.obj;
-                };
-            };
-
-            let totalAmount = 0;
-            let totalCaseQtyStr = 0;
-            if (payload.dataSource.length == 1) {
-                totalCaseQtyStr = data.obj;
-                totalAmount = payload.dataSource[0].price * payload.dataSource[0].qty;
+            payload.currentBill.items.map(function (item) {
+                if (!item.qty)
+                    item.qty = 0;
+            })
+            const { data } = yield call(refreshCaseQtyStrAndAmount, payload.currentBill);
+            for (let i = 0; i < payload.dataSource.length; i++) {
+                payload.dataSource[i].caseQtyStr = data.obj.items[i].caseQtyStr;
             }
-            else {
-                for (var item of payload.dataSource) {
-                    totalAmount = Number.parseFloat(item.price) * Number.parseFloat(item.qty) + Number.parseFloat(totalAmount);
-                    if (item.caseQtyStr == 0 || item.caseQtyStr == '')
-                        continue;
-                    const totalCaseQtyStrResult = yield call(caseQtyStrAdd, { addend: totalCaseQtyStr, augend: item.caseQtyStr, });
-                    totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
-                };
-            };
-
-            payload.currentBill.totalCaseQtyStr = totalCaseQtyStr;
-            payload.currentBill.totalAmount = totalAmount;
+            payload.currentBill = { ...data.obj };
             yield put({
                 type: 'createSuccess',
                 payload: {
@@ -249,18 +221,15 @@ export default {
                 nullObj.editable = true;
                 payload.dataSource.push(nullObj);
             };
-            var totalAmount = 0;
-            var totalCaseQtyStr = 0;
+            payload.currentBill.items.map(function (item) {
+                if (!item.qty)
+                    item.qty = 0;
+            })
+            const { data } = yield call(refreshCaseQtyStrAndAmount, payload.currentBill);
             for (let i = 0; i < payload.dataSource.length; i++) {
-                payload.dataSource[i].line = i + 1;
-                totalAmount = Number.parseFloat(payload.dataSource[i].price) * Number.parseFloat(payload.dataSource[i].qty) + Number.parseFloat(totalAmount);
-                if (payload.dataSource[i].caseQtyStr === undefined || payload.dataSource[i].caseQtyStr == 0)
-                    continue;
-                const totalCaseQtyStrResult = yield call(caseQtyStrAdd, { addend: totalCaseQtyStr, augend: payload.dataSource[i].caseQtyStr, });
-                totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
-            };
-            payload.currentBill.totalCaseQtyStr = totalCaseQtyStr;
-            payload.currentBill.totalAmount = totalAmount;
+                payload.dataSource[i].caseQtyStr = data.obj.items[i].caseQtyStr;
+            }
+            payload.currentBill = { ...data.obj };
             yield put({
                 type: 'createSuccess',
                 payload: {
@@ -302,7 +271,6 @@ export default {
                     uuid: data.obj
                 });
                 if (decIncBill) {
-                    // const wrhs = yield call(queryWrhs, {});
                     const decIncItem = [];
                     const currentBill = {};
                     currentBill.totalCaseQtyStr = '0';
@@ -315,7 +283,6 @@ export default {
                     yield put({
                         type: 'viewSuccess',
                         payload: {
-                            // wrhs: wrhs.data.obj,
                             currentBill: decIncBill.data.obj,
                             decIncItem: decIncBill.data.obj.items,
                         }
@@ -391,9 +358,6 @@ export default {
                     if (article.data) {
                         const qpcStrs = [];
                         qpcStrs.push(item.qpcStr);
-                        // for (var qpc of article.data.obj.qpcs) {
-                        //     if (qpc.qpcStr == item.qpcStr)
-                        // };
 
                         const suppliers = [];
                         for (var supplier of article.data.obj.articleSuppliers) {
@@ -469,6 +433,7 @@ export default {
             const currentBill = {};
             currentBill.totalCaseQtyStr = 0;
             currentBill.totalAmount = 0;
+            currentBill.type = 'Dec';
             const { data } = yield call(queryReasonConfig, { reasonType: "DECINC" });
             yield put({
                 type: 'createSuccess',

@@ -243,7 +243,6 @@ function ReturnNtcBill({ location, dispatch, rtnNtcBill }) {
             })
         },
         onSelect(data) {
-            // const t = currentItem;
             const customer = {};
             customer.uuid = data.uuid;
             customer.code = data.code;

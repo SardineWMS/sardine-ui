@@ -32,11 +32,14 @@ const DecIncCreateForm = ({
                 return;
             };
             let data = {};
+            let wrh = {};
+            wrh.uuid = getFieldsValue().wrh;
             data = {
                 ...getFieldsValue(),
                 ...item,
                 remark: getFieldsValue().remark,
-                operator: getFieldsValue().operator
+                operator: getFieldsValue().operator,
+                wrh: wrh,
             };
             handleSave(data);
         });

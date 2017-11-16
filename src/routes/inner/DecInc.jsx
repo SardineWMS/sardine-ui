@@ -9,6 +9,9 @@ import DecIncCreateItem from '../../components/inner/decinc/DecIncCreateItem';
 import DecIncView from '../../components/inner/decinc/DecIncView';
 import DecIncViewItem from '../../components/inner/decinc/DecIncViewItem';
 import WMSProgress from '../../components/Widget/WMSProgress';
+import moment from 'moment';
+import 'moment/locale/zh-cn';
+moment.locale('zh-cn');
 
 function DecInc({ location, dispatch, decinc }) {
     const {
@@ -147,11 +150,6 @@ function DecInc({ location, dispatch, decinc }) {
             };
             const result = {};
             result.type = data.type;
-            if (!data.wrh.code) {
-                const wrhUuid = data.wrh;
-                data.wrh = {};
-                data.wrh.uuid = wrhUuid;
-            }
             result.wrh = data.wrh;
             result.remark = data.remark;
             result.totalCaseQtyStr = currentBill.totalCaseQtyStr;
@@ -206,6 +204,7 @@ function DecInc({ location, dispatch, decinc }) {
             });
         },
         calculateCaseQtyStr(record, dataSource) {
+            currentBill.items = dataSource;
             dispatch({
                 type: 'decinc/calculateCaseQtyStr',
                 payload: {
@@ -214,6 +213,7 @@ function DecInc({ location, dispatch, decinc }) {
             });
         },
         onRemoveItem(record, dataSource) {
+            currentBill.items = dataSource;
             dispatch({
                 type: 'decinc/removeItem',
                 payload: {
@@ -244,6 +244,22 @@ function DecInc({ location, dispatch, decinc }) {
                     record, dataSource
                 }
             });
+        },
+        refreshStockQty(record, dataSource) {
+            let stockQty = 0;
+            record.stocks.map(function (item) {
+                if (item.qpcStr == record.qpcStr && item.supplier.uuid == record.supplier.uuid && moment(item.productionDate).format("YYYY-MM-DD") == moment(record.productionDate).format("YYYY-MM-DD")) {
+                    stockQty = stockQty + Number.parseInt(item.qty);
+                    record.price = item.price;
+                }
+            })
+            record.stockQty = stockQty;
+            dispatch({
+                type: 'decinc/createSuccess',
+                payload: {
+                    decIncItem: dataSource
+                }
+            })
         }
     };
 

@@ -105,13 +105,6 @@ function AlcNtcBill({ location, dispatch, alcNtc }) {
         item: currentItem,
         onSelectWrh() { },
         handleSave(data) {
-            // if (data.uuid) {
-            //     data.wrh = currentItem.wrh;
-            // } else {
-            //     const wrh = {};
-            //     wrh.uuid = data.wrh;
-            //     data.wrh = wrh;
-            // };
             data.items = billItems;
             if (data.items.length > 1) {
                 for (let i = 0; i < data.items.length; i++) {

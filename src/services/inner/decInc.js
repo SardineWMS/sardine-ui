@@ -36,3 +36,8 @@ export async function queryStockExtendInfo(params) {
     const url = '/swms/inner/decInc/queryStockExtendInfo';
     return request(query(url, params));
 }
+
+export async function refreshCaseQtyStrAndAmount(params) {
+    const url = './swms/inner/decInc/refreshcaseqtystrandamount';
+    return request(addTokenToUrl(url), updateBase(params));
+}
