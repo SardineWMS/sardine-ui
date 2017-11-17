@@ -12,7 +12,7 @@ import RowEditableCell from '../../Widget/RowEditCell';
 import RowEditCellSelect from '../../Widget/RowEditCellSelect';
 
 const AcceptanceBillItemForm = ({
-	acceptanceBillItems,
+	acceptanceBillItems,//当前单据明细
 	stocks,
 	editable,
 	inAlc,
@@ -43,6 +43,14 @@ const AcceptanceBillItemForm = ({
 		key: 'articleCode',
 		dataIndex: 'article',
 		width: 120,
+		// render: (text, record, index) => {
+		//         return (<RowEditCell editable={record.editable}
+		//             status={status}
+		//             onBlur={value => onCellChange(index, record, value)}
+		//             autoFocus={false}
+		//             value={record.article == null ? '' : record.article.code}
+		//         />);
+		//     }
 		render: (text, record, index) => renderRowEditableCell(record, "articleCode", text)
 	});
 
@@ -113,7 +121,7 @@ const AcceptanceBillItemForm = ({
 		key: 'stockQty',
 		dataIndex: 'stockQty',
 		width: 70,
-		render: (text, record) => typeof record.stockQty != 'undefined'?record.stockQty:text
+		render: (text, record) => typeof record.stockQty != 'undefined' ? record.stockQty : text
 	});
 
 	if (editable) {
@@ -188,33 +196,57 @@ const AcceptanceBillItemForm = ({
 		/>);
 	};
 
+	// function onCellChange(index, record, value) {
+	//     if (!value) {
+	//         message.warn("请输入商品代码！", 2, '');
+	//         return;
+	//     };
+	//     if (dataSource[index]["article.code"] == value)
+	//         return;
+	//     record.article = new Object();
+	//     record.article.code = value;
+	//     getArticleInfo(record, dataSource);
+	// };
+
 	function handleChange(record, key, text) {
-		if (typeof text != 'undefined' &&"articleCode" === key) {
-			queryStocks(text, record.line - 1);
+		if (typeof text != 'undefined' && "articleCode" === key) {
+			if (!text) {
+				message.warn("请输入商品代码", 2, '');
+				return;
+			}
+			record.article = new Object();
+			record.article.code = text;
+			queryStocks(record, acceptanceBillItems);
 		} else if ("qty" === key) {
 			record.qty = text;
-			refreshCaseQtyAndAmount(record);
+			if(record.qty == 0||record.qty=='')
+				return;
+			refreshCaseQtyAndAmount(record,acceptanceBillItems);
 		}
 	};
 
-	let binCodeOptions = [];
+	
 	let containerBarCodeOptions = [];
 	let supplierOptions = [];
 	let qpcStrOptions = [];
 
 	function renderSelectColumns(record, key, text) {
-		if (typeof text != 'undefined' && typeof text.code != 'undefined'){
+		if (typeof text != 'undefined' && typeof text.code != 'undefined') {
 			text = text.code;
-			if("supplier"===key)
-				text="["+record.supplier.code+"]"+record.supplier.name;
+			if ("supplier" === key)
+				text = "[" + record.supplier.code + "]" + record.supplier.name;
 		}
+		const binCodeOptions = [];
 		if (key === "binCode") {
 			binCodeOptions.splice(0, binCodeOptions.length);
-			stocks.map(function (stock) {
-				binCodeOptions.push(<Option key={stock.binCode}>
-					{stock.binCode}
-				</Option>)
-			});
+			if (record.article != null && record.stocks != null) {
+				
+				for (var stock of record.stocks) {
+					binCodeOptions.push(
+						<Option key={stock.binCode}>{stock.binCode}</Option>
+					);
+				};
+			};			
 			return renderRowEditCellSelect(binCodeOptions, text, record, key);
 		} else if (key === "containerBarCode") {
 			return renderRowEditCellSelect(containerBarCodeOptions, text, record, key);
@@ -240,31 +272,31 @@ const AcceptanceBillItemForm = ({
 	function handlerSelectFocus(record, key) {
 		if (key === "containerBarCode") {
 			containerBarCodeOptions.splice(0, containerBarCodeOptions.length);
-			stocks.map(function (stock) {
-				if (stock.binCode === record.binCode) {
+			for(var stock of record.stocks){
+				if(stock.binCode == record.binCode){
 					containerBarCodeOptions.push(<Option key={stock.containerBarcode}>
 						{stock.containerBarcode}
 					</Option>)
 				};
-			});
+			};			
 		} else if (key === "supplier") {
 			supplierOptions.splice(0, supplierOptions.length);
-			stocks.map(function (stock) {
-				if (stock.binCode === record.binCode && stock.containerBarcode === record.containerBarCode) {
+			for(var stock of record.stocks){
+				if (stock.binCode == record.binCode && stock.containerBarcode == record.containerBarCode) {
 					supplierOptions.push(<Option key={stock.supplier.uuid} value={stock.supplier}>
 						{"[" + stock.supplier.code + "]" + stock.supplier.name}
 					</Option>)
 				};
-			});
+			};
 		} else if (key === "qpcStr") {
 			qpcStrOptions.splice(0, qpcStrOptions.length);
-			stocks.map(function (stock) {
+			for(var stock of record.stocks){
 				if (stock.binCode === record.binCode && stock.containerBarcode === record.containerBarCode && stock.supplier.uuid === record.supplier.uuid) {
 					qpcStrOptions.push(<Option key={stock.qpcStr}>
 						{stock.qpcStr}
 					</Option>)
 				};
-			});
+			};
 		};
 	};
 
@@ -282,22 +314,23 @@ const AcceptanceBillItemForm = ({
 			refreshStockInfo(record);
 		};
 	};
-	
-	function stockSelect(record){
+
+	function stockSelect(record) {
+
 		stocks.map(function (stock) {
-				if (stock.binCode === record.binCode && stock.containerBarcode === record.containerBarCode &&
-					stock.supplier.uuid === record.supplier.uuid && stock.qpcStr === value) {
-					record.munit = stock.munit;
-					record.price = stock.price;
-					record.stockQty = stock.qty;
-					var produceDate = moment(stock.productionDate);
-					record.productionDate = produceDate.format('YYYY-MM-DD');
-					record.validDate = stock.validDate;
-					record.stockBatch = stock.stockBatch;
-				};
-			});
+			if (stock.binCode === record.binCode && stock.containerBarcode === record.containerBarCode &&
+				stock.supplier.uuid === record.supplier.uuid && stock.qpcStr === value) {
+				record.munit = stock.munit;
+				record.price = stock.price;
+				record.stockQty = stock.qty;
+				var produceDate = moment(stock.productionDate);
+				record.productionDate = produceDate.format('YYYY-MM-DD');
+				record.validDate = stock.validDate;
+				record.stockBatch = stock.stockBatch;
+			};
+		});
 	};
-	
+
 
 	return (
 		<div>

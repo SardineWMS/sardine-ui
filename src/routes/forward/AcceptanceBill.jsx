@@ -110,7 +110,7 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
     const acceptanceBillCreateProps = {
         acceptanceBill: currentAcceptanceBill,
         wrhs: wrhs,
-        customer: customer,
+        //customer: customer,
         onSave(acceptanceBill) {
             acceptanceBill.items = currentAcceptanceBill.items;
             if (acceptanceBill.uuid) {
@@ -127,7 +127,9 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
         },
         onCancel() {
             dispatch({
-                type: 'acceptanceBill/backSearchForm'
+                type: 'acceptanceBill/query',
+                payload:{                   
+                }
             });
         },
         getCustomer(customerCode) {
@@ -184,14 +186,14 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
         editable: showPage === "view" ? false : true,
         inAlc: currentAcceptanceBill.state === "InAlc" ? true : (currentAcceptanceBill.state === "Finished" ? true : false),
         onAdd(acceptanceBillItems) {
-            const acceptanceBillItem = new Object();
-            acceptanceBillItem.line = acceptanceBillItems.length + 1;
-            acceptanceBillItems.push(acceptanceBillItem);
-            acceptanceBill.items = acceptanceBillItems;
+            // const acceptanceBillItem = new Object();
+            // acceptanceBillItem.line = acceptanceBillItems.length + 1;
+            // acceptanceBillItems.push(acceptanceBillItem);
+            // currentAcceptanceBill.items = acceptanceBillItems;
             dispatch({
-                type: 'acceptanceBill/showEditPage',
+                type: 'acceptanceBill/addItem',
                 payload: {
-                    acceptanceBill: acceptanceBill
+                    acceptanceBillItems: acceptanceBillItems
                 }
             });
         },
@@ -205,12 +207,13 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
                 }
             });
         },
-        queryStocks(articleCode, index) {
+        queryStocks(record, acceptanceBillItems) {
             dispatch({
                 type: 'acceptanceBill/queryStocks',
-                payload: {
-                    articleCode: articleCode,
-                    index: index,
+                payload: {                    
+                    articleCode: record.article.code,
+                    line: record.line,
+                    items:acceptanceBillItems,
                     acceptanceBill: currentAcceptanceBill
                 }
             });
@@ -222,13 +225,15 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
                 payload: currentAcceptanceBill
             });
         },
-        refreshCaseQtyAndAmount(currentAcceptanceBillItem) {
-            currentAcceptanceBill.items[currentAcceptanceBillItem.line - 1] = currentAcceptanceBillItem;
+        refreshCaseQtyAndAmount(record,acceptanceBillItems) {
+            //currentAcceptanceBill.items[currentAcceptanceBillItem.line - 1] = currentAcceptanceBillItem;
             dispatch({
                 type: 'acceptanceBill/refreshCaseQtyAndAmount',
                 payload: {
                     acceptanceBill: currentAcceptanceBill,
-                    line: currentAcceptanceBillItem.line
+                    items:acceptanceBillItems,
+                    line: record.line,
+                    record:record
                 }
             });
         }
@@ -370,7 +375,6 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
                             return (
                                 <div>
                                     <AcceptanceBillViewForm {...acceptanceBillViewFormProps} />
-                                    <AcceptanceBillItemForm {...acceptanceBillItemProps} />
                                 </div>
                             )
                         default:

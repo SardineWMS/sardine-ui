@@ -3,7 +3,9 @@ import {
     querybypage, get, create, edit, remove, bookReg, check, finish, abort, getArticle,
     getOrderBillByBillNo, refreshCaseQtyAndAmount, queryWrhs
 } from '../../services/forward/OrderBill';
+import { removeByValue } from '../../utils/ArrayUtils';
 import { getbycode, querybypage as querySuppliers } from '../../services/basicinfo/Supplier';
+import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, caseQtyStrSubtract } from '../../services/common/common.js';
 import { message } from 'antd';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
@@ -135,11 +137,14 @@ export default {
 
         *onCreate({ payload }, { call, put }) {
             const { data } = yield call(queryWrhs, parse(payload));
+            const currentItem = {};
+            currentItem.totalAmount = 0;
+            currentItem.totalCaseQtyStr = 0;
             yield put({
                 type: 'showCreatePage',
                 payload: {
                     wrhs: data.obj,
-                    currentItem: {}
+                    currentItem: currentItem
                 }
             });
         },
@@ -283,6 +288,7 @@ export default {
                         orderBillItems[payload.index].munit = articleQpc.munit;
                     }
                 });
+                orderBillItems[payload.index].qpcs = qpcs;
                 payload.currentBill.items = orderBillItems;
                 yield put({
                     type: 'showEditPage',
@@ -312,17 +318,90 @@ export default {
         },
 
         *refreshCaseQtyAndAmount({ payload }, { call, put }) {
-            const { data } = yield call(refreshCaseQtyAndAmount, parse(payload));
-            if (data) {
-                data.obj.expireDate = moment(data.obj.expireDate);
-                data.obj.bookedDate = moment(data.obj.bookedDate);
-                yield put({
-                    type: 'showEditPage',
-                    payload: {
-                        currentItem: data.obj
-                    }
-                });
+            if(payload.orderBill.items[payload.line-1].qpcStr == null || payload.orderBill.items[payload.line-1].qpcStr ==''){
+                message.warning("请选择规格！",2,'');
+                return;
             };
+            let qty = new Number();
+            qty = Number.parseFloat(payload.orderBill.items[payload.line-1].qty);
+            if(isNaN(qty)){
+                message.warning("数据格式错误，请正确输入数字",2,'');
+                return;
+            }
+            const {data} = yield call(qtyToCaseQtyStr,{
+                qty:qty,
+                qpcStr:payload.orderBill.items[payload.line-1].qpcStr
+            });
+            for(var billItem of payload.orderBill.items){
+                if(billItem.line == payload.line){
+                    billItem.caseQtyStr = data.obj;
+                    billItem.amount = Number.parseFloat(payload.orderBill.items[payload.line-1].price)*qty;
+                }
+            }
+            let totalCaseQtyStr = 0;
+            let totalAmount = 0;
+            if(payload.orderBill.length == 1){
+                totalCaseQtyStr = data.obj;
+                totalAmount = payload.orderBill.items[0].amount;
+            }else{
+                for(var billItem of payload.orderBill.items){
+                    totalAmount = Number.parseFloat(billItem.amount)+Number.parseFloat(totalAmount)
+                    if(billItem.caseQtyStr == 0|| billItem.caseQtyStr=='')
+                        continue;
+                    const totalCaseQtyStrResult = yield call(caseQtyStrAdd,{
+                        addend:totalCaseQtyStr,
+                        augend:billItem.caseQtyStr
+                    });
+                totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
+                };
+            };
+            const caseQtyStrResult = yield call(caseQtyStrAdd,{
+                addend:payload.orderBill.totalCaseQtyStr,
+                augend:data.obj
+            });
+            payload.orderBill.totalAmount = totalAmount;
+            payload.orderBill.totalCaseQtyStr = totalCaseQtyStr;
+            yield put(
+                {
+                    type:'showEditPage',
+                    payload:{
+                        items:payload.orderBill.items,
+                        currentItem:payload.orderBill
+                    }
+                }
+            );
+        },
+
+        *removeItem({payload},{call,put}){
+            for(var billItem of payload.orderBill.items){
+                if(payload.line==billItem.line){
+                    removeByValue(payload.orderBill.items,billItem);
+                    if(payload.orderBill.items.length == 0){                    
+                        payload.orderBill.totalCaseQtyStr=0;
+                        payload.orderBill.totalAmount = 0;
+                    }else{
+                        if((billItem.caseQtyStr == null ||billItem.caseQtyStr=="")==false){
+                            const {data} = yield call(caseQtyStrSubtract,
+                            {
+                                subStr:payload.orderBill.totalCaseQtyStr,
+                                subedStr:billItem.caseQtyStr
+                            });
+                            payload.orderBill.totalCaseQtyStr = data.obj;
+                            payload.orderBill.totalAmount = Number.parseFloat(payload.orderBill.totalAmount)-Number.parseFloat(billItem.amount);   
+                        }
+                    }
+                };
+            };
+            for(let i =0;i<payload.orderBill.items.length;i++){
+                payload.orderBill.items[i].line = i+1;
+            };
+            yield put({
+                type:'showEditPage',
+                payload:{
+                    items:payload.orderBill.items,
+                    //currentItem:payload.orderBill
+                }
+            });
         },
 
         *queryWrhs({ payload }, { call, put }) {
