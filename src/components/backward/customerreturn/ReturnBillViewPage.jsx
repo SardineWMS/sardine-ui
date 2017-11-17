@@ -100,9 +100,9 @@ const ReturnBillViewPage = ({
                 <BaseForm items={basicForm} />
                 <BaseForm items={extendForm} />
             </BaseCard>
-            {/*<BaseCard single={true} title="商品明细">*/}
-            <BaseForm items={<ReturnBillViewItem {...ReturnBillViewPage} />} />
-            {/*</BaseCard>*/}
+            <BaseCard single={true} title="商品明细">
+                <ReturnBillViewItem {...ReturnBillViewPage} />
+            </BaseCard>
             <RemarkCard remark={item.remark} />
         </div>
     );
