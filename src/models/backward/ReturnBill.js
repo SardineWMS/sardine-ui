@@ -75,7 +75,8 @@ export default {
                             showSizeChanger: true,
                             showQuickJumper: true,
                             showTotal: total => `共 ${total}条`,
-                            size: 'default'
+                            size: 'default',
+                            pageSize: payload.pageSize
                         },
                         currentItem: {},
                         billItems: [],
