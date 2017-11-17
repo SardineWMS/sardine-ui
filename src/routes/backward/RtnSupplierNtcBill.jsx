@@ -9,7 +9,7 @@ import RtnSupplierNtcBillCreateItem from '../../components/backward/rtnsuppliern
 import RtnSupplierNtcBillCreateForm from '../../components/backward/rtnsupplierntc/RtnSupplierNtcBillCreateForm';
 import SupplierSelectModal from '../../components/forward/Order/SupplierSelectModal';
 import RtnSupplierNtcBillViewPage from '../../components/backward/rtnsupplierntc/RtnSupplierNtcBillViewPage';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
 
 function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
     const { showPage, billItems, wrhs, currentItem,
@@ -311,50 +311,11 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
         next: billNext,
         actionText: '作废',
         entityCaption: '供应商退货通知单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'rtnSupplierNtcBill/gridAbort',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token"),
-                }
-            });
-        },
+        url: '/swms/rtn/rtnsupplierntc/abort',
+        canSkipState: 'Aborted',
         hideConfirmModal() {
             dispatch({
                 type: 'rtnSupplierNtcBill/hideAbortBillModal'
-            });
-        },
-        refreshGrid() {
-            dispatch({
-                type: 'rtnSupplierNtcBill/query',
-                payload: {
-                    token: localStorage.getItem("token")
-                }
-            });
-        }
-    };
-
-    const batchProcessRemoveBillProps = {
-        showConfirmModal: batchRemoveProcessModal,
-        records: removeBillEntitys ? removeBillEntitys : [],
-        next: billNext,
-        actionText: '删除',
-        entityCaption: '供应商退货通知单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'rtnSupplierNtcBill/remove',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token"),
-                }
-            });
-        },
-        hideConfirmModal() {
-            dispatch({
-                type: 'rtnSupplierNtcBill/hideRemoveBillModal'
             });
         },
         refreshGrid() {
@@ -373,16 +334,8 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
         next: billNext,
         actionText: '完成',
         entityCaption: '供应商退货通知单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'rtnSupplierNtcBill/gridFinish',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token"),
-                }
-            });
-        },
+        url: '/swms/rtn/rtnsupplierntc/finish',
+        canSkipState: 'Finished',
         hideConfirmModal() {
             dispatch({
                 type: 'rtnSupplierNtcBill/hideFinishBillModal'
@@ -404,16 +357,8 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
         next: billNext,
         actionText: '生成',
         entityCaption: '下架指令',
-        batchProcess(entity) {
-            dispatch({
-                type: 'rtnSupplierNtcBill/gridGenTask',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token"),
-                }
-            });
-        },
+        url: '/swms/rtn/rtnsupplierntc/gentask',
+        canSkipState: '',
         hideConfirmModal() {
             dispatch({
                 type: 'rtnSupplierNtcBill/hideGenTaskModal'
@@ -450,7 +395,6 @@ function RtnSupplierNtcBill({ location, dispatch, rtnSupplierNtcBill }) {
                                 <RtnSupplierNtcBillSearchForm {...rtnSupplierNtcBillSearchFormProps} />
                                 <RtnSupplierNtcBillSearchGrid {...RtnSupplierNtcBillSearchGridProps} />
                                 <WMSProgress {...batchProcessAbortBillProps} />
-                                <WMSProgress {...batchProcessRemoveBillProps} />
                                 <WMSProgress {...batchProcessFinishBillProps} />
                                 <WMSProgress {...batchProcessGenTaskProps} />
                             </div>
