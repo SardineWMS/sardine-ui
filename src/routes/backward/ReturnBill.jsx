@@ -13,7 +13,8 @@ import ReturnNtcBillSelectGrid from '../../components/widget/ReturnNtcBillSelect
 import BatchModifyReturnType from '../../components/backward/customerreturn/BatchModifyReturnType';
 import BatchModifyReturnContainer from '../../components/backward/customerreturn/BatchModifyReturnContainer';
 import BatchModifyProductionDate from '../../components/backward/customerreturn/BatchModifyProductionDate';
-import WMSProgress from '../../components/Widget/WMSProgress';
+import WMSProgress from '../../components/Widget/NewProgress';
+import WMSProgressForRemove from '../../components/Widget/NewProgressForRemove';
 
 function ReturnBill({ location, dispatch, rtnBill }) {
     const { showPage, showRtnNtcSelectModal, currentItem, ntcBillItemArticles, treeData, article_qpcStr, billItems, list, pagination, batchModifyReturnTypeVisible, batchModifyReturnContainerVisible, batchModifyProductionDateVisible, modifyReturnTypeEntitys,
@@ -280,16 +281,8 @@ function ReturnBill({ location, dispatch, rtnBill }) {
         next: rtnBillNext,
         actionText: '删除',
         entityCaption: '退仓单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'rtnBill/remove',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token"),
-                }
-            });
-        },
+        url: '/swms/rtn/customerrtn/remove',
+        canSkipState: '',
         hideConfirmModal() {
             dispatch({
                 type: 'rtnBill/hideDeleteRtnBillModal'
@@ -311,16 +304,8 @@ function ReturnBill({ location, dispatch, rtnBill }) {
         next: rtnBillNext,
         actionText: '审核',
         entityCaption: '退仓单',
-        batchProcess(entity) {
-            dispatch({
-                type: 'rtnBill/audit',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version,
-                    token: localStorage.getItem("token"),
-                }
-            });
-        },
+        url: '/swms/rtn/customerrtn/audit',
+        canSkipState: 'finished',
         hideConfirmModal() {
             dispatch({
                 type: 'rtnBill/hideAuditRtnBillModal'
@@ -388,7 +373,7 @@ function ReturnBill({ location, dispatch, rtnBill }) {
                         default:
                             return <div><ReturnBillSearchForm {...returnBillSearchFormProps} />
                                 <ReturnBillSearchGridGen />
-                                <WMSProgress {...batchProcessDeleteRtnBillProps} />
+                                <WMSProgressForRemove {...batchProcessDeleteRtnBillProps} />
                                 <WMSProgress {...batchProcessAuditRtnBillProps} />
                             </div>
                     }
