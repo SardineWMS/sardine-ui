@@ -434,12 +434,6 @@ export default {
       call,
         put
     }) {
-      yield put({
-        type: 'hideModal'
-      })
-      yield put({
-        type: 'showLoading'
-      })
       const { data } = yield call(setDefaultQpcStr, payload)
       if (data) {
         yield put({
@@ -476,12 +470,6 @@ export default {
       call,
         put
     }) {
-      yield put({
-        type: 'hideModal'
-      })
-      yield put({
-        type: 'showLoading'
-      })
       const { data } = yield call(saveArticleBarcode, payload)
       if (data) {
         yield put({

@@ -303,8 +303,8 @@ function Article({ location, dispatch, article }) {
 			if (ds[index].newbarcode == null || ds[index].newbarcode == '') {
 				message.error("条码不能为空", 2);
 				return;
-			} else if (ds[index].newbarcode.length > 30) {
-				message.error("条码最大长度是30！", 2);
+			} else if (/^[0-9]{0,30}$/.test(ds[index].newbarcode) == false) {
+				message.error("条码只能是数字，最大长度是30！", 2);
 				return;
 			}
 			dispatch({
