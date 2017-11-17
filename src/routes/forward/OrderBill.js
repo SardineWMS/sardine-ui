@@ -52,9 +52,9 @@ function OrderBill({ location, dispatch, orderBill }) {
         onCreate() {
             dispatch({
                 type: 'orderBill/onCreate',
-                payload: {
-                    currentItem: {}
-                }
+                // payload: {
+                //     currentItem: {}
+                // }
             });
         },
         onViewItem(item) {
@@ -326,14 +326,15 @@ function OrderBill({ location, dispatch, orderBill }) {
         editable: showViewPage ? false : true,
         inProgressBill: 'InProgress' === currentItem.state,
         articleQpcs: articleQpcs,
-        onDelete(items, index) {
-            items.splice(index);
-            currentItem.items = items;
+        onDelete(record, items, index) {
+            // items.splice(index);
+            // currentItem.items = items;
             dispatch({
-                type: 'orderBill/refreshCaseQtyAndAmount',
+                type: 'orderBill/removeItem',
                 payload: {
                     orderBill: currentItem,
-                    line: index + 1
+                    line: index + 1,
+                    items: items
                 }
             });
         },
@@ -366,12 +367,12 @@ function OrderBill({ location, dispatch, orderBill }) {
             });
         },
         refreshCaseQtyAndAmount(items, line) {
-            currentItem.items = items;
             dispatch({
                 type: 'orderBill/refreshCaseQtyAndAmount',
                 payload: {
                     orderBill: currentItem,
-                    line: line
+                    line: line,
+                    items: items
                 }
             });
         }
@@ -442,7 +443,6 @@ function OrderBill({ location, dispatch, orderBill }) {
             return (
                 <div>
                     <OrderBillView {...orderBillViewFormProps} />
-                    <OrderBillItems {...orderBillItemsProps} />
                     <DateModal {...dateModalProps} />
                 </div>
             );

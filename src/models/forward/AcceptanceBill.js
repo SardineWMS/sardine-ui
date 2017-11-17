@@ -3,6 +3,7 @@ import {
     querybypage, get, create, edit, abort,
     queryWrhs, refreshCaseQtyAndAmount, approve, beginalc
 } from '../../services/forward/AcceptanceBill';
+import { queryStock, qtyToCaseQtyStr, caseQtyStrAdd, caseQtyStrSubtract } from '../../services/common/common.js';
 import { queryStockExtendInfo } from '../../services/common/common.js';
 import { queryCustomer, getByCode as getCustomer } from '../../services/basicinfo/Customer';
 import { message } from 'antd';
@@ -63,23 +64,23 @@ export default {
     effects: {
         *query({ payload }, { call, put }) {
             const { data } = yield call(querybypage, parse(payload));
-           if(data.status == "200"){
-              yield put({
-                type: 'querySuccess',
-                payload: {
-                    list: data.obj.records,
-                    pagination: {
-                        showSizeChanger: true,
-                        showQuickJumper: true,
-                        showTotal: total => `共 ${total}条`,
-                        current: data.obj.page,
-                        total: data.obj.recordCount,
-                        pageSize: payload.pageSize
+            if (data.status == "200") {
+                yield put({
+                    type: 'querySuccess',
+                    payload: {
+                        list: data.obj.records,
+                        pagination: {
+                            showSizeChanger: true,
+                            showQuickJumper: true,
+                            showTotal: total => `共 ${total}条`,
+                            current: data.obj.page,
+                            total: data.obj.recordCount,
+                            pageSize: payload.pageSize
+                        }
                     }
-                }
-            });
-           }
-           
+                });
+            }
+
         },
 
         *get({ payload }, { call, put }) {
@@ -99,11 +100,14 @@ export default {
         *onCreate({ payload }, { call, put }) {
             yield put({ type: 'showLoading' });
             const { data } = yield call(queryWrhs, parse(payload));
+            const currentAcceptanceBill = {};
+            currentAcceptanceBill.totalAmount = 0;
+            currentAcceptanceBill.totalCaseQtyStr = 0;
             yield put({
                 type: 'showCreatePage',
                 payload: {
                     wrhs: data.obj,
-                    currentAcceptanceBill: {}
+                    currentAcceptanceBill: currentAcceptanceBill
                 }
             });
         },
@@ -118,7 +122,17 @@ export default {
                 }
             });
         },
-
+        *addItem({payload},{call,put}){
+            const nullObj = new Object();
+            nullObj.line = payload.acceptanceBillItems.length +1;
+            payload.acceptanceBillItems.push(nullObj);
+            yield put({
+                type:'showEditPage',
+                payload:{
+                    acceptanceBillItems:payload.acceptanceBillItems
+                }
+            });
+        },
         *editItem({ payload }, { call, put }) {
             yield put({ type: 'showLoading' });
             const { data } = yield call(edit, parse(payload));
@@ -262,13 +276,17 @@ export default {
         },
 
         *queryStocks({ payload }, { call, put }) {
-            const stocks = yield call(queryStockExtendInfo, {
+            if (payload.articleCode == null || payload.articleCode == "") {
+                message.warning("请输入商品代码");
+                return;
+            }
+            const {data} = yield call(queryStockExtendInfo, {
                 articleCode: payload.articleCode
             });
-            if (stocks) {
+            if (data.status == "200") {                              
                 const acceptanceBill = payload.acceptanceBill;
-                const acceptanceItem = payload.acceptanceBill.items[payload.index];
-                const stock = stocks.data.obj[0];
+                const acceptanceItem = payload.acceptanceBill.items[payload.line - 1];
+                const stock = data.obj[0];
                 acceptanceItem.article = stock.article;
                 acceptanceItem.binCode = stock.binCode;
                 acceptanceItem.containerBarCode = stock.containerBarcode;
@@ -280,11 +298,11 @@ export default {
                 acceptanceItem.productionDate = moment(stock.productionDate);
                 acceptanceItem.validDate = moment(stock.validDate);
                 acceptanceItem.stockBatch = stock.stockBatch;
-                payload.acceptanceBill.items[payload.index] = acceptanceItem;
+                acceptanceItem.stocks = data.obj;
+                payload.acceptanceBill.items[payload.line - 1] = acceptanceItem;
                 yield put({
                     type: 'showEditPage',
                     payload: {
-                        stocks: stocks.data.obj,
                         currentAcceptanceBill: acceptanceBill
                     }
                 });
@@ -292,16 +310,68 @@ export default {
         },
 
         *refreshCaseQtyAndAmount({ payload }, { call, put }) {
-            yield put({ type: 'showLoading' });
-            const { data } = yield call(refreshCaseQtyAndAmount, parse(payload));
-            if (data) {
-                yield put({
-                    type: 'showEditPage',
-                    payload: {
-                        currentAcceptanceBill: data.obj
-                    }
-                });
+            // yield put({ type: 'showLoading' });
+            // const { data } = yield call(refreshCaseQtyAndAmount, parse(payload));
+            // if (data) {
+            //     yield put({
+            //         type: 'showEditPage',
+            //         payload: {
+            //             currentAcceptanceBill: data.obj
+            //         }
+            //     });
+            // };
+
+            if(payload.record.qpcStr == null || payload.record.qpcStr==''){
+                message.warning("请选择规格！", 2, '');
+                return;
+            }
+            let qty = new Number();
+            qty = Number.parseFloat(payload.record.qty);
+            if (isNaN(qty)) {
+                message.warning("数量格式错误，请正确输入数字", 2, '');
+                return;
             };
+
+            const {data} = yield call(qtyToCaseQtyStr,{
+                qty:qty,
+                qpcStr:payload.record.qpcStr
+            });
+            for(var item of payload.items){
+                if(item.line == payload.line){
+                    item.caseQtyStr = data.obj;
+                    item.amount = Number.parseFloat(payload.record.price) * qty;
+                };
+            };
+            let totalCaseQtyStr = 0;
+            let totalAmount = 0;
+            if(payload.items.length == 1){
+                totalCaseQtyStr = data.obj;
+                totalAmount = payload.items[0].amount;
+            }else{
+                for(var item of payload.items){
+                    totalAmount = Number.parseFloat(item.amount) + Number.parseFloat(totalAmount);
+                    if (item.caseQtyStr == 0 || item.caseQtyStr == '')
+                        continue;
+                    const totalCaseQtyStrResult = yield call(caseQtyStrAdd, {
+                        addend: totalCaseQtyStr, augend: item.caseQtyStr
+                    });
+                    totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
+                };
+            };
+            const CaseQtyStrResult = yield call(caseQtyStrAdd,{
+                addend:payload.acceptanceBill.totalCaseQtyStr,
+                augend:data.obj
+            });
+            payload.acceptanceBill.totalCaseQtyStr = totalCaseQtyStr;
+            payload.acceptanceBill.totalAmount = totalAmount;
+
+            yield put({
+                type:'showEditPage',
+                payload:{
+                    items:payload.items,
+                    acceptanceBill:payload.acceptanceBill
+                }
+            });
         },
 
         *getForEdit({ payload }, { call, put }) {
@@ -355,7 +425,6 @@ export default {
                 ...action.payload,
                 loading: false,
                 showPage: 'view'
-
             };
         },
         backViewForm(state) {
@@ -367,8 +436,8 @@ export default {
         },
         backSearchForm(state) {
             return {
-                ...state,
-                loading: false,
+                ...state,                           
+                loading: false,                
                 showPage: 'search'
             };
         },

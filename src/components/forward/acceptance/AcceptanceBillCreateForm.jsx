@@ -7,6 +7,7 @@ import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
 import Panel from '../../Widget/Panel';
 const EditableCell = require('../../Widget/EditableCell');
+import CustomerModal from '../../Widget/CustomerModal';
 
 const Option = Select.Option;
 
@@ -33,7 +34,7 @@ const AcceptanceBillCreateForm = ({
             data = {
                 ...acceptanceBill,
                 ...getFieldsValue(),
-                customer: customer,
+                //customer: customer,
                 wrh: acceptanceBill.wrh
             };
             onSave(data);
@@ -72,10 +73,12 @@ const AcceptanceBillCreateForm = ({
     };
 
     baseChildren.push(
-        <BaseFormItem label={"客户："} key="customer">
-            {getFieldDecorator("customer", { rules: [{ required: true }], initialValue: customer ? "[" + customer.code + "]" + customer.name : null })(
-                <Input placeholder="请选择" suffix={<Icon type="ellipsis" onClick={() => queryCustomers()} />} 
-                onBlur={handleGetCustomer} onPressEnter={handleGetCustomer}/>
+        <BaseFormItem label={"客户："}>
+            {getFieldDecorator("customer.code",{                
+            rules: [{ required: true, message: '请输入客户！' }],
+            initialValue: acceptanceBill.customer ? acceptanceBill.customer : ''        
+            })(
+                <CustomerModal/>
             )}
         </BaseFormItem>
     );

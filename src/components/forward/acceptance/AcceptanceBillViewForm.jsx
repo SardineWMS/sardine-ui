@@ -9,6 +9,7 @@ import BaseTwoCol from '../../Widget/BaseTwoCol';
 import PermissionUtil from '../../../utils/PermissionUtil';
 import Guid from '../../../utils/Guid';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
+import ArticleItemGrid from './AcceptanceBillViewItem';
 
 const AcceptanceBillViewForm = ({
 	acceptanceBill = {},
@@ -135,13 +136,21 @@ const AcceptanceBillViewForm = ({
 		disabled={(acceptanceBill.state != 'Approved') || (!PermissionUtil("acceptanceBill:alc"))}> 配货</Button>);
 	toolbar.push(<Button onClick={() => onBack()}> 返回</Button>);
 
-	return (
+
+	const articleItemProps = {
+        dataSource: acceptanceBill.items
+	};
+	
+	return (		 
 		<div>
 			<ToolbarPanel children={toolbar} />
 			<BaseCard title="基本信息" single={true}>
 				<BaseForm items={colChildren} />
 			</BaseCard>
-            <RemarkCard remark={acceptanceBill.remark} />
+			<BaseCard single={true} title="商品明细">
+                <ArticleItemGrid {...articleItemProps} />
+            </BaseCard>
+            {<RemarkCard remark={acceptanceBill.remark} />}
 		</div>
 	);
 };

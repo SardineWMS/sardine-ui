@@ -59,7 +59,7 @@ const OrderBillItems = ({
 		key: 'qpcStr',
 		dataIndex: 'qpcStr',
 		width: 150,
-		render: (text, record, index) => renderSelectColumns(record, "qpcStr", text)
+		render: (text, record, index) => renderSelectColumns(record, 'qpcStr', text)
 	});
 
 	columns.push({
@@ -102,7 +102,9 @@ const OrderBillItems = ({
 				return (
 					<div className={styles.editable_row_operations}>
 						<span>
-							<a onClick={() => onDelete(items, index)}>删除</a>
+						<Popconfirm title={"确定要删除吗？"} onConfirm={() => onDelete(record, items,index)}>
+                            <a>删除</a>
+                        </Popconfirm>
 						</span>
 					</div>
 				);
@@ -142,11 +144,16 @@ const OrderBillItems = ({
 		if (typeof articleQpcs == 'undefined')
 			return;
 		const options = [];
-		articleQpcs.map(function (qpcInfo) {
-			options.push(<Option key={qpcInfo.qpcStr}>
-				{qpcInfo.qpcStr}
-			</Option>)
-		});
+		if (record.article != null && record.qpcs != null) {
+			for (var qpc of record.qpcs) {
+				options.push(<Option key={qpc.qpcStr}>{qpc.qpcStr}</Option>)
+			};
+		};
+		// articleQpcs.map(function (qpcInfo) {
+		// 	options.push(<Option key={qpcInfo.qpcStr}>
+		// 		{qpcInfo.qpcStr}
+		// 	</Option>)
+		// });
 		return (<RowEditCellSelect
 			editable={editable}
 			options={options}
@@ -157,12 +164,17 @@ const OrderBillItems = ({
 
 	function handleSelectQpcStr(record, value, key) {
 		var munit = null;
-		articleQpcs.map(function (qpcInfo) {
-			if (value === qpcInfo.qpcStr) {
-				munit = qpcInfo.munit;
-				return;
-			};
-		});
+		
+		for(var qpc of record.qpcs){
+			if(qpc.qpcStr==record.qpcStr)
+				record.munit = qpc.munit;
+		}
+		// articleQpcs.map(function (qpcInfo) {
+		// 	if (value === qpcInfo.qpcStr) {
+		// 		munit = qpcInfo.munit;
+		// 		return;
+		// 	};
+		// });
 		record.qpcStr = value;
 		record.munit = munit;
 	};
