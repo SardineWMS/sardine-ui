@@ -7,6 +7,8 @@ import BaseForm from '../../Widget/BaseForm';
 import BaseFormItem from '../../Widget/BaseFormItem';
 import BaseTwoCol from '../../Widget/BaseTwoCol';
 import { createInfo2String, lastModifyInfo2String } from '../../../utils/OperatorInfoUtils';
+import ArticleItemGrid from './OrderBillViewItem';
+
 
 const OrderBillView = ({
 	item = {},
@@ -130,12 +132,19 @@ const OrderBillView = ({
 		<Button disabled={item.state != "Initial"}>删除</Button>
 	</Popconfirm>);
 
+
+	const articleItemProps = {
+		dataSource: item.items
+	};
 	return (
 		<div>
 			<ToolbarPanel children={toolbar} />
 			<Card title="基本信息" single={true}>
 				<BaseForm items={colChildren} />
 			</Card>
+			<BaseCard single={true} title="商品明细">
+                <ArticleItemGrid {...articleItemProps} />
+            </BaseCard>
 		</div>
 	);
 };
