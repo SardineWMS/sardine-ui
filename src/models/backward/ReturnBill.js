@@ -189,7 +189,10 @@ export default {
             const qpcStr = payload.article_qpcStr[payload.record.article.code];
             qpcStrs.push(qpcStr);
             for (let article of payload.array) {
-                article.binCode = payload.ntcBillItemArticles[0].binCode;
+                if (!article.uuid && !article.returnType) {
+                    article.binCode = payload.ntcBillItemArticles[0].binCode;
+                    article.returnType = 'returnToSupplier';
+                }
                 if (article.line == payload.record.line) {
                     for (let item of payload.ntcBillItemArticles) {
                         if (item.article.code == payload.record.article.code) {
@@ -198,9 +201,6 @@ export default {
                             article.expDays = item.expDays == null ? article.expDays : item.expDays;
                             article.qpcStrs = qpcStrs;
                             article.price = item.price;
-                            // article.qpcStr = item.qpcStr;
-                            // article.munit = item.munit;
-                            // article.supplier = item.supplier;
                             break;
                         }
                     }
@@ -215,7 +215,7 @@ export default {
             })
         },
 
-        *selectQpcStr({ payload }, { call, put }) {
+        * selectQpcStr({ payload }, { call, put }) {
             const suppliers = [];
             for (let ntcBillItemArticle of payload.ntcBillItemArticles) {
                 if (ntcBillItemArticle.article.code == payload.record.article.code) {
@@ -242,7 +242,7 @@ export default {
             });
         },
 
-        *calculateCaseQtyStr({ payload }, { call, put }) {
+        * calculateCaseQtyStr({ payload }, { call, put }) {
             if (payload.record.qpcStr == null || payload.record.qpcStr == '') {
                 message.warning("请先选择商品规格", 2);
                 yield put({
@@ -285,7 +285,7 @@ export default {
             });
         },
 
-        *calculateValidDate({ payload }, { call, put }) {
+        * calculateValidDate({ payload }, { call, put }) {
             for (let item of payload.list) {
                 if (item.line == payload.record.line) {
                     let productionDate = moment(payload.record.productionDate);
@@ -303,7 +303,7 @@ export default {
             });
         },
 
-        *addItemList({ payload }, { call, put }) {
+        * addItemList({ payload }, { call, put }) {
             const nullItem = {};
             nullItem.editable = true;
             nullItem.line = payload.length + 1;
@@ -316,7 +316,7 @@ export default {
             });
         },
 
-        *removeItem({ payload }, { call, put }) {
+        * removeItem({ payload }, { call, put }) {
             for (var item of payload.dataSource) {
                 if (payload.record.line == item.line) {
                     removeByValue(payload.dataSource, item);
@@ -349,7 +349,7 @@ export default {
             });
         },
 
-        *insert({ payload }, { call, put }) {
+        * insert({ payload }, { call, put }) {
             const { data } = yield call(insert, parse(payload));
             if (data.status == '200') {
                 yield put({
@@ -361,7 +361,7 @@ export default {
             }
         },
 
-        *update({ payload }, { call, put }) {
+        * update({ payload }, { call, put }) {
             const { data } = yield call(update, parse(payload));
             if (data.status == '200') {
                 yield put({
@@ -373,9 +373,8 @@ export default {
             }
         },
 
-        *showView({ payload }, { call, put }) {
+        * showView({ payload }, { call, put }) {
             const { data } = yield call(getRtnBill, { uuid: payload.uuid });
-            console.log("实体", data);
             if (data.status === '200') {
                 yield put({
                     type: 'showViewSuccess',
@@ -386,15 +385,14 @@ export default {
             };
         },
 
-        *showEdit({ payload }, { call, put }) {
+        * showEdit({ payload }, { call, put }) {
             const { data } = yield call(queryRtnNtcBillByBillNumber, { billNumber: payload.returnNtcBillNumber });
 
             const articles = [];
             let totalCaseQtyStr = "0";
             let article_qpcStr = {};
-            // const bin = yield call(queryBin, { wrhUuid: null, usage: 'RtnReceiveTempBin' });
-            // console.log("货位卡迪夫", bin);
-            // let binCode = bin.data.obj.pageData.records[0].code;
+            const bin = yield call(queryBin, { wrhUuid: null, usage: 'RtnReceiveTempBin' });
+            let binCode = bin.data.obj.pageData.records[0] ? bin.data.obj.pageData.records[0].code : '';
 
 
 
@@ -443,7 +441,7 @@ export default {
             for (let ntcItem of data.obj.items) {
                 const sku = yield call(getArticle, { articleUuid: ntcItem.article.uuid });
                 ntcItem.expDays = sku.data.obj.expDays;
-                // ntcItem.binCode = binCode;
+                ntcItem.binCode = binCode;
                 for (let item of payload.items) {
                     if (ntcItem.article.code == item.article.code && item.qpcStr == ntcItem.qpcStr) {
                         const supplier = ntcItem.supplier;
@@ -462,7 +460,13 @@ export default {
                 billItem.qpcStrs = article_qpcStr[billItem.article.code];
                 billItem.productionDate = moment(billItem.productionDate).format("YYYY-MM-DD");
                 billItem.validDate = moment(billItem.validDate).format("YYYY-MM-DD");
+                for (let ntcBillItem of data.obj.items) {
+                    if (billItem.returnNtcBillItemUuid === ntcBillItem.uuid) {
+                        billItem.ntcQty = Number.parseInt(ntcBillItem.qty) - Number.parseInt(ntcBillItem.realQty);
+                    }
+                }
             };
+
             if (data.status === '200') {
                 yield put({
                     type: 'showCreateSuccess',
@@ -477,13 +481,12 @@ export default {
             };
         },
 
-        *selectSupplier({ payload }, { call, put }) {
+        * selectSupplier({ payload }, { call, put }) {
             for (let article of payload.ntcBillItemArticles) {
                 if (payload.record.article.code == article.article.code && payload.record.qpcStr == article.qpcStr && payload.record.supplier.code == article.supplier.code) {
                     payload.record.supplier.name = article.supplier.name;
                     payload.record.supplier.uuid = article.supplier.uuid;
                     payload.record.ntcQty = Number.parseInt(article.qty) - Number.parseInt(article.realQty);
-                    // payload.record.ntcCaseQtyStr = article.caseQtyStr;
                 }
             }
             yield put({
@@ -494,7 +497,7 @@ export default {
             });
         },
 
-        *modifyReturnType({ payload }, { call, put }) {
+        * modifyReturnType({ payload }, { call, put }) {
             let result = {};
             let binUsage = "";
             let binCode = "";
@@ -525,7 +528,7 @@ export default {
             })
         },
 
-        *modifyReturnContainer({ payload }, { call, put }) {
+        * modifyReturnContainer({ payload }, { call, put }) {
             for (let item of payload.list) {
                 for (let select of payload.selecteds) {
                     if (item.line == select.line) {
@@ -542,7 +545,7 @@ export default {
             })
         },
 
-        *modifyProductionDate({ payload }, { call, put }) {
+        * modifyProductionDate({ payload }, { call, put }) {
             for (let item of payload.list) {
                 for (let select of payload.selecteds) {
                     if (item.line == select.line) {
@@ -567,7 +570,7 @@ export default {
             })
         },
 
-        *remove({ payload }, { call, put }) {
+        * remove({ payload }, { call, put }) {
             const { data } = yield call(remove, { uuid: payload.uuid, version: payload.version });
             if (data.status === '200') {
                 yield put({
@@ -576,7 +579,7 @@ export default {
             }
         },
 
-        *audit({ payload }, { call, put }) {
+        * audit({ payload }, { call, put }) {
             const { data } = yield call(audit, { uuid: payload.uuid, version: payload.version });
             if (data.status === '200') {
                 yield put({
@@ -585,13 +588,13 @@ export default {
             }
         },
 
-        *showCreate({ payload }, { call, put }) {
+        * showCreate({ payload }, { call, put }) {
             yield put({
                 type: 'showCreateSuccess'
             })
         },
 
-        *refreshBin({ payload }, { call, put }) {
+        * refreshBin({ payload }, { call, put }) {
             let result = {};
             let binUsage = "";
             if (payload.record.returnType == 'goodReturn')
