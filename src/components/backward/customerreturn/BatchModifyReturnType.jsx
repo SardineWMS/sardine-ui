@@ -12,7 +12,8 @@ const BatchModifyReturnType = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue
+        getFieldsValue,
+        resetFields
     }
 }) => {
     function handleOk() {
@@ -24,13 +25,18 @@ const BatchModifyReturnType = ({
                 ...getFieldsValue()
             };
             onOk(data);
+            resetFields();
         });
+    };
+    function handleCancel() {
+        resetFields();
+        onCancel();
     };
     const modalOpts = {
         title: '修改退仓类型',
         visible,
         onOk: handleOk,
-        onCancel,
+        onCancel: handleCancel,
         wrapClassName: 'vertical-center-modal'
     };
 

@@ -13,7 +13,8 @@ const BatchModifyReturnContainer = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue
+        getFieldsValue,
+        resetFields
     }
 }) => {
     function handleOk() {
@@ -25,13 +26,18 @@ const BatchModifyReturnContainer = ({
                 ...getFieldsValue()
             };
             onOk(data);
+            resetFields();
         });
+    };
+    function handleCancel() {
+        resetFields();
+        onCancel();
     };
     const modalOpts = {
         title: '修改退仓容器',
         visible,
         onOk: handleOk,
-        onCancel,
+        onCancel: handleCancel,
         wrapClassName: 'vertical-center-modal'
     };
 

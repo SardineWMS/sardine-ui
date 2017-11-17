@@ -31,14 +31,26 @@ const ReturnBillCreateItem = ({
 }) => {
     function handleModifyReturnType(e) {
         e.preventDefault();
+        if (selectedRowKeys.length < 1) {
+            message.warning("请选择需要操作的明细", 2);
+            return;
+        }
         onModifyReturnType(selectedRowKeys);
     };
     function handleModifyReturnContainer(e) {
         e.preventDefault();
+        if (selectedRowKeys.length < 1) {
+            message.warning("请选择需要操作的明细", 2);
+            return;
+        }
         onModifyReturnContainer(selectedRowKeys);
     };
     function handleModifyProductionDate(e) {
         e.preventDefault();
+        if (selectedRowKeys.length < 1) {
+            message.warning("请选择需要操作的明细", 2);
+            return;
+        }
         onModifyProductionDate(selectedRowKeys);
     };
     const columns = [];

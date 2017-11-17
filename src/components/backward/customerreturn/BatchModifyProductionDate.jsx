@@ -12,7 +12,8 @@ const BatchModifyProductionDate = ({
     form: {
         getFieldDecorator,
         validateFields,
-        getFieldsValue
+        getFieldsValue,
+        resetFields
     }
 }) => {
     function handleOk() {
@@ -24,13 +25,18 @@ const BatchModifyProductionDate = ({
                 ...getFieldsValue()
             };
             onOk(data);
+            resetFields();
         });
+    };
+    function handleCancel() {
+        resetFields();
+        onCancel();
     };
     const modalOpts = {
         title: '修改生产日期',
         visible,
         onOk: handleOk,
-        onCancel,
+        onCancel: handleCancel,
         wrapClassName: 'vertical-center-modal'
     };
 

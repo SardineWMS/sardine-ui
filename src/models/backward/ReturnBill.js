@@ -546,6 +546,10 @@ export default {
             for (let item of payload.list) {
                 for (let select of payload.selecteds) {
                     if (item.line == select.line) {
+                        if (!select.article) {
+                            message.warning("第" + item.line + "行，请先选择商品");
+                            return;
+                        }
                         item.productionDate = payload.data.productionDate;
                         const { data } = yield call(getArticle, { articleUuid: select.article.uuid });
                         let proDate = moment(item.productionDate);
