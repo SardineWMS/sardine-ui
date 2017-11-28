@@ -220,11 +220,10 @@ export default modelExtend(pageModel, {
                 totalCaseQtyStr = data.obj;
                 totalAmount = payload.dataSource[0].amount;
             } else {
-                for (let item of payload.dataSource) {
-                    totalAmount = Number.parseFloat(item.amount) + Number.parseFloat(totalAmount);
-                    if (item.caseQtyStr == null || item.caseQtyStr == "")
+                for (let item of payload.dataSource) {                    
+                    if (item.caseQtyStr == null || item.caseQtyStr == ""||item.qty==null)
                         continue;
-
+                    totalAmount = Number.parseFloat(item.amount) + Number.parseFloat(totalAmount);
                     const totalCaseQtyStrResult = yield call(caseQtyStrAdd, {
                         addend: totalCaseQtyStr,
                         augend: item.caseQtyStr

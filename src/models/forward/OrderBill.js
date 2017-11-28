@@ -318,87 +318,87 @@ export default {
         },
 
         *refreshCaseQtyAndAmount({ payload }, { call, put }) {
-            if(payload.orderBill.items[payload.line-1].qpcStr == null || payload.orderBill.items[payload.line-1].qpcStr ==''){
-                message.warning("请选择规格！",2,'');
+            if (payload.orderBill.items[payload.line - 1].qpcStr == null || payload.orderBill.items[payload.line - 1].qpcStr == '') {
+                message.warning("请选择规格！", 2, '');
                 return;
             };
             let qty = new Number();
-            qty = Number.parseFloat(payload.orderBill.items[payload.line-1].qty);
-            if(isNaN(qty)){
-                message.warning("数据格式错误，请正确输入数字",2,'');
+            qty = Number.parseFloat(payload.orderBill.items[payload.line - 1].qty);
+            if (isNaN(qty)) {
+                message.warning("数据格式错误，请正确输入数字", 2, '');
                 return;
             }
-            const {data} = yield call(qtyToCaseQtyStr,{
-                qty:qty,
-                qpcStr:payload.orderBill.items[payload.line-1].qpcStr
+            const { data } = yield call(qtyToCaseQtyStr, {
+                qty: qty,
+                qpcStr: payload.orderBill.items[payload.line - 1].qpcStr
             });
-            for(var billItem of payload.orderBill.items){
-                if(billItem.line == payload.line){
+            for (var billItem of payload.orderBill.items) {
+                if (billItem.line == payload.line && billItem.qty != null) {
                     billItem.caseQtyStr = data.obj;
-                    billItem.amount = Number.parseFloat(payload.orderBill.items[payload.line-1].price)*qty;
+                    billItem.amount = Number.parseFloat(payload.orderBill.items[payload.line - 1].price) * qty;
                 }
             }
             let totalCaseQtyStr = 0;
             let totalAmount = 0;
-            if(payload.orderBill.length == 1){
+            if (payload.orderBill.length == 1) {
                 totalCaseQtyStr = data.obj;
                 totalAmount = payload.orderBill.items[0].amount;
-            }else{
-                for(var billItem of payload.orderBill.items){
-                    totalAmount = Number.parseFloat(billItem.amount)+Number.parseFloat(totalAmount)
-                    if(billItem.caseQtyStr == 0|| billItem.caseQtyStr=='')
+            } else {
+                for (var billItem of payload.orderBill.items) {
+                    if (billItem.caseQtyStr == 0 || billItem.caseQtyStr == '' || billItem.qty == null)
                         continue;
-                    const totalCaseQtyStrResult = yield call(caseQtyStrAdd,{
-                        addend:totalCaseQtyStr,
-                        augend:billItem.caseQtyStr
+                    totalAmount = Number.parseFloat(billItem.amount) + Number.parseFloat(totalAmount);
+                    const totalCaseQtyStrResult = yield call(caseQtyStrAdd, {
+                        addend: totalCaseQtyStr,
+                        augend: billItem.caseQtyStr
                     });
-                totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
+                    totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
                 };
             };
-            const caseQtyStrResult = yield call(caseQtyStrAdd,{
-                addend:payload.orderBill.totalCaseQtyStr,
-                augend:data.obj
+            const caseQtyStrResult = yield call(caseQtyStrAdd, {
+                addend: payload.orderBill.totalCaseQtyStr,
+                augend: data.obj
             });
             payload.orderBill.totalAmount = totalAmount;
             payload.orderBill.totalCaseQtyStr = totalCaseQtyStr;
             yield put(
                 {
-                    type:'showEditPage',
-                    payload:{
-                        items:payload.orderBill.items,
-                        currentItem:payload.orderBill
+                    type: 'showEditPage',
+                    payload: {
+                        items: payload.orderBill.items,
+                        currentItem: payload.orderBill
                     }
                 }
             );
         },
 
-        *removeItem({payload},{call,put}){
-            for(var billItem of payload.orderBill.items){
-                if(payload.line==billItem.line){
-                    removeByValue(payload.orderBill.items,billItem);
-                    if(payload.orderBill.items.length == 0){                    
-                        payload.orderBill.totalCaseQtyStr=0;
+        *removeItem({ payload }, { call, put }) {
+            for (var billItem of payload.orderBill.items) {
+                if (payload.line == billItem.line) {
+                    removeByValue(payload.orderBill.items, billItem);
+                    if (payload.orderBill.items.length == 0) {
+                        payload.orderBill.totalCaseQtyStr = 0;
                         payload.orderBill.totalAmount = 0;
-                    }else{
-                        if((billItem.caseQtyStr == null ||billItem.caseQtyStr=="")==false){
-                            const {data} = yield call(caseQtyStrSubtract,
-                            {
-                                subStr:payload.orderBill.totalCaseQtyStr,
-                                subedStr:billItem.caseQtyStr
-                            });
+                    } else {
+                        if ((billItem.caseQtyStr == null || billItem.caseQtyStr == "") == false) {
+                            const { data } = yield call(caseQtyStrSubtract,
+                                {
+                                    subStr: payload.orderBill.totalCaseQtyStr,
+                                    subedStr: billItem.caseQtyStr
+                                });
                             payload.orderBill.totalCaseQtyStr = data.obj;
-                            payload.orderBill.totalAmount = Number.parseFloat(payload.orderBill.totalAmount)-Number.parseFloat(billItem.amount);   
+                            payload.orderBill.totalAmount = Number.parseFloat(payload.orderBill.totalAmount) - Number.parseFloat(billItem.amount);
                         }
                     }
                 };
             };
-            for(let i =0;i<payload.orderBill.items.length;i++){
-                payload.orderBill.items[i].line = i+1;
+            for (let i = 0; i < payload.orderBill.items.length; i++) {
+                payload.orderBill.items[i].line = i + 1;
             };
             yield put({
-                type:'showEditPage',
-                payload:{
-                    items:payload.orderBill.items,
+                type: 'showEditPage',
+                payload: {
+                    items: payload.orderBill.items,
                     //currentItem:payload.orderBill
                 }
             });

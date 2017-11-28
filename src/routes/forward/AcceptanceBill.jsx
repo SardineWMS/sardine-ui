@@ -186,10 +186,6 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
         editable: showPage === "view" ? false : true,
         inAlc: currentAcceptanceBill.state === "InAlc" ? true : (currentAcceptanceBill.state === "Finished" ? true : false),
         onAdd(acceptanceBillItems) {
-            // const acceptanceBillItem = new Object();
-            // acceptanceBillItem.line = acceptanceBillItems.length + 1;
-            // acceptanceBillItems.push(acceptanceBillItem);
-            // currentAcceptanceBill.items = acceptanceBillItems;
             dispatch({
                 type: 'acceptanceBill/addItem',
                 payload: {
@@ -226,7 +222,6 @@ function AcceptanceBill({ location, dispatch, acceptanceBill }) {
             });
         },
         refreshCaseQtyAndAmount(record,acceptanceBillItems) {
-            //currentAcceptanceBill.items[currentAcceptanceBillItem.line - 1] = currentAcceptanceBillItem;
             dispatch({
                 type: 'acceptanceBill/refreshCaseQtyAndAmount',
                 payload: {

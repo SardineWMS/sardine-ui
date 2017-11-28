@@ -122,14 +122,14 @@ export default {
                 }
             });
         },
-        *addItem({payload},{call,put}){
+        *addItem({ payload }, { call, put }) {
             const nullObj = new Object();
-            nullObj.line = payload.acceptanceBillItems.length +1;
+            nullObj.line = payload.acceptanceBillItems.length + 1;
             payload.acceptanceBillItems.push(nullObj);
             yield put({
-                type:'showEditPage',
-                payload:{
-                    acceptanceBillItems:payload.acceptanceBillItems
+                type: 'showEditPage',
+                payload: {
+                    acceptanceBillItems: payload.acceptanceBillItems
                 }
             });
         },
@@ -280,10 +280,10 @@ export default {
                 message.warning("请输入商品代码");
                 return;
             }
-            const {data} = yield call(queryStockExtendInfo, {
+            const { data } = yield call(queryStockExtendInfo, {
                 articleCode: payload.articleCode
             });
-            if (data.status == "200") {                              
+            if (data.status == "200") {
                 const acceptanceBill = payload.acceptanceBill;
                 const acceptanceItem = payload.acceptanceBill.items[payload.line - 1];
                 const stock = data.obj[0];
@@ -310,18 +310,7 @@ export default {
         },
 
         *refreshCaseQtyAndAmount({ payload }, { call, put }) {
-            // yield put({ type: 'showLoading' });
-            // const { data } = yield call(refreshCaseQtyAndAmount, parse(payload));
-            // if (data) {
-            //     yield put({
-            //         type: 'showEditPage',
-            //         payload: {
-            //             currentAcceptanceBill: data.obj
-            //         }
-            //     });
-            // };
-
-            if(payload.record.qpcStr == null || payload.record.qpcStr==''){
+            if (payload.record.qpcStr == null || payload.record.qpcStr == '') {
                 message.warning("请选择规格！", 2, '');
                 return;
             }
@@ -332,44 +321,44 @@ export default {
                 return;
             };
 
-            const {data} = yield call(qtyToCaseQtyStr,{
-                qty:qty,
-                qpcStr:payload.record.qpcStr
+            const { data } = yield call(qtyToCaseQtyStr, {
+                qty: qty,
+                qpcStr: payload.record.qpcStr
             });
-            for(var item of payload.items){
-                if(item.line == payload.line){
+            for (var item of payload.items) {
+                if (item.line == payload.line && item.qty != null) {
                     item.caseQtyStr = data.obj;
                     item.amount = Number.parseFloat(payload.record.price) * qty;
                 };
             };
             let totalCaseQtyStr = 0;
             let totalAmount = 0;
-            if(payload.items.length == 1){
+            if (payload.items.length == 1) {
                 totalCaseQtyStr = data.obj;
                 totalAmount = payload.items[0].amount;
-            }else{
-                for(var item of payload.items){
-                    totalAmount = Number.parseFloat(item.amount) + Number.parseFloat(totalAmount);
-                    if (item.caseQtyStr == 0 || item.caseQtyStr == '')
+            } else {
+                for (var item of payload.items) {
+                    if (item.caseQtyStr == 0 || item.caseQtyStr == '' || item.qty == null)
                         continue;
+                    totalAmount = Number.parseFloat(item.amount) + Number.parseFloat(totalAmount);
                     const totalCaseQtyStrResult = yield call(caseQtyStrAdd, {
                         addend: totalCaseQtyStr, augend: item.caseQtyStr
                     });
                     totalCaseQtyStr = totalCaseQtyStrResult.data.obj;
                 };
             };
-            const CaseQtyStrResult = yield call(caseQtyStrAdd,{
-                addend:payload.acceptanceBill.totalCaseQtyStr,
-                augend:data.obj
+            const CaseQtyStrResult = yield call(caseQtyStrAdd, {
+                addend: payload.acceptanceBill.totalCaseQtyStr,
+                augend: data.obj
             });
             payload.acceptanceBill.totalCaseQtyStr = totalCaseQtyStr;
             payload.acceptanceBill.totalAmount = totalAmount;
 
             yield put({
-                type:'showEditPage',
-                payload:{
-                    items:payload.items,
-                    acceptanceBill:payload.acceptanceBill
+                type: 'showEditPage',
+                payload: {
+                    items: payload.items,
+                    acceptanceBill: payload.acceptanceBill
                 }
             });
         },
@@ -436,8 +425,8 @@ export default {
         },
         backSearchForm(state) {
             return {
-                ...state,                           
-                loading: false,                
+                ...state,
+                loading: false,
                 showPage: 'search'
             };
         },
