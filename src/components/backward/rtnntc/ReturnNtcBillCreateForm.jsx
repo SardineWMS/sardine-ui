@@ -6,10 +6,13 @@ import ToolbarPanel from '../../Widget/ToolbarPanel';
 import RemarkCard from '../../Widget/RemarkCard';
 import BaseForm from '../../Widget/BaseForm';
 import Guid from '../../../utils/Guid';
+
 const EditableCell = require('../../Widget/EditableCell');
+
 import WrhSelect from '../../widget/WrhSelectWithUuid';
 import moment from 'moment';
 import 'moment/locale/zh-cn';
+
 moment.locale('zh-cn');
 import ReturnNtcBillCreateItem from './ReturnNtcBillCreateItem';
 import Panel from '../../Widget/Panel';
@@ -26,121 +29,125 @@ const ReturnNtcBillCreateForm = ({
         validateFields,
         getFieldsValue,
         resetFields,
-        setFieldsValue
+        setFieldsValue,
     },
     onCustomerSelect,
     onEnterCustomer,
-    returnNtcBillCreateItemProps
+    returnNtcBillCreateItemProps,
 }) => {
-
-    function handleCustomerSelect() {
-        let { customer } = getFieldsValue(["customer"]);
-        if (!customer) {
-            item.customer = {};
-        }
-        resetFields(["customer"]);
-        onCustomerSelect();
+  function handleCustomerSelect() {
+    const { customer } = getFieldsValue(['customer']);
+    if (!customer) {
+      item.customer = {};
     }
-    function handleCreate() {
-        validateFields((errors) => {
-            if (errors)
-                return;
-            let data = {};
-            data = {
-                ...getFieldsValue(),
-                billNumber: item.billNumber, uuid: item.uuid, state: item.state, totalCaseQtyStr: item.totalCaseQtyStr,
-                totalAmount: item.totalAmount,
-                companyUuid: item.companyUuid, version: item.version, customer: item.customer,
-            };
-            handleSave(data);
-        });
-    };
+    resetFields(['customer']);
+    onCustomerSelect();
+  }
+  function handleCreate() {
+    validateFields((errors) => {
+      if (errors) { return; }
+      let data = {};
+      data = {
+        ...getFieldsValue(),
+        billNumber: item.billNumber,
+        uuid: item.uuid,
+        state: item.state,
+        totalCaseQtyStr: item.totalCaseQtyStr,
+        totalAmount: item.totalAmount,
+        companyUuid: item.companyUuid,
+        version: item.version,
+        customer: item.customer,
+      };
+      handleSave(data);
+    });
+  }
 
-    function handleEnterPress() {
-        if (getFieldsValue().customer == null || getFieldsValue().customer == '')
-            return;
-        const data = {
-            customer: getFieldsValue().customer
-        };
-        onEnterCustomer(data);
+  function handleEnterPress() {
+    if (getFieldsValue().customer == null || getFieldsValue().customer == '') { return; }
+    const data = {
+      customer: getFieldsValue().customer,
     };
+    onEnterCustomer(data);
+  }
 
-    const children = [];
-    children.push(
-        <BaseFormItem label="客户：">
-            {
-                getFieldDecorator("customer", {
-                    rules: [{ required: true, message: "客户不能为空！" }],
-                    initialValue: item.customer ? item.customer.code : ""
+  const children = [];
+  children.push(
+    <BaseFormItem label="客户：">
+      {
+                getFieldDecorator('customer', {
+                  rules: [{ required: true, message: '客户不能为空！' }],
+                  initialValue: item.customer ? item.customer.code : '',
                 })(
-                    <Input placeholder="请选择" suffix={<Icon type="bars" onClick={handleCustomerSelect} />} onBlur={handleEnterPress} />
+                  <Input placeholder="请选择" suffix={<Icon type="bars" onClick={handleCustomerSelect} />} onBlur={handleEnterPress} />
                     )
             }
-        </BaseFormItem>
+    </BaseFormItem>
     );
-    children.push(
-        <BaseFormItem label={"仓位："}>
-            {getFieldDecorator("wrh.uuid", {
-                rules: [{ required: true, message: "仓位不能为空！" }], initialValue: item.wrh ? item.wrh.uuid : null
-            })(
-                <WrhSelect />
+  children.push(
+    <BaseFormItem label={'仓位：'}>
+      {getFieldDecorator('wrh.uuid', {
+        rules: [{ required: true, message: '仓位不能为空！' }], initialValue: item.wrh ? item.wrh.uuid : null,
+      })(
+        <WrhSelect />
                 )
             }
-        </BaseFormItem>);
-    children.push(
-        <BaseFormItem label={"来源单据类型"} >
-            {getFieldDecorator("sourceBillType", { rules: [{ required: false }, { max: 100, message: '来源单据类型最大长度是100！' }], initialValue: item.sourceBillNumber })(
-                <Input placeholder="请输入" />
-            )}
-        </BaseFormItem>
-    );
-    children.push(
-        <BaseFormItem label={"来源单号"} >
-            {getFieldDecorator("sourceBillNumber", { rules: [{ required: false }, { max: 30, message: '来源单据号最大长度是30！' }], initialValue: item.sourceBillNumber })(
-                <Input placeholder="请输入" />
-            )}
-        </BaseFormItem>
-    );
-    children.push(
-        <BaseFormItem label={"退货日期："} >
-            {getFieldDecorator("returnDate", { rules: [{ required: true, message: '退货日期不能为空' }], initialValue: moment(item.returnDate) })(
-                <DatePicker style={{ width: 270.5 }} size="large" />
-            )}
-        </BaseFormItem>
-    );
-
-    const totalCaseQtyStrForm = [];
-    totalCaseQtyStrForm.push(<BaseFormItem label={"总件数："}>
-        <label>{item.totalCaseQtyStr == null ? '0' : item.totalCaseQtyStr}</label>
     </BaseFormItem>);
+  children.push(
+    <BaseFormItem label={'来源单据类型'} >
+      {getFieldDecorator('sourceBillType', { rules: [{ required: false }, { max: 100, message: '来源单据类型最大长度是100！' }], initialValue: item.sourceBillNumber })(
+        <Input placeholder="请输入" />
+            )}
+    </BaseFormItem>
+    );
+  children.push(
+    <BaseFormItem label={'来源单号'} >
+      {getFieldDecorator('sourceBillNumber', { rules: [{ required: false }, { max: 30, message: '来源单据号最大长度是30！' }], initialValue: item.sourceBillNumber })(
+        <Input placeholder="请输入" />
+            )}
+    </BaseFormItem>
+    );
+  children.push(
+    <BaseFormItem label={'退货日期：'} >
+      {getFieldDecorator('returnDate', { rules: [{ required: true, message: '退货日期不能为空' }], initialValue: moment(item.returnDate) })(
+        <DatePicker style={{ width: 270.5 }} size="large" />
+            )}
+    </BaseFormItem>
+    );
 
-    totalCaseQtyStrForm.push(<BaseFormItem label={"总金额："}>
-        <label>{item.totalAmount == null ? 0 : item.totalAmount}</label>
-    </BaseFormItem>);
+  const totalCaseQtyStrForm = [];
+  totalCaseQtyStrForm.push(<BaseFormItem label={'总件数：'}>
+    <label>{item.totalCaseQtyStr == null ? '0' : item.totalCaseQtyStr}</label>
+  </BaseFormItem>);
 
-    const toolbar = [];
-    toolbar.push(<Button key={Guid()} onClick={handleCreate} >保存</Button>);
-    toolbar.push(<Button onClick={() => onCancel(item)} key={Guid()} > 取消</Button>);
+  totalCaseQtyStrForm.push(<BaseFormItem label={'总金额：'}>
+    <label>{item.totalAmount == null ? 0 : item.totalAmount}</label>
+  </BaseFormItem>);
 
-    return (
-        <div>
-            <ToolbarPanel children={toolbar} />
-            <BaseCard title="退仓通知单信息" single={false}>
-                <BaseForm items={children} />
-                <BaseForm items={totalCaseQtyStrForm} />
-            </BaseCard>
-            <ReturnNtcBillCreateItem {...returnNtcBillCreateItemProps} />
-            <Panel title="说明">
-                <Form.Item>
-                    {getFieldDecorator('remark', {
-                        initialValue: item.remark, rules: [{ max: 255, message: '说明最大长度是255！' }]
-                    })(
-                        <Input type="textarea" autosize={{ minRows: 4 }} />
+  const toolbar = [];
+  toolbar.push(<Button key={Guid()} onClick={handleCreate} >保存</Button>);
+  toolbar.push(<Button onClick={() => onCancel(item)} key={Guid()} > 取消</Button>);
+
+  return (
+    <div>
+      <ToolbarPanel children={toolbar} />
+      <BaseCard title="退仓通知单信息" single={false}>
+        <BaseForm items={children} />
+        <BaseForm items={totalCaseQtyStrForm} />
+      </BaseCard>
+      <BaseCard single>
+        <ReturnNtcBillCreateItem {...returnNtcBillCreateItemProps} />
+      </BaseCard>
+      <Panel title="说明">
+        <Form.Item>
+          {getFieldDecorator('remark', {
+            initialValue: item.remark, rules: [{ max: 255, message: '说明最大长度是255！' }],
+          })(
+            <Input type="textarea" autosize={{ minRows: 4 }} />
                         )}
-                </Form.Item>
-            </Panel>
-        </div>
-    );
+        </Form.Item>
+      </Panel>
+    </div>
+  );
 };
 
 export default Form.create()(ReturnNtcBillCreateForm);

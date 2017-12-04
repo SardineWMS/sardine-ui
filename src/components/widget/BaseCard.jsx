@@ -10,8 +10,8 @@ class BaseCard extends React.Component {
 
   render() {
     let single = this.props.single;
-    return (
-      <Panel title={this.props.title}>
+    return (   
+      <Panel title={this.props.title} bodyStyle={{ padding: 0 }}>
         <Row gutter={36} >
           {
             React.Children.map(this.props.children, function (child) {

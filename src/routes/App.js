@@ -1,8 +1,8 @@
 import React, {
-  PropTypes
+  PropTypes,
 } from 'react'
 import {
-  connect
+  connect,
 } from 'dva'
 import Login from '../components/ia/login/Login';
 import Header from '../components/Layout/Header';
@@ -25,7 +25,7 @@ function App({
   location,
   dispatch,
   app,
-  loading
+  loading,
 }) {
   const {
     login,
@@ -37,7 +37,7 @@ function App({
     token,
     siderFold,
     darkTheme,
-    messageModalVisiable
+    messageModalVisiable,
   } = app;
 
   const loginProps = {
@@ -46,14 +46,14 @@ function App({
     onOk(data) {
       dispatch({
         type: 'app/login',
-        payload: data
+        payload: data,
       });
     },
     onRegister() {
       dispatch({
-        type: 'app/showRegister'
+        type: 'app/showRegister',
       });
-    }
+    },
   };
 
   const registerProps = {
@@ -61,19 +61,19 @@ function App({
     onSignIn(data) {
       dispatch({
         type: 'app/register',
-        payload: data
+        payload: data,
       });
     },
     onBack() {
       dispatch({
-        type: 'app/registerBack'
+        type: 'app/registerBack',
       });
-    }
+    },
   };
 
   const siderProps = {
     location,
-    menu: localStorage.getItem("ownedMenus")
+    menu: localStorage.getItem('ownedMenus'),
   };
 
   const navProps = {
@@ -81,14 +81,14 @@ function App({
     key: 'nav_1_0',
     modifyPasswd() {
       dispatch({
-        type: 'app/showModify'
+        type: 'app/showModify',
       });
     },
     logout() {
       dispatch({
-        type: 'app/logout'
+        type: 'app/logout',
       });
-    }
+    },
   };
 
   const updatePasswdProps = {
@@ -96,43 +96,42 @@ function App({
     onOk(data) {
       dispatch({
         type: 'app/updatePasswd',
-        payload: data
+        payload: data,
       });
     },
     onCancel() {
       dispatch({
-        type: 'app/hideModify'
+        type: 'app/hideModify',
       });
-    }
+    },
   };
 
   const BreadProps = {
     onClickMessage() {
       dispatch({
-        type: 'app/showMessage'
+        type: 'app/showMessage',
       });
-    }
+    },
   };
 
   const MessageProps = {
     visible: messageModalVisiable,
     onClose() {
       dispatch({
-        type: 'app/hideMessage'
+        type: 'app/hideMessage',
       });
-    }
+    },
   };
 
   function renderApp() {
     let loginFlag = false;
-    var cookies=document.cookie.split("; ");
-    for (var i=0; i<cookies.length; i++) {
-       console.dir(cookies[i]);
-       var arr=cookies[i].split("=");
-       if (arr.length > 1 && arr[0] == 'login_auth_cookie' && arr[1] == 'true')
-        loginFlag = true;
+    let cookies = document.cookie.split('; ');
+    for (let i = 0; i < cookies.length; i++) {
+      let arr = cookies[i].split('=');
+      if (arr.length > 1 && arr[0] == 'login_auth_cookie' && arr[1] == 'true')
+         {loginFlag = true;}
     }
-    
+
     if (loginFlag) {
       return (<div className={classnames(styles.layout)}>
         <MessageModal {...MessageProps} />
@@ -142,7 +141,7 @@ function App({
           <Sider {...siderProps} />
         </aside>
         <div className={styles.main}>
-          <Bread location={location} menu={localStorage.getItem("ownedMenus")} {...BreadProps} />
+          <Bread location={location} menu={localStorage.getItem('ownedMenus')} {...BreadProps} />
           <div className={styles.container}>
             <div className={styles.content}>
               <Spin spinning={loading}>
@@ -152,27 +151,27 @@ function App({
             </div>
           </div>
         </div>
-        
+
       </div>);
-    };
+    }
     if (registerLoading) {
       return (<div className={styles.reg}>
         <Spin spinning={loading}>
           <Register {...registerProps} />
         </Spin>
       </div>);
-    };
+    }
 
     return (<div className={styles.spin}><Spin tip="加载用户信息..." spinning={loading} size="large">
       <Login {...loginProps} /></Spin>
     </div>);
-  };
+  }
 
   return (
     <div>
       {renderApp()}
     </div>);
-};
+}
 
 App.propTypes = {
   children: PropTypes.element.isRequired,
@@ -185,14 +184,14 @@ App.propTypes = {
   user: PropTypes.object,
   token: PropTypes.string,
   siderFold: PropTypes.bool,
-  darkTheme: PropTypes.bool
+  darkTheme: PropTypes.bool,
 };
 
 function mapStateToProps({ loading, app }) {
   return {
     loading: loading.global,
-    app
+    app,
   };
-};
+}
 
 export default connect(mapStateToProps)(App);

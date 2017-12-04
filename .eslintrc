@@ -16,7 +16,27 @@
     "global-require": [0],
     "no-shadow": [0],
     "no-useless-computed-key": [0],
-    "no-underscore-dangle": [0]
+    "no-underscore-dangle": [0],
+    "linebreak-style":["error","windows"],
+    "no-new-object":"off",
+    "no-param-reassign":"warn",
+    "react/jsx-filename-extension":"warn",
+    "react/forbid-prop-types":"warn",
+    "import/no-unresolved":"warn",
+    "import/imports-first":"warn",
+    "no-tabs":"off",
+    "no-mixed-spaces-and-tabs":"off",
+    "react/no-children-prop":"warn",
+    "max-len":"off",
+    "no-plusplus":"off",
+    "eqeqeq":"warn",
+    "new-cap":"off",
+    "jsx-a11y/label-has-for":"off",
+    "radix":"warn",
+    "import/extensions":"warn",
+    "no-duplicate-imports":"warn",
+    "no-continue":"off",
+    "no-new-wrappers":"off"
   },
   "ecmaFeatures": {
     "experimentalObjectRestSpread": true
