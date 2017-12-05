@@ -14,345 +14,346 @@ import DriverSelectGrid from '../../components/widget/DriverSelectGrid';
 import VehicleSelectGrid from '../../components/widget/VehicleSelectGrid';
 
 function ShipBill({ location, dispatch, shipBill }) {
-    const { list, pagination, currentShipBill, finishShipBillEntitys,
-        batchFinishProcessModal, abortShipBillEntitys, batchAbortProcessModal, shipBillNext, showPage, showCarrierModal, showDriverModal, billItems, showVehicleModal, showCreateItemModal
+  const { list, pagination, currentShipBill, finishShipBillEntitys,
+        batchFinishProcessModal, abortShipBillEntitys, batchAbortProcessModal, shipBillNext, showPage, showCarrierModal, showDriverModal, billItems, showVehicleModal, showCreateItemModal,
 } = shipBill;
 
-    const shipBillSearchFormProps = {
-        onSearch(fieldsValue) {
-            dispatch(routerRedux.push({
-                pathname: '/tms/shipBill',
-                query: {
-                    ...fieldsValue
-                }
-            }));
-        }
-    };
+  const shipBillSearchFormProps = {
+    onSearch(fieldsValue) {
+      dispatch(routerRedux.push({
+        pathname: '/tms/shipBill',
+        query: {
+          ...fieldsValue,
+        },
+      }));
+    },
+  };
 
-    const shipBillSearchGridProps = {
-        dataSource: list,
-        pagination: pagination,
-        onPageChange(page, filters, sorter) {
-            dispatch(routerRedux.push({
-                pathname: '/tms/shipBill',
-                query: {
-                    ...location.query,
-                    page: page.current,
-                    pageSize: page.pageSize,
-                    sort: sorter.columnKey,
-                    order: ((sorter.order) && (sorter.order.indexOf("asc") > -1)) ? "asc" : "desc"
-                }
-            }));
+  const shipBillSearchGridProps = {
+    dataSource: list,
+    pagination,
+    onPageChange(page, filters, sorter) {
+      dispatch(routerRedux.push({
+        pathname: '/tms/shipBill',
+        query: {
+          ...location.query,
+          page: page.current,
+          pageSize: page.pageSize,
+          sort: sorter.columnKey,
+          order: ((sorter.order) && (sorter.order.indexOf('asc') > -1)) ? 'asc' : 'desc',
         },
-        onFinishBatch(shipBills) {
-            if (shipBills.length <= 0) {
-                message.warning("请选择要完成的装车单", 2, '');
-                return;
-            };
-            dispatch({
-                type: 'shipBill/batchFinishShipBill',
-                payload: {
-                    finishShipBillEntitys: shipBills
-                }
-            });
+      }));
+    },
+    onFinishBatch(shipBills) {
+      if (shipBills.length <= 0) {
+        message.warning('请选择要完成的装车单', 2, '');
+        return;
+      }
+      dispatch({
+        type: 'shipBill/batchFinishShipBill',
+        payload: {
+          finishShipBillEntitys: shipBills,
         },
-        onAbortBarch(shipBills) {
-            if (shipBills.lengt <= 0) {
-                message.warning("请选择要作废的装车单", 2);
-                return;
-            }
-            dispatch({
-                type: 'shipBill/batchAbortShipBill',
-                payload: {
-                    abortShipBillEntitys: shipBills
-                }
-            })
+      });
+    },
+    onAbortBarch(shipBills) {
+      if (shipBills.lengt <= 0) {
+        message.warning('请选择要作废的装车单', 2);
+        return;
+      }
+      dispatch({
+        type: 'shipBill/batchAbortShipBill',
+        payload: {
+          abortShipBillEntitys: shipBills,
         },
-        onViewShipBill(shipBillUuid) {
-            dispatch({
-                type: 'shipBill/get',
-                payload: {
-                    uuid: shipBillUuid
-                }
-            });
+      })
+    },
+    onViewShipBill(shipBillUuid) {
+      dispatch({
+        type: 'shipBill/get',
+        payload: {
+          uuid: shipBillUuid,
         },
-        onViewVehicle(shipBill) {
-            dispatch({
-                type: 'shipBill/showViewPage',
-                payload: {
-                    currentShipBill: shipBill
-                }
-            });
+      });
+    },
+    onViewVehicle(shipBill) {
+      dispatch({
+        type: 'shipBill/showViewPage',
+        payload: {
+          currentShipBill: shipBill,
         },
-        onCreate() {
-            dispatch({
-                type: 'shipBill/showCreate',
-                payload: { billItems }
-            })
-        }
-    };
+      });
+    },
+    onCreate() {
+      dispatch({
+        type: 'shipBill/showCreate',
+        payload: { billItems },
+      })
+    },
+  };
 
 
-    const batchProcessFinishShipBillProps = {
-        showConfirmModal: batchFinishProcessModal,
-        records: finishShipBillEntitys ? finishShipBillEntitys : [],
-        next: shipBillNext,
-        actionText: '完成',
-        entityCaption: '装车单',
-        url: '/swms/tms/shipbill/finish',
-        canSkipState: 'Finished',
-        hideConfirmModal() {
-            dispatch({
-                type: 'shipBill/hideFinishShipBillModal',
-            });
+  const batchProcessFinishShipBillProps = {
+    showConfirmModal: batchFinishProcessModal,
+    records: finishShipBillEntitys || [],
+    next: shipBillNext,
+    actionText: '完成',
+    entityCaption: '装车单',
+    url: '/swms/tms/shipbill/finish',
+    canSkipState: 'Finished',
+    hideConfirmModal() {
+      dispatch({
+        type: 'shipBill/hideFinishShipBillModal',
+      });
+    },
+    refreshGrid() {
+      dispatch({
+        type: 'shipBill/query',
+        payload: {
+          token: localStorage.getItem('token'),
         },
-        refreshGrid() {
-            dispatch({
-                type: 'shipBill/query',
-                payload: {
-                    token: localStorage.getItem("token")
-                }
-            });
-        }
-    };
+      });
+    },
+  };
 
-    const batchProcessAbortShipBillProps = {
-        showConfirmModal: batchAbortProcessModal,
-        records: abortShipBillEntitys ? abortShipBillEntitys : [],
-        next: shipBillNext,
-        actionText: '作废',
-        entityCaption: '装车单',
-        url: '/swms/tms/shipbill/abort',
-        canSkipState: 'Abort',
-        hideConfirmModal() {
-            dispatch({
-                type: 'shipBill/hideAbortShipBillModal',
-            });
+  const batchProcessAbortShipBillProps = {
+    showConfirmModal: batchAbortProcessModal,
+    records: abortShipBillEntitys || [],
+    next: shipBillNext,
+    actionText: '作废',
+    entityCaption: '装车单',
+    url: '/swms/tms/shipbill/abort',
+    canSkipState: 'Abort',
+    hideConfirmModal() {
+      dispatch({
+        type: 'shipBill/hideAbortShipBillModal',
+      });
+    },
+    refreshGrid() {
+      dispatch({
+        type: 'shipBill/query',
+        payload: {
+          token: localStorage.getItem('token'),
         },
-        refreshGrid() {
-            dispatch({
-                type: 'shipBill/query',
-                payload: {
-                    token: localStorage.getItem("token")
-                }
-            });
-        }
-    };
+      });
+    },
+  };
 
-    const shipBillViewFormProps = {
-        shipBill: currentShipBill,
-        onBack() {
-            dispatch({
-                type: 'shipBill/backSearchForm'
-            });
+  const shipBillViewFormProps = {
+    shipBill: currentShipBill,
+    onBack() {
+      dispatch({
+        type: 'shipBill/backSearchForm',
+      });
+    },
+    onFinish(entity) {
+      dispatch({
+        type: 'shipBill/itemFinish',
+        payload: {
+          uuid: entity.uuid,
+          version: entity.version,
         },
-        onFinish(entity) {
-            dispatch({
-                type: 'shipBill/itemFinish',
-                payload: {
-                    uuid: entity.uuid,
-                    version: entity.version
-                }
-            });
-        },
-        onEdit() {
-            dispatch({
-                type: 'shipBill/showEdit',
-                payload: currentShipBill
-            })
-        }
-    };
+      });
+    },
+    onEdit() {
+      dispatch({
+        type: 'shipBill/showEdit',
+        payload: currentShipBill,
+      })
+    },
+  };
 
-    const shipBillCreateFormProps = {
-        item: currentShipBill,
-        onCarrierSelect() {
-            dispatch({
-                type: 'shipBill/showCarrierModal'
-            })
+  const shipBillCreateItemProps = {
+    dataSource: billItems,
+    onAddItem() {
+      dispatch({
+        type: 'shipBill/showAddItem',
+        payload: billItems,
+      })
+    },
+    calculateCaseQtyStr(record, list) {
+      dispatch({
+        type: 'shipBill/calculateCaseQtyStr',
+        payload: {
+          record, list, currentShipBill,
         },
-        onDriverSelect() {
-            dispatch({
-                type: 'shipBill/showDriverModal'
-            })
+      })
+    },
+    onRemoveBatch(lists) {
+      dispatch({
+        type: 'shipBill/removeBatch',
+        payload: { lists, billItems, currentShipBill },
+      })
+    },
+    fetchShipperName(record, list) {
+      dispatch({
+        type: 'shipBill/fetchShipperName',
+        payload: {
+          record, list,
         },
-        onVehicleSelect() {
-            dispatch({
-                type: 'shipBill/showVehicleModal'
-            })
-        },
-        handleSave(data) {
-            data.containerStocks = billItems;
-            for (let i = 0; i < billItems.length; i++) {
-                if (billItems[i].shipper.name == null) {
-                    message.error("第" + (i + 1) + "行，装车员不能为空");
-                    return;
-                }
-            }
-            data.customerItems = [];
-            if (data.uuid)
-                dispatch({
-                    type: 'shipBill/saveModify',
-                    payload: data
-                })
-            else
-                dispatch({
-                    type: 'shipBill/saveNew',
-                    payload: data
-                })
-        },
-        onCancel() {
-            dispatch({
-                type: 'shipBill/query'
-            })
-        }
-    };
+      })
+    },
+  };
 
-    const driverSelectGridProps = {
-        visible: showDriverModal,
-        onCancel() {
-            dispatch({
-                type: 'shipBill/hideDriverModal'
-            })
-        },
-        onSelect(data) {
-            const driver = {};
-            driver.uuid = data.uuid;
-            driver.code = data.code;
-            driver.name = data.name;
-            currentShipBill.driver = driver;
-            dispatch({
-                type: 'shipBill/hideDriverModal',
-                payload: { currentShipBill: currentShipBill }
-            })
+  const shipBillCreateFormProps = {
+    shipBillCreateItemProps,
+    item: currentShipBill,
+    onCarrierSelect() {
+      dispatch({
+        type: 'shipBill/showCarrierModal',
+      })
+    },
+    onDriverSelect() {
+      dispatch({
+        type: 'shipBill/showDriverModal',
+      })
+    },
+    onVehicleSelect() {
+      dispatch({
+        type: 'shipBill/showVehicleModal',
+      })
+    },
+    handleSave(data) {
+      data.containerStocks = billItems;
+      for (let i = 0; i < billItems.length; i++) {
+        if (billItems[i].shipper.name == null) {
+          message.error(`第${i + 1}行，装车员不能为空`);
+          return;
         }
-    };
+      }
+      data.customerItems = [];
+      if (data.uuid) {
+        dispatch({
+          type: 'shipBill/saveModify',
+          payload: data,
+        })
+      } else {
+        dispatch({
+          type: 'shipBill/saveNew',
+          payload: data,
+        })
+      }
+    },
+    onCancel() {
+      dispatch({
+        type: 'shipBill/query',
+      })
+    },
+  };
 
-    const vehicleSelectGridProps = {
-        visible: showVehicleModal,
-        onCancel() {
-            dispatch({
-                type: 'shipBill/hideVehicleModal'
-            })
-        },
-        onSelect(data) {
-            let vehicleNum = "";
-            vehicleNum = data.vehicleNo;
-            const carrier = data.carrier;
-            currentShipBill.carrier = carrier;
-            currentShipBill.vehicleNum = vehicleNum;
-            currentShipBill.driver = data.driver;
-            dispatch({
-                type: 'shipBill/hideVehicleModal',
-                payload: { currentShipBill: currentShipBill }
-            })
-        }
-    };
+  const driverSelectGridProps = {
+    visible: showDriverModal,
+    onCancel() {
+      dispatch({
+        type: 'shipBill/hideDriverModal',
+      })
+    },
+    onSelect(data) {
+      const driver = {};
+      driver.uuid = data.uuid;
+      driver.code = data.code;
+      driver.name = data.name;
+      currentShipBill.driver = driver;
+      dispatch({
+        type: 'shipBill/hideDriverModal',
+        payload: { currentShipBill },
+      })
+    },
+  };
 
-    const shipBillCreateItemProps = {
-        dataSource: billItems,
-        onAddItem() {
-            dispatch({
-                type: 'shipBill/showAddItem',
-                payload: billItems
-            })
-        },
-        calculateCaseQtyStr(record, list) {
-            dispatch({
-                type: 'shipBill/calculateCaseQtyStr',
-                payload: {
-                    record, list, currentShipBill
-                }
-            })
-        },
-        onRemoveBatch(lists) {
-            dispatch({
-                type: 'shipBill/removeBatch',
-                payload: { lists, billItems, currentShipBill }
-            })
-        },
-        fetchShipperName(record, list) {
-            dispatch({
-                type: 'shipBill/fetchShipperName',
-                payload: {
-                    record, list
-                }
-            })
-        }
-    };
+  const vehicleSelectGridProps = {
+    visible: showVehicleModal,
+    onCancel() {
+      dispatch({
+        type: 'shipBill/hideVehicleModal',
+      })
+    },
+    onSelect(data) {
+      let vehicleNum = '';
+      vehicleNum = data.vehicleNo;
+      const carrier = data.carrier;
+      currentShipBill.carrier = carrier;
+      currentShipBill.vehicleNum = vehicleNum;
+      currentShipBill.driver = data.driver;
+      dispatch({
+        type: 'shipBill/hideVehicleModal',
+        payload: { currentShipBill },
+      })
+    },
+  };
 
-    const shipBillCreateItemModalProps = {
-        visible: showCreateItemModal,
-        onCancel() {
-            dispatch({
-                type: 'shipBill/hideAddItemModal'
-            })
+
+  const shipBillCreateItemModalProps = {
+    visible: showCreateItemModal,
+    onCancel() {
+      dispatch({
+        type: 'shipBill/hideAddItemModal',
+      })
+    },
+    onOk(records) {
+      dispatch({
+        type: 'shipBill/selectItems',
+        payload: {
+          list: records,
+          currentShipBill,
+          billItems,
         },
-        onOk(records) {
-            dispatch({
-                type: 'shipBill/selectItems',
-                payload: {
-                    list: records,
-                    currentShipBill,
-                    billItems
-                }
-            })
-        }
+      })
+    },
+  }
+
+  function refreshWidget() {
+    if (showPage === 'view') {
+      return (<div> <ShipBillViewForm {...shipBillViewFormProps} /> </div>)
     }
+    return (<div>
+      <ShipBillSearchForm {...shipBillSearchFormProps} />
+      <ShipBillSearchGrid {...shipBillSearchGridProps} />
+      <WMSProgress {...batchProcessFinishShipBillProps} />
+      <WMSProgress {...batchProcessAbortShipBillProps} />
+    </div>);
+  }
 
-    function refreshWidget() {
-        if (showPage === "view") {
-            return (<div> <ShipBillViewForm {...shipBillViewFormProps} /> </div>)
-        } else {
-            return (<div>
-                <ShipBillSearchForm {...shipBillSearchFormProps} />
-                <ShipBillSearchGrid {...shipBillSearchGridProps} />
-                <WMSProgress {...batchProcessFinishShipBillProps} />
-                <WMSProgress {...batchProcessAbortShipBillProps} />
-            </div>);
-        }
-    };
 
-    const ShipBillCreateItemGen = () => <ShipBillCreateItem {...shipBillCreateItemProps} />;
-    const ShipBillSearchGridGen = () => <ShipBillSearchGrid {...shipBillSearchGridProps} />;
+  const ShipBillSearchGridGen = () => <ShipBillSearchGrid {...shipBillSearchGridProps} />;
 
-    return (
-        <div className="content-inner">
-            {
+  return (
+    <div className="content-inner">
+      {
                 (() => {
-                    switch (showPage) {
-                        case 'view':
-                            return <div><ShipBillViewForm {...shipBillViewFormProps} /></div>
-                        case 'create':
-                            return <div>
-                                <ShipBillCreateForm {...shipBillCreateFormProps} />
-                                <ShipBillCreateItemGen />
-                                <DriverSelectGrid {...driverSelectGridProps} />
-                                <VehicleSelectGrid {...vehicleSelectGridProps} />
-                                <ShipBillCreateItemModal {...shipBillCreateItemModalProps} />
-                            </div>
+                  switch (showPage) {
+                    case 'view':
+                      return <div><ShipBillViewForm {...shipBillViewFormProps} /></div>
+                    case 'create':
+                      return (<div>
+                        <ShipBillCreateForm {...shipBillCreateFormProps} />
+                        <DriverSelectGrid {...driverSelectGridProps} />
+                        <VehicleSelectGrid {...vehicleSelectGridProps} />
+                        <ShipBillCreateItemModal {...shipBillCreateItemModalProps} />
+                      </div>)
 
-                        default:
-                            return <div>
-                                <ShipBillSearchForm {...shipBillSearchFormProps} />
-                                <ShipBillSearchGridGen />
-                                <WMSProgress {...batchProcessFinishShipBillProps} />
-                                <WMSProgress {...batchProcessAbortShipBillProps} />
-                            </div>
-                    }
+                    default:
+                      return (<div>
+                        <ShipBillSearchForm {...shipBillSearchFormProps} />
+                        <ShipBillSearchGridGen />
+                        <WMSProgress {...batchProcessFinishShipBillProps} />
+                        <WMSProgress {...batchProcessAbortShipBillProps} />
+                      </div>)
+                  }
                 })()
             }
-        </div>
-    );
-};
+    </div>
+  );
+}
 
 ShipBill.propType = {
-    shipBill: PropTypes.object
+  shipBill: PropTypes.object,
 };
 
 function mapStateToProps({ shipBill }) {
-    return {
-        shipBill
-    };
-};
+  return {
+    shipBill,
+  };
+}
 
 export default connect(mapStateToProps)(ShipBill);
